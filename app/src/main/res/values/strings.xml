@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">furniture-store</string>
+    <string name="ic_pf_txt">Profile</string>
+    <string name="ic_cart_txt">Cart</string>
+    <string name="ic_home_txt">Home</string>
+    <string name="ic_fav_txt">Favorite</string>
+    <string name="title_app">Furniture Store</string>
+    <string name="discount_txt">Sale Up\n To 70% off</string>
+    <string name="chair_txt">Accent chairs make great conversation pieces, as well as giving extra seating if necessary without taking up a lot of space," says interior designer Andi Morse.</string>
+</resources>
