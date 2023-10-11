@@ -17,11 +17,10 @@
             android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:outlineSpotShadowColor="@color/black">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.1"
                 android:text="@string/title_app"
