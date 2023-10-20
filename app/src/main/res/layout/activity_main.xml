@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MainActivity">
 
+<!--    app bar-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,7 +23,7 @@
                 android:id="@+id/titleTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.1"
                 android:text="@string/title_app"
@@ -44,16 +45,21 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+    <!--    display fragment-->
     <FrameLayout
         android:id="@+id/lytFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+
+<!--    bottom navigation bar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
         android:background="@drawable/style_nav_bar"
         app:menu="@menu/nav_bar_activity" />
 
