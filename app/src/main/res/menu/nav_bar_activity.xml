@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_fav"
         android:title="@string/ic_fav_txt" />
     <item
+        android:id="@+id/mnuCate"
+        android:icon="@drawable/ic_category"
+        android:title="@string/category_txt" />
+    <item
         android:id="@+id/mnuCart"
         android:icon="@drawable/ic_cart"
         android:title="@string/ic_cart_txt" />
