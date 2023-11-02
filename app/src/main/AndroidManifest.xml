@@ -16,28 +16,52 @@
         tools:targetApi="31">
         <activity
             android:windowSoftInputMode="adjustNothing"
-            android:name=".ui.activity.MainActivity"
+            android:name=".controller.activity.MainActivity"
             android:exported="false" />
         <activity
             android:windowSoftInputMode="adjustNothing"
-            android:name=".ui.activity.auth.SignUpActivity"
+            android:name=".controller.activity.auth.SignUpActivity"
             android:exported="false" />
         <activity
             android:windowSoftInputMode="adjustNothing"
-            android:name=".ui.activity.auth.SignInActivity"
+            android:name=".controller.activity.auth.SignInActivity"
             android:exported="false" />
         <activity
             android:windowSoftInputMode="adjustNothing"
-            android:name=".ui.activity.auth.ForgotPasswordActivity"
+            android:name=".controller.activity.auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.SplashScreenActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.auth.CodeVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.auth.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.activity.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

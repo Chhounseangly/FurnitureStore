@@ -16,4 +16,8 @@
     <color name="txt_color">#000000</color>
     <color name="btn_color">#000000</color>
 
+    <color name="trans">#00000000</color>
+    <color name="cate_bg_color">#A9A9A9</color>
+    <color name="title_price_color">#F5F7F8</color>
+
 </resources>

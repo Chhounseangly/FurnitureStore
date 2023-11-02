@@ -2,4 +2,5 @@
 <resources>
     <string name="text_splashscreen">Modern Furniture\nFor Your Dream\nHourse</string>
     <string name="forgot_your_password_txt">Forgot your password?</string>
+    <string name="verify_code_txt">Verify Code</string>
 </resources>
