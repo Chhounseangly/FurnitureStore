@@ -7,4 +7,41 @@
     <string name="title_app">Furniture Store</string>
     <string name="discount_txt">Sale Up\n To 70% off</string>
     <string name="chair_txt">Accent chairs make great conversation pieces, as well as giving extra seating if necessary without taking up a lot of space," says interior designer Andi Morse.</string>
+    <string name="description_search">Search here..</string>
+    <string name="text_splashscreen">Modern Furniture\nFor Your Dream\nHourse</string>
+    <string name="welcomeTxt">welcome</string>
+    <string name="email_txt">Email</string>
+    <string name="signIn_txt">Sign In</string>
+    <string name="pwInput">Password</string>
+    <string name="emInput">Email</string>
+    <string name="clickHereBtn">Click Here</string>
+    <string name="forgot_your_password_txt">Forgot your password?</string>
+    <string name="sign_in_txt">Sign In</string>
+    <string name="sign_up_txt">Sign Up</string>
+    <string name="don_t_have_an_account_txt">Don\'t have an account?</string>
+    <string name="sign_up_title">Sign Up</string>
+    <string name="confirmation_password_txt">Confirm Password</string>
+    <string name="username_txt">Username</string>
+    <string name="already_have_an_account_txt">Already have an account?</string>
+    <string name="forgot_password_txt">Forgot Password?</string>
+    <string name="enter_your_email_address_txt">Enter your email address</string>
+    <string name="i_did_not_receive_a_code_txt">I didn\'t receive a code</string>
+    <string name="resend_txt">Resend</string>
+    <string name="forgot_password_desc_txt">
+        Don\'t worry it happens. Please enter\nthe email associated with your account.
+    </string>
+    <string name="enter_your_code_here_txt">Enter your code here</string>
+    <string name="verify_code_title">Verify Code</string>
+    <string name="verify_txt">Verify</string>
+    <string name="verify_code_txt">Verify Code</string>
+    <string name="category_txt">Category</string>
+    <string name="search_categories_here_txt">Search Categories here....</string>
+    <string name="category_title">Categories</string>
+    <string name="detail_product_txt">Detail Product</string>
+
+    <string name="long_txt">
+        You can also use a custom view to implement a more sophisticated "See more" functionality. For example, you could use a custom view that allows the user to collapse the text by clicking on a "See less" button.
+                You can also use a custom view to implement a more sophisticated "See more" functionality. For example, you could use a custom view that allows the user to collapse the text by clicking on a "See less" button.
+    </string>
+
 </resources>

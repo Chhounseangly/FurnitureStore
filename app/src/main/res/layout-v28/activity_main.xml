@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".controller.activity.MainActivity">
 
+    <!--    app bar-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -17,7 +19,9 @@
             android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:outlineSpotShadowColor="@color/black">
+
             <TextView
+                android:id="@+id/titleTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
@@ -27,31 +31,48 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
             <androidx.cardview.widget.CardView
-                android:layout_marginEnd="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                android:layout_gravity="end">
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="20dp">
+
                 <ImageButton
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="TODO"
                     android:src="@mipmap/ic_launcher" />
             </androidx.cardview.widget.CardView>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!--    display fragment-->
 
+    <!--    bottom navigation bar-->
     <FrameLayout
         android:id="@+id/lytFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--            android:id="@+id/fabToTop"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="bottom|end"-->
+        <!--            android:layout_margin="16dp"-->
+        <!--            android:backgroundTint="@color/cate_bg_color"-->
+        <!--            android:contentDescription="Up to Top"-->
+        <!--            android:src="@drawable/ic_arrow_up" />-->
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@drawable/style_nav_bar"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/nav_bar_activity" />
 
 </LinearLayout>
