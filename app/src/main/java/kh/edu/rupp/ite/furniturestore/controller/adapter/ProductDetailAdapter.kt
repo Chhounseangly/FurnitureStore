@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSliderImageBinding
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.model.api.model.Image
 
 
 class ProductDetailAdapter : ListAdapter<ProductDetail, ProductDetailAdapter.ProductDetailViewHolder>(

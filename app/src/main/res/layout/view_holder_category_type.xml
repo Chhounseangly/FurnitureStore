@@ -6,7 +6,7 @@
     android:layout_margin="5dp"
     android:orientation="vertical"
     app:cardCornerRadius="5dp"
-    app:cardElevation="1dp">
+    app:cardElevation="2dp">
 
     <TextView
         android:id="@+id/title"

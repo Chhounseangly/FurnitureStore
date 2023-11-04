@@ -1,14 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.controller.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
-import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
 
@@ -42,7 +39,6 @@ class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.
             viewHolderProductCartBinding.nameProduct.text = productList.name
             viewHolderProductCartBinding.price.text = "$ " +productList.price
         }
+
     }
-
-
 }
