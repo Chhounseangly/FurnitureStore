@@ -69,8 +69,6 @@ class CartFragment() : Fragment() {
         }
 
         fragmentCartBinding.totalPrice.text = "$ ${totalPrice}"
-
-
     }
 
     private fun displayProductCart(productsList: ArrayList<ProductList>) {
