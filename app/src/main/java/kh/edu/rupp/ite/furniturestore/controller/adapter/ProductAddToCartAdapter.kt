@@ -1,14 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.controller.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
-import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
 
@@ -37,12 +34,26 @@ class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.
         private val viewHolderProductCartBinding: ViewHolderProductCartBinding
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
         fun bind(productList: ProductList) {
+            var price = productList.price;
+            var qty = 1
+
             //add image url to ImageView by Library Picasso
             Picasso.get().load(productList.imageUrl).into(viewHolderProductCartBinding.productImg)
             viewHolderProductCartBinding.nameProduct.text = productList.name
-            viewHolderProductCartBinding.price.text = "$ " +productList.price
+            viewHolderProductCartBinding.displayQty.text = qty.toString()
+            viewHolderProductCartBinding.price.text = "$ ${price * qty}"
+
+            viewHolderProductCartBinding.addBtn.setOnClickListener {
+                qty++
+                viewHolderProductCartBinding.displayQty.text = qty.toString()
+                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
+            }
+
+            viewHolderProductCartBinding.minusBtn.setOnClickListener {
+                if (qty > 1) qty--
+                viewHolderProductCartBinding.displayQty.text = qty.toString()
+                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
+            }
         }
     }
-
-
 }
