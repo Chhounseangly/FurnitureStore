@@ -51,6 +51,10 @@
             android:name=".controller.activity.auth.ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".controller.activity.ProductsByCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.activity.SplashScreenActivity"
             android:exported="true">
             <intent-filter>

@@ -55,5 +55,6 @@ class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.
                 viewHolderProductCartBinding.price.text = "$ ${price * qty}"
             }
         }
+
     }
 }

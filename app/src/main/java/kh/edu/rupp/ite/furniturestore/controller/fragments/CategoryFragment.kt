@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
 import kh.edu.rupp.ite.furniturestore.controller.adapter.CategoryTypesAdapter
-import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 
 class CategoryFragment() : Fragment() {
 

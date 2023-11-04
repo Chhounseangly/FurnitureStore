@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductSliderBinding
 
@@ -27,6 +26,7 @@ class ProductSliderAdapter: ListAdapter<ProductSlider, ProductSliderAdapter.Prod
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductSliderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductSliderBinding.inflate(layoutInflater, parent, false)
+
         return ProductSliderViewHolder(binding)
     }
 

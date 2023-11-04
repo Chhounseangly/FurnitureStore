@@ -1,11 +1,12 @@
 package kh.edu.rupp.ite.furniturestore.controller.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.controller.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
 
@@ -34,11 +35,18 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTypesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderCategoryTypeBinding.inflate(layoutInflater, parent, false)
+
         return CategoryTypesViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CategoryTypesViewHolder, position: Int) {
         val categoryTypes = getItem(position)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
+            intent.putExtra("id", categoryTypes.id)
+            intent.putExtra("title", categoryTypes.title)
+            it.context.startActivity(intent)
+        }
         holder.bind(categoryTypes)
     }
 }
