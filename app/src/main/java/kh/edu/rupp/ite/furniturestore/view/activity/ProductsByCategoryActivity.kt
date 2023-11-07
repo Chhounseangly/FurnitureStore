@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity
+package kh.edu.rupp.ite.furniturestore.view.activity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.controller.adapter.ProductListAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
 
 
@@ -36,7 +36,8 @@ class ProductsByCategoryActivity: AppCompatActivity() {
                     i,
                     "Table",
                     "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
-                    50
+                    50,
+                    1
                 ),
             )
         }
@@ -56,10 +57,9 @@ class ProductsByCategoryActivity: AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
         val recyclerProductsByCate = findViewById<RecyclerView>(R.id.recyclerProductsByCate)
         recyclerProductsByCate.layoutManager = gridLayoutManager
-
-        val productListAdapter = ProductListAdapter()
-        productListAdapter.submitList(productsList)
-        recyclerProductsByCate.adapter = productListAdapter
+//        val productListAdapter = ProductListAdapter()
+//        productListAdapter.submitList(productsList)
+//        recyclerProductsByCate.adapter = productListAdapter
     }
 
 }

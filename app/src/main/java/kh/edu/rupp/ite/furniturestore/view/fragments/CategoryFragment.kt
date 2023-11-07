@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.fragments
+package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
-import kh.edu.rupp.ite.furniturestore.controller.adapter.CategoryTypesAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
 
 class CategoryFragment() : Fragment() {
 

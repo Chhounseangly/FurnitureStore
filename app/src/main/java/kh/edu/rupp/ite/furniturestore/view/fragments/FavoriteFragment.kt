@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.fragments
+package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity
+package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
-import kh.edu.rupp.ite.furniturestore.controller.activity.auth.SignInActivity
-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
-import kh.edu.rupp.ite.furniturestore.controller.fragments.CategoryFragment
-import kh.edu.rupp.ite.furniturestore.controller.fragments.FavoriteFragment
-import kh.edu.rupp.ite.furniturestore.controller.fragments.HomeFragment
+import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
+import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.CategoryFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.mnuHome -> displayFragment(HomeFragment())
                 R.id.mnuFav -> displayFragment(FavoriteFragment())
                 R.id.mnuCate -> displayFragment(CategoryFragment())
-                R.id.mnuCart -> displayFragment(CartFragment())
+                R.id.mnuCart -> displayFragment(ShoppingCartFragment())
                 else -> startActivity(profileActivity)
 //                else -> startActivity(signInScreen)
 //                else -> displayFragment(ProfileFragment())

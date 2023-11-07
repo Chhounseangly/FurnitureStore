@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
+package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.controller.activity.validation.AuthValidation
+import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 
 
 class SignInActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.adapter
+package kh.edu.rupp.ite.furniturestore.adapter
 
 
 import android.view.LayoutInflater

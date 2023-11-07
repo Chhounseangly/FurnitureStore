@@ -1,15 +1,20 @@
-package kh.edu.rupp.ite.furniturestore.controller.adapter
+package kh.edu.rupp.ite.furniturestore.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.ProductCartViewHolder>(ProductAddToCartAdapter()) {
+class ShoppingCartAdapter(private val shoppingCartAdapter: ShoppingCartViewModel) : ListAdapter<ProductList, ShoppingCartAdapter.ProductCartViewHolder>(
+    ProductAddToCartAdapter()
+) {
     //constructor
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ProductList>() {
         override fun areItemsTheSame(oldItem: ProductList, newItem: ProductList): Boolean =
@@ -22,7 +27,7 @@ class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductCartBinding.inflate(layoutInflater, parent, false)
-        return ProductCartViewHolder(binding)
+        return ProductCartViewHolder(binding, shoppingCartAdapter)
     }
 
     override fun onBindViewHolder(holder: ProductCartViewHolder, position: Int) {
@@ -31,29 +36,29 @@ class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.
     }
 
     class ProductCartViewHolder(
-        private val viewHolderProductCartBinding: ViewHolderProductCartBinding
+        private val viewHolderProductCartBinding: ViewHolderProductCartBinding,
+        private val shoppingCartViewModel: ShoppingCartViewModel
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
         fun bind(productList: ProductList) {
-            var price = productList.price;
-            var qty = 1
 
             //add image url to ImageView by Library Picasso
             Picasso.get().load(productList.imageUrl).into(viewHolderProductCartBinding.productImg)
+            //passing data list to view
             viewHolderProductCartBinding.nameProduct.text = productList.name
-            viewHolderProductCartBinding.displayQty.text = qty.toString()
-            viewHolderProductCartBinding.price.text = "$ ${price * qty}"
+            viewHolderProductCartBinding.price.text = productList.price.toString()
+            viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
 
+            //add more quantity of items
             viewHolderProductCartBinding.addBtn.setOnClickListener {
-                qty++
-                viewHolderProductCartBinding.displayQty.text = qty.toString()
-                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
+                shoppingCartViewModel.addItemToCart(productList)
+                viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
+            }
+            //add minus quantity of items
+            viewHolderProductCartBinding.minusBtn.setOnClickListener {
+                shoppingCartViewModel.minusQtyItem(productList)
+                viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
             }
 
-            viewHolderProductCartBinding.minusBtn.setOnClickListener {
-                if (qty > 1) qty--
-                viewHolderProductCartBinding.displayQty.text = qty.toString()
-                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
-            }
         }
 
     }
