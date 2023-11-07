@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity.validation
+package kh.edu.rupp.ite.furniturestore.view.activity.validation
 
 import android.content.res.ColorStateList
 import android.graphics.Color

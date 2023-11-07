@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity
+package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.controller.activity.auth.ChangePasswordActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.auth.ChangePasswordActivity
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.service.ApiService
 import retrofit2.Call

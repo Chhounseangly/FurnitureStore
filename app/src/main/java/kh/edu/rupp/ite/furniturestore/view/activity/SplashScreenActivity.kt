@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity
+package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
