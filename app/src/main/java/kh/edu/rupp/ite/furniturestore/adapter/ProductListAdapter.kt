@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.adapter
+package kh.edu.rupp.ite.furniturestore.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.controller.activity.ProductDetailActivity
-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
-class ProductListAdapter :
+class ProductListAdapter(
+    private val shoppingCartViewModel: ShoppingCartViewModel
+) :
     ListAdapter<ProductList, ProductListAdapter.ProductListViewHolder>(ProductListAdapter()) {
 
     //constructor
@@ -37,12 +39,7 @@ class ProductListAdapter :
         val addToCartBtn = holder.viewHolderProductItemBinding.addToCartBtn
         val bundle = Bundle()
         addToCartBtn.setOnClickListener {
-            bundle.putInt("id", products.id)
-            bundle.putString("name", products.name)
-            bundle.putInt("price", products.price)
-            bundle.putString("image", products.imageUrl)
-            val cartFragment = CartFragment()
-            cartFragment.arguments = bundle
+            shoppingCartViewModel.addItemToCart(products)
         }
 
         holder.bind(products)

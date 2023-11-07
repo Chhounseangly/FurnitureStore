@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.adapter
+package kh.edu.rupp.ite.furniturestore.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kh.edu.rupp.ite.furniturestore.controller.activity.ProductsByCategoryActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
 

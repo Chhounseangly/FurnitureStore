@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.fragments
+package kh.edu.rupp.ite.furniturestore.view.fragments
 
 
 import android.app.AlertDialog
@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.controller.adapter.ProductAddToCartAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
-class CartFragment() : Fragment() {
+class ShoppingCartFragment() : Fragment() {
 
     private lateinit var fragmentCartBinding: FragmentCartBinding
     private var id = 0
@@ -31,7 +33,8 @@ class CartFragment() : Fragment() {
     private lateinit var imageUrl: String
     private var products = ArrayList<ProductList>()
 
-    private lateinit var productAddToCartAdapter: ProductAddToCartAdapter
+    private lateinit var shoppingCartAdapter: ShoppingCartAdapter
+    private  var shoppingCartViewModel =  ShoppingCartViewModel()
 
     private var totalPrice = 0
 
@@ -43,7 +46,8 @@ class CartFragment() : Fragment() {
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
         val arguments = arguments
-        val test = arguments?.getInt("id")
+        val test = arguments?.getInt("id")   // Add a click listener to the add button
+
 
         return fragmentCartBinding.root
         // Get data from previous activity
@@ -52,38 +56,34 @@ class CartFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        for (i in 1..10) {
-            products.add(
-                ProductList(
-                    i,
-                    "Table",
-                    "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
-                    50 + i
-                ),
-            )
+
+        shoppingCartViewModel.loadProductsCartData()
+        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
+            displayProductCart(it)
+//            when(it.status){
+//                Status.SUCCESS -> it.data?.let { it1 -> displayProductCart(it1) }
+//                else -> {}
+//            }
+        }
+        shoppingCartViewModel.updateTotalPrice()
+        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
+            fragmentCartBinding.totalPrice.text = it.toString()
         }
 
-        displayProductCart(products)
-        for (product in products) {
-            totalPrice += product.price
-        }
-
-        fragmentCartBinding.totalPrice.text = "$ ${totalPrice}"
     }
 
-    private fun displayProductCart(productsList: ArrayList<ProductList>) {
+    private fun displayProductCart(productsList: List<ProductList>) {
         // Create GridLayout Manager
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         fragmentCartBinding.productsAddRecyclerView.layoutManager = linearLayoutManager
 
         // Create adapter
-        productAddToCartAdapter = ProductAddToCartAdapter()
-        productAddToCartAdapter.submitList(productsList)
-        fragmentCartBinding.productsAddRecyclerView.adapter = productAddToCartAdapter
+        shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
+        shoppingCartAdapter.submitList(productsList)
+        fragmentCartBinding.productsAddRecyclerView.adapter = shoppingCartAdapter
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(fragmentCartBinding.productsAddRecyclerView)
-
 
     }
 
@@ -107,14 +107,14 @@ class CartFragment() : Fragment() {
                 alertDialog.setMessage("Are you sure you want to delete this item?")
                 alertDialog.setPositiveButton("Yes") { _, _ ->
                     // Remove item from the data list
-                    val productList = productAddToCartAdapter.currentList.toMutableList()
+                    val productList = shoppingCartAdapter.currentList.toMutableList()
                     productList.removeAt(position)
-                    productAddToCartAdapter.submitList(productList)
+                    shoppingCartAdapter.submitList(productList)
                 }
                 alertDialog.setNegativeButton("No") { _, _ ->
                     // Undo the swipe
                     val adapter =
-                        fragmentCartBinding.productsAddRecyclerView.adapter as ProductAddToCartAdapter
+                        fragmentCartBinding.productsAddRecyclerView.adapter as ShoppingCartAdapter
                     adapter.notifyItemChanged(position)
                 }
                 alertDialog.show()

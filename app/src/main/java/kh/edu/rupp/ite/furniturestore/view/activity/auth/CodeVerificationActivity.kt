@@ -1,4 +1,4 @@
-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
+package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.os.Bundle
 import android.widget.ImageView
