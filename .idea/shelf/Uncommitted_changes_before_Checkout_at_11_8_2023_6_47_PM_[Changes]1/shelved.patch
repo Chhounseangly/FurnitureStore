@@ -1,0 +1,1494 @@
+Index: .idea/codeStyles/codeStyleConfig.xml
+===================================================================
+diff --git a/.idea/codeStyles/codeStyleConfig.xml b/.idea/codeStyles/codeStyleConfig.xml
+deleted file mode 100644
+--- a/.idea/codeStyles/codeStyleConfig.xml	
++++ /dev/null	
+@@ -1,5 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <state>
+-    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+-  </state>
+-</component>
+\ No newline at end of file
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+deleted file mode 100644
+--- a/.idea/deploymentTargetDropDown.xml	
++++ /dev/null	
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="deploymentTargetDropDown">
+-    <targetSelectedWithDropDown>
+-      <Target>
+-        <type value="QUICK_BOOT_TARGET" />
+-        <deviceKey>
+-          <Key>
+-            <type value="VIRTUAL_DEVICE_PATH" />
+-            <value value="C:\Users\Seang\.android\avd\Pixel_7_API_34.avd" />
+-          </Key>
+-        </deviceKey>
+-      </Target>
+-    </targetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2023-10-28T09:07:24.399014400Z" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/codeStyles/Project.xml
+===================================================================
+diff --git a/.idea/codeStyles/Project.xml b/.idea/codeStyles/Project.xml
+deleted file mode 100644
+--- a/.idea/codeStyles/Project.xml	
++++ /dev/null	
+@@ -1,123 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <code_scheme name="Project" version="173">
+-    <JetCodeStyleSettings>
+-      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+-    </JetCodeStyleSettings>
+-    <codeStyleSettings language="XML">
+-      <option name="FORCE_REARRANGE_MODE" value="1" />
+-      <indentOptions>
+-        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+-      </indentOptions>
+-      <arrangement>
+-        <rules>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>xmlns:android</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>xmlns:.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*:id</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*:name</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>name</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>style</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>ANDROID_ATTRIBUTE_ORDER</order>
+-            </rule>
+-          </section>
+-          <section>
+-            <rule>
+-              <match>
+-                <AND>
+-                  <NAME>.*</NAME>
+-                  <XML_ATTRIBUTE />
+-                  <XML_NAMESPACE>.*</XML_NAMESPACE>
+-                </AND>
+-              </match>
+-              <order>BY_NAME</order>
+-            </rule>
+-          </section>
+-        </rules>
+-      </arrangement>
+-    </codeStyleSettings>
+-    <codeStyleSettings language="kotlin">
+-      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+-    </codeStyleSettings>
+-  </code_scheme>
+-</component>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	
++++ /dev/null	
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/dictionaries/Seang.xml
+===================================================================
+diff --git a/.idea/dictionaries/Seang.xml b/.idea/dictionaries/Seang.xml
+deleted file mode 100644
+--- a/.idea/dictionaries/Seang.xml	
++++ /dev/null	
+@@ -1,3 +0,0 @@
+-<component name="ProjectDictionaryState">
+-  <dictionary name="Seang" />
+-</component>
+\ No newline at end of file
+Index: app/src/main/res/layout-v28/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\".controller.activity.MainActivity\">\r\n\r\n    <!--    app bar-->\r\n    <com.google.android.material.appbar.AppBarLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n\r\n        <androidx.appcompat.widget.Toolbar\r\n            android:id=\"@+id/toolbar\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:background=\"@color/white\"\r\n            android:minHeight=\"?attr/actionBarSize\"\r\n            android:outlineSpotShadowColor=\"@color/black\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/titleTxt\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_gravity=\"start\"\r\n                android:fontFamily=\"sans-serif\"\r\n                android:letterSpacing=\"0.1\"\r\n                android:text=\"@string/title_app\"\r\n                android:textSize=\"18sp\"\r\n                android:textStyle=\"bold\" />\r\n            <androidx.cardview.widget.CardView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_gravity=\"end\"\r\n                android:layout_marginEnd=\"15dp\"\r\n                app:cardCornerRadius=\"20dp\">\r\n\r\n                <ImageButton\r\n                    android:layout_width=\"40dp\"\r\n                    android:layout_height=\"40dp\"\r\n                    android:contentDescription=\"TODO\"\r\n                    android:src=\"@mipmap/ic_launcher\" />\r\n            </androidx.cardview.widget.CardView>\r\n        </androidx.appcompat.widget.Toolbar>\r\n    </com.google.android.material.appbar.AppBarLayout>\r\n\r\n    <!--    display fragment-->\r\n\r\n    <!--    bottom navigation bar-->\r\n    <FrameLayout\r\n        android:id=\"@+id/lytFragment\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\">\r\n\r\n        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->\r\n        <!--            android:id=\"@+id/fabToTop\"-->\r\n        <!--            android:layout_width=\"wrap_content\"-->\r\n        <!--            android:layout_height=\"wrap_content\"-->\r\n        <!--            android:layout_gravity=\"bottom|end\"-->\r\n        <!--            android:layout_margin=\"16dp\"-->\r\n        <!--            android:backgroundTint=\"@color/cate_bg_color\"-->\r\n        <!--            android:contentDescription=\"Up to Top\"-->\r\n        <!--            android:src=\"@drawable/ic_arrow_up\" />-->\r\n    </FrameLayout>\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/bottomNavigationView\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_gravity=\"bottom\"\r\n        android:background=\"@drawable/style_nav_bar\"\r\n        app:labelVisibilityMode=\"labeled\"\r\n        app:menu=\"@menu/nav_bar_activity\" />\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout-v28/activity_main.xml b/app/src/main/res/layout-v28/activity_main.xml
+--- a/app/src/main/res/layout-v28/activity_main.xml	
++++ b/app/src/main/res/layout-v28/activity_main.xml	
+@@ -5,7 +5,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+-    tools:context=".controller.activity.MainActivity">
++    tools:context=".view.activity.MainActivity">
+ 
+     <!--    app bar-->
+     <com.google.android.material.appbar.AppBarLayout
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductSliderAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductSliderAdapter.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductSliderAdapter.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductSliderAdapter.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductSliderAdapter.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductSliderAdapter.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductSliderAdapter.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.adapter
++package kh.edu.rupp.ite.furniturestore.adapter
+ 
+ import android.view.LayoutInflater
+ import android.view.ViewGroup
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CartFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CartFragment.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/ShoppingCartFragment.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CartFragment.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/ShoppingCartFragment.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CartFragment.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/ShoppingCartFragment.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.fragments
++package kh.edu.rupp.ite.furniturestore.view.fragments
+ 
+ 
+ import android.app.AlertDialog
+@@ -17,12 +17,14 @@
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.adapter.ProductAddToCartAdapter
++import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
+ import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
+ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+ 
+ 
+-class CartFragment() : Fragment() {
++class ShoppingCartFragment() : Fragment() {
+ 
+     private lateinit var fragmentCartBinding: FragmentCartBinding
+     private var id = 0
+@@ -31,7 +33,8 @@
+     private lateinit var imageUrl: String
+     private var products = ArrayList<ProductList>()
+ 
+-    private lateinit var productAddToCartAdapter: ProductAddToCartAdapter
++    private lateinit var shoppingCartAdapter: ShoppingCartAdapter
++    private  var shoppingCartViewModel =  ShoppingCartViewModel()
+ 
+     private var totalPrice = 0
+ 
+@@ -43,7 +46,8 @@
+     ): View {
+         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
+         val arguments = arguments
+-        val test = arguments?.getInt("id")
++        val test = arguments?.getInt("id")   // Add a click listener to the add button
++
+ 
+         return fragmentCartBinding.root
+         // Get data from previous activity
+@@ -52,39 +56,35 @@
+ 
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+-        for (i in 1..10) {
+-            products.add(
+-                ProductList(
+-                    i,
+-                    "Table",
+-                    "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
+-                    50 + i
+-                ),
+-            )
+-        }
+ 
+-        displayProductCart(products)
+-        for (product in products) {
+-            totalPrice += product.price
++        shoppingCartViewModel.loadProductsCartData()
++        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
++            displayProductCart(it)
++//            when(it.status){
++//                Status.SUCCESS -> it.data?.let { it1 -> displayProductCart(it1) }
++//                else -> {}
++//            }
++        }
++        shoppingCartViewModel.updateTotalPrice()
++        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
++            fragmentCartBinding.totalPrice.text = it.toString()
+         }
+ 
+-        fragmentCartBinding.totalPrice.text = "$ ${totalPrice}"
+     }
+ 
+-    private fun displayProductCart(productsList: ArrayList<ProductList>) {
++    private fun displayProductCart(productsList: List<ProductList>) {
+         // Create GridLayout Manager
+         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+         fragmentCartBinding.productsAddRecyclerView.layoutManager = linearLayoutManager
+ 
+         // Create adapter
+-        productAddToCartAdapter = ProductAddToCartAdapter()
+-        productAddToCartAdapter.submitList(productsList)
+-        fragmentCartBinding.productsAddRecyclerView.adapter = productAddToCartAdapter
++        shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
++        shoppingCartAdapter.submitList(productsList)
++        fragmentCartBinding.productsAddRecyclerView.adapter = shoppingCartAdapter
+ 
+         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+         itemTouchHelper.attachToRecyclerView(fragmentCartBinding.productsAddRecyclerView)
+ 
+-
+     }
+ 
+     private val simpleItemTouchCallback =
+@@ -107,14 +107,14 @@
+                 alertDialog.setMessage("Are you sure you want to delete this item?")
+                 alertDialog.setPositiveButton("Yes") { _, _ ->
+                     // Remove item from the data list
+-                    val productList = productAddToCartAdapter.currentList.toMutableList()
++                    val productList = shoppingCartAdapter.currentList.toMutableList()
+                     productList.removeAt(position)
+-                    productAddToCartAdapter.submitList(productList)
++                    shoppingCartAdapter.submitList(productList)
+                 }
+                 alertDialog.setNegativeButton("No") { _, _ ->
+                     // Undo the swipe
+                     val adapter =
+-                        fragmentCartBinding.productsAddRecyclerView.adapter as ProductAddToCartAdapter
++                        fragmentCartBinding.productsAddRecyclerView.adapter as ShoppingCartAdapter
+                     adapter.notifyItemChanged(position)
+                 }
+                 alertDialog.show()
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductAddToCartAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductAddToCartAdapter.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ShoppingCartAdapter.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductAddToCartAdapter.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ShoppingCartAdapter.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductAddToCartAdapter.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ShoppingCartAdapter.kt	
+@@ -1,15 +1,20 @@
+-package kh.edu.rupp.ite.furniturestore.controller.adapter
++package kh.edu.rupp.ite.furniturestore.adapter
+ 
++import android.util.Log
+ import android.view.LayoutInflater
+ import android.view.ViewGroup
+ import androidx.recyclerview.widget.DiffUtil
+ import androidx.recyclerview.widget.ListAdapter
+ import androidx.recyclerview.widget.RecyclerView
+ import com.squareup.picasso.Picasso
++import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
+ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
+ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+ 
+-class ProductAddToCartAdapter: ListAdapter<ProductList, ProductAddToCartAdapter.ProductCartViewHolder>(ProductAddToCartAdapter()) {
++class ShoppingCartAdapter(private val shoppingCartAdapter: ShoppingCartViewModel) : ListAdapter<ProductList, ShoppingCartAdapter.ProductCartViewHolder>(
++    ProductAddToCartAdapter()
++) {
+     //constructor
+     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ProductList>() {
+         override fun areItemsTheSame(oldItem: ProductList, newItem: ProductList): Boolean =
+@@ -22,7 +27,7 @@
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
+         val layoutInflater = LayoutInflater.from(parent.context)
+         val binding = ViewHolderProductCartBinding.inflate(layoutInflater, parent, false)
+-        return ProductCartViewHolder(binding)
++        return ProductCartViewHolder(binding, shoppingCartAdapter)
+     }
+ 
+     override fun onBindViewHolder(holder: ProductCartViewHolder, position: Int) {
+@@ -31,29 +36,29 @@
+     }
+ 
+     class ProductCartViewHolder(
+-        private val viewHolderProductCartBinding: ViewHolderProductCartBinding
++        private val viewHolderProductCartBinding: ViewHolderProductCartBinding,
++        private val shoppingCartViewModel: ShoppingCartViewModel
+     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
+         fun bind(productList: ProductList) {
+-            var price = productList.price;
+-            var qty = 1
+ 
+             //add image url to ImageView by Library Picasso
+             Picasso.get().load(productList.imageUrl).into(viewHolderProductCartBinding.productImg)
++            //passing data list to view
+             viewHolderProductCartBinding.nameProduct.text = productList.name
+-            viewHolderProductCartBinding.displayQty.text = qty.toString()
+-            viewHolderProductCartBinding.price.text = "$ ${price * qty}"
++            viewHolderProductCartBinding.price.text = productList.price.toString()
++            viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
+ 
++            //add more quantity of items
+             viewHolderProductCartBinding.addBtn.setOnClickListener {
+-                qty++
+-                viewHolderProductCartBinding.displayQty.text = qty.toString()
+-                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
++                shoppingCartViewModel.addItemToCart(productList)
++                viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
+             }
+-
++            //add minus quantity of items
+             viewHolderProductCartBinding.minusBtn.setOnClickListener {
+-                if (qty > 1) qty--
+-                viewHolderProductCartBinding.displayQty.text = qty.toString()
+-                viewHolderProductCartBinding.price.text = "$ ${price * qty}"
++                shoppingCartViewModel.minusQtyItem(productList)
++                viewHolderProductCartBinding.displayQty.text = productList.qty.toString()
+             }
++
+         }
+ 
+     }
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductListAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductListAdapter.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductListAdapter.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductListAdapter.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductListAdapter.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductListAdapter.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductListAdapter.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.adapter
++package kh.edu.rupp.ite.furniturestore.adapter
+ 
+ import android.annotation.SuppressLint
+ import android.content.Intent
+@@ -9,13 +9,15 @@
+ import androidx.recyclerview.widget.ListAdapter
+ import androidx.recyclerview.widget.RecyclerView
+ import com.squareup.picasso.Picasso
+-import kh.edu.rupp.ite.furniturestore.controller.activity.ProductDetailActivity
+-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
++import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
+ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
+ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+ 
+ 
+-class ProductListAdapter :
++class ProductListAdapter(
++    private val shoppingCartViewModel: ShoppingCartViewModel
++) :
+     ListAdapter<ProductList, ProductListAdapter.ProductListViewHolder>(ProductListAdapter()) {
+ 
+     //constructor
+@@ -37,12 +39,7 @@
+         val addToCartBtn = holder.viewHolderProductItemBinding.addToCartBtn
+         val bundle = Bundle()
+         addToCartBtn.setOnClickListener {
+-            bundle.putInt("id", products.id)
+-            bundle.putString("name", products.name)
+-            bundle.putInt("price", products.price)
+-            bundle.putString("image", products.imageUrl)
+-            val cartFragment = CartFragment()
+-            cartFragment.arguments = bundle
++            shoppingCartViewModel.addItemToCart(products)
+         }
+ 
+         holder.bind(products)
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"jbr-17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n  <component name=\"VisualizationToolProject\">\r\n    <option name=\"state\">\r\n      <ProjectState>\r\n        <option name=\"scale\" value=\"0.2\" />\r\n      </ProjectState>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -6,11 +6,4 @@
+   <component name="ProjectType">
+     <option name="id" value="Android" />
+   </component>
+-  <component name="VisualizationToolProject">
+-    <option name="state">
+-      <ProjectState>
+-        <option name="scale" value="0.2" />
+-      </ProjectState>
+-    </option>
+-  </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ProductList.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.rupp.ite.furniturestore.model.api.model\r\n\r\n\r\n//this class open from another class can inherited\r\nopen class ProductList(\r\n    var id: Int,\r\n    var name: String,\r\n    var imageUrl: String,\r\n    var price: Int,\r\n)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ProductList.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ProductList.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ProductList.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ProductList.kt	
+@@ -2,9 +2,10 @@
+ 
+ 
+ //this class open from another class can inherited
+-open class ProductList(
++  data class ProductList(
+     var id: Int,
+     var name: String,
+     var imageUrl: String,
+     var price: Int,
++    var qty: Int = 1
+ )
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'org.jetbrains.kotlin.android'\r\n}\r\n\r\nandroid {\r\n    namespace 'kh.edu.rupp.ite.furniturestore'\r\n    compileSdk 34\r\n\r\n    defaultConfig {\r\n        applicationId \"kh.edu.rupp.ite.furniturestore\"\r\n        minSdk 24\r\n        targetSdk 34\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n    //config binding for fragment\r\n    buildFeatures {\r\n        viewBinding true\r\n    }\r\n\r\n\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation 'androidx.core:core-ktx:1.12.0'\r\n    implementation 'androidx.appcompat:appcompat:1.6.1'\r\n    implementation 'com.google.android.material:material:1.10.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\r\n\r\n    implementation 'androidx.core:core-ktx:1.12.0'\r\n    implementation 'androidx.compose.animation:animation-core-android:1.5.4'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.5'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'\r\n\r\n    implementation 'com.google.android.material:material:1.10.0'\r\n    //Library for add image to view Group imageView\r\n    implementation 'com.squareup.picasso:picasso:2.71828'\r\n\r\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'\r\n\r\n    implementation 'androidx.viewpager2:viewpager2:1.0.0'\r\n    // Material Components for Android. Replace the version with the latest version of Material Components library.\r\n    implementation 'com.google.android.material:material:1.10.0'\r\n\r\n    // Circle Indicator (To fix the xml preview \"Missing classes\" error)\r\n    implementation 'me.relex:circleindicator:2.1.6'\r\n    implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0'\r\n\r\n\r\n    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	
++++ b/app/build.gradle	
+@@ -69,6 +69,7 @@
+ 
+     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+ 
+-
++    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
++    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/CategoryTypesAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/CategoryTypesAdapter.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/CategoryTypesAdapter.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/CategoryTypesAdapter.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/CategoryTypesAdapter.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/CategoryTypesAdapter.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/CategoryTypesAdapter.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.adapter
++package kh.edu.rupp.ite.furniturestore.adapter
+ 
+ import android.content.Intent
+ import android.view.LayoutInflater
+@@ -6,7 +6,7 @@
+ import androidx.recyclerview.widget.DiffUtil
+ import androidx.recyclerview.widget.ListAdapter
+ import androidx.recyclerview.widget.RecyclerView
+-import kh.edu.rupp.ite.furniturestore.controller.activity.ProductsByCategoryActivity
++import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
+ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
+ 
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CategoryFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CategoryFragment.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/CategoryFragment.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CategoryFragment.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/CategoryFragment.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/CategoryFragment.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/CategoryFragment.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.fragments
++package kh.edu.rupp.ite.furniturestore.view.fragments
+ 
+ import android.os.Bundle
+ import android.view.LayoutInflater
+@@ -8,7 +8,7 @@
+ import androidx.recyclerview.widget.GridLayoutManager
+ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+ import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
+-import kh.edu.rupp.ite.furniturestore.controller.adapter.CategoryTypesAdapter
++import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
+ 
+ class CategoryFragment() : Fragment() {
+ 
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/FavoriteFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/FavoriteFragment.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/FavoriteFragment.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/FavoriteFragment.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/FavoriteFragment.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/FavoriteFragment.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/FavoriteFragment.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.fragments
++package kh.edu.rupp.ite.furniturestore.view.fragments
+ 
+ import android.os.Bundle
+ import android.view.LayoutInflater
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	
++++ b/.idea/vcs.xml	
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/TotalPrice.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/TotalPrice.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/TotalPrice.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/TotalPrice.kt	
+@@ -0,0 +1,5 @@
++package kh.edu.rupp.ite.furniturestore.model.api.model
++
++data class TotalPrice(
++    val totalPrice: Int
++)
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/CountProductsCart.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/CountProductsCart.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/CountProductsCart.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/CountProductsCart.kt	
+@@ -0,0 +1,3 @@
++package kh.edu.rupp.ite.furniturestore.model.api.model
++
++data class CountProductsCart(var qty: Int)
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/EditProfileActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/EditProfileActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/EditProfileActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/EditProfileActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/EditProfileActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/EditProfileActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/EditProfileActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity
++package kh.edu.rupp.ite.furniturestore.view.activity
+ 
+ import android.content.Intent
+ import android.graphics.BitmapFactory
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\".controller.activity.MainActivity\">\r\n\r\n    <!--    app bar-->\r\n    <com.google.android.material.appbar.AppBarLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n\r\n        <androidx.appcompat.widget.Toolbar\r\n            android:id=\"@+id/toolbar\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:background=\"@color/white\"\r\n            android:minHeight=\"?attr/actionBarSize\"\r\n            android:outlineSpotShadowColor=\"@color/black\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/titleTxt\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_gravity=\"start\"\r\n                android:fontFamily=\"sans-serif\"\r\n                android:letterSpacing=\"0.1\"\r\n                android:text=\"@string/title_app\"\r\n                android:textSize=\"18sp\"\r\n                android:textStyle=\"bold\" />\r\n\r\n            <androidx.cardview.widget.CardView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_gravity=\"end\"\r\n                android:layout_marginEnd=\"15dp\"\r\n                app:cardCornerRadius=\"20dp\">\r\n\r\n                <ImageButton\r\n                    android:layout_width=\"40dp\"\r\n                    android:layout_height=\"40dp\"\r\n                    android:contentDescription=\"TODO\"\r\n                    android:src=\"@mipmap/ic_launcher\" />\r\n            </androidx.cardview.widget.CardView>\r\n        </androidx.appcompat.widget.Toolbar>\r\n    </com.google.android.material.appbar.AppBarLayout>\r\n\r\n    <!--    display fragment-->\r\n\r\n    <!--    bottom navigation bar-->\r\n    <FrameLayout\r\n        android:id=\"@+id/lytFragment\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\">\r\n\r\n<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->\r\n<!--            android:id=\"@+id/fabToTop\"-->\r\n<!--            android:layout_width=\"wrap_content\"-->\r\n<!--            android:layout_height=\"wrap_content\"-->\r\n<!--            android:layout_gravity=\"bottom|end\"-->\r\n<!--            android:layout_margin=\"16dp\"-->\r\n<!--            android:backgroundTint=\"@color/cate_bg_color\"-->\r\n<!--            android:contentDescription=\"Up to Top\"-->\r\n<!--            android:src=\"@drawable/ic_arrow_up\" />-->\r\n    </FrameLayout>\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/bottomNavigationView\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_gravity=\"bottom\"\r\n        android:background=\"@drawable/style_nav_bar\"\r\n        app:labelVisibilityMode=\"labeled\"\r\n        app:menu=\"@menu/nav_bar_activity\" />\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+--- a/app/src/main/res/layout/activity_main.xml	
++++ b/app/src/main/res/layout/activity_main.xml	
+@@ -5,7 +5,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+-    tools:context=".controller.activity.MainActivity">
++    tools:context=".view.activity.MainActivity">
+ 
+     <!--    app bar-->
+     <com.google.android.material.appbar.AppBarLayout
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/CodeVerificationActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/CodeVerificationActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/CodeVerificationActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/CodeVerificationActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/CodeVerificationActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/CodeVerificationActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/CodeVerificationActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
++package kh.edu.rupp.ite.furniturestore.view.activity.auth
+ 
+ import android.os.Bundle
+ import android.widget.ImageView
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProductDetailActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProductDetailActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProductDetailActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProductDetailActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProductDetailActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProductDetailActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProductDetailActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity
++package kh.edu.rupp.ite.furniturestore.view.activity
+ 
+ import android.os.Bundle
+ import android.view.View
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignInActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignInActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignInActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignInActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignInActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignInActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignInActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
++package kh.edu.rupp.ite.furniturestore.view.activity.auth
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -9,7 +9,7 @@
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.activity.validation.AuthValidation
++import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+ 
+ 
+ class SignInActivity : AppCompatActivity() {
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/CategoriesViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/CategoriesViewModel.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/CategoriesViewModel.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/CategoriesViewModel.kt	
+@@ -0,0 +1,39 @@
++package kh.edu.rupp.ite.furniturestore.viewmodel
++
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
++import androidx.lifecycle.ViewModel
++import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
++import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
++import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++
++class CategoriesViewModel: ViewModel() {
++
++    private val _categoryTypesData = MutableLiveData<ApIData<List<CategoryTypes>>>()
++    val categoryTypesData: LiveData<ApIData<List<CategoryTypes>>>
++        get() = _categoryTypesData
++
++
++    fun loadCategoryTypesData(){
++
++        val apiData = ApIData<List<CategoryTypes>>(Status.SUCCESS, listOf(
++            CategoryTypes(
++                1,
++                "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png",
++                "chair"
++            ),
++            CategoryTypes(
++                1,
++                "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png",
++                "chair"
++            ),
++        ))
++        _categoryTypesData.postValue(apiData)
++
++    }
++
++
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/SplashScreenActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/SplashScreenActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/SplashScreenActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/SplashScreenActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/SplashScreenActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/SplashScreenActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/SplashScreenActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity
++package kh.edu.rupp.ite.furniturestore.view.activity
+ 
+ import android.annotation.SuppressLint
+ import android.content.Intent
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ShoppingCartViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ShoppingCartViewModel.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ShoppingCartViewModel.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ShoppingCartViewModel.kt	
+@@ -0,0 +1,87 @@
++package kh.edu.rupp.ite.furniturestore.viewmodel
++
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
++import androidx.lifecycle.ViewModel
++import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
++import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++
++class ShoppingCartViewModel : ViewModel() {
++
++    // Create list for Shopping Cart items
++    private val _shoppingCartItems = mutableListOf<ProductList>()
++
++    // LiveData to hold Shopping Cart Items. Exposing LiveData to the outside world
++    val shoppingCartItems: LiveData<List<ProductList>>
++        get() = MutableLiveData(_shoppingCartItems)
++
++
++    private val _totalPrice = MutableLiveData(0)
++    val totalPrice: LiveData<Int> get() = _totalPrice
++
++    // Add Item to Shopping Cart
++    fun addItemToCart(product: ProductList) {
++        var itemAdded = false
++        for (item in _shoppingCartItems) {
++            if (item.id == product.id) {
++                item.qty++
++                itemAdded = true
++                break
++            }
++        }
++        if (!itemAdded) {
++            _shoppingCartItems.add(product)
++        }
++        updateTotalPrice()
++    }
++    fun updateTotalPrice() {
++        var total = 0
++        for (item in _shoppingCartItems) {
++            total += item.price * item.qty
++        }
++        _totalPrice.value = total
++    }
++
++//    // Remove Item from Shopping Cart
++//    fun removeItemFromCart(item: ProductList) {
++//        _shoppingCartItems.remove(item)
++//    }
++
++    //minus item
++    fun minusQtyItem(item: ProductList) {
++        for (product in _shoppingCartItems) {
++            if (item.id == product.id) {
++                if (product.qty > 1) {
++                    product.qty--
++                } else {
++                    _shoppingCartItems.remove(product)
++                }
++                break
++            }
++        }
++        updateTotalPrice()
++    }
++
++
++    fun loadProductsCartData() {
++        var apiData = listOf(
++            ProductList(
++                1,
++                "Table",
++                "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
++                50,
++                1
++            ),
++            ProductList(
++                2,
++                "Table",
++                "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
++                1000,
++                1
++            ),
++        )
++        _shoppingCartItems.addAll(apiData)
++    }
++
++}
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductSliderViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductSliderViewModel.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductSliderViewModel.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductSliderViewModel.kt	
+@@ -0,0 +1,34 @@
++package kh.edu.rupp.ite.furniturestore.viewmodel
++
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
++import androidx.lifecycle.ViewModel
++import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
++import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++
++class ProductSliderViewModel: ViewModel() {
++
++    private val _productSliderData = MutableLiveData<ApIData<List<ProductSlider>>>()
++    val productSliderData: LiveData<ApIData<List<ProductSlider>>>
++        get() = _productSliderData
++
++
++    fun loadProductSliderData(){
++
++        val apiData = ApIData<List<ProductSlider>>(Status.SUCCESS, listOf(
++            ProductSlider(
++                1,
++                "test  ",
++                "test",
++                "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png"
++            ),
++        ))
++        _productSliderData.postValue(apiData)
++
++    }
++
++
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ApIData.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ApIData.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ApIData.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/model/api/model/ApIData.kt	
+@@ -0,0 +1,10 @@
++package kh.edu.rupp.ite.furniturestore.model.api.model
++
++
++data class ApIData<T>(
++    val status: Status,
++    val data: T?
++)
++enum class Status {
++    LOADING, SUCCESS, FAIL
++}
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProfileActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProfileActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProfileActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProfileActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProfileActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/ProfileActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/ProfileActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity
++package kh.edu.rupp.ite.furniturestore.view.activity
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -9,7 +9,7 @@
+ import androidx.appcompat.app.AppCompatActivity
+ import com.squareup.picasso.Picasso
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.activity.auth.ChangePasswordActivity
++import kh.edu.rupp.ite.furniturestore.view.activity.auth.ChangePasswordActivity
+ import kh.edu.rupp.ite.furniturestore.model.api.model.User
+ import kh.edu.rupp.ite.furniturestore.model.api.service.ApiService
+ import retrofit2.Call
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ForgotPasswordActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ForgotPasswordActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ForgotPasswordActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ForgotPasswordActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ForgotPasswordActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ForgotPasswordActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ForgotPasswordActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
++package kh.edu.rupp.ite.furniturestore.view.activity.auth
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -7,7 +7,7 @@
+ import android.widget.ImageView
+ import androidx.appcompat.app.AppCompatActivity
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.activity.validation.AuthValidation
++import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+ 
+ 
+ class ForgotPasswordActivity: AppCompatActivity() {
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ChangePasswordActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ChangePasswordActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ChangePasswordActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ChangePasswordActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ChangePasswordActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/ChangePasswordActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/ChangePasswordActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
++package kh.edu.rupp.ite.furniturestore.view.activity.auth
+ 
+ import android.os.Bundle
+ import android.widget.ImageView
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/validation/AuthValidation.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/validation/AuthValidation.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/validation/AuthValidation.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/validation/AuthValidation.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/validation/AuthValidation.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/validation/AuthValidation.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/validation/AuthValidation.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.validation
++package kh.edu.rupp.ite.furniturestore.view.activity.validation
+ 
+ import android.content.res.ColorStateList
+ import android.graphics.Color
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/MainActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/MainActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/MainActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/MainActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/MainActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/MainActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity
++package kh.edu.rupp.ite.furniturestore.view.activity
+ 
+ import android.content.Intent
+ import androidx.appcompat.app.AppCompatActivity
+@@ -6,11 +6,11 @@
+ import androidx.fragment.app.Fragment
+ import kh.edu.rupp.ite.furniturestore.R
+ import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
+-import kh.edu.rupp.ite.furniturestore.controller.activity.auth.SignInActivity
+-import kh.edu.rupp.ite.furniturestore.controller.fragments.CartFragment
+-import kh.edu.rupp.ite.furniturestore.controller.fragments.CategoryFragment
+-import kh.edu.rupp.ite.furniturestore.controller.fragments.FavoriteFragment
+-import kh.edu.rupp.ite.furniturestore.controller.fragments.HomeFragment
++import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
++import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
++import kh.edu.rupp.ite.furniturestore.view.fragments.CategoryFragment
++import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
++import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
+ 
+ class MainActivity : AppCompatActivity() {
+ 
+@@ -41,7 +41,7 @@
+                 R.id.mnuHome -> displayFragment(HomeFragment())
+                 R.id.mnuFav -> displayFragment(FavoriteFragment())
+                 R.id.mnuCate -> displayFragment(CategoryFragment())
+-                R.id.mnuCart -> displayFragment(CartFragment())
++                R.id.mnuCart -> displayFragment(ShoppingCartFragment())
+                 else -> startActivity(profileActivity)
+ //                else -> startActivity(signInScreen)
+ //                else -> displayFragment(ProfileFragment())
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.FurnitureStore\"\r\n        tools:targetApi=\"31\">\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.MainActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.auth.SignUpActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.auth.SignInActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.auth.ForgotPasswordActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.ProductDetailActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.auth.CodeVerificationActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.ProfileActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.EditProfileActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.auth.ChangePasswordActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:windowSoftInputMode=\"adjustNothing\"\r\n            android:name=\".controller.activity.ProductsByCategoryActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".controller.activity.SplashScreenActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n\r\n        <meta-data\r\n            android:name=\"preloaded_fonts\"\r\n            android:resource=\"@array/preloaded_fonts\" />\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	
++++ b/app/src/main/AndroidManifest.xml	
+@@ -16,46 +16,46 @@
+         tools:targetApi="31">
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.MainActivity"
++            android:name=".view.activity.MainActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.auth.SignUpActivity"
++            android:name=".view.activity.auth.SignUpActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.auth.SignInActivity"
++            android:name=".view.activity.auth.SignInActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.auth.ForgotPasswordActivity"
++            android:name=".view.activity.auth.ForgotPasswordActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.ProductDetailActivity"
++            android:name=".view.activity.ProductDetailActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.auth.CodeVerificationActivity"
++            android:name=".view.activity.auth.CodeVerificationActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.ProfileActivity"
++            android:name=".view.activity.ProfileActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.EditProfileActivity"
++            android:name=".view.activity.EditProfileActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.auth.ChangePasswordActivity"
++            android:name=".view.activity.auth.ChangePasswordActivity"
+             android:exported="false" />
+         <activity
+             android:windowSoftInputMode="adjustNothing"
+-            android:name=".controller.activity.ProductsByCategoryActivity"
++            android:name=".view.activity.ProductsByCategoryActivity"
+             android:exported="false" />
+         <activity
+-            android:name=".controller.activity.SplashScreenActivity"
++            android:name=".view.activity.SplashScreenActivity"
+             android:exported="true">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/HomeFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/HomeFragment.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/HomeFragment.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/HomeFragment.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/HomeFragment.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/fragments/HomeFragment.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/fragments/HomeFragment.kt	
+@@ -1,39 +1,44 @@
+-package kh.edu.rupp.ite.furniturestore.controller.fragments
++package kh.edu.rupp.ite.furniturestore.view.fragments
+ 
+ import android.os.Bundle
++import android.util.Log
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-import android.widget.Toast
+ import androidx.core.widget.NestedScrollView
+ import androidx.fragment.app.Fragment
++import androidx.lifecycle.Observer
++import androidx.lifecycle.ViewModelProvider
+ import androidx.recyclerview.widget.GridLayoutManager
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.denzcoskun.imageslider.constants.ScaleTypes
+ import com.denzcoskun.imageslider.models.SlideModel
+ import com.google.android.material.floatingactionbutton.FloatingActionButton
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.adapter.CategoryTypesAdapter
+-import kh.edu.rupp.ite.furniturestore.controller.adapter.ProductListAdapter
++import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
++import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
+ import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
+ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
+-import kh.edu.rupp.ite.furniturestore.model.api.service.ApiService
+-import retrofit2.Call
+-import retrofit2.Callback
+-import retrofit2.Response
+-import retrofit2.Retrofit
+-import retrofit2.converter.gson.GsonConverterFactory
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
++import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
++import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
++import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
+ 
+ 
+ class HomeFragment() : Fragment() {
+     private lateinit var fragmentHomeBinding: FragmentHomeBinding
+-    private var productList = ArrayList<ProductList>()
+-    private var productSliderList = ArrayList<ProductSlider>()
+-    private var listCategoryTypes = ArrayList<CategoryTypes>()
+     private lateinit var nestedScrollView: NestedScrollView
+     private lateinit var floatingActionButton: FloatingActionButton
++
++    private val productListViewModel = ProductListViewModel()
++    private val categoriesViewModel = CategoriesViewModel()
++    private val productSliderViewModel = ProductSliderViewModel()
++    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
++
++
+     override fun onCreateView(
+         inflater: LayoutInflater,
+         container: ViewGroup?,
+@@ -46,35 +51,47 @@
+ 
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+-        for (i in 1..10) {
+-            productSliderList.add(
+-                ProductSlider(
+-                    1,
+-                    "test $i ",
+-                    "test",
+-                    "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png"
+-                ),
+-            )
+-            listCategoryTypes.add(
+-                CategoryTypes(
+-                    i,
+-                    "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png",
+-                    "chair"
+-                ),
+-            )
+-            productList.add(
+-                ProductList(
+-                    i,
+-                    "Table",
+-                    "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
+-                    50
+-                ),
+-            )
++        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
++
++
++        productSliderViewModel.loadProductSliderData()
++        productSliderViewModel.productSliderData.observe(viewLifecycleOwner){
++            when(it.status){
++                Status.SUCCESS -> it.data?.let { it1 -> displaySliderProduct(it1) }
++                else -> {}
++            }
++        }
++
++        //get data from CategoriesViewModel
++        categoriesViewModel.loadCategoryTypesData()
++        categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
++            when (it.status) {
++                Status.SUCCESS -> it.data?.let { it1 -> displayCategory(it1) }
++                else -> {
++
++                }
++            }
+         }
+ 
+-        displayCategory(listCategoryTypes)
+-        displaySliderProduct(productSliderList)
+-        displayProductList(productList)
++        //get data from ProductListViewModel
++        productListViewModel.loadProductsData()
++        //passing product data to view
++        productListViewModel.productsData.observe(viewLifecycleOwner) {
++            when (it.status) {
++                Status.SUCCESS -> it.data?.let { it1 -> displayProductList(it1) }
++                else -> {
++
++                }
++            }
++        }
++
++//        shoppingCartViewModel.loadProductsCartData()
++//        // Update the cart RecyclerView with LiveData from ViewModel
++//        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner, Observer { shoppingCartItems ->
++//            // Update RecyclerView with new shoppingCartItems
++//            Log.d("Cart", "$shoppingCartItems")
++//        })
++
+ 
+         nestedScrollView = view.findViewById(R.id.homeFragment)
+         floatingActionButton = view.findViewById(R.id.fabBtn)
+@@ -96,47 +113,16 @@
+         }
+     }
+ 
+-    private fun loadProductsListFromApi() {
+-
+-        // Create Client Request
+-        val productsReq = Retrofit.Builder()
+-            .baseUrl("http://127.0.0.1:8000/")
+-            .addConverterFactory(GsonConverterFactory.create())
+-            .build()
+-
+-        // Create service Object
+-        val apiService = productsReq.create(ApiService::class.java)
+-
+-        // Load Products list from api/server
+-        apiService.loadProductList()?.enqueue(object : Callback<List<ProductSlider?>?> {
+-            override fun onResponse(
+-                call: Call<List<ProductSlider?>?>,
+-                response: Response<List<ProductSlider?>?>
+-            ) {
+-                if (response.isSuccessful) {
+-                    response.body()?.let {
+-                        displaySliderProduct(it)
+-                    }
+-                } else
+-
+-                    Toast.makeText(context, "Load Products data failed!", Toast.LENGTH_LONG).show()
+-            }
+-
+-            override fun onFailure(call: Call<List<ProductSlider?>?>, t: Throwable) {
+-                Toast.makeText(context, "Load Products data failed!", Toast.LENGTH_LONG).show()
+-            }
+-        })
+-    }
+ 
+     //display product list on home screen
+-    private fun displayProductList(productsList: ArrayList<ProductList>) {
++    private fun displayProductList(productsList: List<ProductList>) {
+         // Create GridLayout Manager
+         val gridLayoutManager =
+             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+         fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
+ 
+         // Create adapter
+-        val productListAdapter = ProductListAdapter()
++        val productListAdapter = ProductListAdapter(shoppingCartViewModel)
+         productListAdapter.submitList(productsList)
+         fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
+ 
+@@ -144,15 +130,12 @@
+ 
+     //display slider product on the top
+     private fun displaySliderProduct(productSlider: List<ProductSlider?>) {
+-        var name = ArrayList<ProductSlider>()
+         val sliderModels = ArrayList<SlideModel>()
+         for (data in productSlider) {
+             if (data != null) {
+                 sliderModels.add(SlideModel(data.imageUrl, ScaleTypes.FIT))
+-                fragmentHomeBinding.nameTxt.text = data.name
+             }
+         }
+-
+         fragmentHomeBinding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
+ 
+     }
+@@ -165,7 +148,6 @@
+         val categoryTypesAdapter = CategoryTypesAdapter()
+         categoryTypesAdapter.submitList(categoryTypes)
+         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
+-
+     }
+ 
+ }
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductDetailAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductDetailAdapter.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductDetailAdapter.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductDetailAdapter.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductDetailAdapter.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/adapter/ProductDetailAdapter.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/adapter/ProductDetailAdapter.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.adapter
++package kh.edu.rupp.ite.furniturestore.adapter
+ 
+ 
+ import android.view.LayoutInflater
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductListViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductListViewModel.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductListViewModel.kt
+new file mode 100644
+--- /dev/null	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/viewmodel/ProductListViewModel.kt	
+@@ -0,0 +1,42 @@
++package kh.edu.rupp.ite.furniturestore.viewmodel
++
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
++import androidx.lifecycle.ViewModel
++import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
++import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
++import kh.edu.rupp.ite.furniturestore.model.api.model.Status
++
++class ProductListViewModel: ViewModel() {
++
++    private val _productsData = MutableLiveData<ApIData<List<ProductList>>>()
++    val productsData: LiveData<ApIData<List<ProductList>>>
++        get() = _productsData
++
++
++    fun loadProductsData(){
++
++        val apiData = ApIData<List<ProductList>>(Status.SUCCESS, listOf(
++            ProductList(
++                1,
++                "Table",
++                "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
++                50,
++                1
++            ),
++            ProductList(
++                1,
++                "Table",
++                "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
++                50,
++                1
++            ),
++        ))
++        _productsData.postValue(apiData)
++
++    }
++
++
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignUpActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignUpActivity.kt b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignUpActivity.kt
+rename from app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignUpActivity.kt
+rename to app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignUpActivity.kt
+--- a/app/src/main/java/kh/edu/rupp/ite/furniturestore/controller/activity/auth/SignUpActivity.kt	
++++ b/app/src/main/java/kh/edu/rupp/ite/furniturestore/view/activity/auth/SignUpActivity.kt	
+@@ -1,4 +1,4 @@
+-package kh.edu.rupp.ite.furniturestore.controller.activity.auth
++package kh.edu.rupp.ite.furniturestore.view.activity.auth
+ 
+ import android.content.Intent
+ import android.os.Bundle
+@@ -9,7 +9,7 @@
+ import android.widget.Toast
+ import androidx.appcompat.app.AppCompatActivity
+ import kh.edu.rupp.ite.furniturestore.R
+-import kh.edu.rupp.ite.furniturestore.controller.activity.validation.AuthValidation
++import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+ 
+ 
+ class SignUpActivity : AppCompatActivity() {
