@@ -1,5 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.model.api.model
 
+import com.google.gson.annotations.SerializedName
+
 
 //this class open from another class can inherited
   data class ProductList(
@@ -9,3 +11,5 @@ package kh.edu.rupp.ite.furniturestore.model.api.model
     var price: Int,
     var qty: Int = 1
 )
+
+

@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -14,7 +15,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private var id = 0
     private var price = 0
-    private lateinit var title: String
+    private lateinit var name: String
     private lateinit var imageUrl: String
     private lateinit var desc: TextView
     private lateinit var totalPrice: TextView
@@ -33,9 +34,11 @@ class ProductDetailActivity : AppCompatActivity() {
         // Get data from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
-        title = intent.getStringExtra("title").toString()
+        name = intent.getStringExtra("name").toString()
         price = intent.getIntExtra("price", 0)
         imageUrl = intent.getStringExtra("imageUrl").toString()
+
+        Log.d("detail", "$id $name $price $imageUrl")
 
         // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
         if (desc.lineCount > 3) {
@@ -72,7 +75,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun displayProductDetail(productDetail: ProductDetail) {
 
-        var title = findViewById<TextView>(R.id.title)
     }
 
 }

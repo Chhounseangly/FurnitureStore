@@ -1,13 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,7 +61,7 @@ class HomeFragment() : Fragment() {
         }
 
         //get data from CategoriesViewModel
-        categoriesViewModel.loadCategoryTypesData()
+        categoriesViewModel.loadCategoryTypes()
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> it.data?.let { it1 -> displayCategory(it1) }

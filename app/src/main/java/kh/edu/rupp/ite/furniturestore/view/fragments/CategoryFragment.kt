@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
 import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class CategoryFragment() : Fragment() {
 
     private lateinit var fragmentCategoryBinding: FragmentCategoryBinding
 
-    private var listCategoryTypes = ArrayList<CategoryTypes>()
+    private lateinit var categoriesViewModel: CategoriesViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,19 +29,19 @@ class CategoryFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //hide button fab to Top
 
-        listCategoryTypes = arrayListOf(
-            CategoryTypes(1, "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png", "chair"),
-            CategoryTypes(1, "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png", "chair"),
-            CategoryTypes(1, "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png", "chair"),
-            CategoryTypes(1, "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png", "chair")
-
-        )
-        displayCategory(listCategoryTypes)
-
+        //fetching data from view Model to display
+        categoriesViewModel.loadCategoryTypes()
+        categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner){
+            when(it.status){
+                Status.SUCCESS -> it.data?.let { it1 -> displayCategory(it1) }
+                else -> {}
+            }
+        }
     }
 
+
+    //function display category
     private fun displayCategory(categoryTypes: List<CategoryTypes>){
 
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)

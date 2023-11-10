@@ -11,21 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
-class ProductListAdapter(
-    private val shoppingCartViewModel: ShoppingCartViewModel
+class ProductByCategoryAdapter(
 ) :
-    ListAdapter<ProductList, ProductListAdapter.ProductListViewHolder>(ProductListAdapter()) {
+    ListAdapter<Product, ProductByCategoryAdapter.ProductListViewHolder>(ProductListAdapter()) {
 
     //constructor
-    private class ProductListAdapter : DiffUtil.ItemCallback<ProductList>() {
-        override fun areItemsTheSame(oldItem: ProductList, newItem: ProductList): Boolean =
+    private class ProductListAdapter : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: ProductList, newItem: ProductList): Boolean =
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem.id == newItem.id
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
@@ -38,9 +38,9 @@ class ProductListAdapter(
         val products = getItem(position)
         val addToCartBtn = holder.viewHolderProductItemBinding.addToCartBtn
         val bundle = Bundle()
-        addToCartBtn.setOnClickListener {
-            shoppingCartViewModel.addItemToCart(products)
-        }
+//        addToCartBtn.setOnClickListener {
+//            shoppingCartViewModel.addItemToCart(products)
+//        }
 
         holder.bind(products)
 
@@ -49,7 +49,7 @@ class ProductListAdapter(
             intent.putExtra("id", products.id)
             intent.putExtra("title", products.name)
             intent.putExtra("price", products.price)
-            intent.putExtra("imageUrl", products.imageUrl)
+//            intent.putExtra("imageUrl", products.imageUrl)
             it.context.startActivity(intent)
         }
 
@@ -59,9 +59,9 @@ class ProductListAdapter(
         val viewHolderProductItemBinding: ViewHolderProductItemBinding
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(productList: ProductList) {
+        fun bind(productList: Product) {
             //add image url to ImageView by Library Picasso
-            Picasso.get().load(productList.imageUrl).into(viewHolderProductItemBinding.img)
+//            Picasso.get().load(productList.imageUrl).into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = productList.name
             viewHolderProductItemBinding.price.text = "$ " +productList.price.toString()
         }

@@ -11,13 +11,10 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Create list for Shopping Cart items
     private val _shoppingCartItems = mutableListOf<ProductList>()
+    private val _totalPrice = MutableLiveData(0)
 
     // LiveData to hold Shopping Cart Items. Exposing LiveData to the outside world
-    val shoppingCartItems: LiveData<List<ProductList>>
-        get() = MutableLiveData(_shoppingCartItems)
-
-
-    private val _totalPrice = MutableLiveData(0)
+    val shoppingCartItems: LiveData<List<ProductList>> get() = MutableLiveData(_shoppingCartItems)
     val totalPrice: LiveData<Int> get() = _totalPrice
 
     // Add Item to Shopping Cart
@@ -35,6 +32,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
         updateTotalPrice()
     }
+
     fun updateTotalPrice() {
         var total = 0
         for (item in _shoppingCartItems) {
