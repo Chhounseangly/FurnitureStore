@@ -24,9 +24,9 @@ class ProductListViewModel: ViewModel() {
 
     fun loadProductsData(){
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
         val api = retrofit.create(ApiService::class.java)
 

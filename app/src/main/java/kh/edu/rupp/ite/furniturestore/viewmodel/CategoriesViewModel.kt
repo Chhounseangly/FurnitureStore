@@ -32,9 +32,9 @@ class CategoriesViewModel : ViewModel() {
 
     fun loadCategoryTypes() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         val api = retrofit.create(ApiService::class.java)
         api.loadCategories().enqueue(object : Callback<CategoryModel> {
             override fun onResponse(call: Call<CategoryModel>, response: Response<CategoryModel>) {
@@ -58,9 +58,9 @@ class CategoriesViewModel : ViewModel() {
 
     fun loadProductByCategory(id: Int){
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         val api = retrofit.create(ApiService::class.java)
         api.loadProductsByCategory(id).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {

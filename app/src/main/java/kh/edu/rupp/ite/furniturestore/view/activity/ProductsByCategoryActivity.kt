@@ -1,4 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
+
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -6,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.adapter.ProductByCategoryAdapter
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 
-class ProductsByCategoryActivity: AppCompatActivity() {
-    private var productList = ArrayList<ProductList>()
+class ProductsByCategoryActivity : AppCompatActivity() {
+    private val categoriesViewModel = CategoriesViewModel()
     private var id = 0
     private lateinit var title: String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,24 +28,24 @@ class ProductsByCategoryActivity: AppCompatActivity() {
         // Get data from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
-        title = intent.getStringExtra("title").toString()
+        title = intent.getStringExtra("name").toString()
         val titleTypeCate = findViewById<TextView>(R.id.titleTypeCate)
 
         //assign category title to appBar
         titleTypeCate.text = title
 
-        for (i in 1..10){
-            productList.add(
-                ProductList(
-                    i,
-                    "Table",
-                    "https://i4.komnit.com/store/upload/images/express_2207/112290-ARJDYN/1657316942-ARJDYN.jpg",
-                    50,
-                    1
-                ),
-            )
+        categoriesViewModel.loadProductByCategory(id)
+        categoriesViewModel.productByCategory.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> it.data?.let { it1 ->
+                    displayProductByCate(it1.products)
+                }
+
+                else -> {
+
+                }
+            }
         }
-        displayProductByCate(productList)
     }
 
     //method prev back
@@ -52,13 +57,13 @@ class ProductsByCategoryActivity: AppCompatActivity() {
     }
 
     //display Products By Category
-    private fun displayProductByCate(productsList: ArrayList<ProductList>){
+    private fun displayProductByCate(productsList: List<Product>) {
         val gridLayoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
         val recyclerProductsByCate = findViewById<RecyclerView>(R.id.recyclerProductsByCate)
         recyclerProductsByCate.layoutManager = gridLayoutManager
-//        val productListAdapter = ProductListAdapter()
-//        productListAdapter.submitList(productsList)
-//        recyclerProductsByCate.adapter = productListAdapter
+//        val productByCategoryAdapter = ProductByCategoryAdapter();
+//        productByCategoryAdapter.submitList(productsList)
+//        recyclerProductsByCate.adapter = productByCategoryAdapter
     }
 
 }
