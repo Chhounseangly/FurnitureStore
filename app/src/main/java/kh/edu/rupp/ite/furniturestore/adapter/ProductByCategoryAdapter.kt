@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
-import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
 class ProductByCategoryAdapter(
@@ -59,11 +56,11 @@ class ProductByCategoryAdapter(
         val viewHolderProductItemBinding: ViewHolderProductItemBinding
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(productList: Product) {
+        fun bind(product: Product) {
             //add image url to ImageView by Library Picasso
 //            Picasso.get().load(productList.imageUrl).into(viewHolderProductItemBinding.img)
-            viewHolderProductItemBinding.name.text = productList.name
-            viewHolderProductItemBinding.price.text = "$ " +productList.price.toString()
+            viewHolderProductItemBinding.name.text = product.name
+            viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
         }
 
     }

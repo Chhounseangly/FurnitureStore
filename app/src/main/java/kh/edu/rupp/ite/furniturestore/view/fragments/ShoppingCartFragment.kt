@@ -9,18 +9,20 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
@@ -31,10 +33,10 @@ class ShoppingCartFragment() : Fragment() {
     private var price = 0
     private lateinit var title: String
     private lateinit var imageUrl: String
-    private var products = ArrayList<ProductList>()
+    private var products = ArrayList<Product>()
 
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-    private  var shoppingCartViewModel =  ShoppingCartViewModel()
+    private val shoppingCartViewModel = ShoppingCartViewModel()
 
     private var totalPrice = 0
 
@@ -53,37 +55,39 @@ class ShoppingCartFragment() : Fragment() {
         // Get data from previous activity
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         shoppingCartViewModel.loadProductsCartData()
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
-            displayProductCart(it)
-//            when(it.status){
-//                Status.SUCCESS -> it.data?.let { it1 -> displayProductCart(it1) }
-//                else -> {}
-//            }
+            it.data?.let {
+                    it1 -> displayProductCart(it1)
+                    shoppingCartViewModel.updateTotalPrice(it.data)
+            }
         }
-        shoppingCartViewModel.updateTotalPrice()
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
             fragmentCartBinding.totalPrice.text = it.toString()
+            Log.d("Totals", "${it}")
+
         }
 
+//        fragmentCartBinding.totalPrice.setOnClickListener {
+//            shoppingCartViewModel.qtyOperation(1, 5);
+//        }
     }
 
-    private fun displayProductCart(productsList: List<ProductList>) {
+    private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
         // Create GridLayout Manager
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentCartBinding.productsAddRecyclerView.layoutManager = linearLayoutManager
+        fragmentCartBinding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
 
         // Create adapter
         shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
-        shoppingCartAdapter.submitList(productsList)
-        fragmentCartBinding.productsAddRecyclerView.adapter = shoppingCartAdapter
+        shoppingCartAdapter.submitList(shoppingCart)
+        fragmentCartBinding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(fragmentCartBinding.productsAddRecyclerView)
+        itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
 
     }
 
@@ -114,7 +118,7 @@ class ShoppingCartFragment() : Fragment() {
                 alertDialog.setNegativeButton("No") { _, _ ->
                     // Undo the swipe
                     val adapter =
-                        fragmentCartBinding.productsAddRecyclerView.adapter as ShoppingCartAdapter
+                        fragmentCartBinding.shoppingCartRecyclerView.adapter as ShoppingCartAdapter
                     adapter.notifyItemChanged(position)
                 }
                 alertDialog.show()

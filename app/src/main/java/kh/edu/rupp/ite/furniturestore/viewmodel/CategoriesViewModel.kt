@@ -9,7 +9,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Data
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,18 +31,16 @@ class CategoriesViewModel : ViewModel() {
 
     fun loadCategoryTypes() {
         val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
         val api = retrofit.create(ApiService::class.java)
         api.loadCategories().enqueue(object : Callback<CategoryModel> {
             override fun onResponse(call: Call<CategoryModel>, response: Response<CategoryModel>) {
                 val responseData = response.body()
 
                 if (responseData != null) {
-                    println("Response: ${responseData.success}")
-                    println("Message: ${responseData.message}")
-                    val apiData = ApIData(Status.SUCCESS, responseData.data)
+                    val apiData = ApIData(response.code(), responseData.data)
                     _categoryTypesData.postValue(apiData)
                 } else {
                     println("Response data is null")
@@ -58,17 +55,15 @@ class CategoriesViewModel : ViewModel() {
 
     fun loadProductByCategory(id: Int){
         val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
         val api = retrofit.create(ApiService::class.java)
         api.loadProductsByCategory(id).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 val responseData = response.body()
                 if (responseData != null) {
-                    println("Response: ${responseData.success}")
-                    println("Message: ${responseData.message}")
-                    val apiData = ApIData(Status.SUCCESS, responseData.data)
+                    val apiData = ApIData(response.code(), responseData.data)
                     _productByCategory.postValue(apiData)
                 } else {
                     println("Response data is null")

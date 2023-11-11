@@ -7,18 +7,8 @@ class CategoryTypes (
 )
 
 class  CategoryModel(
-    val success: Boolean,
     val message: String,
     val data: List<CategoryTypes>
-)
-data class Product(
-    val id: Int,
-    val category_id: Int,
-    val name: String,
-    val price: Double,
-    val description: String,
-    val created_at: String?,
-    val updated_at: String?
 )
 
 data class Data(

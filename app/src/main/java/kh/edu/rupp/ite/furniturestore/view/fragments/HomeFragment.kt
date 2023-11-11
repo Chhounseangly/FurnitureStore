@@ -17,9 +17,8 @@ import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
 import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
@@ -34,7 +33,7 @@ class HomeFragment() : Fragment() {
     private val productListViewModel = ProductListViewModel()
     private val categoriesViewModel = CategoriesViewModel()
     private val productSliderViewModel = ProductSliderViewModel()
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
+    private val shoppingCartViewModel = ShoppingCartViewModel()
 
 
     override fun onCreateView(
@@ -49,13 +48,13 @@ class HomeFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
+//        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
 
 
         productSliderViewModel.loadProductSliderData()
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner){
             when(it.status){
-                Status.SUCCESS -> it.data?.let { it1 -> displaySliderProduct(it1) }
+                200 -> it.data?.let { it1 -> displaySliderProduct(it1) }
                 else -> {}
             }
         }
@@ -64,7 +63,7 @@ class HomeFragment() : Fragment() {
         categoriesViewModel.loadCategoryTypes()
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.SUCCESS -> it.data?.let { it1 -> displayCategory(it1) }
+                200 -> it.data?.let { it1 -> displayCategory(it1) }
                 else -> {
 
                 }
@@ -76,12 +75,15 @@ class HomeFragment() : Fragment() {
         //passing product data to view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.SUCCESS -> it.data?.let { it1 -> displayProductList(it1) }
+                200 -> it.data?.let { it1 -> displayProductList(it1) }
                 else -> {
 
                 }
             }
         }
+
+        shoppingCartViewModel.loadProductsCartData()
+
 
 //        shoppingCartViewModel.loadProductsCartData()
 //        // Update the cart RecyclerView with LiveData from ViewModel
@@ -113,7 +115,7 @@ class HomeFragment() : Fragment() {
 
 
     //display product list on home screen
-    private fun displayProductList(productsList: List<ProductList>) {
+    private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager
         val gridLayoutManager =
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)

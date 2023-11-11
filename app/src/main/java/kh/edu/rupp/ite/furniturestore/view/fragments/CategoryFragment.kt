@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
 import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class CategoryFragment() : Fragment() {
@@ -34,7 +33,7 @@ class CategoryFragment() : Fragment() {
         categoriesViewModel.loadCategoryTypes()
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner){
             when(it.status){
-                Status.SUCCESS -> it.data?.let { it1 -> displayCategory(it1) }
+                200 -> it.data?.let { it1 -> displayCategory(it1) }
                 else -> {}
             }
         }

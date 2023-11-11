@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.adapter.ProductByCategoryAdapter
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductList
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 
@@ -37,7 +34,7 @@ class ProductsByCategoryActivity : AppCompatActivity() {
         categoriesViewModel.loadProductByCategory(id)
         categoriesViewModel.productByCategory.observe(this) {
             when (it.status) {
-                Status.SUCCESS -> it.data?.let { it1 ->
+                200 -> it.data?.let { it1 ->
                     displayProductByCate(it1.products)
                 }
 
