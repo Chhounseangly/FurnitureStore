@@ -6,44 +6,57 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.squareup.picasso.Picasso
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
+import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
+import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 
 class ProductDetailActivity : AppCompatActivity() {
 
     private var id = 0
-    private var price = 0
-    private lateinit var title: String
-    private lateinit var imageUrl: String
+    private lateinit var price: TextView
     private lateinit var desc: TextView
-    private lateinit var totalPrice: TextView
-    private lateinit var productCount: TextView
-    private lateinit var addBtn: ImageButton
-    private lateinit var minusBtn: ImageButton
-
+    private lateinit var name: TextView
     private lateinit var seeMoreBtn: TextView
+
+    private val productDetailViewModel = ProductDetailViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
+
+        //get id from xml files
         desc = findViewById(R.id.description)
         seeMoreBtn = findViewById(R.id.seeMoreBtn)
+        price = findViewById(R.id.price)
+        name = findViewById(R.id.name)
 
-        // Get data from previous activity
+        // Get id from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
-        title = intent.getStringExtra("title").toString()
-        price = intent.getIntExtra("price", 0)
-        imageUrl = intent.getStringExtra("imageUrl").toString()
+
+        //passing id to loadProductDetail
+        productDetailViewModel.loadProductDetail(id)
+        //passing data to display slider image
+        productDetailViewModel.productsData.observe(this){
+            if (it.status == 200){
+                name.text = it.data?.name
+                price.text = "$ " + it.data?.price.toString()
+                desc.text = it.data?.description
+                it.data?.imageUrls?.let {
+                        it1 -> displaySliderImages(it1)
+                }
+            }
+        }
+
 
         // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
-        if (desc.lineCount > 3) {
+        if (desc.lineCount > 10) {
             seeMoreBtn.visibility = View.VISIBLE
         }
         toggleTextViewMaxLines(seeMoreBtn)
-
-        Picasso.get().load(imageUrl).into(findViewById<ImageView>(R.id.imageSlider))
 
         prevBack()
     }
@@ -61,7 +74,7 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-    //function prev back
+    //function back to prev activity
     private fun prevBack() {
         val backBtn = findViewById<ImageView>(R.id.backBtn)
         backBtn.setOnClickListener {
@@ -70,9 +83,14 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun displayProductDetail(productDetail: ProductDetail) {
-
-        var title = findViewById<TextView>(R.id.title)
+    //function display only image slider
+    private fun displaySliderImages(product: List<ImageUrls>) {
+        val sliderModels = ArrayList<SlideModel>()
+        val carousel = findViewById<ImageSlider>(R.id.carousel)
+        for (i in product){
+            sliderModels.add(SlideModel(i.imageUrl, ScaleTypes.FIT))
+        }
+        carousel.setImageList(sliderModels, ScaleTypes.FIT)
     }
 
 }

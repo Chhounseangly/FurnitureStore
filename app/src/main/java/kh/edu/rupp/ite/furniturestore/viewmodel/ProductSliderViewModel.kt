@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 
 class ProductSliderViewModel: ViewModel() {
 
@@ -16,7 +15,7 @@ class ProductSliderViewModel: ViewModel() {
 
     fun loadProductSliderData(){
 
-        val apiData = ApIData<List<ProductSlider>>(Status.SUCCESS, listOf(
+        val apiData = ApIData<List<ProductSlider>>(200, listOf(
             ProductSlider(
                 1,
                 "test  ",

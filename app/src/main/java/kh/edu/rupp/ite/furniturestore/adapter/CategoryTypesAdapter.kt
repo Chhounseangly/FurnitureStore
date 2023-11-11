@@ -27,7 +27,7 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
         fun bind(categoryTypes: CategoryTypes) {
             //add image url to ImageView by Library Picasso
 //            Picasso.get().load(categoryTypes.imageUrl).into(viewHolderCategoryTypeBinding.img)
-            viewHolderCategoryTypeBinding.title.text = categoryTypes.title
+            viewHolderCategoryTypeBinding.name.text = categoryTypes.name
 
         }
     }
@@ -44,7 +44,7 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
             intent.putExtra("id", categoryTypes.id)
-            intent.putExtra("title", categoryTypes.title)
+            intent.putExtra("name", categoryTypes.name)
             it.context.startActivity(intent)
         }
         holder.bind(categoryTypes)

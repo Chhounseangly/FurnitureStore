@@ -43,5 +43,7 @@
         You can also use a custom view to implement a more sophisticated "See more" functionality. For example, you could use a custom view that allows the user to collapse the text by clicking on a "See less" button.
                 You can also use a custom view to implement a more sophisticated "See more" functionality. For example, you could use a custom view that allows the user to collapse the text by clicking on a "See less" button.
     </string>
+    <string name="description_title">Description</string>
+    <string name="add_to_cart">Add to Cart</string>
 
 </resources>

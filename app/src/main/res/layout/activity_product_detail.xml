@@ -22,7 +22,8 @@
                 android:id="@+id/backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_back" />
+                android:src="@drawable/ic_back"
+                android:contentDescription="button back to prev activity" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -33,21 +34,22 @@
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
-                android:layout_gravity="end"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="12dp"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="10dp">
+
                 <ImageView
-                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_fav"
+                    android:layout_margin="5dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
+                    android:src="@drawable/ic_fav"
                     app:tint="@color/black" />
             </androidx.cardview.widget.CardView>
 
@@ -57,127 +59,125 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:backgroundTint="@color/bg_search"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <ImageView
-                    android:padding="2dp"
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/carousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/imageSlider"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/table" />
+                    android:layout_alignParentBottom="true"
+                    android:padding="2dp"
+                    app:iss_auto_cycle="true"
+                    app:iss_corner_radius="5"
+                    app:iss_delay="2000"
+                    app:iss_period="2000" />
 
             </RelativeLayout>
 
             <LinearLayout
-                android:background="@color/title_price_color"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:paddingHorizontal="20dp"
                 android:layout_weight="0.2"
+                android:background="@color/title_price_color"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp">
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageSlider"
-                        android:text="title"
-                        android:textColor="@color/txt_color"
-                        android:textSize="18sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        tools:ignore="NestedWeights" />
-                    <TextView
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:background="@drawable/bg_price"
-                        android:id="@+id/price"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:text="price"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="nameProduct"
+                    android:textColor="@color/txt_color"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    tools:ignore="NestedWeights" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_price"
+                    android:gravity="center"
+                    tools:text="price"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!--    view-group cover on description-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="18dp"
+            android:text="@string/description_title"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
-
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:text="@string/long_txt" />
+            android:maxLines="7"
+            tools:text="@string/long_txt" />
 
         <TextView
             android:id="@+id/seeMoreBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="see more"
             android:textStyle="bold"
-            android:visibility="visible" />
+            tools:text="see more" />
 
     </LinearLayout>
 
 
-<!--    Ui Button Add To card-->
+    <!--    Ui Button Add To card-->
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:backgroundTint="@color/black"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/black"
+        android:gravity="center"
+        app:cardCornerRadius="10dp">
 
         <Button
-            android:textColor="@color/white"
-            android:background="@color/trans"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Add to Cart"/>
+            android:background="@color/trans"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/white" />
     </androidx.cardview.widget.CardView>
-
-    <!--        <androidx.viewpager2.widget.ViewPager2-->
-    <!--            android:id="@+id/view_pager"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
 
 </LinearLayout>
