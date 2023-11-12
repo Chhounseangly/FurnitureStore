@@ -11,11 +11,13 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     //End Point fetching products
@@ -50,6 +52,12 @@ interface ApiService {
         @Path("id") id: Int,
         @Body qty: BodyPutData
     ): Call<ResponseMessage>
+
+    @GET("api/search_product_by_name")
+    suspend fun searchProductByName(
+        @Query("name") name: String
+    ): Res<Product>
+
 
     @GET("?name=luc")
     fun getUser(): Call<User>

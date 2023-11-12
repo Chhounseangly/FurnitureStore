@@ -8,7 +8,7 @@ import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
-import kh.edu.rupp.ite.furniturestore.view.fragments.CategoryFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.mnuHome -> displayFragment(HomeFragment())
                 R.id.mnuFav -> displayFragment(FavoriteFragment())
-                R.id.mnuCate -> displayFragment(CategoryFragment())
+                R.id.mnuSearch -> displayFragment(SearchFragment())
                 R.id.mnuCart -> displayFragment(ShoppingCartFragment())
                 else -> startActivity(profileActivity)
 //                else -> startActivity(signInScreen)

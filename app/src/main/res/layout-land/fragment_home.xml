@@ -51,7 +51,7 @@
                 android:textSize="18dp" />
             <!--categories-->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
+                android:id="@+id/search_found_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <!--  products list-->

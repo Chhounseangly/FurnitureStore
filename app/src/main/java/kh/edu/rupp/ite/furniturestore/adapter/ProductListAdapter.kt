@@ -47,7 +47,7 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         fun bind(product: Product) {
             //add image url to ImageView by Library Picasso
-            Picasso.get().load(product.imageUrl as String).into(viewHolderProductItemBinding.img)
+            Picasso.get().load(product.imageUrl).into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = product.name
             viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
 

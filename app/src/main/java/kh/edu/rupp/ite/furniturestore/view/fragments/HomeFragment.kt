@@ -144,10 +144,10 @@ class HomeFragment() : Fragment() {
     private fun displayCategory(categoryTypes: List<CategoryTypes>) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        fragmentHomeBinding.categoryRecyclerView.layoutManager = linearLayoutManager
+        fragmentHomeBinding.categoryRecyclerView?.layoutManager = linearLayoutManager
         val categoryTypesAdapter = CategoryTypesAdapter()
         categoryTypesAdapter.submitList(categoryTypes)
-        fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
+        fragmentHomeBinding.categoryRecyclerView?.adapter = categoryTypesAdapter
     }
 
 }
