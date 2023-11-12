@@ -20,7 +20,7 @@ import retrofit2.http.Path
 interface ApiService {
     //End Point fetching products
     @GET("api/products")
-    fun loadProductList(): Call<Res<Product>>
+    suspend fun loadProductList(): Res<Product>
 
     //End Point fetching product Detail By passing id
     @GET("api/products/{id}")

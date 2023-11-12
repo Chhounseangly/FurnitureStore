@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,15 +8,12 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Data
-import kh.edu.rupp.ite.furniturestore.model.api.service.ApiService
+import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoriesViewModel : ViewModel() {
-    private val BASE_URL = "http://10.0.2.2:8000/"
 
     private val _categoryTypesData = MutableLiveData<ApIData<List<CategoryTypes>>>()
     val categoryTypesData: LiveData<ApIData<List<CategoryTypes>>>
@@ -30,12 +26,7 @@ class CategoriesViewModel : ViewModel() {
 
 
     fun loadCategoryTypes() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(ApiService::class.java)
-        api.loadCategories().enqueue(object : Callback<CategoryModel> {
+        RetrofitInstance.get().api.loadCategories().enqueue(object : Callback<CategoryModel> {
             override fun onResponse(call: Call<CategoryModel>, response: Response<CategoryModel>) {
                 val responseData = response.body()
 
@@ -54,12 +45,7 @@ class CategoriesViewModel : ViewModel() {
 
 
     fun loadProductByCategory(id: Int){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(ApiService::class.java)
-        api.loadProductsByCategory(id).enqueue(object : Callback<ApiResponse> {
+        RetrofitInstance.get().api.loadProductsByCategory(id).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 val responseData = response.body()
                 if (responseData != null) {
