@@ -26,7 +26,6 @@ class ProductListViewModel: ViewModel() {
                 }
                 else println("Response data is null")
             } catch (ex: Exception) {
-                println("Failure: ${ex.message}")
             }
 
             withContext(Dispatchers.Main.immediate) {

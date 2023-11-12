@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 //key word data mean open for another class can inherited
   data class Product(
-    val id: Int,
+    var id: Int,
     val category_id: Int,
     val name: String,
     val price: Double,
-    val imageUrl: Any,
+    val imageUrl: String,
     val description: String,
     val created_at: String?,
     val updated_at: String?,
