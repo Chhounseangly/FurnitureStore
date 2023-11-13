@@ -30,7 +30,7 @@ interface ApiService {
 
     //End Point fetching categories data
     @GET("api/categories")
-    fun loadCategories(): Call<CategoryModel>
+    suspend fun loadCategories(): CategoryModel
 
     //End Point fetching product by category types
     @GET("api/categories_by_id/{id}")

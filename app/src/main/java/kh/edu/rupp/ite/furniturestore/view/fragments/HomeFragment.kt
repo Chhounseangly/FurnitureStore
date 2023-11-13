@@ -39,6 +39,7 @@ class HomeFragment() : Fragment() {
     private val  shoppingCartViewModel = ShoppingCartViewModel()
 
     private lateinit var loading: ProgressBar
+    private lateinit var loadingCategory: ProgressBar
     private lateinit var noDataMsg: TextView
 
     override fun onCreateView(
@@ -74,6 +75,10 @@ class HomeFragment() : Fragment() {
         loading = fragmentHomeBinding.loading
         loading.visibility = View.GONE
 
+        //for Category
+        loadingCategory = fragmentHomeBinding.loadingCate!!
+        loadingCategory.visibility = View.GONE
+
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -102,9 +107,14 @@ class HomeFragment() : Fragment() {
         //get data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                200 -> it.data?.let { it1 -> displayCategory(it1) }
+                102 -> loadingCategory.visibility = View.VISIBLE
+                200 -> it.data?.let {
+                        it1 -> displayCategory(it1)
+                        loadingCategory.visibility = View.GONE
+                }
                 else -> {
-
+                    fragmentHomeBinding.cateTitle?.visibility = View.GONE
+                    loadingCategory.visibility = View.GONE
                 }
             }
         }
