@@ -61,6 +61,26 @@
                 android:fontFamily="@font/bitter"
                 android:text="Explore"
                 android:textSize="18dp" />
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:id="@+id/loading"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/noData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
             <!--  products list-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productListRecyclerView"

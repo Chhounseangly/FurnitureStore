@@ -17,19 +17,18 @@ class ProductListViewModel: ViewModel() {
         get() = _productsData
 
     fun loadProductsData(){
+        var apiData = ApIData<List<Product>>(102,null) //status 102 is processing
+        _productsData.postValue(apiData)
+
         viewModelScope.launch(Dispatchers.IO) {
-            try {
+            apiData = try {
                 val response = RetrofitInstance.get().api.loadProductList()
-                if (response != null) {
-                    val apiData = ApIData(200, response.data)
-                    _productsData.postValue(apiData)
-                }
-                else println("Response data is null")
+                 ApIData(200, response.data)
             } catch (ex: Exception) {
+                ApIData(204, null)
             }
-
             withContext(Dispatchers.Main.immediate) {
-
+                _productsData.postValue(apiData)
             }
         }
     }

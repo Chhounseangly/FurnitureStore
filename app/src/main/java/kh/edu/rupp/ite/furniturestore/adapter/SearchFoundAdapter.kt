@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSearchFoundBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 
 class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearchFoundViewHolder>(
     SearchFoundAdapter()
@@ -28,13 +30,16 @@ class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearch
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderSearchFoundBinding.inflate(layoutInflater, parent, false)
 
-
         return ProductSearchFoundViewHolder(binding)
-
     }
     override fun onBindViewHolder(holder: ProductSearchFoundViewHolder, position: Int) {
         val product = getItem(position)
         holder.bind(product)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(it.context, ProductDetailActivity::class.java)
+            intent.putExtra("id", product.id)
+            it.context.startActivity(intent)
+        }
     }
 
     class ProductSearchFoundViewHolder(
@@ -46,6 +51,5 @@ class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearch
             viewHolderSearchFoundBinding.price.text = item.price.toString()
         }
     }
-
 
 }
