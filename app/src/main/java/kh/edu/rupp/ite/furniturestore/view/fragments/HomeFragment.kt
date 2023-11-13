@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,7 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
+    private val  shoppingCartViewModel = ShoppingCartViewModel()
 
     private lateinit var loading: ProgressBar
     private lateinit var noDataMsg: TextView
@@ -56,8 +57,8 @@ class HomeFragment() : Fragment() {
         categoriesViewModel.loadCategoryTypes()
 
 
-        //init load data from api
-        productSliderViewModel = ViewModelProvider(this)[productSliderViewModel::class.java]
+//        init load data from api
+        productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
         productSliderViewModel.loadProductSliderData()
 
         return fragmentHomeBinding.root
@@ -172,10 +173,10 @@ class HomeFragment() : Fragment() {
     private fun displayCategory(categoryTypes: List<CategoryTypes>) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        fragmentHomeBinding.categoryRecyclerView?.layoutManager = linearLayoutManager
+        fragmentHomeBinding.categoryRecyclerView.layoutManager = linearLayoutManager
         val categoryTypesAdapter = CategoryTypesAdapter()
         categoryTypesAdapter.submitList(categoryTypes)
-        fragmentHomeBinding.categoryRecyclerView?.adapter = categoryTypesAdapter
+        fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
 
 }
