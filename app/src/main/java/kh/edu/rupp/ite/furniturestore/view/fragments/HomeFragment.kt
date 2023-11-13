@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,9 +22,9 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
-import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
 class HomeFragment() : Fragment() {
@@ -30,11 +32,13 @@ class HomeFragment() : Fragment() {
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
 
-    private val productListViewModel = ProductListViewModel()
-    private val categoriesViewModel = CategoriesViewModel()
-    private val productSliderViewModel = ProductSliderViewModel()
-    private val shoppingCartViewModel = ShoppingCartViewModel()
+    private lateinit var productListViewModel: ProductListViewModel
+    private lateinit var categoriesViewModel: CategoriesViewModel
+    private lateinit var productSliderViewModel: ProductSliderViewModel
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
+    private lateinit var loading: ProgressBar
+    private lateinit var noDataMsg: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,25 +46,59 @@ class HomeFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        //init load data from api
+        productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
+        productListViewModel.loadProductsData()
+
+        //init load data from api
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+        categoriesViewModel.loadCategoryTypes()
+
+
+        //init load data from api
+        productSliderViewModel = ViewModelProvider(this)[productSliderViewModel::class.java]
+        productSliderViewModel.loadProductSliderData()
+
         return fragmentHomeBinding.root
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
+        noDataMsg = fragmentHomeBinding.noData
+        noDataMsg.text = "No Data"
+        noDataMsg.visibility = View.GONE
+        loading = fragmentHomeBinding.loading
+        loading.visibility = View.GONE
 
+        //get data of products to display on recycler view
+        productListViewModel.productsData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                102 -> loading.visibility = View.VISIBLE
+                200 -> {
+                    if (it.data != null) {
+                        displayProductList(it.data)
+                        loading.visibility = View.GONE
+                    }
+                }
 
-        productSliderViewModel.loadProductSliderData()
-        productSliderViewModel.productSliderData.observe(viewLifecycleOwner){
-            when(it.status){
+                else -> {
+                    loading.visibility = View.GONE
+                    noDataMsg.visibility = View.VISIBLE
+                }
+            }
+        }
+        //get data of product slider images to display on slider
+        productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
+            when (it.status) {
                 200 -> it.data?.let { it1 -> displaySliderProduct(it1) }
                 else -> {}
             }
         }
 
         //get data from CategoriesViewModel
-        categoriesViewModel.loadCategoryTypes()
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
                 200 -> it.data?.let { it1 -> displayCategory(it1) }
@@ -70,19 +108,8 @@ class HomeFragment() : Fragment() {
             }
         }
 
-        //get data from ProductListViewModel
-        productListViewModel.loadProductsData()
-        //passing product data to view
-        productListViewModel.productsData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                200 -> it.data?.let { it1 -> displayProductList(it1) }
-                else -> {
 
-                }
-            }
-        }
-
-        shoppingCartViewModel.loadProductsCartData()
+//        shoppingCartViewModel.loadProductsCartData()
 
 
 //        shoppingCartViewModel.loadProductsCartData()
@@ -91,6 +118,7 @@ class HomeFragment() : Fragment() {
 //            // Update RecyclerView with new shoppingCartItems
 //            Log.d("Cart", "$shoppingCartItems")
 //        })
+
 
 
         nestedScrollView = view.findViewById(R.id.homeFragment)

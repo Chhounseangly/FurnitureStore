@@ -49,8 +49,8 @@ class SearchFragment() : Fragment() {
                     searchViewHolder.data.observe(viewLifecycleOwner) {
                         when(it.status){
                             204 -> it.let {
-                                fragmentSearchBinding.notFound.visibility = View.VISIBLE
                                 displayProductSearchFound(null)
+                                fragmentSearchBinding.notFound.visibility = View.VISIBLE
                             }
                             200 -> it.data?.let {
                                     it1 -> displayProductSearchFound(it1)
@@ -64,27 +64,13 @@ class SearchFragment() : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText != null){
                     fragmentSearchBinding.notFound.visibility = View.INVISIBLE
+                    displayProductSearchFound(null)
                 }
               return true
             }
         })
 
     }
-
-    private fun searchProduct(text: String?) {
-        if (text != null) {
-            searchViewHolder.search(text)
-            searchViewHolder.data.observe(viewLifecycleOwner) {
-                Log.d("check", "$it")
-                when(it.status){
-                    204 -> fragmentSearchBinding.notFound.visibility = View.VISIBLE
-                    200 -> it.data?.let { it1 -> displayProductSearchFound(it1) }
-                    404 -> fragmentSearchBinding.notFound.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
-
 
     //function display category
     private fun displayProductSearchFound(product: List<Product>?) {
@@ -94,8 +80,6 @@ class SearchFragment() : Fragment() {
         val searchFoundAdapter = SearchFoundAdapter()
         searchFoundAdapter.submitList(product)
         fragmentSearchBinding.searchFoundRecyclerView.adapter = searchFoundAdapter
-
-
     }
 }
 

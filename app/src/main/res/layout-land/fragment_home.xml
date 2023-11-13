@@ -45,15 +45,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:paddingVertical="10dp"
+                android:fontFamily="@font/bitter"
                 android:text="Categories"
                 android:textSize="18dp" />
             <!--categories-->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_found_recycler_view"
+                android:layout_margin="10dp"
+                android:id="@+id/categoryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:fontFamily="@font/bitter"
+                android:text="Explore"
+                android:textSize="18dp" />
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:id="@+id/loading"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/noData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
             <!--  products list-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productListRecyclerView"
@@ -65,6 +88,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBtn"
+        android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
