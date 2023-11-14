@@ -12,6 +12,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Data
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -34,7 +35,7 @@ class CategoriesViewModel : ViewModel() {
         var apiData = ApIData<List<CategoryTypes>>(102,null) //status 102 is processing
         _categoryTypesData.postValue(apiData)
         viewModelScope.launch(Dispatchers.IO) {
-           apiData =  try {
+            apiData =  try {
                val response = RetrofitInstance.get().api.loadCategories()
                ApIData(200, response.data)
             }catch (ex: Exception){

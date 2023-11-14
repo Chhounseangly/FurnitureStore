@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
@@ -36,7 +38,12 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private val  shoppingCartViewModel = ShoppingCartViewModel()
+    private val shoppingCartViewModel = ShoppingCartViewModel()
+
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
+
 
     private lateinit var loading: ProgressBar
     private lateinit var loadingCategory: ProgressBar
@@ -49,57 +56,61 @@ class HomeFragment() : Fragment() {
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        //init load data from api
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
-        productListViewModel.loadProductsData()
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+        productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
 
         //init load data from api
-        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+        productListViewModel.loadProductsData()
         categoriesViewModel.loadCategoryTypes()
-
-
-//        init load data from api
-        productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
         productSliderViewModel.loadProductSliderData()
 
+        //refresh layout loading data again
+        swipeRefreshLayout = fragmentHomeBinding.refreshLayout!!
+        swipeRefreshLayout.setOnRefreshListener {
+            productListViewModel.loadProductsData()
+            categoriesViewModel.loadCategoryTypes()
+            productSliderViewModel.loadProductSliderData()
+        }
         return fragmentHomeBinding.root
 
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         noDataMsg = fragmentHomeBinding.noData
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
-        loading = fragmentHomeBinding.loading
-        loading.visibility = View.GONE
 
-        //for Category
-        loadingCategory = fragmentHomeBinding.loadingCate!!
-        loadingCategory.visibility = View.GONE
+
+        mShimmerViewContainer = fragmentHomeBinding.shimmerViewContainer!!
 
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 -> loading.visibility = View.VISIBLE
+                102 ->  showLoadingAnimation(mShimmerViewContainer)
                 200 -> {
                     if (it.data != null) {
                         displayProductList(it.data)
-                        loading.visibility = View.GONE
+                        swipeRefreshLayout.isRefreshing = false
+                        hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
-
                 else -> {
-                    loading.visibility = View.GONE
                     noDataMsg.visibility = View.VISIBLE
+                    swipeRefreshLayout.isRefreshing = false
+                    hideLoadingAnimation(mShimmerViewContainer)
+
                 }
             }
         }
         //get data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                200 -> it.data?.let { it1 -> displaySliderProduct(it1) }
+                200 -> it.data?.let {
+                        it1 -> displaySliderProduct(it1)
+                        swipeRefreshLayout.isRefreshing = false
+                }
                 else -> {}
             }
         }
@@ -107,17 +118,21 @@ class HomeFragment() : Fragment() {
         //get data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 -> loadingCategory.visibility = View.VISIBLE
-                200 -> it.data?.let {
-                        it1 -> displayCategory(it1)
-                        loadingCategory.visibility = View.GONE
+                102 -> showLoadingAnimation(mShimmerViewContainer)
+                200 -> it.data?.let { it1 ->
+                    displayCategory(it1)
+                    swipeRefreshLayout.isRefreshing = false
+                    hideLoadingAnimation(mShimmerViewContainer)
                 }
+
                 else -> {
                     fragmentHomeBinding.cateTitle?.visibility = View.GONE
-                    loadingCategory.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+                    hideLoadingAnimation(mShimmerViewContainer)
                 }
             }
         }
+
 
 
 //        shoppingCartViewModel.loadProductsCartData()
@@ -129,7 +144,6 @@ class HomeFragment() : Fragment() {
 //            // Update RecyclerView with new shoppingCartItems
 //            Log.d("Cart", "$shoppingCartItems")
 //        })
-
 
 
         nestedScrollView = view.findViewById(R.id.homeFragment)
@@ -150,6 +164,18 @@ class HomeFragment() : Fragment() {
         floatingActionButton.setOnClickListener {
             nestedScrollView.smoothScrollTo(0, 0, 500)
         }
+    }
+
+
+    //hide loading
+    private fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+        viewContainerLoadingId.stopShimmerAnimation()
+        viewContainerLoadingId.visibility = View.GONE;
+    }
+
+    //show loading
+    private fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+        viewContainerLoadingId.startShimmerAnimation()
     }
 
 

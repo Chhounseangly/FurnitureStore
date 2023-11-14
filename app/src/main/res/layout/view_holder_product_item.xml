@@ -9,6 +9,7 @@
     android:background="@drawable/border_product"
     android:padding="5dp">
 
+
     <androidx.cardview.widget.CardView
         android:backgroundTint="@color/bg_search"
         android:layout_width="match_parent"

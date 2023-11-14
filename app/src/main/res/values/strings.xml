@@ -46,5 +46,7 @@
     <string name="description_title">Description</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="search">Search</string>
+    <string name="categories">Categories</string>
+    <string name="explore">Explore</string>
 
 </resources>
