@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
-
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,32 +13,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
-class ShoppingCartFragment() : Fragment() {
+class ShoppingCartFragment(private val shoppingCartViewModel: ShoppingCartViewModel) : Fragment() {
 
     private lateinit var fragmentCartBinding: FragmentCartBinding
-    private var id = 0
-    private var price = 0
-    private lateinit var title: String
-    private lateinit var imageUrl: String
-    private var products = ArrayList<Product>()
-
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-    private val shoppingCartViewModel = ShoppingCartViewModel()
-
-    private var totalPrice = 0
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,17 +34,12 @@ class ShoppingCartFragment() : Fragment() {
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
         val arguments = arguments
-        val test = arguments?.getInt("id")   // Add a click listener to the add button
-
 
         return fragmentCartBinding.root
-        // Get data from previous activity
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        shoppingCartViewModel.loadProductsCartData()
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
             it.data?.let {
                     it1 -> displayProductCart(it1)
@@ -67,13 +48,33 @@ class ShoppingCartFragment() : Fragment() {
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
             fragmentCartBinding.totalPrice.text = it.toString()
-            Log.d("Totals", "${it}")
-
+            Log.d("Totals", "$it")
         }
 
 //        fragmentCartBinding.totalPrice.setOnClickListener {
 //            shoppingCartViewModel.qtyOperation(1, 5);
 //        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("ShoppingCart", "onResume")
+        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
+            it.data?.let {
+                    it1 -> displayProductCart(it1)
+                shoppingCartViewModel.updateTotalPrice(it.data)
+            }
+        }
+        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
+            fragmentCartBinding.totalPrice.text = it.toString()
+            Log.d("Totals", "$it")
+
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ShoppingCart", "onPause")
     }
 
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
@@ -88,7 +89,6 @@ class ShoppingCartFragment() : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
-
     }
 
     private val simpleItemTouchCallback =

@@ -43,7 +43,7 @@ interface ApiService {
 
     @POST("api/addProductToShoppingCart")
     fun addProductToShoppingCart(
-        @Body product_id : AddProductToShoppingCart
+        @Body product : AddProductToShoppingCart
     ): Call<ResponseMessage>
 
     //End Point put Quantity Product Operation

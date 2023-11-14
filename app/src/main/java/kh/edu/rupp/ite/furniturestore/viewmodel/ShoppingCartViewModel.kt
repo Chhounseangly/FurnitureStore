@@ -27,30 +27,24 @@ class ShoppingCartViewModel : ViewModel() {
     // LiveData to hold Shopping Cart Items. Exposing LiveData to the outside world
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
 
-
-
-
     // Add Item to Shopping Cart
     fun addItemToCart(product: Product) {
         _shoppingCartItems.let {
-            for (items in it.value?.data!!) {
-                if (items.product_id == product.id) {
-                    Log.d("product", "true")
-                } else addProductToCart(AddProductToShoppingCart(product.id))
-
+            if (!it.value?.data?.isEmpty()!!){
+                for (items in it.value?.data!!) {
+                    if (items.product_id == product.id) {
+                        items.qty++
+                        _totalPrice.value = _totalPrice.value?.plus(product.price)
+                    } else {
+                        addProductToCart(AddProductToShoppingCart(product.id))
+                        loadProductsCartData()
+                    }
+                }
+            } else {
+                addProductToCart(AddProductToShoppingCart(product.id))
+                loadProductsCartData()
             }
         }
-//            for (item in _shoppingCartItems) {
-//                if (item.id == product.id) {
-//                    item.qty++
-//                    itemAdded = true
-//                    break
-//                }
-//            }
-//        if (!itemAdded) {
-//            _shoppingCartItems.add(product)
-//        }
-//            updateTotalPrice()
     }
 
     fun updateTotalPrice(shoppingCart: List<ShoppingCart>) {
@@ -70,16 +64,17 @@ class ShoppingCartViewModel : ViewModel() {
 //    }
 
     //minus item
-    fun minusQtyItem(item: Product) {
-//        for (product in _shoppingCartItems) {
-//            if (item.id == product.id) {
-//                if (product.qty > 1) {
-//                    product.qty--
-//                }
-//                break
-//            }
-//        }
-//        updateTotalPrice()
+    fun minusQtyItem(product: Product) {
+        _shoppingCartItems.let {
+            for (items in it.value?.data!!) {
+                if (items.product_id == product.id) {
+                    if (items.qty > 1) {
+                        items.qty--
+                        _totalPrice.value = _totalPrice.value?.minus(product.price)
+                    }
+                }
+            }
+        }
     }
 
 
@@ -126,8 +121,7 @@ class ShoppingCartViewModel : ViewModel() {
     }
 
     private fun addProductToCart(data: AddProductToShoppingCart) {
-        RetrofitInstance.get().api.addProductToShoppingCart(
-            AddProductToShoppingCart(data.product_id))
+        RetrofitInstance.get().api.addProductToShoppingCart(data)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -145,6 +139,4 @@ class ShoppingCartViewModel : ViewModel() {
                 }
             })
     }
-
-
 }

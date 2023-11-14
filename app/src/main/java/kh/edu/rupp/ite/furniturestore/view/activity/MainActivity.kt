@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
@@ -11,14 +12,18 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding: ActivityMainBinding
-    private var homeFragment = HomeFragment()
+
+    private var shoppingCartViewModel = ShoppingCartViewModel()
+
+    private var homeFragment = HomeFragment(shoppingCartViewModel)
     private var searchFragment = SearchFragment()
     private var favoriteFragment = FavoriteFragment()
-    private var shoppingCartFragment = ShoppingCartFragment()
+    private var shoppingCartFragment = ShoppingCartFragment(shoppingCartViewModel)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +34,12 @@ class MainActivity : AppCompatActivity() {
 
         //click on title of app go back to home fragment and set menu home active
         activityMainBinding.titleTxt.setOnClickListener {
-            displayFragment(HomeFragment())
+            displayFragment(homeFragment)
             activityMainBinding.bottomNavigationView.selectedItemId = R.id.mnuHome
         }
+
+        // load products cart data
+        shoppingCartViewModel.loadProductsCartData()
 
         //display home fragment when starting app
         displayFragment(homeFragment)
@@ -55,16 +63,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    //function display Fragments
-//    private fun displayFragment(fragment: Fragment) {
-//
-//        val fragmentTransaction = supportFragmentManager.beginTransaction()
-//        // Replace fragment in lytFragment
-//        fragmentTransaction.replace(R.id.lytFragment, fragment)
-//        // Commit transaction
-//        fragmentTransaction.commit()
-//    }
     // Function to display fragments without reloading
     private fun displayFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
@@ -72,7 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         // Hide all existing fragments
         for (existingFragment in fragmentManager.fragments) {
+            // hide all existing fragments
             fragmentTransaction.hide(existingFragment)
+            // set the lifecycle state of the fragment to STARTED
+            fragmentTransaction.setMaxLifecycle(existingFragment, Lifecycle.State.STARTED)
         }
 
         // Check if the fragment is already added
@@ -80,7 +81,8 @@ class MainActivity : AppCompatActivity() {
             // If not added, add it to the fragment container
             fragmentTransaction.add(R.id.lytFragment, fragment)
         } else {
-            // If already added, show it
+            // If already added, show it and set the lifecycle state to RESUMED
+            fragmentTransaction.setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
             fragmentTransaction.show(fragment)
         }
 
@@ -90,5 +92,4 @@ class MainActivity : AppCompatActivity() {
         // Commit the transaction
         fragmentTransaction.commit()
     }
-
 }

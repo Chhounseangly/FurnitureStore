@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,14 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.CheckID
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) : ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
-    ProductAddToCartAdapter()
-) {
+class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
+    ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(ProductAddToCartAdapter()) {
     //constructor
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
@@ -43,23 +40,45 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
         fun bind(item: ShoppingCart) {
             //add image url to ImageView by Library Picasso
             Picasso.get().load(item.product?.imageUrl).into(viewHolderProductCartBinding.productImg)
-//            //passing data list to view
+            //passing data list to view
             viewHolderProductCartBinding.nameProduct.text = item.product?.name
             viewHolderProductCartBinding.price.text = item.product?.price.toString()
             viewHolderProductCartBinding.displayQty.text = item.qty.toString()
-//
-//            //add more quantity of items
+
+            //add more quantity of items
             viewHolderProductCartBinding.addBtn.setOnClickListener {
                 if (item.product != null){
-                    shoppingCartViewModel.addItemToCart(Product(item.product_id, item.product.category_id, item.product.name, item.product.price, item.product.imageUrl, item.product.description, item.created_at, item.updated_at, imageUrls=null))
+                    shoppingCartViewModel.addItemToCart(Product(
+                            item.product_id,
+                            item.product.category_id,
+                            item.product.name,
+                            item.product.price,
+                            item.product.imageUrl,
+                            item.product.description,
+                            item.created_at,
+                            item.updated_at,
+                            imageUrls=null
+                    ))
+                    viewHolderProductCartBinding.displayQty.text = item.qty.toString()
                 }
-//                viewHolderProductCartBinding.displayQty.text = product.qty.toString()
             }
-//            //add minus quantity of items
-//            viewHolderProductCartBinding.minusBtn.setOnClickListener {
-//                shoppingCartViewModel.minusQtyItem(product)
-//                viewHolderProductCartBinding.displayQty.text = product.qty.toString()
-//            }
+            //add minus quantity of items
+            viewHolderProductCartBinding.minusBtn.setOnClickListener {
+                if (item.product != null){
+                    shoppingCartViewModel.minusQtyItem(Product(
+                        item.product_id,
+                        item.product.category_id,
+                        item.product.name,
+                        item.product.price,
+                        item.product.imageUrl,
+                        item.product.description,
+                        item.created_at,
+                        item.updated_at,
+                        imageUrls=null
+                    ))
+                    viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+                }
+            }
         }
     }
 

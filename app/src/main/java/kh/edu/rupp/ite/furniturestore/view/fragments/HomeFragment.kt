@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +28,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
-class HomeFragment() : Fragment() {
+class HomeFragment(private val shoppingCartViewModel: ShoppingCartViewModel) : Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
@@ -38,7 +36,6 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private val shoppingCartViewModel = ShoppingCartViewModel()
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -81,7 +78,6 @@ class HomeFragment() : Fragment() {
         noDataMsg = fragmentHomeBinding.noData
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
-
 
         mShimmerViewContainer = fragmentHomeBinding.shimmerViewContainer!!
 
@@ -133,19 +129,6 @@ class HomeFragment() : Fragment() {
             }
         }
 
-
-
-//        shoppingCartViewModel.loadProductsCartData()
-
-
-//        shoppingCartViewModel.loadProductsCartData()
-//        // Update the cart RecyclerView with LiveData from ViewModel
-//        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner, Observer { shoppingCartItems ->
-//            // Update RecyclerView with new shoppingCartItems
-//            Log.d("Cart", "$shoppingCartItems")
-//        })
-
-
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
 
@@ -166,7 +149,6 @@ class HomeFragment() : Fragment() {
         }
     }
 
-
     //hide loading
     private fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
         viewContainerLoadingId.stopShimmerAnimation()
@@ -177,7 +159,6 @@ class HomeFragment() : Fragment() {
     private fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
         viewContainerLoadingId.startShimmerAnimation()
     }
-
 
     //display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
@@ -190,7 +171,6 @@ class HomeFragment() : Fragment() {
         val productListAdapter = ProductListAdapter(shoppingCartViewModel)
         productListAdapter.submitList(productsList)
         fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
-
     }
 
     //display slider product on the top
@@ -202,7 +182,6 @@ class HomeFragment() : Fragment() {
             }
         }
         fragmentHomeBinding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
-
     }
 
     //display Types of Category
@@ -214,7 +193,6 @@ class HomeFragment() : Fragment() {
         categoryTypesAdapter.submitList(categoryTypes)
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
-
 }
 
 
