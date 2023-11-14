@@ -78,4 +78,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
+    //library Shimmer Effect
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
+
 }

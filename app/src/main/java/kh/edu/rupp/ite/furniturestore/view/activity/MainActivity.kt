@@ -15,6 +15,11 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityMainBinding: ActivityMainBinding
+    private var homeFragment = HomeFragment()
+    private var searchFragment = SearchFragment()
+    private var favoriteFragment = FavoriteFragment()
+    private var shoppingCartFragment = ShoppingCartFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //display home fragment when starting app
-        displayFragment(HomeFragment())
+        displayFragment(homeFragment)
 
         val signInScreen = Intent(this, SignInActivity::class.java)
         val profileActivity = Intent(this, ProfileActivity::class.java)
@@ -38,10 +43,10 @@ class MainActivity : AppCompatActivity() {
         //action on bottom nav_bar when user click menu
         activityMainBinding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.mnuHome -> displayFragment(HomeFragment())
-                R.id.mnuFav -> displayFragment(FavoriteFragment())
-                R.id.mnuSearch -> displayFragment(SearchFragment())
-                R.id.mnuCart -> displayFragment(ShoppingCartFragment())
+                R.id.mnuHome -> displayFragment(homeFragment)
+                R.id.mnuFav -> displayFragment(favoriteFragment)
+                R.id.mnuSearch -> displayFragment(searchFragment)
+                R.id.mnuCart -> displayFragment(shoppingCartFragment)
                 else -> startActivity(profileActivity)
 //                else -> startActivity(signInScreen)
 //                else -> displayFragment(ProfileFragment())
@@ -52,12 +57,37 @@ class MainActivity : AppCompatActivity() {
 
 
     //function display Fragments
+//    private fun displayFragment(fragment: Fragment) {
+//
+//        val fragmentTransaction = supportFragmentManager.beginTransaction()
+//        // Replace fragment in lytFragment
+//        fragmentTransaction.replace(R.id.lytFragment, fragment)
+//        // Commit transaction
+//        fragmentTransaction.commit()
+//    }
+    // Function to display fragments without reloading
     private fun displayFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
 
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        // Replace fragment in lytFragment
-        fragmentTransaction.replace(R.id.lytFragment, fragment)
-        // Commit transaction
+        // Hide all existing fragments
+        for (existingFragment in fragmentManager.fragments) {
+            fragmentTransaction.hide(existingFragment)
+        }
+
+        // Check if the fragment is already added
+        if (!fragment.isAdded) {
+            // If not added, add it to the fragment container
+            fragmentTransaction.add(R.id.lytFragment, fragment)
+        } else {
+            // If already added, show it
+            fragmentTransaction.show(fragment)
+        }
+
+        // Add the transaction to the back stack
+        fragmentTransaction.addToBackStack(null)
+
+        // Commit the transaction
         fragmentTransaction.commit()
     }
 
