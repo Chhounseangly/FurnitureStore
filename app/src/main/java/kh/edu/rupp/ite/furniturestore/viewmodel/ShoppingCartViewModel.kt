@@ -18,35 +18,65 @@ import retrofit2.Response
 
 class ShoppingCartViewModel : ViewModel() {
 
-    // Create list for Shopping Cart items
+    // Declare a MutableLiveData to hold the shopping cart items.
+    // ApIData is used to wrap the data along with a status code for better handling.
+    // It is a LiveData because it needs to be observed for changes in UI.
     private val _shoppingCartItems = MutableLiveData<ApIData<List<ShoppingCart>>>()
+
+    // Declare a MutableLiveData to hold the total price of items in the shopping cart.
+    // It is initialized with 0.00.
     private val _totalPrice = MutableLiveData(0.00)
 
+    // MutableLiveData for displaying messages
+    private val _messageLiveData = MutableLiveData<String>()
+
+    // Expose the total price as LiveData to allow observation from the UI.
     val totalPrice: LiveData<Double> get() = _totalPrice
 
-    // LiveData to hold Shopping Cart Items. Exposing LiveData to the outside world
+    // Expose the shopping cart items as LiveData to allow observation from the UI.
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
+
+    // Expose the message as LiveData to allow observation from the UI.
+    val messageLiveData get() = _messageLiveData
+
+    // Function to set a message
+    fun setMessage(message: String) {
+        _messageLiveData.value = message
+    }
 
     // Add Item to Shopping Cart
     fun addItemToCart(product: Product) {
-        _shoppingCartItems.let {
-            if (!it.value?.data?.isEmpty()!!){
-                for (items in it.value?.data!!) {
-                    if (items.product_id == product.id) {
-                        items.qty++
-                        _totalPrice.value = _totalPrice.value?.plus(product.price)
-                    } else {
-                        addProductToCart(AddProductToShoppingCart(product.id))
-                        loadProductsCartData()
-                    }
-                }
-            } else {
-                addProductToCart(AddProductToShoppingCart(product.id))
-                loadProductsCartData()
+        // Get current cart items
+        val cartItems = _shoppingCartItems.value?.data.orEmpty()
+
+        // Check if the product is already in the cart
+        val existingItem = cartItems.find { it.product_id == product.id }
+
+        if (existingItem != null) {
+            // Increment quantity and update total price
+            existingItem.qty++
+            _totalPrice.value = _totalPrice.value?.plus(product.price)
+        } else {
+            // Add the product to the cart and refresh the cart data
+            addProductToCart(AddProductToShoppingCart(product.id))
+            loadProductsCartData()
+        }
+    }
+
+    // Decrease quantity of an item in the cart
+    fun minusQtyItem(product: Product) {
+        val cartItems = _shoppingCartItems.value?.data.orEmpty()
+
+        for (items in cartItems) {
+            if (items.product_id == product.id && items.qty > 1) {
+                items.qty--
+                _totalPrice.value = _totalPrice.value?.minus(product.price)
+                break  // Break once the item is found and quantity is decreased
             }
         }
     }
 
+    // Update total price based on shopping cart items
     fun updateTotalPrice(shoppingCart: List<ShoppingCart>) {
         var total = 0.00
         for (item in shoppingCart) {
@@ -57,27 +87,12 @@ class ShoppingCartViewModel : ViewModel() {
         _totalPrice.value = total
     }
 
-
-//    // Remove Item from Shopping Cart
+    // Remove Item from Shopping Cart
 //    fun removeItemFromCart(item: ProductList) {
 //        _shoppingCartItems.remove(item)
 //    }
 
-    //minus item
-    fun minusQtyItem(product: Product) {
-        _shoppingCartItems.let {
-            for (items in it.value?.data!!) {
-                if (items.product_id == product.id) {
-                    if (items.qty > 1) {
-                        items.qty--
-                        _totalPrice.value = _totalPrice.value?.minus(product.price)
-                    }
-                }
-            }
-        }
-    }
-
-
+    // Load shopping cart data from the API
     fun loadProductsCartData() {
         RetrofitInstance.get().api.loadShoppingCartUnPaid().enqueue(object : Callback<Res<ShoppingCart>> {
             override fun onResponse(
@@ -86,19 +101,23 @@ class ShoppingCartViewModel : ViewModel() {
             ) {
                 val responseData = response.body()
                 if (responseData != null) {
+                    // Wrap the data in ApIData and update LiveData
                     val apiData = ApIData(response.code(), responseData.data)
                     _shoppingCartItems.postValue(apiData)
                 } else {
-                    println("Response data is null")
+                    // Log a warning if the response data is null
+                    Log.w("ShoppingCartViewModel", "Response data is null")
                 }
             }
 
             override fun onFailure(call: Call<Res<ShoppingCart>>, t: Throwable) {
-                println("Failure: ${t.message}")
+                // Log an error if the API call fails
+                Log.e("ShoppingCartViewModel", "Failure: ${t.message}")
             }
         })
     }
 
+    // Perform quantity operation (e.g., update quantity) on an item
     fun qtyOperation(id: Int, qty: Int) {
         RetrofitInstance.get().api.qtyOperation(id, BodyPutData(qty))
             .enqueue(object : Callback<ResponseMessage> {
@@ -108,18 +127,23 @@ class ShoppingCartViewModel : ViewModel() {
                 ) {
                     val responseData = response.body()
                     if (responseData != null) {
-                        Log.d("Result", responseData.message)
+                        // Log the result message
+                        Log.d("ShoppingCartViewModel", responseData.message)
+                        setMessage("Added product to shopping cart")
                     } else {
-                        println("Response data is null")
+                        // Log a warning if the response data is null
+                        Log.w("ShoppingCartViewModel", "Response data is null")
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    println("Failure: ${t.message}")
+                    // Log an error if the API call fails
+                    Log.e("ShoppingCartViewModel", "Failure: ${t.message}")
                 }
             })
     }
 
+    // Add a product to the shopping cart
     private fun addProductToCart(data: AddProductToShoppingCart) {
         RetrofitInstance.get().api.addProductToShoppingCart(data)
             .enqueue(object : Callback<ResponseMessage> {
@@ -129,13 +153,17 @@ class ShoppingCartViewModel : ViewModel() {
                 ) {
                     val responseData = response.body()
                     if (responseData != null) {
-                        Log.d("Result", responseData.message)
+                        // Log the result message
+                        Log.d("ShoppingCartViewModel", responseData.message)
                     } else {
-                        println("Response data is null")
+                        // Log a warning if the response data is null
+                        Log.w("ShoppingCartViewModel", "Response data is null")
                     }
                 }
+
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    println("Failure: ${t.message}")
+                    // Log an error if the API call fails
+                    Log.e("ShoppingCartViewModel", "Failure: ${t.message}")
                 }
             })
     }

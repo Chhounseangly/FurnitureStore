@@ -32,25 +32,15 @@ class ShoppingCartFragment(private val shoppingCartViewModel: ShoppingCartViewMo
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the layout for this fragment
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
-        val arguments = arguments
-
         return fragmentCartBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
-            it.data?.let {
-                    it1 -> displayProductCart(it1)
-                    shoppingCartViewModel.updateTotalPrice(it.data)
-            }
-        }
-        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
-            fragmentCartBinding.totalPrice.text = it.toString()
-            Log.d("Totals", "$it")
-        }
-
+        // Initialize and set up the shopping cart view
+        setupShoppingCart()
 //        fragmentCartBinding.totalPrice.setOnClickListener {
 //            shoppingCartViewModel.qtyOperation(1, 5);
 //        }
@@ -58,39 +48,51 @@ class ShoppingCartFragment(private val shoppingCartViewModel: ShoppingCartViewMo
 
     override fun onResume() {
         super.onResume()
-        Log.d("ShoppingCart", "onResume")
-        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner){
-            it.data?.let {
-                    it1 -> displayProductCart(it1)
-                shoppingCartViewModel.updateTotalPrice(it.data)
-            }
-        }
-        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner){
-            fragmentCartBinding.totalPrice.text = it.toString()
-            Log.d("Totals", "$it")
-
-        }
+        Log.d("ShoppingCartFragment", "onResume")
+        // Refresh the shopping cart view on resume
+        setupShoppingCart()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("ShoppingCart", "onPause")
+        Log.d("ShoppingCartFragment", "onPause")
     }
 
+    private fun setupShoppingCart() {
+        // Observe changes in shopping cart items
+        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) { cartData ->
+            cartData.data?.let { shoppingCart ->
+                // Display shopping cart items and update total price
+                displayProductCart(shoppingCart)
+                shoppingCartViewModel.updateTotalPrice(shoppingCart)
+            }
+        }
+
+        // Observe changes in total price
+        shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) { totalPrice ->
+            // Update the total price text view
+            fragmentCartBinding.totalPrice.text = totalPrice.toString()
+            Log.d("ShoppingCartFragment", "Total Price: $totalPrice")
+        }
+    }
+
+    // display products
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
-        // Create GridLayout Manager
+        // Create a LinearLayoutManager for the RecyclerView
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         fragmentCartBinding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
 
-        // Create adapter
+        // Create and set up the adapter for shopping cart items
         shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
         shoppingCartAdapter.submitList(shoppingCart)
         fragmentCartBinding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
 
+        // Attach an ItemTouchHelper for swipe-to-delete functionality
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
     }
 
+    // ItemTouchHelper for swipe-to-delete functionality
     private val simpleItemTouchCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 

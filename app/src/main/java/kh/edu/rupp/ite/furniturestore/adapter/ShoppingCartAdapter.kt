@@ -13,7 +13,8 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
     ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(ProductAddToCartAdapter()) {
-    //constructor
+
+    // DiffUtil callback for efficient RecyclerView updates
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
             oldItem == newItem
@@ -23,6 +24,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
+        // Inflate the layout for each item
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductCartBinding.inflate(layoutInflater, parent, false)
         return ProductCartViewHolder(binding, shoppingCartViewModel)
@@ -33,54 +35,62 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
         holder.bind(products)
     }
 
+    // ViewHolder class for holding references to views
     class ProductCartViewHolder(
         private val viewHolderProductCartBinding: ViewHolderProductCartBinding,
         private val shoppingCartViewModel: ShoppingCartViewModel
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
-        fun bind(item: ShoppingCart) {
-            //add image url to ImageView by Library Picasso
-            Picasso.get().load(item.product?.imageUrl).into(viewHolderProductCartBinding.productImg)
-            //passing data list to view
-            viewHolderProductCartBinding.nameProduct.text = item.product?.name
-            viewHolderProductCartBinding.price.text = item.product?.price.toString()
-            viewHolderProductCartBinding.displayQty.text = item.qty.toString()
 
-            //add more quantity of items
-            viewHolderProductCartBinding.addBtn.setOnClickListener {
-                if (item.product != null){
-                    shoppingCartViewModel.addItemToCart(Product(
-                            item.product_id,
-                            item.product.category_id,
-                            item.product.name,
-                            item.product.price,
-                            item.product.imageUrl,
-                            item.product.description,
-                            item.created_at,
-                            item.updated_at,
-                            imageUrls=null
-                    ))
-                    viewHolderProductCartBinding.displayQty.text = item.qty.toString()
-                }
-            }
-            //add minus quantity of items
-            viewHolderProductCartBinding.minusBtn.setOnClickListener {
-                if (item.product != null){
-                    shoppingCartViewModel.minusQtyItem(Product(
-                        item.product_id,
-                        item.product.category_id,
-                        item.product.name,
-                        item.product.price,
-                        item.product.imageUrl,
-                        item.product.description,
-                        item.created_at,
-                        item.updated_at,
-                        imageUrls=null
-                    ))
-                    viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+        // Bind data to the views
+        fun bind(item: ShoppingCart) {
+            with(viewHolderProductCartBinding) {
+                // Use safe call to handle possible null values
+                item.product?.let { product ->
+                    // Load image using Picasso library
+                    Picasso.get().load(product.imageUrl).into(productImg)
+
+                    // Bind data to the view
+                    nameProduct.text = product.name
+                    price.text = product.price.toString()
+                    displayQty.text = item.qty.toString()
+
+                    // Add click listeners for add and minus buttons
+                    addBtn.setOnClickListener {
+                        if (item.product != null){
+                            shoppingCartViewModel.addItemToCart(Product(
+                                item.product_id,
+                                item.product.category_id,
+                                item.product.name,
+                                item.product.price,
+                                item.product.imageUrl,
+                                item.product.description,
+                                item.created_at,
+                                item.updated_at,
+                                imageUrls=null
+                            ))
+                            viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+                        }
+                    }
+                    minusBtn.setOnClickListener {
+                        if (item.product != null) {
+                            shoppingCartViewModel.minusQtyItem(
+                                Product(
+                                    item.product_id,
+                                    item.product.category_id,
+                                    item.product.name,
+                                    item.product.price,
+                                    item.product.imageUrl,
+                                    item.product.description,
+                                    item.created_at,
+                                    item.updated_at,
+                                    imageUrls = null
+                                )
+                            )
+                            viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+                        }
+                    }
                 }
             }
         }
     }
-
-
 }
