@@ -66,12 +66,6 @@ class HomeFragment(private val shoppingCartViewModel: ShoppingCartViewModel) : F
         // Set up SwipeRefreshLayout
         setupRefreshLayout()
 
-        // Observe the messageLiveData
-        shoppingCartViewModel.messageLiveData.observe(viewLifecycleOwner) { message ->
-            // Display the message using Toast
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
-
         return fragmentHomeBinding.root
     }
 
@@ -136,7 +130,7 @@ class HomeFragment(private val shoppingCartViewModel: ShoppingCartViewModel) : F
         fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
 
         // Create adapter
-        val productListAdapter = ProductListAdapter(shoppingCartViewModel)
+        val productListAdapter = ProductListAdapter(shoppingCartViewModel, productListViewModel)
         productListAdapter.submitList(productsList)
         fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
     }
@@ -193,6 +187,12 @@ class HomeFragment(private val shoppingCartViewModel: ShoppingCartViewModel) : F
         // Observe changes in category types data
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) { categoryData ->
             handleCategoryDataStatus(categoryData)
+        }
+
+        // Observe the messageLiveData
+        shoppingCartViewModel.messageLiveData.observe(viewLifecycleOwner) { message ->
+            // Display the message using Toast
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
 

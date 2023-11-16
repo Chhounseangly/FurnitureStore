@@ -9,6 +9,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
+import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
 import retrofit2.Response
@@ -27,6 +28,12 @@ interface ApiService {
     //End Point fetching product Detail By passing id
     @GET("api/products/{id}")
     fun loadProductDetail(@Path("id") id: Int): Call<ProductDetail>
+
+    //End Point adding favorite products
+    @POST("api/favorite")
+    suspend fun toggleFavorite(
+        @Body product : AddProductToShoppingCart
+    ): Favorite
 
     //End Point fetching categories data
     @GET("api/categories")

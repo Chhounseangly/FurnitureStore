@@ -31,6 +31,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp">
                 <ImageButton
+                    android:id="@+id/bntFav"
                     android:backgroundTint="@color/trans"
                     android:scaleType="centerInside"
                     android:layout_width="match_parent"

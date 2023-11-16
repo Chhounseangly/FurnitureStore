@@ -7,13 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
+import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
-class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
+class ProductListAdapter(
+    private var shoppingCartViewModel: ShoppingCartViewModel,
+    private var productListViewModel: ProductListViewModel
+) :
     ListAdapter<Product, ProductListAdapter.ProductListViewHolder>(ProductListAdapter()) {
 
     //constructor
@@ -27,7 +31,7 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductItemBinding.inflate(layoutInflater, parent, false)
-        return ProductListViewHolder(binding, shoppingCartViewModel)
+        return ProductListViewHolder(binding, shoppingCartViewModel, productListViewModel)
     }
 
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
@@ -43,7 +47,8 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
 
     class ProductListViewHolder(
         private val viewHolderProductItemBinding: ViewHolderProductItemBinding,
-        private val shoppingCartViewModel: ShoppingCartViewModel
+        private val shoppingCartViewModel: ShoppingCartViewModel,
+        private val productListViewModel: ProductListViewModel
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         fun bind(product: Product) {
             //add image url to ImageView by Library Picasso
@@ -51,16 +56,23 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
             viewHolderProductItemBinding.name.text = product.name
             viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
 
+            if (product.isFavorite == 1) viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_favorited)
+            else viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_fav)
+
             viewHolderProductItemBinding.addToCartBtn.setOnClickListener {
                 shoppingCartViewModel.addItemToCart(product)
             }
+
+            viewHolderProductItemBinding.bntFav.setOnClickListener {
+                productListViewModel.toggleFavorite(product) { result ->
+                    if (result) {
+                        viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_favorited)
+                    }
+                    else {
+                        viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_fav)
+                    }
+                }
+            }
         }
-
     }
-
 }
-
-
-
-
-

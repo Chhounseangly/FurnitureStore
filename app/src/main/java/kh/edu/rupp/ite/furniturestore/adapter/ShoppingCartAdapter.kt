@@ -66,7 +66,8 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                                 item.product.description,
                                 item.created_at,
                                 item.updated_at,
-                                imageUrls=null
+                                imageUrls = null,
+                                isFavorite = 0
                             ))
                             viewHolderProductCartBinding.displayQty.text = item.qty.toString()
                         }
@@ -83,7 +84,8 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                                     item.product.description,
                                     item.created_at,
                                     item.updated_at,
-                                    imageUrls = null
+                                    imageUrls = null,
+                                    isFavorite = 0
                                 )
                             )
                             viewHolderProductCartBinding.displayQty.text = item.qty.toString()
