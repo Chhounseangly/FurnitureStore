@@ -58,7 +58,6 @@ interface ApiService {
         @Query("name") name: String
     ): Res<Product>
 
-
     @GET("?name=luc")
     fun getUser(): Call<User>
 }

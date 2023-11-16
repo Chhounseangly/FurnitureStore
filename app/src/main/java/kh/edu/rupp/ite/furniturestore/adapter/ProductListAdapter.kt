@@ -52,7 +52,7 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
             viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
 
             viewHolderProductItemBinding.addToCartBtn.setOnClickListener {
-                shoppingCartViewModel.addItemToCart(product)
+                shoppingCartViewModel.addProductToShoppingCart(product)
             }
         }
 

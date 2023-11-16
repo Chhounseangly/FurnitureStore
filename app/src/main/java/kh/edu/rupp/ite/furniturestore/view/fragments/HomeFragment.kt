@@ -1,12 +1,12 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +38,7 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private val shoppingCartViewModel = ShoppingCartViewModel()
+    private lateinit var shoppingCartViewModel :ShoppingCartViewModel
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -59,6 +59,8 @@ class HomeFragment() : Fragment() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
+
 
         //init load data from api
         productListViewModel.loadProductsData()
@@ -133,18 +135,14 @@ class HomeFragment() : Fragment() {
             }
         }
 
+        shoppingCartViewModel.loadProductsCartData()
+        //shopping cart
+        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner){
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        }
 
 
-//        shoppingCartViewModel.loadProductsCartData()
-
-
-//        shoppingCartViewModel.loadProductsCartData()
 //        // Update the cart RecyclerView with LiveData from ViewModel
-//        shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner, Observer { shoppingCartItems ->
-//            // Update RecyclerView with new shoppingCartItems
-//            Log.d("Cart", "$shoppingCartItems")
-//        })
-
 
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
