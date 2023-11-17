@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -185,6 +186,23 @@ class ShoppingCartViewModel : ViewModel() {
                     println("Failure: ${t.message}")
                 }
             })
+    }
+
+    //handle api to delete product from shopping cart
+    fun deleteProductShoppingCart(productId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
+                Log.e("Msg", response.message)
+                loadProductsCartData()
+            } catch (ex: Exception) {
+                Log.e("error", "${ex.message}")
+            }
+            //process outside background
+            withContext(Dispatchers.Main.immediate) {
+                loadProductsCartData()
+            }
+        }
     }
 
 }

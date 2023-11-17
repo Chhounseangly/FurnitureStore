@@ -13,6 +13,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -60,4 +61,8 @@ interface ApiService {
 
     @GET("?name=luc")
     fun getUser(): Call<User>
+
+    //End Point delete Product from shopping cart
+    @DELETE("api/deleteProductCart/{id}")
+    suspend fun deleteProductShoppingCart(@Path("id") id: Int): ResponseMessage
 }
