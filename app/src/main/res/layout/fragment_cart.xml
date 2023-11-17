@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--Swipe Refresh Layout -->
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
@@ -9,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <!--    container loading -->
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/cartContainerLoading"
@@ -21,11 +21,11 @@
             shimmer:duration="800">
             <!-- Add loading -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:useDefaultMargins="true">
-                <include layout="@layout/loading_shopping_cart" />
                 <include layout="@layout/loading_shopping_cart" />
                 <include layout="@layout/loading_shopping_cart" />
                 <include layout="@layout/loading_shopping_cart" />
