@@ -56,7 +56,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
 
             //handle Increase Qty
             viewHolderProductCartBinding.addBtn.setOnClickListener {
-                shoppingCartViewModel.addProductToShoppingCart(item, "increaseQty")
+                shoppingCartViewModel.qtyOperation(item, "increaseQty")
                 viewHolderProductCartBinding.displayQty.text = item.qty.toString()
                 // it will delay 50ms to call executingQtyToApi()
                 handler.postDelayed({
@@ -65,7 +65,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
             }
             //handle Decrease Qty
             viewHolderProductCartBinding.minusBtn.setOnClickListener {
-                shoppingCartViewModel.addProductToShoppingCart(item, "decreaseQty")
+                shoppingCartViewModel.qtyOperation(item, "decreaseQty")
                 viewHolderProductCartBinding.displayQty.text = item.qty.toString()
                 // it will delay 50ms to call executingQtyToApi()
                 handler.postDelayed({

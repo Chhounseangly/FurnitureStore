@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,6 @@ class HomeFragment() : Fragment() {
 
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
-
     private lateinit var loading: ProgressBar
     private lateinit var loadingCategory: ProgressBar
     private lateinit var noDataMsg: TextView
@@ -66,6 +66,7 @@ class HomeFragment() : Fragment() {
         productListViewModel.loadProductsData()
         categoriesViewModel.loadCategoryTypes()
         productSliderViewModel.loadProductSliderData()
+
 
         //refresh layout loading data again
         swipeRefreshLayout = fragmentHomeBinding.refreshLayout!!

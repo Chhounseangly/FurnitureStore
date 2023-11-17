@@ -1,9 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
@@ -12,7 +14,9 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,12 +59,11 @@ class ShoppingCartViewModel : ViewModel() {
                     val responseData = response.body()
                     if (responseData != null) {
                         val apiData = ApIData(response.code(), responseData.data)
-                        _shoppingCartItems.postValue(apiData)
+                        _shoppingCartItems.value = apiData
                     } else {
                         println("Response data is null")
                     }
                 }
-
                 override fun onFailure(call: Call<Res<ShoppingCart>>, t: Throwable) {
                     println("Failure: ${t.message}")
                 }
@@ -83,28 +86,23 @@ class ShoppingCartViewModel : ViewModel() {
     }
 
     //handle add product to Shopping Cart
-    fun addProductToShoppingCart(product: Product) {
-        if (_shoppingCartItems.value?.data != null) {
-            _shoppingCartItems.let {
-                for (items in it.value?.data!!) {
-                    if (items.product_id == product.id) {
-                        _toastMessage.postValue("Product existed on shopping cart")
-                    } else {
-                        addProductToCartApi(AddProductToShoppingCart(product.id))
-                        loadProductsCartData()
-                    }
-                }
+    @SuppressLint("SuspiciousIndentation")
+    fun addProductToShoppingCart(productId: Int) {
+        if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
+            val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
+            if (existed != null) {
+                _toastMessage.postValue("Product existed on shopping cart")
+            }else{
+                addProductToCartApi(productId)
+                loadProductsCartData()
             }
-        } else {
-            addProductToCartApi(AddProductToShoppingCart(product.id))
+        }else
+            addProductToCartApi(productId)
             loadProductsCartData()
-        }
     }
 
-    private fun addProductToCartApi(data: AddProductToShoppingCart) {
-        RetrofitInstance.get().api.addProductToShoppingCart(
-            AddProductToShoppingCart(data.product_id)
-        )
+     private fun addProductToCartApi(productId: Int) {
+        RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -124,20 +122,17 @@ class ShoppingCartViewModel : ViewModel() {
             })
     }
 
-    fun addProductToShoppingCart(item: ShoppingCart, operation: String) {
+    //operation of qty
+    fun qtyOperation(item: ShoppingCart, operation: String) {
         val existingItem = shoppingCartItems.value?.data?.find { it.id == item.id }
-
         if (existingItem != null) {
             when (operation) {
                 "increaseQty" -> {
                     existingItem.qty++
                 }
-
                 "decreaseQty" -> {
                     if (existingItem.qty > 1) {
                         existingItem.qty--
-                    } else {
-                        // Handle removal when quantity is 1 or less
                     }
                 }
             }
@@ -146,6 +141,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
+    // handle check update qty and store tempDataList
     private fun updateTempDataList(existingItem: ShoppingCart) {
         if (_tempDataList.isNotEmpty()) {
             val found = _tempDataList.find { it.id == existingItem.id }
@@ -159,6 +155,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
+    //update total when increase or decrease qty in shopping cart
     private fun updateTotalPrice() {
         var total = 0.00
         for (item in shoppingCartItems.value?.data!!) {
@@ -184,10 +181,10 @@ class ShoppingCartViewModel : ViewModel() {
                         println("Response data is null")
                     }
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     println("Failure: ${t.message}")
                 }
             })
     }
+
 }

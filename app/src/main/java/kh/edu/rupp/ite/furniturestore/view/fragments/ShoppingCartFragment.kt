@@ -69,7 +69,6 @@ class ShoppingCartFragment() : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
-
     }
 
     private val simpleItemTouchCallback =
