@@ -9,9 +9,6 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
-import kh.edu.rupp.ite.furniturestore.model.api.model.Product
-import kh.edu.rupp.ite.furniturestore.model.api.model.Res
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +16,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ShoppingCartViewModel : ViewModel() {
 
@@ -51,24 +45,22 @@ class ShoppingCartViewModel : ViewModel() {
 
     //Retrieve products of shopping cart
     fun loadProductsCartData() {
-        RetrofitInstance.get().api.loadShoppingCartUnPaid()
-            .enqueue(object : Callback<Res<ShoppingCart>> {
-                override fun onResponse(
-                    call: Call<Res<ShoppingCart>>,
-                    response: Response<Res<ShoppingCart>>
-                ) {
-                    val responseData = response.body()
-                    if (responseData != null) {
-                        val apiData = ApIData(response.code(), responseData.data)
-                        _shoppingCartItems.value = apiData
-                    } else {
-                        println("Response data is null")
-                    }
-                }
-                override fun onFailure(call: Call<Res<ShoppingCart>>, t: Throwable) {
-                    println("Failure: ${t.message}")
-                }
-            })
+        var apiData = ApIData<List<ShoppingCart>>(102, null) //status 102 is processing
+        _shoppingCartItems.value = apiData
+
+        viewModelScope.launch(Dispatchers.IO) {
+            apiData = try {
+                val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
+                ApIData(200, response.data)
+            } catch (ex: Exception) {
+                Log.e("error", "${ex.message}")
+                ApIData(204, null)
+            }
+            //process outside background
+            withContext(Dispatchers.Main.immediate) {
+                _shoppingCartItems.value = apiData
+            }
+        }
     }
 
     //Function iteration tempData summit to api
@@ -93,34 +85,31 @@ class ShoppingCartViewModel : ViewModel() {
             val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
             if (existed != null) {
                 _toastMessage.postValue("Product existed on shopping cart")
-            }else{
+            } else {
                 addProductToCartApi(productId)
                 loadProductsCartData()
             }
-        }else
-            addProductToCartApi(productId)
-            loadProductsCartData()
+        } else addProductToCartApi(productId)
+        loadProductsCartData()
     }
 
-     private fun addProductToCartApi(productId: Int) {
-        RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
-            .enqueue(object : Callback<ResponseMessage> {
-                override fun onResponse(
-                    call: Call<ResponseMessage>,
-                    response: Response<ResponseMessage>
-                ) {
-                    val responseData = response.body()
-                    if (responseData != null) {
-                        Log.d("Result", responseData.message)
-                    } else {
-                        println("Response data is null")
-                    }
-                }
+    private fun addProductToCartApi(productId: Int) {
+        //processing as background
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitInstance.get().api.addProductToShoppingCart(
+                        AddProductToShoppingCart(productId)
+                )
+                Log.e("message", response.message)
+            } catch (ex: Exception) {
+                Log.e("error", "${ex.message}")
+            }
 
-                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    println("Failure: ${t.message}")
-                }
-            })
+            //process outside background
+            withContext(Dispatchers.Main.immediate) {
+
+            }
+        }
     }
 
     //operation of qty
@@ -131,6 +120,7 @@ class ShoppingCartViewModel : ViewModel() {
                 "increaseQty" -> {
                     existingItem.qty++
                 }
+
                 "decreaseQty" -> {
                     if (existingItem.qty > 1) {
                         existingItem.qty--
@@ -169,23 +159,19 @@ class ShoppingCartViewModel : ViewModel() {
 
     //handle Summit Qty to api
     private fun qtyOperationApi(productId: Int, qty: Int) {
-        RetrofitInstance.get().api.qtyOperation(productId, BodyPutData(qty))
-            .enqueue(object : Callback<ResponseMessage> {
-                override fun onResponse(
-                    call: Call<ResponseMessage>,
-                    response: Response<ResponseMessage>
-                ) {
-                    val responseData = response.body()
-                    if (responseData != null) {
-                        Log.d("Result", responseData.message)
-                    } else {
-                        println("Response data is null")
-                    }
-                }
-                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    println("Failure: ${t.message}")
-                }
-            })
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitInstance.get().api.qtyOperation(productId, BodyPutData(qty))
+                Log.e("message", response.message)
+
+            } catch (ex: Exception) {
+                Log.e("error", "${ex.message}")
+            }
+            //process outside background
+            withContext(Dispatchers.Main.immediate) {
+                loadProductsCartData()
+            }
+        }
     }
 
     //handle api to delete product from shopping cart
