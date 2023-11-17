@@ -49,10 +49,10 @@ class ProductListAdapter(private var shoppingCartViewModel: ShoppingCartViewMode
             //add image url to ImageView by Library Picasso
             Picasso.get().load(product.imageUrl).into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = product.name
-            viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
+            viewHolderProductItemBinding.price.text = "$" +product.price.toString()
 
             viewHolderProductItemBinding.addToCartBtn.setOnClickListener {
-                shoppingCartViewModel.addItemToCart(product)
+                shoppingCartViewModel.addProductToShoppingCart(product.id)
             }
         }
 

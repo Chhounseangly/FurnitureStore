@@ -19,6 +19,12 @@ import com.google.gson.annotations.SerializedName
 )
 
 
+data class StoreTempList(
+  var itemId : Int,
+  var qty :Int
+)
+
+
 //model of ProductDetail
 data class ProductDetail(
   val message: String,

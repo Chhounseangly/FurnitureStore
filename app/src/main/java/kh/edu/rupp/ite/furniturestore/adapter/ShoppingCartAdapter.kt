@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.adapter
 
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,14 +9,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.CheckID
-import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+import java.util.concurrent.TimeUnit
 
-class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) : ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
-    ProductAddToCartAdapter()
-) {
+class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
+    ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
+        ProductAddToCartAdapter()
+    ) {
     //constructor
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
@@ -28,6 +29,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductCartBinding.inflate(layoutInflater, parent, false)
+
         return ProductCartViewHolder(binding, shoppingCartViewModel)
     }
 
@@ -40,28 +42,37 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
         private val viewHolderProductCartBinding: ViewHolderProductCartBinding,
         private val shoppingCartViewModel: ShoppingCartViewModel
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
+
+        private val handler = Handler(Looper.getMainLooper())
+        private val delayMillis = TimeUnit.SECONDS.toMillis(50)
+
         fun bind(item: ShoppingCart) {
-            //add image url to ImageView by Library Picasso
+
+            //passing data from api to view
             Picasso.get().load(item.product?.imageUrl).into(viewHolderProductCartBinding.productImg)
-//            //passing data list to view
             viewHolderProductCartBinding.nameProduct.text = item.product?.name
             viewHolderProductCartBinding.price.text = item.product?.price.toString()
             viewHolderProductCartBinding.displayQty.text = item.qty.toString()
-//
-//            //add more quantity of items
+
+            //handle Increase Qty
             viewHolderProductCartBinding.addBtn.setOnClickListener {
-                if (item.product != null){
-                    shoppingCartViewModel.addItemToCart(Product(item.product_id, item.product.category_id, item.product.name, item.product.price, item.product.imageUrl, item.product.description, item.created_at, item.updated_at, imageUrls=null))
-                }
-//                viewHolderProductCartBinding.displayQty.text = product.qty.toString()
+                shoppingCartViewModel.qtyOperation(item, "increaseQty")
+                viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+                // it will delay 50ms to call executingQtyToApi()
+                handler.postDelayed({
+                    shoppingCartViewModel.executingQtyToApi()
+                }, delayMillis)
             }
-//            //add minus quantity of items
-//            viewHolderProductCartBinding.minusBtn.setOnClickListener {
-//                shoppingCartViewModel.minusQtyItem(product)
-//                viewHolderProductCartBinding.displayQty.text = product.qty.toString()
-//            }
+            //handle Decrease Qty
+            viewHolderProductCartBinding.minusBtn.setOnClickListener {
+                shoppingCartViewModel.qtyOperation(item, "decreaseQty")
+                viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+                // it will delay 50ms to call executingQtyToApi()
+                handler.postDelayed({
+                    shoppingCartViewModel.executingQtyToApi()
+                }, delayMillis)
+            }
         }
     }
-
 
 }
