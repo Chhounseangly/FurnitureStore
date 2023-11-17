@@ -90,10 +90,9 @@ class ShoppingCartFragment() : Fragment() {
                 alertDialog.setTitle("Confirm Delete")
                 alertDialog.setMessage("Are you sure you want to delete this item?")
                 alertDialog.setPositiveButton("Yes") { _, _ ->
-                    // Remove item from the data list
-                    val productList = shoppingCartAdapter.currentList.toMutableList()
-                    productList.removeAt(position)
-                    shoppingCartAdapter.submitList(productList)
+                    // Remove Product from Shopping Cart if user click yes
+                    val productId = shoppingCartAdapter.currentList[position].id
+                    shoppingCartViewModel.deleteProductShoppingCart(productId)
                 }
                 alertDialog.setNegativeButton("No") { _, _ ->
                     // Undo the swipe

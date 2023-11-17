@@ -14,16 +14,16 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import java.util.concurrent.TimeUnit
 
 class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
-    ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
-        ProductAddToCartAdapter()
-    ) {
+        ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
+                ProductAddToCartAdapter()
+        ) {
     //constructor
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-            oldItem == newItem
+                oldItem == newItem
 
         override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-            oldItem.id == newItem.id
+                oldItem.id == newItem.id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
@@ -44,7 +44,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
 
         private val handler = Handler(Looper.getMainLooper())
-        private val delayMillis = TimeUnit.SECONDS.toMillis(50)
+        private val delayMillis = TimeUnit.SECONDS.toMillis(15)
 
         fun bind(item: ShoppingCart) {
 
