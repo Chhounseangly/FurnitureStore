@@ -52,6 +52,8 @@ class ShoppingCartViewModel : ViewModel() {
             apiData = try {
                 val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
                 ApIData(200, response.data)
+
+
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
                 ApIData(204, null)

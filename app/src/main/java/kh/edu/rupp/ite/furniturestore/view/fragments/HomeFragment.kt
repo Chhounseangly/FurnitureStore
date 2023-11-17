@@ -1,11 +1,9 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -21,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
 import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
+import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
@@ -45,8 +44,6 @@ class HomeFragment() : Fragment() {
 
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
-    private lateinit var loading: ProgressBar
-    private lateinit var loadingCategory: ProgressBar
     private lateinit var noDataMsg: TextView
 
     override fun onCreateView(
@@ -91,18 +88,18 @@ class HomeFragment() : Fragment() {
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 ->  showLoadingAnimation(mShimmerViewContainer)
+                102 ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
                 200 -> {
                     if (it.data != null) {
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
-                        hideLoadingAnimation(mShimmerViewContainer)
+                        LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
                 else -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
 
                 }
             }
@@ -112,7 +109,7 @@ class HomeFragment() : Fragment() {
             when (it.status) {
                 200 -> it.data?.let {
                         it1 -> displaySliderProduct(it1)
-                        swipeRefreshLayout.isRefreshing = false
+                    swipeRefreshLayout.isRefreshing = false
                 }
                 else -> {}
             }
@@ -121,17 +118,17 @@ class HomeFragment() : Fragment() {
         //get data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 -> showLoadingAnimation(mShimmerViewContainer)
+                102 -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
                 200 -> it.data?.let { it1 ->
                     displayCategory(it1)
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                 }
 
                 else -> {
                     fragmentHomeBinding.cateTitle?.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                 }
             }
         }
@@ -166,16 +163,6 @@ class HomeFragment() : Fragment() {
     }
 
 
-    //hide loading
-    private fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
-        viewContainerLoadingId.stopShimmerAnimation()
-        viewContainerLoadingId.visibility = View.GONE;
-    }
-
-    //show loading
-    private fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
-        viewContainerLoadingId.startShimmerAnimation()
-    }
 
 
     //display product list on home screen
