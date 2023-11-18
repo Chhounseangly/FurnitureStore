@@ -32,6 +32,7 @@ class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearch
 
         return ProductSearchFoundViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: ProductSearchFoundViewHolder, position: Int) {
         val product = getItem(position)
         holder.bind(product)

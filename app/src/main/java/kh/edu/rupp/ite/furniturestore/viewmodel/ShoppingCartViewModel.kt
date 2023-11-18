@@ -10,6 +10,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -45,18 +46,18 @@ class ShoppingCartViewModel : ViewModel() {
 
     //Retrieve products of shopping cart
     fun loadProductsCartData() {
-        var apiData = ApIData<List<ShoppingCart>>(102, null) //status 102 is processing
+        var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
         _shoppingCartItems.value = apiData
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
                 val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
-                ApIData(200, response.data)
+                ApIData(Status.Success, response.data)
 
 
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
-                ApIData(204, null)
+                ApIData(Status.Failed, null)
             }
             //process outside background
             withContext(Dispatchers.Main.immediate) {

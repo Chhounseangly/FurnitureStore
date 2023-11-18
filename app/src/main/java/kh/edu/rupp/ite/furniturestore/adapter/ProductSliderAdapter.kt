@@ -10,9 +10,10 @@ import com.denzcoskun.imageslider.models.SlideModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductSliderBinding
 
-class ProductSliderAdapter: ListAdapter<ProductSlider, ProductSliderAdapter.ProductSliderViewHolder>(
-    ProductSliderAdapter()
-) {
+class ProductSliderAdapter :
+    ListAdapter<ProductSlider, ProductSliderAdapter.ProductSliderViewHolder>(
+        ProductSliderAdapter()
+    ) {
 
     private class ProductSliderAdapter : DiffUtil.ItemCallback<ProductSlider>() {
         override fun areItemsTheSame(oldItem: ProductSlider, newItem: ProductSlider): Boolean =
@@ -38,7 +39,7 @@ class ProductSliderAdapter: ListAdapter<ProductSlider, ProductSliderAdapter.Prod
     class ProductSliderViewHolder(
         private val viewHolderProductSliderBinding: ViewHolderProductSliderBinding,
 
-    ) : RecyclerView.ViewHolder(viewHolderProductSliderBinding.root) {
+        ) : RecyclerView.ViewHolder(viewHolderProductSliderBinding.root) {
         fun bind(productSlider: ProductSlider) {
             val sliderModels = ArrayList<SlideModel>()
             sliderModels.add(SlideModel(productSlider.imageUrl, productSlider.name, ScaleTypes.FIT))

@@ -14,16 +14,15 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import java.util.concurrent.TimeUnit
 
 class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
-        ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
-                ProductAddToCartAdapter()
-        ) {
-    //constructor
+    ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
+        ProductAddToCartAdapter()
+    ) {
     private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-                oldItem == newItem
+            oldItem == newItem
 
         override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-                oldItem.id == newItem.id
+            oldItem.id == newItem.id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
@@ -47,30 +46,32 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
         private val delayMillis = TimeUnit.SECONDS.toMillis(15)
 
         fun bind(item: ShoppingCart) {
-
             //passing data from api to view
-            Picasso.get().load(item.product?.imageUrl).into(viewHolderProductCartBinding.productImg)
-            viewHolderProductCartBinding.nameProduct.text = item.product?.name
-            viewHolderProductCartBinding.price.text = item.product?.price.toString()
-            viewHolderProductCartBinding.displayQty.text = item.qty.toString()
+            with(viewHolderProductCartBinding) {
+                Picasso.get().load(item.product?.imageUrl).into(productImg)
+                nameProduct.text = item.product?.name
+                price.text = item.product?.price.toString()
+                displayQty.text = item.qty.toString()
 
-            //handle Increase Qty
-            viewHolderProductCartBinding.addBtn.setOnClickListener {
-                shoppingCartViewModel.qtyOperation(item, "increaseQty")
-                viewHolderProductCartBinding.displayQty.text = item.qty.toString()
-                // it will delay 50ms to call executingQtyToApi()
-                handler.postDelayed({
-                    shoppingCartViewModel.executingQtyToApi()
-                }, delayMillis)
-            }
-            //handle Decrease Qty
-            viewHolderProductCartBinding.minusBtn.setOnClickListener {
-                shoppingCartViewModel.qtyOperation(item, "decreaseQty")
-                viewHolderProductCartBinding.displayQty.text = item.qty.toString()
-                // it will delay 50ms to call executingQtyToApi()
-                handler.postDelayed({
-                    shoppingCartViewModel.executingQtyToApi()
-                }, delayMillis)
+                //handle action of button
+                with(shoppingCartViewModel) {
+                    //handle Increase Qty
+                    addBtn.setOnClickListener {
+                        qtyOperation(item, "increaseQty")
+                        // it will delay 15s to call executingQtyToApi()
+                        handler.postDelayed({
+                            shoppingCartViewModel.executingQtyToApi()
+                        }, delayMillis)
+                    }
+                    //handle Decrease Qty
+                    minusBtn.setOnClickListener {
+                        qtyOperation(item, "decreaseQty")
+                        // it will delay 15s to call executingQtyToApi()
+                        handler.postDelayed({
+                            shoppingCartViewModel.executingQtyToApi()
+                        }, delayMillis)
+                    }
+                }
             }
         }
     }

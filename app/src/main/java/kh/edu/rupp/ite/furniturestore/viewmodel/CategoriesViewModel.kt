@@ -10,6 +10,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Data
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -32,14 +33,14 @@ class CategoriesViewModel : ViewModel() {
 
 
     fun loadCategoryTypes() {
-        var apiData = ApIData<List<CategoryTypes>>(102,null) //status 102 is processing
+        var apiData = ApIData<List<CategoryTypes>>(Status.Processing,null) //status 102 is processing
         _categoryTypesData.postValue(apiData)
         viewModelScope.launch(Dispatchers.IO) {
             apiData =  try {
                val response = RetrofitInstance.get().api.loadCategories()
-               ApIData(200, response.data)
+               ApIData(Status.Success, response.data)
             }catch (ex: Exception){
-                ApIData(204, null)
+                ApIData(Status.Failed, null)
             }
 
             withContext(Dispatchers.Main.immediate){
@@ -70,7 +71,7 @@ class CategoriesViewModel : ViewModel() {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 val responseData = response.body()
                 if (responseData != null) {
-                    val apiData = ApIData(response.code(), responseData.data)
+                    val apiData = ApIData(Status.Success, responseData.data)
                     _productByCategory.postValue(apiData)
                 } else {
                     println("Response data is null")

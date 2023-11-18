@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kh.edu.rupp.ite.furniturestore.adapter.SearchFoundAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentSearchBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
 class SearchFragment() : Fragment() {
@@ -47,26 +48,27 @@ class SearchFragment() : Fragment() {
                 if (query != null) {
                     searchViewHolder.search(query)
                     searchViewHolder.data.observe(viewLifecycleOwner) {
-                        when(it.status){
-                            204 -> it.let {
+                        when (it.status) {
+                            Status.Success -> it.data?.let { it1 ->
+                                displayProductSearchFound(it1)
+                                fragmentSearchBinding.notFound.visibility = View.INVISIBLE
+                            }
+                            else -> {
                                 displayProductSearchFound(null)
                                 fragmentSearchBinding.notFound.visibility = View.VISIBLE
-                            }
-                            200 -> it.data?.let {
-                                    it1 -> displayProductSearchFound(it1)
-                                    fragmentSearchBinding.notFound.visibility = View.INVISIBLE
                             }
                         }
                     }
                 }
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText != null){
+                if (newText != null) {
                     fragmentSearchBinding.notFound.visibility = View.INVISIBLE
                     displayProductSearchFound(null)
                 }
-              return true
+                return true
             }
         })
 

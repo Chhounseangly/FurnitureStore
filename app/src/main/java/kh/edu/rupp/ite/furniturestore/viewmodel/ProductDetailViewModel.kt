@@ -9,6 +9,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,16 +24,16 @@ class ProductDetailViewModel : ViewModel() {
         get() = _productsData
 
     fun loadProductDetail(id: Int) {
-        var apiData = ApIData<Product>(102, null) //status 102 is processing
+        var apiData = ApIData<Product>(Status.Processing, null) //status 102 is processing
         _productsData.value = apiData
         //processing as background
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
                 val response = RetrofitInstance.get().api.loadProductDetail(id)
-                ApIData(200, response.data)
+                ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
-                ApIData(204, null)
+                ApIData(Status.Failed, null)
             }
             //process outside background
             withContext(Dispatchers.Main.immediate) {
