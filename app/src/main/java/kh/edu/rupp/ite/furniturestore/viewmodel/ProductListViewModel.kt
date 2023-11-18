@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,15 +20,15 @@ class ProductListViewModel: ViewModel() {
         get() = _productsData
 
     fun loadProductsData(){
-        var apiData = ApIData<List<Product>>(102,null) //status 102 is processing
+        var apiData = ApIData<List<Product>>(Status.Processing,null)
         _productsData.postValue(apiData)
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
                 val response = RetrofitInstance.get().api.loadProductList()
-                 ApIData(200, response.data)
+                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
-                ApIData(204, null)
+                ApIData(Status.Failed, null)
             }
             withContext(Dispatchers.Main.immediate) {
                 _productsData.postValue(apiData)

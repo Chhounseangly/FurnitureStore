@@ -28,6 +28,7 @@ class ProductListAdapter(
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem.id == newItem.id
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductItemBinding.inflate(layoutInflater, parent, false)
@@ -54,7 +55,7 @@ class ProductListAdapter(
             //add image url to ImageView by Library Picasso
             Picasso.get().load(product.imageUrl).into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = product.name
-            viewHolderProductItemBinding.price.text = "$" +product.price.toString()
+            viewHolderProductItemBinding.price.text = "$" + product.price.toString()
 
             if (product.isFavorite == 1) viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_favorited)
             else viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_fav)
@@ -67,8 +68,7 @@ class ProductListAdapter(
                 productListViewModel.toggleFavorite(product) { result ->
                     if (result) {
                         viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_favorited)
-                    }
-                    else {
+                    } else {
                         viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_fav)
                     }
                 }

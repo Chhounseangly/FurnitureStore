@@ -11,6 +11,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -42,8 +43,8 @@ class ProductDetailActivity : AppCompatActivity() {
         //passing data to display slider image
         productDetailViewModel.productsData.observe(this){
           when(it.status){
-              102 -> null
-              200 ->  {
+              Status.Processing -> null
+              Status.Success ->  {
                   name.text = it.data?.name
                   price.text = "$ " + it.data?.price.toString()
                   desc.text = it.data?.description

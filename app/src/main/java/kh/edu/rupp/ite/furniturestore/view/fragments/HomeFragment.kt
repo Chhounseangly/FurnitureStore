@@ -24,6 +24,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
@@ -88,8 +89,8 @@ class HomeFragment() : Fragment() {
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
-                200 -> {
+                Status.Processing ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Success -> {
                     if (it.data != null) {
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
@@ -107,7 +108,7 @@ class HomeFragment() : Fragment() {
         //get data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                200 -> it.data?.let {
+                Status.Success -> it.data?.let {
                         it1 -> displaySliderProduct(it1)
                     swipeRefreshLayout.isRefreshing = false
                 }
@@ -118,8 +119,8 @@ class HomeFragment() : Fragment() {
         //get data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
-                200 -> it.data?.let { it1 ->
+                Status.Processing -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Success -> it.data?.let { it1 ->
                     displayCategory(it1)
                     swipeRefreshLayout.isRefreshing = false
                     LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
