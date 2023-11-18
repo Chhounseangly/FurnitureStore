@@ -24,6 +24,7 @@ import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
@@ -61,8 +62,8 @@ class ShoppingCartFragment() : Fragment() {
 
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
-                102 -> LoadingMethod().showLoadingAnimation(cartContainerLoading)
-                200 -> it.data?.let { it1 ->
+                Status.Processing -> LoadingMethod().showLoadingAnimation(cartContainerLoading)
+                Status.Success -> it.data?.let { it1 ->
                     displayProductCart(it1)
                     shoppingCartViewModel.calculateTotalPrice(it.data)
                     swipeRefreshLayout.isRefreshing = false
