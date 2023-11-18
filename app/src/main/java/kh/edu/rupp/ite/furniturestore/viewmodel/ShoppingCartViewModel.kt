@@ -176,21 +176,29 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    //handle api to delete product from shopping cart
+    // Function to handle API call for deleting a product from the shopping cart
     fun deleteProductShoppingCart(productId: Int) {
+        // Launching a coroutine in the IO dispatcher to perform background network operations
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Making the API call to delete the product from the shopping cart using Retrofit
                 val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
+
+                // Logging the message from the response (you may want to handle this more gracefully)
                 Log.e("Msg", response.message)
+
+                // Reloading the shopping cart data after the product is successfully deleted
                 loadProductsCartData()
             } catch (ex: Exception) {
+                // Handling exceptions, logging the error message
                 Log.e("error", "${ex.message}")
             }
-            //process outside background
+
+            // Performing UI-related operations on the main thread after the background work is done
             withContext(Dispatchers.Main.immediate) {
+                // Reloading the shopping cart data (this seems redundant, as it's already loaded in the try block)
                 loadProductsCartData()
             }
         }
     }
-
 }

@@ -4,6 +4,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
@@ -57,4 +58,7 @@ interface ApiService {
     //End Point delete Product from shopping cart
     @DELETE("api/deleteProductCart/{id}")
     suspend fun deleteProductShoppingCart(@Path("id") id: Int): ResponseMessage
+
+    @POST("api/favorite")
+    suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite
 }

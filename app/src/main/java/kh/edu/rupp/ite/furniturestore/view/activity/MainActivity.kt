@@ -20,10 +20,10 @@ class MainActivity : AppCompatActivity() {
 
     private var shoppingCartViewModel = ShoppingCartViewModel()
 
-    private var homeFragment = HomeFragment(shoppingCartViewModel)
+    private var homeFragment = HomeFragment()
     private var searchFragment = SearchFragment()
     private var favoriteFragment = FavoriteFragment()
-    private var shoppingCartFragment = ShoppingCartFragment(shoppingCartViewModel)
+    private var shoppingCartFragment = ShoppingCartFragment()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -173,7 +173,10 @@ class HomeFragment() : Fragment() {
         fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
 
         // Create adapter
-        val productListAdapter = ProductListAdapter(shoppingCartViewModel)
+        val productListAdapter = ProductListAdapter(
+            shoppingCartViewModel,
+            productListViewModel,
+        )
         productListAdapter.submitList(productsList)
         fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
 
