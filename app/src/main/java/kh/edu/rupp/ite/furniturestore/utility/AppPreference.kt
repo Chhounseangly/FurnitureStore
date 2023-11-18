@@ -3,30 +3,42 @@ package kh.edu.rupp.ite.furniturestore.utility
 import android.content.Context
 import android.content.SharedPreferences
 
-class AppPreference private constructor(context: Context) {
 
-    private var pref: SharedPreferences
+class AppPreference private constructor(context: Context){
+
+    private lateinit var pref: SharedPreferences
 
     init {
-        pref = context.getSharedPreferences("myApp", Context.MODE_PRIVATE)
+        pref = context.getSharedPreferences("myapp", Context.MODE_PRIVATE)
     }
 
+
     fun setToken(token: String) {
-        pref.edit().putString(TOKEN, token).apply()
+        pref.edit().putString(KEY_TOKEN, token).apply()
     }
 
     fun getToken(): String? {
-        return pref.getString(TOKEN, null)
+        return pref.getString(KEY_TOKEN, null)
+    }
+
+    fun removeToken() {
+        pref.edit().remove(KEY_TOKEN).apply()
     }
 
     companion object {
-        private const val TOKEN = "token"
+
+        private const val KEY_TOKEN = "token"
 
         private var instance: AppPreference? = null
 
         fun get(context: Context): AppPreference {
-            if (instance == null) instance = AppPreference(context)
+            if (instance == null) {
+                instance = AppPreference(context)
+            }
+
             return instance!!
         }
+
     }
+
 }

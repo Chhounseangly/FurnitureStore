@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/verifyBtn"
+                android:id="@+id/checkoutBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/custom_style_btn"
