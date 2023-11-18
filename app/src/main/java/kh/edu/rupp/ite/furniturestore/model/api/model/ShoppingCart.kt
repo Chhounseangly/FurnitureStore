@@ -1,7 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.model.api.model
 
 data class ShoppingCart(
-    val id: Int,
+    var id: Int,
     val product_id: Int,
     val paid: Int,
     var qty: Int,

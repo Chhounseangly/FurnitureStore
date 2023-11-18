@@ -54,13 +54,13 @@ class ProductListAdapter(
             //add image url to ImageView by Library Picasso
             Picasso.get().load(product.imageUrl).into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = product.name
-            viewHolderProductItemBinding.price.text = "$ " +product.price.toString()
+            viewHolderProductItemBinding.price.text = "$" +product.price.toString()
 
             if (product.isFavorite == 1) viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_favorited)
             else viewHolderProductItemBinding.bntFav.setImageResource(R.drawable.ic_fav)
 
             viewHolderProductItemBinding.addToCartBtn.setOnClickListener {
-                shoppingCartViewModel.addItemToCart(product)
+                shoppingCartViewModel.addProductToShoppingCart(product.id)
             }
 
             viewHolderProductItemBinding.bntFav.setOnClickListener {

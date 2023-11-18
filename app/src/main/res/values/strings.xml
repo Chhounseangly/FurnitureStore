@@ -48,5 +48,7 @@
     <string name="search">Search</string>
     <string name="categories">Categories</string>
     <string name="explore">Explore</string>
+    <string name="_1">1</string>
+    <string name="checkout" />
 
 </resources>

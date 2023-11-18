@@ -41,16 +41,19 @@ class ProductDetailActivity : AppCompatActivity() {
         productDetailViewModel.loadProductDetail(id)
         //passing data to display slider image
         productDetailViewModel.productsData.observe(this){
-            if (it.status == 200){
-                name.text = it.data?.name
-                price.text = "$ " + it.data?.price.toString()
-                desc.text = it.data?.description
-                it.data?.imageUrls?.let {
-                        it1 -> displaySliderImages(it1)
-                }
-            }
+          when(it.status){
+              102 -> null
+              200 ->  {
+                  name.text = it.data?.name
+                  price.text = "$ " + it.data?.price.toString()
+                  desc.text = it.data?.description
+                  it.data?.imageUrls?.let {
+                      it1 -> displaySliderImages(it1)
+                  }
+              }
+              else ->{}
+          }
         }
-
 
         // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
         if (desc.lineCount > 10) {
