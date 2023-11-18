@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 
 class SignInActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var password: EditText
     private var isAllFieldsChecked = false
+    private var authViewModel = AuthViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +77,7 @@ class SignInActivity : AppCompatActivity() {
 
             //validation checked is true go
             if (isAllFieldsChecked) {
+                authViewModel.login(this, email.text.toString(), password.text.toString())
                 Toast.makeText(this, "Validation Success", Toast.LENGTH_LONG).show()
             }
         }

@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.mnuFav -> displayFragment(favoriteFragment)
                 R.id.mnuSearch -> displayFragment(searchFragment)
                 R.id.mnuCart -> displayFragment(shoppingCartFragment)
-                else -> startActivity(profileActivity)
+                else -> startActivity(signInScreen)
 //                else -> startActivity(signInScreen)
 //                else -> displayFragment(ProfileFragment())
             }
