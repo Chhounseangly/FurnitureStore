@@ -141,7 +141,7 @@ class HomeFragment() : Fragment() {
         }
 
 
-//        // Update the cart RecyclerView with LiveData from ViewModel
+       // Update the cart RecyclerView with LiveData from ViewModel
 
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
