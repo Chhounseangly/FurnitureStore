@@ -4,6 +4,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
@@ -36,7 +37,7 @@ interface ApiService {
 
     //End Point fetching product by category types
     @GET("api/categories_by_id/{id}")
-    fun loadProductsByCategory(@Path("id") id: Int): Call<ApiResponse>
+    suspend fun loadProductsByCategory(@Path("id") id: Int): ApiResponse
 
     //End Point fetching Product in Shopping Cart not yet Paid
     @GET("api/shoppingCartUnPaid")

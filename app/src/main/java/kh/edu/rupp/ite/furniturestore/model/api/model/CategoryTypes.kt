@@ -11,16 +11,16 @@ class  CategoryModel(
     val data: List<CategoryTypes>
 )
 
-data class Data(
+
+
+data class ApiResponse(
+    val message: String,
+    val data: ProductByCate
+)
+data class ProductByCate(
     val id: Int,
     val name: String,
     val created_at: String?,
     val updated_at: String?,
     val products: List<Product>
-)
-
-data class ApiResponse(
-    val success: Boolean,
-    val message: String,
-    val data: Data
 )

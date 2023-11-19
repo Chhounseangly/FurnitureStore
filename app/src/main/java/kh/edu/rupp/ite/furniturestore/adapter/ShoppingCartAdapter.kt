@@ -58,6 +58,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                     //handle Increase Qty
                     addBtn.setOnClickListener {
                         qtyOperation(item, "increaseQty")
+                        displayQty.text = item.qty.toString()
                         // it will delay 15s to call executingQtyToApi()
                         handler.postDelayed({
                             shoppingCartViewModel.executingQtyToApi()
@@ -66,6 +67,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                     //handle Decrease Qty
                     minusBtn.setOnClickListener {
                         qtyOperation(item, "decreaseQty")
+                        displayQty.text = item.qty.toString()
                         // it will delay 15s to call executingQtyToApi()
                         handler.postDelayed({
                             shoppingCartViewModel.executingQtyToApi()
