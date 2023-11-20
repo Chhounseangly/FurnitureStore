@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".controller.activity.MainActivity">
+    android:orientation="vertical">
 
     <!--    app bar-->
     <com.google.android.material.appbar.AppBarLayout
@@ -54,18 +53,7 @@
         android:id="@+id/lytFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/fabToTop"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|end"-->
-<!--            android:layout_margin="16dp"-->
-<!--            android:backgroundTint="@color/cate_bg_color"-->
-<!--            android:contentDescription="Up to Top"-->
-<!--            android:src="@drawable/ic_arrow_up" />-->
-    </FrameLayout>
+        android:layout_weight="1"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
