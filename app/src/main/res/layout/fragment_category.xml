@@ -1,43 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!--    app bar-->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:minHeight="?attr/actionBarSize">
-
-            <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_back" />
-
-            <TextView
-                android:textColor="@color/black"
-                android:id="@+id/titleTypeCate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Product By Category"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/lytTab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto">
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_marginHorizontal="10dp"
         android:id="@+id/loadingLoadProducts"
@@ -74,9 +40,9 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <FrameLayout
-        android:id="@+id/lytFragmentCate"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProductsByCate"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

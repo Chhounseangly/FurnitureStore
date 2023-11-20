@@ -24,7 +24,7 @@ import retrofit2.http.Query
 
 interface ApiService {
     //End Point fetching products
-    @GET("api/products")
+    @GET("api/retrieveProducts")
     suspend fun loadProductList(): Res<Product>
 
     //End Point fetching product Detail By passing id
