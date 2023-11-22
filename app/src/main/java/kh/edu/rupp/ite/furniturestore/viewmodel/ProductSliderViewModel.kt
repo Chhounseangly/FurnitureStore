@@ -23,6 +23,18 @@ class ProductSliderViewModel: ViewModel() {
                 "test",
                 "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png"
             ),
+            ProductSlider(
+                1,
+                "test  ",
+                "test",
+                "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png"
+            ),
+            ProductSlider(
+                1,
+                "test  ",
+                "test",
+                "https://res.cloudinary.com/drbdm4ucw/image/upload/v1693291855/chat_app/Images_Post/ldgvbyvxmzjwsqvlugd4.png"
+            ),
         ))
         _productSliderData.postValue(apiData)
 

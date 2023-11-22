@@ -21,16 +21,7 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
             oldItem.id == newItem.id
     }
 
-    class CategoryTypesViewHolder(
-        private val viewHolderCategoryTypeBinding: ViewHolderCategoryTypeBinding
-    ) : RecyclerView.ViewHolder(viewHolderCategoryTypeBinding.root) {
-        fun bind(categoryTypes: CategoryTypes) {
-            //add image url to ImageView by Library Picasso
-//            Picasso.get().load(categoryTypes.imageUrl).into(viewHolderCategoryTypeBinding.img)
-            viewHolderCategoryTypeBinding.name.text = categoryTypes.name
 
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTypesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -48,6 +39,18 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
             it.context.startActivity(intent)
         }
         holder.bind(categoryTypes)
+    }
+
+
+    class CategoryTypesViewHolder(
+        private val viewHolderCategoryTypeBinding: ViewHolderCategoryTypeBinding
+    ) : RecyclerView.ViewHolder(viewHolderCategoryTypeBinding.root) {
+        fun bind(categoryTypes: CategoryTypes) {
+            //add image url to ImageView by Library Picasso
+//            Picasso.get().load(categoryTypes.imageUrl).into(viewHolderCategoryTypeBinding.img)
+            viewHolderCategoryTypeBinding.name.text = categoryTypes.name
+
+        }
     }
 }
 

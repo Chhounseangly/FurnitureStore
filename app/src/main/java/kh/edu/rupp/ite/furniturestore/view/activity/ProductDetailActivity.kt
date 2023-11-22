@@ -6,10 +6,16 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselSnapHelper
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.adapter.CarouselAdapter
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
@@ -49,12 +55,14 @@ class ProductDetailActivity : AppCompatActivity() {
                   price.text = "$ " + it.data?.price.toString()
                   desc.text = it.data?.description
                   it.data?.imageUrls?.let {
-                      it1 -> displaySliderImages(it1)
+                      it1 -> displayCarousel(it1)
                   }
               }
               else ->{}
           }
         }
+
+
 
         // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
         if (desc.lineCount > 10) {
@@ -95,6 +103,17 @@ class ProductDetailActivity : AppCompatActivity() {
             sliderModels.add(SlideModel(i.imageUrl, ScaleTypes.FIT))
         }
         carousel.setImageList(sliderModels, ScaleTypes.FIT)
+    }
+
+    private fun displayCarousel(carouselSlider: List<ImageUrls>) {
+        val carouselRecyclerView = findViewById<RecyclerView>(R.id.carousel_recycler_view)
+
+        carouselRecyclerView.layoutManager = CarouselLayoutManager()
+        val snapHelper = CarouselSnapHelper()
+        snapHelper.attachToRecyclerView(carouselRecyclerView)
+        val carouselAdapter = CarouselAdapter()
+        carouselAdapter.submitList(carouselSlider)
+        carouselRecyclerView.adapter = carouselAdapter
     }
 
 }

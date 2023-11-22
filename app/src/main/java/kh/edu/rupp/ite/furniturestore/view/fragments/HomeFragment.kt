@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,6 @@ class HomeFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
@@ -68,7 +66,7 @@ class HomeFragment() : Fragment() {
 
 
         //refresh layout loading data again
-        swipeRefreshLayout = fragmentHomeBinding.refreshLayout!!
+        swipeRefreshLayout = fragmentHomeBinding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             productListViewModel.loadProductsData()
             categoriesViewModel.loadCategoryTypes()
@@ -84,8 +82,7 @@ class HomeFragment() : Fragment() {
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
 
-
-        mShimmerViewContainer = fragmentHomeBinding.shimmerViewContainer!!
+        mShimmerViewContainer = fragmentHomeBinding.shimmerViewContainer
 
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
@@ -165,8 +162,6 @@ class HomeFragment() : Fragment() {
     }
 
 
-
-
     //display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager
@@ -193,7 +188,6 @@ class HomeFragment() : Fragment() {
             }
         }
         fragmentHomeBinding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
-
     }
 
     //display Types of Category
@@ -205,6 +199,8 @@ class HomeFragment() : Fragment() {
         categoryTypesAdapter.submitList(categoryTypes)
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
+
+
 
 }
 
