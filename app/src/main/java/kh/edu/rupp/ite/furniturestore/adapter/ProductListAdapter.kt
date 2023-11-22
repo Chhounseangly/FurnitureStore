@@ -14,13 +14,13 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
+
 class ProductListAdapter(
     private var shoppingCartViewModel: ShoppingCartViewModel,
     private var productListViewModel: ProductListViewModel
 ) :
     ListAdapter<Product, ProductListAdapter.ProductListViewHolder>(ProductListAdapter()) {
 
-    //constructor
     private class ProductListAdapter : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem == newItem

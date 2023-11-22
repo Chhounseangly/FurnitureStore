@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -19,6 +21,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var cfPassword: EditText
     private var isAllFieldsChecked = false
+    private lateinit var authViewModel :  AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //start create sign up screen
@@ -28,6 +31,8 @@ class SignUpActivity : AppCompatActivity() {
 
         //class method handleSignUpProcessing
         handleSignUpProcessing()
+
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         prevBack();
     }
@@ -64,7 +69,7 @@ class SignUpActivity : AppCompatActivity() {
                 AuthValidation().signUpValidation(username, email, password, cfPassword)
             //validation checked is true process
             if (isAllFieldsChecked) {
-                Toast.makeText(this, "done", Toast.LENGTH_LONG).show()
+                authViewModel.signUp(this, email.toString(), password.toString(), username.toString())
             }
         }
     }
@@ -79,5 +84,7 @@ class SignUpActivity : AppCompatActivity() {
         signInBtn.setOnClickListener {
             startActivity(signInScreen)
         }
+
+
     }
 }

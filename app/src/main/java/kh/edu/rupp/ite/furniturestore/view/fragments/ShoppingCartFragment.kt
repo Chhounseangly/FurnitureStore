@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -22,9 +23,11 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityCheckoutBinding
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 
@@ -77,6 +80,13 @@ class ShoppingCartFragment() : Fragment() {
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             fragmentCartBinding.totalPrice.text = it.toString()
+        }
+
+        val checkoutBtn = fragmentCartBinding.checkoutBtn
+
+        checkoutBtn.setOnClickListener {
+            val activityCheckoutIntent = Intent(context, CheckoutActivity::class.java)
+            startActivity(activityCheckoutIntent)
         }
     }
 
