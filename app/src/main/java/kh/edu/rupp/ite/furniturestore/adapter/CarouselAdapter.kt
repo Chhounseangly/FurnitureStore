@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -48,6 +49,7 @@ class CarouselAdapter : ListAdapter<ImageUrls, CarouselAdapter.CarouselViewHolde
         private val viewHolderCarouselBinding: ViewHolderCarouselBinding
     ) : RecyclerView.ViewHolder(viewHolderCarouselBinding.root) {
         fun bind(image: ImageUrls) {
+        Log.d("image", image.imageUrl)
             Picasso.get().load(image.imageUrl).into(viewHolderCarouselBinding.carouselImageView)
 
         }

@@ -79,7 +79,7 @@ class ShoppingCartFragment() : Fragment() {
             }
         }
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
-            fragmentCartBinding.totalPrice.text = it.toString()
+            fragmentCartBinding.totalPrice.text = "$ " + it.toString()
         }
 
         val checkoutBtn = fragmentCartBinding.checkoutBtn

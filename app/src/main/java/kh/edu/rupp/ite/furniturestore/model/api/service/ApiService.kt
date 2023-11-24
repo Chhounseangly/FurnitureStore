@@ -4,15 +4,15 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.SignUp
+import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -66,10 +66,10 @@ interface ApiService {
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite
 
     @POST("api/login")
-    suspend fun login(@Body login: Login): ResponseMessage
+    suspend fun login(@Body login: Login): ResAuth
 
     @POST("api/register")
-    suspend fun register(@Body signUp: SignUp): ResponseMessage
+    suspend fun register(@Body register: Register): ResAuth
 
 
 }

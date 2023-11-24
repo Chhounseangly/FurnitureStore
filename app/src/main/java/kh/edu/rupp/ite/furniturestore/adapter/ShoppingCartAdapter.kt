@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.adapter
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import java.util.concurrent.TimeUnit
 
@@ -35,6 +37,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     override fun onBindViewHolder(holder: ProductCartViewHolder, position: Int) {
         val products = getItem(position)
         holder.bind(products)
+
     }
 
     class ProductCartViewHolder(
@@ -50,8 +53,14 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
             with(viewHolderProductCartBinding) {
                 Picasso.get().load(item.product?.imageUrl).into(productImg)
                 nameProduct.text = item.product?.name
-                price.text = item.product?.price.toString()
+                price.text = "$ "+ item.product?.price.toString()
                 displayQty.text = item.qty.toString()
+
+                productImg.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
 
                 //handle action of button
                 with(shoppingCartViewModel) {

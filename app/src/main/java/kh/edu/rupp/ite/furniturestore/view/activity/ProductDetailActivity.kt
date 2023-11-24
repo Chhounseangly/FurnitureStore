@@ -1,13 +1,13 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.ImageButton
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -19,6 +19,7 @@ import kh.edu.rupp.ite.furniturestore.adapter.CarouselAdapter
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
+
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -34,6 +35,7 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
 
+
         //get id from xml files
         desc = findViewById(R.id.description)
         seeMoreBtn = findViewById(R.id.seeMoreBtn)
@@ -47,21 +49,24 @@ class ProductDetailActivity : AppCompatActivity() {
         //passing id to loadProductDetail
         productDetailViewModel.loadProductDetail(id)
         //passing data to display slider image
-        productDetailViewModel.productsData.observe(this){
-          when(it.status){
-              Status.Processing -> null
-              Status.Success ->  {
-                  name.text = it.data?.name
-                  price.text = "$ " + it.data?.price.toString()
-                  desc.text = it.data?.description
-                  it.data?.imageUrls?.let {
-                      it1 -> displayCarousel(it1)
-                  }
-              }
-              else ->{}
-          }
-        }
+        productDetailViewModel.productsData.observe(this) {
+            when (it.status) {
+                Status.Processing -> null
+                Status.Success -> {
+                    name.text = it.data?.name
+                    price.text = "$ " + it.data?.price.toString()
+                    desc.text = it.data?.description
+                    Log.d("data12", "${it.data}")
+                    it.data?.imageUrls.let {img ->
+                        if (img != null) {
+                            displayCarousel(img)
+                        }
+                    }
+                }
 
+                else -> {}
+            }
+        }
 
 
         // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
@@ -71,6 +76,16 @@ class ProductDetailActivity : AppCompatActivity() {
         toggleTextViewMaxLines(seeMoreBtn)
 
         prevBack()
+    }
+
+    private fun applyFontToAllTextViews(view: View, font: Typeface) {
+        if (view is TextView) {
+            view.typeface = font
+        } else if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                applyFontToAllTextViews(view.getChildAt(i), font)
+            }
+        }
     }
 
     private fun toggleTextViewMaxLines(seeMoreBtn: TextView) {
@@ -94,16 +109,6 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-
-    //function display only image slider
-    private fun displaySliderImages(product: List<ImageUrls>) {
-        val sliderModels = ArrayList<SlideModel>()
-        val carousel = findViewById<ImageSlider>(R.id.carousel)
-        for (i in product){
-            sliderModels.add(SlideModel(i.imageUrl, ScaleTypes.FIT))
-        }
-        carousel.setImageList(sliderModels, ScaleTypes.FIT)
-    }
 
     private fun displayCarousel(carouselSlider: List<ImageUrls>) {
         val carouselRecyclerView = findViewById<RecyclerView>(R.id.carousel_recycler_view)

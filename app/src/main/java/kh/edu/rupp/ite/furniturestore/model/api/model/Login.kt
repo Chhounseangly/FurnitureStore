@@ -6,9 +6,9 @@ data class Login (
 )
 
 
-data class SignUp(
+data class Register(
+    val name: String,
     val email: String,
-    val password: String,
-    val username: String
+    val password: String
 )
 
