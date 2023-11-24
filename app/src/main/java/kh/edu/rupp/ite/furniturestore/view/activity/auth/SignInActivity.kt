@@ -78,7 +78,6 @@ class SignInActivity : AppCompatActivity() {
             //validation checked is true go
             if (isAllFieldsChecked) {
                 authViewModel.login(this, email.text.toString(), password.text.toString())
-                Toast.makeText(this, "Validation Success", Toast.LENGTH_LONG).show()
             }
         }
 

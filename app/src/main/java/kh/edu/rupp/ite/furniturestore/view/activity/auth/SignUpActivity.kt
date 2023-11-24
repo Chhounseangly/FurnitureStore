@@ -6,9 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -16,12 +14,11 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var username: EditText
+    private lateinit var name: EditText
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var cfPassword: EditText
-    private var isAllFieldsChecked = false
-    private lateinit var authViewModel :  AuthViewModel
+    private var authViewModel = AuthViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //start create sign up screen
@@ -31,8 +28,6 @@ class SignUpActivity : AppCompatActivity() {
 
         //class method handleSignUpProcessing
         handleSignUpProcessing()
-
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         prevBack();
     }
@@ -50,14 +45,14 @@ class SignUpActivity : AppCompatActivity() {
         val signUpBtn = findViewById<Button>(R.id.signUpBtn)
 
         //get value of editText of SignUpActivity
-        username = findViewById(R.id.usernameInput)
+        name = findViewById(R.id.usernameInput)
         email = findViewById(R.id.emInput)
         password = findViewById(R.id.pwInput)
         cfPassword = findViewById(R.id.cfPwInput)
 
 
         //call dynamic handleOnChangeEditText from AuthValidation Class
-        AuthValidation().handleOnChangeEditText(username)
+        AuthValidation().handleOnChangeEditText(name)
         AuthValidation().handleOnChangeEditText(email)
         AuthValidation().handleOnChangeEditText(password)
         AuthValidation().handleOnChangeEditText(cfPassword)
@@ -65,11 +60,10 @@ class SignUpActivity : AppCompatActivity() {
         // event Processing of Sign In Button
         signUpBtn.setOnClickListener {
             //call method signUpValidation from AuthValidation Class
-            isAllFieldsChecked =
-                AuthValidation().signUpValidation(username, email, password, cfPassword)
+            val isAllFieldsChecked = AuthValidation().signUpValidation(name, email, password, cfPassword)
             //validation checked is true process
             if (isAllFieldsChecked) {
-                authViewModel.signUp(this, email.toString(), password.toString(), username.toString())
+                authViewModel.signUp(this, name.text.toString(), email.text.toString(), password.text.toString())
             }
         }
     }

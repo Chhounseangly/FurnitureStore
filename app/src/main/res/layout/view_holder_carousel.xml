@@ -3,14 +3,15 @@
     android:id="@+id/carousel_item_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:foreground="?attr/selectableItemBackground"
+    android:padding="10dp"
     app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
 
-        <ImageView
-            android:id="@+id/carousel_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+    <ImageView
+        android:id="@+id/carouselImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="TODO"
+        android:scaleType="centerCrop" />
 </com.google.android.material.carousel.MaskableFrameLayout>
 
