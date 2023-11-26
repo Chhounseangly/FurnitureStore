@@ -44,27 +44,6 @@ class ShoppingCartViewModel : ViewModel() {
         _totalPrice.value = total
     }
 
-    //Retrieve products of shopping cart
-    fun loadProductsCartData() {
-        var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
-        _shoppingCartItems.value = apiData
-
-        viewModelScope.launch(Dispatchers.IO) {
-            apiData = try {
-                val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
-                ApIData(Status.Success, response.data)
-
-
-            } catch (ex: Exception) {
-                Log.e("error", "${ex.message}")
-                ApIData(Status.Failed, null)
-            }
-            //process outside background
-            withContext(Dispatchers.Main.immediate) {
-                _shoppingCartItems.value = apiData
-            }
-        }
-    }
 
     //Function iteration tempData summit to api
     fun executingQtyToApi() {
@@ -90,10 +69,8 @@ class ShoppingCartViewModel : ViewModel() {
                 _toastMessage.postValue("Product existed on shopping cart")
             } else {
                 addProductToCartApi(productId)
-                loadProductsCartData()
             }
         } else addProductToCartApi(productId)
-        loadProductsCartData()
     }
 
     private fun addProductToCartApi(productId: Int) {
@@ -103,6 +80,7 @@ class ShoppingCartViewModel : ViewModel() {
                 val response = RetrofitInstance.get().api.addProductToShoppingCart(
                         AddProductToShoppingCart(productId)
                 )
+                loadProductsCartData()
                 Log.e("message", response.message)
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
@@ -110,7 +88,28 @@ class ShoppingCartViewModel : ViewModel() {
 
             //process outside background
             withContext(Dispatchers.Main.immediate) {
+                loadProductsCartData()
+            }
+        }
+    }
 
+    //Retrieve products of shopping cart
+    fun loadProductsCartData() {
+        var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
+        _shoppingCartItems.value = apiData
+
+        viewModelScope.launch(Dispatchers.IO) {
+            apiData = try {
+                val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
+                ApIData(Status.Success, response.data)
+
+            } catch (ex: Exception) {
+                Log.e("error", "${ex.message}")
+                ApIData(Status.Failed, null)
+            }
+            //process outside background
+            withContext(Dispatchers.Main.immediate) {
+                _shoppingCartItems.postValue(apiData)
             }
         }
     }

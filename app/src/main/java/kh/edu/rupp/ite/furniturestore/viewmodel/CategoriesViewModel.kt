@@ -28,8 +28,7 @@ class CategoriesViewModel : ViewModel() {
 
 
     fun loadCategoryTypes() {
-        var apiData =
-            ApIData<List<CategoryTypes>>(Status.Processing, null) //status 102 is processing
+        var apiData = ApIData<List<CategoryTypes>>(Status.Processing, null)
         _categoryTypesData.postValue(apiData)
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {

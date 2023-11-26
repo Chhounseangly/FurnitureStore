@@ -53,7 +53,10 @@ class ProductListAdapter(
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         fun bind(product: Product) {
             //add image url to ImageView by Library Picasso
-            Picasso.get().load(product.imageUrl).into(viewHolderProductItemBinding.img)
+            Picasso.get().load(product.imageUrl)
+                .placeholder(R.drawable.loading) // Add a placeholder image
+                .error(R.drawable.ic_error) // Add an error image
+                .into(viewHolderProductItemBinding.img)
             viewHolderProductItemBinding.name.text = product.name
             viewHolderProductItemBinding.price.text = "$" + product.price.toString()
 

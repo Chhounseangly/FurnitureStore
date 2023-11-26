@@ -45,14 +45,14 @@ class AuthValidation {
         username: EditText,
         email: EditText,
         password: EditText,
-        cfPassword: EditText
+//        cfPassword: EditText
     ): Boolean {
         val usernameCheck = checkFields(username)
         val emailCheck = checkFields(email)
         val passwordCheck = checkFields(password)
-        val cfPasswordCheck = checkFields(cfPassword)
+//        val cfPasswordCheck = checkFields(cfPassword)
 
-        if (usernameCheck && emailCheck && passwordCheck && cfPasswordCheck) {
+        if (usernameCheck && emailCheck && passwordCheck) {
             if (username.text.length < 4) {
                 username.error = "Username must be at least 4 characters"
                 username.backgroundTintList = ColorStateList.valueOf(Color.RED)
@@ -64,15 +64,6 @@ class AuthValidation {
             } else if (password.text.length < 8) {
                 password.error = "Passwords must be at least 8 characters"
                 password.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                return false
-            } else if (cfPassword.text.length < 8) {
-                cfPassword.error = "Passwords must be at least 8 characters"
-                cfPassword.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                return false
-            } else if (password.text.toString() != cfPassword.text.toString()) {
-                // The passwords are not the same.
-                cfPassword.error = "Passwords must be the same"
-                cfPassword.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 return false
             }
             return  true

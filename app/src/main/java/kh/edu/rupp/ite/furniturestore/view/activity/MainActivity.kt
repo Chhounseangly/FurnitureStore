@@ -3,10 +3,15 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
+import kh.edu.rupp.ite.furniturestore.displayFragment.DisplayFragmentActivity
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
@@ -15,6 +20,7 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var displayFragmentActivity: DisplayFragmentActivity
 
     private lateinit var activityMainBinding: ActivityMainBinding
 
@@ -32,9 +38,11 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
+        displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
+
         //click on title of app go back to home fragment and set menu home active
         activityMainBinding.titleTxt.setOnClickListener {
-            displayFragment(homeFragment)
+            displayFragmentActivity.displayFragment(homeFragment)
             activityMainBinding.bottomNavigationView.selectedItemId = R.id.mnuHome
         }
 
@@ -42,54 +50,26 @@ class MainActivity : AppCompatActivity() {
         shoppingCartViewModel.loadProductsCartData()
 
         //display home fragment when starting app
-        displayFragment(homeFragment)
+        displayFragmentActivity.displayFragment(homeFragment)
 
         val signInScreen = Intent(this, SignInActivity::class.java)
-        val profileActivity = Intent(this, ProfileActivity::class.java)
-
+        val token = AppPreference.get(this).getToken();
 
         //action on bottom nav_bar when user click menu
         activityMainBinding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.mnuHome -> displayFragment(homeFragment)
-                R.id.mnuFav -> displayFragment(favoriteFragment)
-                R.id.mnuSearch -> displayFragment(searchFragment)
-                R.id.mnuCart -> displayFragment(shoppingCartFragment)
-                else -> startActivity(signInScreen)
-//                else -> startActivity(signInScreen)
-//                else -> displayFragment(ProfileFragment())
+                R.id.mnuHome -> displayFragmentActivity.displayFragment(homeFragment)
+                R.id.mnuFav -> displayFragmentActivity.displayFragment(favoriteFragment)
+                R.id.mnuSearch -> displayFragmentActivity.displayFragment(searchFragment)
+                R.id.mnuCart -> displayFragmentActivity.displayFragment(shoppingCartFragment)
+                else -> {
+                    if (token != null){
+                        val profileActivity = Intent(this, ProfileActivity::class.java)
+                        startActivity(profileActivity)
+                    }else startActivity(signInScreen)
+                }
             }
             true
         }
-    }
-
-    // Function to display fragments without reloading
-    private fun displayFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-
-        // Hide all existing fragments
-        for (existingFragment in fragmentManager.fragments) {
-            // hide all existing fragments
-            fragmentTransaction.hide(existingFragment)
-            // set the lifecycle state of the fragment to STARTED
-            fragmentTransaction.setMaxLifecycle(existingFragment, Lifecycle.State.STARTED)
-        }
-
-        // Check if the fragment is already added
-        if (!fragment.isAdded) {
-            // If not added, add it to the fragment container
-            fragmentTransaction.add(R.id.lytFragment, fragment)
-        } else {
-            // If already added, show it and set the lifecycle state to RESUMED
-            fragmentTransaction.setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
-            fragmentTransaction.show(fragment)
-        }
-
-        // Add the transaction to the back stack
-        fragmentTransaction.addToBackStack(null)
-
-        // Commit the transaction
-        fragmentTransaction.commit()
     }
 }
