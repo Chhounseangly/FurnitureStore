@@ -13,11 +13,15 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Register
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
+import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -71,5 +75,14 @@ interface ApiService {
     @POST("api/register")
     suspend fun register(@Body register: Register): ResAuth
 
+
+    @GET("api/loadProfile")
+    suspend fun loadProfile(@Header("Authorization") authorization: String): ResProfile
+
+    @GET("api/logout")
+    suspend fun logout(@Header("Authorization") authorization: String): ResponseMessage
+
+    @PUT("api/updateProfile")
+    suspend fun updateProfile(@Header("Authorization") authorization: String, @Body data: UpdateProfile): ResponseMessage
 
 }

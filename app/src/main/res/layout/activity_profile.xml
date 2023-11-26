@@ -54,12 +54,13 @@
                 android:layout_height="120dp">
                 <ImageView
                     android:id="@+id/profile"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/chair"/>
+                    android:contentDescription="TODO" />
             </androidx.cardview.widget.CardView>
             <TextView
+                android:id="@+id/username"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingVertical="5dp"
@@ -87,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <Button
-                android:id="@+id/editProfileBtn"
+                android:id="@+id/editAvatarBtn"
                 android:textAlignment="textStart"
                 android:drawablePadding="10dp"
                 android:paddingHorizontal="10dp"

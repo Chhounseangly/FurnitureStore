@@ -17,6 +17,7 @@ import com.google.android.material.carousel.CarouselSnapHelper
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.CarouselAdapter
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 
@@ -53,15 +54,7 @@ class ProductDetailActivity : AppCompatActivity() {
             when (it.status) {
                 Status.Processing -> null
                 Status.Success -> {
-                    name.text = it.data?.name
-                    price.text = "$ " + it.data?.price.toString()
-                    desc.text = it.data?.description
-                    Log.d("data12", "${it.data}")
-                    it.data?.imageUrls.let {img ->
-                        if (img != null) {
-                            displayCarousel(img)
-                        }
-                    }
+                    it.data?.let { it1 -> displayUi(it1) }
                 }
 
                 else -> {}
@@ -78,14 +71,16 @@ class ProductDetailActivity : AppCompatActivity() {
         prevBack()
     }
 
-    private fun applyFontToAllTextViews(view: View, font: Typeface) {
-        if (view is TextView) {
-            view.typeface = font
-        } else if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                applyFontToAllTextViews(view.getChildAt(i), font)
+    fun displayUi(data: Product){
+        name.text = data.name
+        price.text = "$ " + data.price.toString()
+        desc.text = data.description
+        data?.imageUrls.let {img ->
+            if (img != null) {
+                displayCarousel(img)
             }
         }
+
     }
 
     private fun toggleTextViewMaxLines(seeMoreBtn: TextView) {

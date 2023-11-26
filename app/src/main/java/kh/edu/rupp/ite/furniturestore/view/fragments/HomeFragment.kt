@@ -1,6 +1,9 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,12 +62,6 @@ class HomeFragment() : Fragment() {
         shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
 
 
-        //init load data from api
-        productListViewModel.loadProductsData()
-        categoriesViewModel.loadCategoryTypes()
-        productSliderViewModel.loadProductSliderData()
-
-
         //refresh layout loading data again
         swipeRefreshLayout = fragmentHomeBinding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
@@ -78,6 +75,11 @@ class HomeFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //init load data from api
+        productListViewModel.loadProductsData()
+        categoriesViewModel.loadCategoryTypes()
+        productSliderViewModel.loadProductSliderData()
+
         noDataMsg = fragmentHomeBinding.noData
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
@@ -160,6 +162,36 @@ class HomeFragment() : Fragment() {
             nestedScrollView.smoothScrollTo(0, 0, 500)
         }
     }
+
+    // Inside YourFragment
+//    private val handler = Handler(Looper.getMainLooper())
+//    private val refreshInterval = 10000L // 1 minute in milliseconds
+//
+////    private val refreshRunnable = object : Runnable {
+////        override fun run() {
+////            // Fetch data at regular intervals
+////            productListViewModel.loadProductsData()
+////            Log.d("Fetching", "Fetching")
+////            // Schedule the next refresh
+////            handler.postDelayed(this, refreshInterval)
+////        }
+////    }
+////
+////    override fun onResume() {
+////        super.onResume()
+////        Log.d("onResume", "onResume")
+////
+////        // Start the refresh loop when the Fragment is visible
+//        handler.postDelayed(refreshRunnable, refreshInterval)
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        Log.d("onPause", "onPause")
+//
+//        // Stop the refresh loop when the Fragment is not visible
+//        handler.removeCallbacks(refreshRunnable)
+//    }
 
 
     //display product list on home screen
