@@ -17,11 +17,11 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -29,7 +29,7 @@ import retrofit2.http.Query
 
 interface ApiService {
     //End Point fetching products
-    @GET("api/retrieveProducts")
+    @GET("api/products")
     suspend fun loadProductList(): Res<Product>
 
     //End Point fetching product Detail By passing id
@@ -53,8 +53,8 @@ interface ApiService {
     suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): ResponseMessage
 
     //End Point put Quantity Product Operation
-    @PUT("api/qtyOperation/{id}")
-    suspend fun qtyOperation(@Path("id") id: Int, @Body qty: BodyPutData): ResponseMessage
+    @PUT("api/qtyOperation")
+    suspend fun qtyOperation(@Body data: List<BodyPutData>): ResponseMessage
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Res<Product>
@@ -70,10 +70,10 @@ interface ApiService {
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite
 
     @POST("api/login")
-    suspend fun login(@Body login: Login): ResAuth
+    suspend fun login(@Body login: Login): Response<ResAuth>
 
     @POST("api/register")
-    suspend fun register(@Body register: Register): ResAuth
+    suspend fun register(@Body register: Register): Response<ResAuth>
 
 
     @GET("api/loadProfile")

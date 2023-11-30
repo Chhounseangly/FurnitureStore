@@ -30,6 +30,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/lyt_signIn"
         android:gravity="center"
         android:layout_below="@id/appBar"
         android:layout_above="@id/lyt_editTxt"
@@ -68,7 +69,23 @@
             android:layout_height="wrap_content"
             tools:ignore="UselessParent">
 
+            <TextView
+                android:visibility="gone"
+                android:paddingStart="5dp"
+                android:gravity="center_vertical"
+                android:background="@color/red"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/errorMsg"
+                android:text="fsa"
+                android:textColor="@color/white"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                tools:ignore="RtlSymmetry" />
+
             <EditText
+                android:layout_below="@id/errorMsg"
                 android:layout_marginVertical="16dp"
                 android:id="@+id/emInput"
                 android:inputType="text"
@@ -78,6 +95,7 @@
                 android:autofillHints="Email" />
 
             <EditText
+                android:drawableEnd="@drawable/ic_invisible_pw"
                 android:layout_below="@id/emInput"
                 android:autofillHints="password"
                 android:id="@+id/pwInput"

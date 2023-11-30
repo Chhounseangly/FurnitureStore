@@ -1,6 +1,8 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +14,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,15 +51,13 @@ class ShoppingCartViewModel : ViewModel() {
     //Function iteration tempData summit to api
     fun executingQtyToApi() {
         if (tempDataList.value?.isNotEmpty() == true) {
-            runBlocking {
-                val iterator = _tempDataList.iterator()
-                while (iterator.hasNext()) {
-                    val item = iterator.next()
-                    delay(500) //submit to api 500s per value
-                    qtyOperationApi(item.id, item.qty)
-                    iterator.remove() // Remove the item after the operation is done
-                }
+            val list = mutableListOf<BodyPutData>()
+            for (i in tempDataList.value!!) {
+                list.add(BodyPutData(i.product_id, i.qty))
             }
+            Handler(Looper.getMainLooper()).postDelayed({
+                qtyOperationApi(list)
+            }, 4000)
         }
     }
 
@@ -160,10 +161,11 @@ class ShoppingCartViewModel : ViewModel() {
     }
 
     //handle Summit Qty to api
-    private fun qtyOperationApi(productId: Int, qty: Int) {
+    private fun qtyOperationApi(data: List<BodyPutData>) {
+        Log.e("list", "$data")
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance.get().api.qtyOperation(productId, BodyPutData(qty))
+                val response = RetrofitInstance.get().api.qtyOperation(data)
                 Log.e("message", response.message)
 
             } catch (ex: Exception) {

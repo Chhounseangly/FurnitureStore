@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
     val name: String,
     val price: Double,
     val imageUrl: String,
-    val description: String,
+    val description: String?,
     val created_at: String?,
     val updated_at: String?,
     val isFavorite: Int?,

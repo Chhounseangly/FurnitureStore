@@ -7,6 +7,12 @@ data class ResponseMessage(
 )
 
 data class BodyPutData(
+    val id: Int,
+    val qty: Int
+)
+
+class Data(
+    val id: Int,
     val qty: Int
 )
 

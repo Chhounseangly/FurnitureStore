@@ -127,7 +127,7 @@ class HomeFragment() : Fragment() {
                 }
 
                 else -> {
-                    fragmentHomeBinding.cateTitle?.visibility = View.GONE
+                    fragmentHomeBinding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
                     LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                 }
@@ -231,9 +231,6 @@ class HomeFragment() : Fragment() {
         categoryTypesAdapter.submitList(categoryTypes)
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
-
-
-
 }
 
 

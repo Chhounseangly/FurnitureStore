@@ -82,8 +82,6 @@ class ProfileActivity : AppCompatActivity() {
             .placeholder(R.drawable.loading) // Add a placeholder image
             .error(R.drawable.ic_error) // Add an error image
             .into(avatar)
-        Picasso.get().isLoggingEnabled = true;
-
         username.text = data.name
     }
 

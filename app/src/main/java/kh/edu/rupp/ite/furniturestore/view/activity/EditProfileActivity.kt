@@ -100,14 +100,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun displayUi(data: User) {
-        if (data.avatar.isEmpty()) {
-            Picasso.get()
-                .load(R.drawable.ic_pf)
-                .placeholder(R.drawable.loading)    // Add a placeholder image
-                .error(R.drawable.ic_error) // Add an error image
-                .into(avatar);
-            Picasso.get().isLoggingEnabled = true;
-        }
         Picasso.get()
             .load(data.avatar)
             .placeholder(R.drawable.loading) // Add a placeholder image
