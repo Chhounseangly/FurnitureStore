@@ -46,7 +46,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
 
         private val handler = Handler(Looper.getMainLooper())
-        private val delayMillis = TimeUnit.SECONDS.toMillis(15)
+        private val delayMillis = TimeUnit.SECONDS.toMillis(5)
 
         fun bind(item: ShoppingCart) {
             //passing data from api to view
@@ -68,7 +68,11 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                     addBtn.setOnClickListener {
                         qtyOperation(item, "increaseQty")
                         displayQty.text = item.qty.toString()
-                        // it will delay 15s to call executingQtyToApi()
+
+                        // Remove any existing callbacks before posting a new one
+                        handler.removeCallbacksAndMessages(null)
+
+                        // it will delay 6 to call executingQtyToApi()
                         handler.postDelayed({
                             shoppingCartViewModel.executingQtyToApi()
                         }, delayMillis)
@@ -77,7 +81,10 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
                     minusBtn.setOnClickListener {
                         qtyOperation(item, "decreaseQty")
                         displayQty.text = item.qty.toString()
-                        // it will delay 15s to call executingQtyToApi()
+                        // Remove any existing callbacks before posting a new one
+                        handler.removeCallbacksAndMessages(null)
+
+                        // it will delay 5 to call executingQtyToApi()
                         handler.postDelayed({
                             shoppingCartViewModel.executingQtyToApi()
                         }, delayMillis)

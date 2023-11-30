@@ -21,7 +21,7 @@
     <string name="don_t_have_an_account_txt">Don\'t have an account?</string>
     <string name="sign_up_title">Sign Up</string>
     <string name="confirmation_password_txt">Confirm Password</string>
-    <string name="username_txt">Username</string>
+    <string name="username_txt">Name</string>
     <string name="already_have_an_account_txt">Already have an account?</string>
     <string name="forgot_password_txt">Forgot Password?</string>
     <string name="enter_your_email_address_txt">Enter your email address</string>

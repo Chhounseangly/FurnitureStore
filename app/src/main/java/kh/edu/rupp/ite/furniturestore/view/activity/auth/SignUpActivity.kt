@@ -1,18 +1,24 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.displayFragment.DisplayFragmentActivity
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
-import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 
@@ -22,9 +28,12 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var cfPassword: EditText
+    private lateinit var signUpBtn: Button
     private var authViewModel = AuthViewModel()
-    private var homeFragment = HomeFragment()
-    private var displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
+    private var isPasswordVisible = false
+
+    private lateinit var errorMessage: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
         prevBack();
     }
 
-    private fun prevBack(){
+    private fun prevBack() {
         val backBtn = findViewById<ImageView>(R.id.backBtn)
 
         backBtn.setOnClickListener {
@@ -49,15 +58,17 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     //handle Sign In Process
+    @SuppressLint("ClickableViewAccessibility")
     private fun handleSignUpProcessing() {
-        val signUpBtn = findViewById<Button>(R.id.signUpBtn)
 
         //get value of editText of SignUpActivity
-        name = findViewById(R.id.usernameInput)
+        name = findViewById(R.id.nameInput)
         email = findViewById(R.id.emInput)
         password = findViewById(R.id.pwInput)
-//        cfPassword = findViewById(R.id.cfPwInput)
+        signUpBtn = findViewById(R.id.signUpBtn)
+        errorMessage = findViewById(R.id.errorMsg)
 
+//        cfPassword = findViewById(R.id.cfPwInput)
 
         //call dynamic handleOnChangeEditText from AuthValidation Class
         AuthValidation().handleOnChangeEditText(name)
@@ -65,30 +76,133 @@ class SignUpActivity : AppCompatActivity() {
         AuthValidation().handleOnChangeEditText(password)
 //        AuthValidation().handleOnChangeEditText(cfPassword)
 
+        togglePasswordVisibility()
+
+        password.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = password.compoundDrawables[2]
+//                // Check if the touch event is on the drawableEnd area
+                if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
         // event Processing of Sign In Button
         signUpBtn.setOnClickListener {
-            //call method signUpValidation from AuthValidation Class
-            val isAllFieldsChecked = AuthValidation().signUpValidation(name, email, password)
-            //validation checked is true process
-            if (isAllFieldsChecked) {
-                authViewModel.signUp(this, name.text.toString(), email.text.toString(), password.text.toString())
-            }
+            signUpBtn.isEnabled = false
+            signUpBtn.setTextColor(Color.BLACK)
+            signUpBtn.setBackgroundResource(R.drawable.disable_btn)
+            clearErrorUnderlines()
+            authViewModel.signUp(name.text.toString(), email.text.toString(), password.text.toString())
         }
+        performSignUp()
 
-        authViewModel.resAuth.observe(this){
-            when(it.status){
-                Status.Processing -> null
-                Status.Success -> {
-                    val mainActivityIntent = Intent(this, MainActivity::class.java)
-                    mainActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(mainActivityIntent)
+
+    }
+
+    private fun performSignUp(){
+        authViewModel.validationResult.observe(this){ validationResult->
+            val (isValid, errorMessages) = validationResult
+            if (isValid) {
+                // Sign-in successful, navigate to the next screen or perform other actions
+                authViewModel.resAuth.observe(this) {
+                    when (it.status) {
+                        Status.Processing -> {
+                            errorMessage.visibility = View.GONE
+                            signUpBtn.isEnabled = false
+                            signUpBtn.setTextColor(Color.BLACK)
+                            signUpBtn.setBackgroundResource(R.drawable.disable_btn)
+                        }
+                        Status.Success -> {
+                            signUpBtn.isEnabled = true
+                            signUpBtn.setTextColor(Color.WHITE)
+                            signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                            val mainActivityIntent = Intent(this, MainActivity::class.java)
+                            mainActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(mainActivityIntent)
+                        }
+
+                        Status.Failed -> {
+                            it.data.let { m->
+                                errorMessage.visibility = View.VISIBLE
+                                errorMessage.text = m?.message
+                            }
+                            // Enable the button after sign-in logic
+                            signUpBtn.isEnabled = true
+                            signUpBtn.setTextColor(Color.WHITE)
+                            signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                        }
+                    }
                 }
-                Status.Failed -> {
-
+            } else {
+                // Enable the button after sign-in logic
+                signUpBtn.isEnabled = true
+                signUpBtn.setTextColor(Color.WHITE)
+                signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                // Display an error message or handle the failed sign-up
+                for (errorMessage in errorMessages) {
+                    handleFieldError(errorMessage)
                 }
             }
+
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.validationResult.removeObservers(this)
+        authViewModel.resAuth.removeObservers(this)
+    }
+
+    private fun handleFieldError(errorMessage: String) {
+        when {
+            errorMessage.contains("Name") -> underlineField(name, errorMessage)
+            errorMessage.contains("Email") -> underlineField(email, errorMessage)
+            errorMessage.contains("Invalided") -> underlineField(email, errorMessage)
+            errorMessage.contains("Password") -> underlineField(password, errorMessage)
+
+        }
+    }
+
+    private fun underlineField(editText: EditText, message: String) {
+        editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
+        editText.error = message
+
+    }
+
+    private fun clearErrorUnderlines() {
+        name.backgroundTintList = null
+        email.backgroundTintList = null
+        password.backgroundTintList = null
+    }
+
+
+    private fun togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible
+
+        val drawableResId = if (isPasswordVisible) {
+            // Show password
+            password.transformationMethod = PasswordTransformationMethod.getInstance()
+
+            // Post a delayed action to toggle icon visibility every 2 seconds
+            R.drawable.ic_invisible_pw
+        } else {
+            // Hide password after a delay
+            password.transformationMethod = HideReturnsTransformationMethod.getInstance()
+
+            // Update drawableEnd icon after hiding the password
+            R.drawable.ic_visible_pw
+
+        }
+
+        // Move the cursor to the end of the text
+        password.setSelection(password.text.length)
+        password.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
+    }
+
 
     private fun initSignInScreenDisplay() {
         //get value from Sign In Button

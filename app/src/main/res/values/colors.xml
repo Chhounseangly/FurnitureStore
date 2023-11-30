@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#0059f5</color>
+    <color name="red">#F50000</color>
+
 
     <color name="body_background">#ffffff</color>
     <color name="body_color">#333333</color>
@@ -23,6 +25,8 @@
     <color name="background">#dddddd</color>
 
     <color name="background_color">#F4FAFF</color>
+
+    <color name="disable_color">#dddddd</color>
 
 
 </resources>
