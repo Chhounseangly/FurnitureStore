@@ -1,22 +1,17 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
+import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.displayFragment.DisplayFragmentActivity
 import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
-import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
-import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
+import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -59,14 +54,24 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.mnuHome -> displayFragmentActivity.displayFragment(homeFragment)
-                R.id.mnuFav -> displayFragmentActivity.displayFragment(favoriteFragment)
+                R.id.mnuFav -> {
+                    if (token != null) {
+                        displayFragmentActivity.displayFragment(favoriteFragment)
+                    } else startActivity(signInScreen)
+                }
+
                 R.id.mnuSearch -> displayFragmentActivity.displayFragment(searchFragment)
-                R.id.mnuCart -> displayFragmentActivity.displayFragment(shoppingCartFragment)
+                R.id.mnuCart -> {
+                    if (token != null) {
+                        displayFragmentActivity.displayFragment(shoppingCartFragment)
+                    } else startActivity(signInScreen)
+                }
+
                 else -> {
-                    if (token != null){
+                    if (token != null) {
                         val profileActivity = Intent(this, ProfileActivity::class.java)
                         startActivity(profileActivity)
-                    }else startActivity(signInScreen)
+                    } else startActivity(signInScreen)
                 }
             }
             true

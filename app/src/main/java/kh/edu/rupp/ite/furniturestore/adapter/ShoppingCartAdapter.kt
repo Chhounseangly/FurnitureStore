@@ -58,7 +58,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
 
                 productImg.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
-                    intent.putExtra("id", item.id)
+                    intent.putExtra("id", item.product_id)
                     it.context.startActivity(intent)
                 }
 

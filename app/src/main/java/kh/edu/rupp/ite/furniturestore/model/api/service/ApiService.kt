@@ -46,15 +46,30 @@ interface ApiService {
 
     //End Point fetching Product in Shopping Cart not yet Paid
     @GET("api/shoppingCartUnPaid")
-    suspend fun loadShoppingCartUnPaid(): Res<ShoppingCart>
+    suspend fun loadShoppingCartUnPaid(
+        @Header("Authorization") authorization: String,
+    ): Res<ShoppingCart>
 
 
     @POST("api/addProductToShoppingCart")
-    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): ResponseMessage
+    suspend fun addProductToShoppingCart(
+        @Header("Authorization") authorization: String,
+        @Body product_id: AddProductToShoppingCart
+    ): ResponseMessage
+
+    //End Point delete Product from shopping cart
+    @DELETE("api/deleteProductCart/{id}")
+    suspend fun deleteProductShoppingCart(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Int
+    ): ResponseMessage
 
     //End Point put Quantity Product Operation
     @PUT("api/qtyOperation")
-    suspend fun qtyOperation(@Body data: List<BodyPutData>): ResponseMessage
+    suspend fun qtyOperation(
+        @Header("Authorization") authorization: String,
+        @Body data: List<BodyPutData>
+    ): ResponseMessage
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Res<Product>
@@ -62,9 +77,6 @@ interface ApiService {
     @GET("?name=luc")
     fun getUser(): Call<User>
 
-    //End Point delete Product from shopping cart
-    @DELETE("api/deleteProductCart/{id}")
-    suspend fun deleteProductShoppingCart(@Path("id") id: Int): ResponseMessage
 
     @POST("api/favorite")
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite
@@ -83,6 +95,9 @@ interface ApiService {
     suspend fun logout(@Header("Authorization") authorization: String): ResponseMessage
 
     @PUT("api/updateProfile")
-    suspend fun updateProfile(@Header("Authorization") authorization: String, @Body data: UpdateProfile): ResponseMessage
+    suspend fun updateProfile(
+        @Header("Authorization") authorization: String,
+        @Body data: UpdateProfile
+    ): ResponseMessage
 
 }
