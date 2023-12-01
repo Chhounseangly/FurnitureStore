@@ -78,8 +78,14 @@ class ShoppingCartFragment() : Fragment() {
                 }
             }
         }
+
+
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             fragmentCartBinding.totalPrice.text = "$ " + it.toString()
+        }
+
+        shoppingCartViewModel.itemCount.observe(viewLifecycleOwner){
+            fragmentCartBinding.itemsCount.text = it.toString()
         }
 
         val checkoutBtn = fragmentCartBinding.checkoutBtn
@@ -174,11 +180,11 @@ class ShoppingCartFragment() : Fragment() {
                             }
                             // Draw the "Delete" text
                             p.color = Color.WHITE
-                            p.textSize = 36f
+                            p.textSize = 44f
                             p.textAlign = Paint.Align.CENTER
                             val text = "Delete"
                             val textX = itemView.right.toFloat() - 2 * width + 40
-                            val textY = itemView.top.toFloat() + 40
+                            val textY = itemView.top.toFloat() + height/2
                             c.drawText(text, textX, textY, p)
                         }
                     }

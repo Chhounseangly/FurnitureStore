@@ -1,9 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,16 +89,16 @@ class HomeFragment() : Fragment() {
                 Status.Processing ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> {
                     if (it.data != null) {
+                        noDataMsg.visibility = View.GONE
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
                         LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
-                else -> {
+                Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
                     LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
-
                 }
             }
         }

@@ -8,12 +8,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,6 +28,8 @@ class ShoppingCartViewModel : ViewModel() {
     // Create list for Shopping Cart items
     private val _shoppingCartItems = MutableLiveData<ApIData<List<ShoppingCart>>>()
     private val _tempDataList = mutableListOf<ShoppingCart>()
+    private val _itemCount = MutableLiveData<Int>()
+
     private val _totalPrice = MutableLiveData(0.00)
     private val _toastMessage = MutableLiveData<String>()
 
@@ -33,18 +37,23 @@ class ShoppingCartViewModel : ViewModel() {
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)
     val totalPrice: LiveData<Double> get() = _totalPrice
+    val itemCount: LiveData<Int> get() = _itemCount
+
     val toastMessage: LiveData<String> get() = _toastMessage
 
 
     //calculate TotalPrice
     fun calculateTotalPrice(shoppingCart: List<ShoppingCart>) {
         var total = 0.00
+        var items = 0
         for (item in shoppingCart) {
             if (item.product != null) {
                 total += item.product.price * item.qty
+                items += item.qty
             }
         }
         _totalPrice.value = total
+        _itemCount.value = items
     }
 
 
@@ -75,14 +84,20 @@ class ShoppingCartViewModel : ViewModel() {
     }
 
     private fun addProductToCartApi(productId: Int) {
+        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
+
         //processing as background
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance.get().api.addProductToShoppingCart(
+                if (token != null) {
+                    val authToken = "Bearer $token"
+                    val response = RetrofitInstance.get().api.addProductToShoppingCart(
+                        authToken,
                         AddProductToShoppingCart(productId)
-                )
-                loadProductsCartData()
-                Log.e("message", response.message)
+                    )
+                    loadProductsCartData()
+                    Log.e("message", response.message)
+                }
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
@@ -96,13 +111,21 @@ class ShoppingCartViewModel : ViewModel() {
 
     //Retrieve products of shopping cart
     fun loadProductsCartData() {
+        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
+
         var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
         _shoppingCartItems.value = apiData
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
-                val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
-                ApIData(Status.Success, response.data)
+                if (token != null) {
+                    val authToken = "Bearer $token"
+                    val response = RetrofitInstance.get().api.loadShoppingCartUnPaid(authToken)
+                    ApIData(Status.Success, response.data)
+                } else {
+                    ApIData(Status.Failed, null)
+
+                }
 
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
@@ -152,22 +175,30 @@ class ShoppingCartViewModel : ViewModel() {
     //update total when increase or decrease qty in shopping cart
     private fun updateTotalPrice() {
         var total = 0.00
+        var items = 0
         for (item in shoppingCartItems.value?.data!!) {
             if (item.product != null) {
                 total += item.product.price * item.qty
+                items += item.qty
             }
         }
         _totalPrice.postValue(total)
+        _itemCount.postValue(items)
     }
 
     //handle Summit Qty to api
     private fun qtyOperationApi(data: List<BodyPutData>) {
-        Log.e("list", "$data")
+        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance.get().api.qtyOperation(data)
-                Log.e("message", response.message)
-
+                if (token != null) {
+                    val authToken = "Bearer $token"
+                    val response = RetrofitInstance.get().api.qtyOperation(authToken, data)
+                    Log.e("message", response.message)
+                } else {
+                    Log.e("message", "error")
+                }
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
@@ -180,17 +211,26 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Function to handle API call for deleting a product from the shopping cart
     fun deleteProductShoppingCart(productId: Int) {
+        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
+
         // Launching a coroutine in the IO dispatcher to perform background network operations
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Making the API call to delete the product from the shopping cart using Retrofit
-                val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
+                if (token != null) {
+                    val authToken = "Bearer $token"
+                    // Making the API call to delete the product from the shopping cart using Retrofit
+                    val response =
+                        RetrofitInstance.get().api.deleteProductShoppingCart(authToken, productId)
 
-                // Logging the message from the response (you may want to handle this more gracefully)
-                Log.e("Msg", response.message)
+                    // Logging the message from the response (you may want to handle this more gracefully)
+                    Log.e("Msg", response.message)
+                    // Reloading the shopping cart data after the product is successfully deleted
+                    loadProductsCartData()
+                } else {
+                    Log.e("Msg", "Error")
+                }
 
-                // Reloading the shopping cart data after the product is successfully deleted
-                loadProductsCartData()
+
             } catch (ex: Exception) {
                 // Handling exceptions, logging the error message
                 Log.e("error", "${ex.message}")
