@@ -77,7 +77,7 @@ class SearchFragment() : Fragment() {
                         displayProductSearchFound(null)
                         noData.visibility = View.GONE
                     }
-                }, 500) // 500 milliseconds (0.5 seconds) delay
+                }, 300) // 300 milliseconds (0.3 seconds) delay
 
                 return true
             }
