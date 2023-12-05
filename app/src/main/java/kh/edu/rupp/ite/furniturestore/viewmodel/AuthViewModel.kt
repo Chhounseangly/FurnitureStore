@@ -195,19 +195,13 @@ class AuthViewModel : ViewModel() {
 
     //handle load profile from api
     fun loadProfile() {
-        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
         var responseData = ApIData<User>(Status.Processing, null)
         _userData.value = responseData
 
         viewModelScope.launch(Dispatchers.IO) {
             responseData = try {
-                if (token != null) {
-                    val authToken = "Bearer $token"
-                    val data = RetrofitInstance.get().api.loadProfile(authToken)
-                    ApIData(Status.Success, data.data)
-                } else {
-                    ApIData(Status.Failed, null)
-                }
+                val data = RetrofitInstance.get().api.loadProfile()
+                ApIData(Status.Success, data.data)
             } catch (e: Exception) {
                 e.printStackTrace()
                 ApIData(Status.Failed, null)
@@ -220,22 +214,17 @@ class AuthViewModel : ViewModel() {
 
     //handle logout user and clear token
     fun logout() {
-        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
         var responseData = ApIData<ResponseMessage>(Status.Processing, null)
         _resMsg.postValue(responseData)
         viewModelScope.launch(Dispatchers.IO) {
             responseData = try {
-                if (token != null) {
-                    val authToken = "Bearer $token"
-                    val data = RetrofitInstance.get().api.logout(authToken)
-                    AppPreference.get(AppCore.get().applicationContext).removeToken()
-                    ApIData(Status.Success, null)
-                } else {
-                    ApIData(Status.Failed, null)
-                }
+                RetrofitInstance.get().api.logout()
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
+                ApIData(Status.Success, null)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("Error", "${e.message}")
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
                 ApIData(Status.Failed, null)
             }
             withContext(Dispatchers.Main.immediate) {
@@ -246,24 +235,17 @@ class AuthViewModel : ViewModel() {
 
     //handle update data of profile
     fun updateProfile(name: String, avatar: String?) {
-        val token = AppPreference.get(AppCore.get().applicationContext).getToken()
 //        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
 //        _resMsg.postValue(resMessage)
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                if (token != null) {
-                    val authToken = "Bearer $token"
-                    val res = RetrofitInstance.get().api.updateProfile(
-                        authToken,
-                        UpdateProfile(name, avatar)
-                    )
+                val res = RetrofitInstance.get().api.updateProfile(
+                    UpdateProfile(name, avatar)
+                )
 //                    loadProfile()
-                    Log.d("name", "${res.data}")
-                    ApIData(Status.Success, null);
-                } else {
-                    ApIData(Status.Failed, null)
-                }
+                Log.d("name", "${res.data}")
+                ApIData(Status.Success, null);
 
             } catch (e: Exception) {
                 Log.e("error", "${e.message}")

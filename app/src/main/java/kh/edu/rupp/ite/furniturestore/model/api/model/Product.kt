@@ -16,7 +16,8 @@ import com.google.gson.annotations.SerializedName
     val isFavorite: Int?,
     var qty: Int? = 1,
     @SerializedName("image_urls") //rename image_urls to ImageUrls
-    val imageUrls: List<ImageUrls>?
+    val imageUrls: List<ImageUrls>?,
+    val is_favorite: IsFavorite?
 )
 
 
@@ -42,3 +43,6 @@ data class ImageUrls(
   val updated_at: String?,
 )
 
+data class IsFavorite(
+    val is_favourited: Int,
+)

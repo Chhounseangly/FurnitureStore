@@ -46,37 +46,24 @@ interface ApiService {
 
     //End Point fetching Product in Shopping Cart not yet Paid
     @GET("api/shoppingCartUnPaid")
-    suspend fun loadShoppingCartUnPaid(
-        @Header("Authorization") authorization: String,
-    ): Res<ShoppingCart>
-
+    suspend fun loadShoppingCartUnPaid(): Res<ShoppingCart>
 
     @POST("api/addProductToShoppingCart")
-    suspend fun addProductToShoppingCart(
-        @Header("Authorization") authorization: String,
-        @Body product_id: AddProductToShoppingCart
-    ): ResponseMessage
+    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): ResponseMessage
 
     //End Point delete Product from shopping cart
     @DELETE("api/deleteProductCart/{id}")
-    suspend fun deleteProductShoppingCart(
-        @Header("Authorization") authorization: String,
-        @Path("id") id: Int
-    ): ResponseMessage
+    suspend fun deleteProductShoppingCart(@Path("id") id: Int): ResponseMessage
 
     //End Point put Quantity Product Operation
     @PUT("api/qtyOperation")
-    suspend fun qtyOperation(
-        @Header("Authorization") authorization: String,
-        @Body data: List<BodyPutData>
-    ): ResponseMessage
+    suspend fun qtyOperation(@Body data: List<BodyPutData>): ResponseMessage
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Res<Product>
 
     @GET("?name=luc")
     fun getUser(): Call<User>
-
 
     @POST("api/favorite")
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite
@@ -87,18 +74,14 @@ interface ApiService {
     @POST("api/register")
     suspend fun register(@Body register: Register): Response<ResAuth>
 
-
     @GET("api/loadProfile")
-    suspend fun loadProfile(@Header("Authorization") authorization: String): ResProfile
+    suspend fun loadProfile(): ResProfile
 
     @GET("api/logout")
-    suspend fun logout(@Header("Authorization") authorization: String): ResponseMessage
+    suspend fun logout(): ResponseMessage
 
     @PUT("api/updateProfile")
-    suspend fun updateProfile(
-        @Header("Authorization") authorization: String,
-        @Body data: UpdateProfile
-    ): ResponseMessage
+    suspend fun updateProfile(@Body data: UpdateProfile): ResponseMessage
 
     //End Point fetching products
     @GET("api/favorite")

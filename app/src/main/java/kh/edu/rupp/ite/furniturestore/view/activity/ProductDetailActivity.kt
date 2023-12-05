@@ -75,13 +75,22 @@ class ProductDetailActivity : AppCompatActivity() {
             description.text = data.description
 
             // Set favorite button based on the isFavorite flag
-            bntFav.setImageResource(if (data.isFavorite == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
+            bntFav.setImageResource(
+                when (data.is_favorite?.is_favourited) {
+                    1 -> R.drawable.ic_favorited
+                    0 -> R.drawable.ic_fav
+                    else -> R.drawable.ic_fav
+                }
+            )
 
             // Favorite button click listener
             bntFav.setOnClickListener {
                 productDetailViewModel.toggleFavorite(data) { result ->
                     // Set the favorite button image based on the result
-                    bntFav.setImageResource(if (result) R.drawable.ic_favorited else R.drawable.ic_fav)
+                    bntFav.setImageResource(
+                        if (result) R.drawable.ic_favorited
+                        else R.drawable.ic_fav
+                    )
                 }
             }
         }
