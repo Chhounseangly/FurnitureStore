@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
@@ -33,6 +34,19 @@ class ProductDetailViewModel : ViewModel() {
             //process outside background
             withContext(Dispatchers.Main.immediate) {
                 _productsData.value = apiData
+            }
+        }
+    }
+
+    fun toggleFavorite(product: Product, callback: (Boolean) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitInstance.get().api.toggleFavorite(AddProductToShoppingCart(product.id))
+                val apiData = response.data
+                callback(apiData)
+            } catch (ex: Exception) {
+                ex.message?.let { Log.d("ProductDetailVM", it) }
+                callback(false)
             }
         }
     }
