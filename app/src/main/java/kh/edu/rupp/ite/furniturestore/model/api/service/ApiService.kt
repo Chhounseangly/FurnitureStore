@@ -100,4 +100,7 @@ interface ApiService {
         @Body data: UpdateProfile
     ): ResponseMessage
 
+    //End Point fetching products
+    @GET("api/favorite")
+    suspend fun loadFavorite(): Res<Product>
 }

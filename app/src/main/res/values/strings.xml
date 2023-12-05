@@ -50,5 +50,6 @@
     <string name="explore">Explore</string>
     <string name="_1">1</string>
     <string name="checkout">Checkout</string>
+    <string name="image_content">This an image</string>
 
 </resources>

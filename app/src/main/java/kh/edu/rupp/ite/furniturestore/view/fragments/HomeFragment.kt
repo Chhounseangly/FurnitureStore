@@ -30,7 +30,6 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
 class HomeFragment() : Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var nestedScrollView: NestedScrollView

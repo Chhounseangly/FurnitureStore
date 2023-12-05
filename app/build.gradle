@@ -13,7 +13,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "BASE_URL", '"http://10.0.2.2:8000/"'
+        buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,11 +22,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:8000/"'
+            buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
 
         }
         debug {
-            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:8000/"'
+            buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
         }
     }
     compileOptions {
@@ -40,8 +40,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-
 }
 
 dependencies {
@@ -71,7 +69,6 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.6'
     implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0'
 
-
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
@@ -85,6 +82,4 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.2.0-alpha13"
     // To use constraintlayout in compose
     implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13"
-
-
 }

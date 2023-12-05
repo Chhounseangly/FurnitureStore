@@ -23,13 +23,11 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
-import kh.edu.rupp.ite.furniturestore.databinding.ActivityCheckoutBinding
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
-
 
 class ShoppingCartFragment() : Fragment() {
 

@@ -1,9 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
-import android.net.http.HttpException
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresExtension
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +13,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
-import kh.edu.rupp.ite.furniturestore.model.api.model.Token
 import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -197,7 +193,6 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-
     //handle load profile from api
     fun loadProfile() {
         val token = AppPreference.get(AppCore.get().applicationContext).getToken()
@@ -222,7 +217,6 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
-
 
     //handle logout user and clear token
     fun logout() {
@@ -249,8 +243,6 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
-
-
 
     //handle update data of profile
     fun updateProfile(name: String, avatar: String?) {
@@ -282,6 +274,5 @@ class AuthViewModel : ViewModel() {
 //                _resMsg.postValue(resMessage)
             }
         }
-
     }
 }

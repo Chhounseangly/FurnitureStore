@@ -7,16 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
-import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProductDetailViewModel : ViewModel() {
     private val _productsData = MutableLiveData<ApIData<Product>>()
@@ -40,6 +35,5 @@ class ProductDetailViewModel : ViewModel() {
                 _productsData.value = apiData
             }
         }
-
     }
 }
