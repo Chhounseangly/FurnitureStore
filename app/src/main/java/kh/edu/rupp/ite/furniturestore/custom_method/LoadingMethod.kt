@@ -14,5 +14,4 @@ class LoadingMethod {
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
         viewContainerLoadingId.startShimmer()
     }
-
 }

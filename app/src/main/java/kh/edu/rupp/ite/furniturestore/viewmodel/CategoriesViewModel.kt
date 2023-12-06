@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
-import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers

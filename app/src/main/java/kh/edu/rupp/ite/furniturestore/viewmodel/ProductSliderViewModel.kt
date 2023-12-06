@@ -37,10 +37,5 @@ class ProductSliderViewModel: ViewModel() {
             ),
         ))
         _productSliderData.postValue(apiData)
-
     }
-
-
-
-
 }

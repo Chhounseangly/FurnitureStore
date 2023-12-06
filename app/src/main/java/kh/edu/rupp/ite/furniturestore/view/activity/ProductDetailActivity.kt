@@ -2,112 +2,131 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.CarouselAdapter
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductDetailBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 
-
 class ProductDetailActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityProductDetailBinding
     private var id = 0
-    private lateinit var price: TextView
-    private lateinit var desc: TextView
-    private lateinit var name: TextView
-    private lateinit var seeMoreBtn: TextView
-
     private val productDetailViewModel = ProductDetailViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_detail)
-
-
-        //get id from xml files
-        desc = findViewById(R.id.description)
-        seeMoreBtn = findViewById(R.id.seeMoreBtn)
-        price = findViewById(R.id.price)
-        name = findViewById(R.id.name)
+        // Initialize ViewBinding
+        binding = ActivityProductDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get id from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
 
-        //passing id to loadProductDetail
+        // Pass id to loadProductDetail
         productDetailViewModel.loadProductDetail(id)
-        //passing data to display slider image
+
+        // Observe changes in product data
         productDetailViewModel.productsData.observe(this) {
             when (it.status) {
-                Status.Processing -> null
-                Status.Success -> {
-                    it.data?.let { it1 -> displayUi(it1) }
+                Status.Processing -> {
+                    // Handle processing state if needed
                 }
-
-                else -> {}
+                Status.Success -> {
+                    it.data?.let { data ->
+                        displayUi(data)
+                    }
+                }
+                else -> {
+                    // Handle other states if needed
+                }
             }
         }
 
-
-        // If the TextView's height is more than 3 lines, set the visibility of the seemoreButton to VISIBLE.
-        if (desc.lineCount > 10) {
-            seeMoreBtn.visibility = View.VISIBLE
+        // If the TextView's height is more than 10 lines, set the visibility of the seeMoreButton to VISIBLE.
+        if (binding.description.lineCount > 10) {
+            binding.seeMoreBtn.visibility = View.VISIBLE
         }
-        toggleTextViewMaxLines(seeMoreBtn)
+        toggleTextViewMaxLines(binding.seeMoreBtn)
 
+        // Handle back button click
         prevBack()
     }
 
-    fun displayUi(data: Product){
-        name.text = data.name
-        price.text = "$ " + data.price.toString()
-        desc.text = data.description
-        data?.imageUrls.let {img ->
+    private fun displayUi(data: Product) {
+        // Display carousel of product images
+        data.imageUrls.let { img ->
             if (img != null) {
                 displayCarousel(img)
             }
         }
 
+        with(binding) {
+            // Display basic product information
+            name.text = data.name
+            price.text = "$ " + data.price.toString()
+            description.text = data.description
+
+            // Set favorite button based on the isFavorite flag
+            bntFav.setImageResource(
+                when (data.is_favorite?.is_favourited) {
+                    1 -> R.drawable.ic_favorited
+                    0 -> R.drawable.ic_fav
+                    else -> R.drawable.ic_fav
+                }
+            )
+
+            // Favorite button click listener
+            bntFav.setOnClickListener {
+                productDetailViewModel.toggleFavorite(data) { result ->
+                    // Set the favorite button image based on the result
+                    bntFav.setImageResource(
+                        if (result) R.drawable.ic_favorited
+                        else R.drawable.ic_fav
+                    )
+                }
+            }
+        }
     }
 
     private fun toggleTextViewMaxLines(seeMoreBtn: TextView) {
-        // When the seeMoreButton is clicked, toggle the visibility of the remaining lines of the TextView.
+        // Toggle the visibility of the remaining lines of the TextView when seeMoreButton is clicked.
         seeMoreBtn.setOnClickListener {
-            if (desc.maxLines == 3) {
-                desc.maxLines = Int.MAX_VALUE
+            if (binding.description.maxLines == 3) {
+                binding.description.maxLines = Int.MAX_VALUE
                 seeMoreBtn.text = "See less"
             } else {
-                desc.maxLines = 3
+                binding.description.maxLines = 3
                 seeMoreBtn.text = "See more"
             }
         }
     }
 
-    //function back to prev activity
+    // Handle back button click to navigate back to the previous activity
     private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
 
-
     private fun displayCarousel(carouselSlider: List<ImageUrls>) {
-        val carouselRecyclerView = findViewById<RecyclerView>(R.id.carousel_recycler_view)
+        val carouselRecyclerView = binding.carouselRecyclerView
 
+        // Set up CarouselLayoutManager and attach to RecyclerView
         carouselRecyclerView.layoutManager = CarouselLayoutManager()
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carouselRecyclerView)
+
+        // Set up CarouselAdapter and display carousel images
         val carouselAdapter = CarouselAdapter()
         carouselAdapter.submitList(carouselSlider)
         carouselRecyclerView.adapter = carouselAdapter
     }
-
 }

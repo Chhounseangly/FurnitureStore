@@ -45,14 +45,15 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="10dp">
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/bntFav"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
+                    android:background="@color/trans"
+                    android:backgroundTint="@color/trans"
+                    android:scaleType="centerInside"
                     android:src="@drawable/ic_fav"
-                    app:tint="@color/black" />
+                    android:contentDescription="@string/image_content" />
             </androidx.cardview.widget.CardView>
 
         </androidx.appcompat.widget.Toolbar>

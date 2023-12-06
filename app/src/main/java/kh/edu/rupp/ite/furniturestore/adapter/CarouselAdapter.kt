@@ -11,19 +11,17 @@ import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCarouselBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.view.activity.PreviewImageActivity
-import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
-
 
 class CarouselAdapter : ListAdapter<ImageUrls, CarouselAdapter.CarouselViewHolder>(
-    CarouselAdapter()
-) {
-    private class CarouselAdapter : DiffUtil.ItemCallback<ImageUrls>() {
+    // Use a direct instantiation of DiffUtil.ItemCallback in the constructor
+    object : DiffUtil.ItemCallback<ImageUrls>() {
         override fun areItemsTheSame(oldItem: ImageUrls, newItem: ImageUrls): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: ImageUrls, newItem: ImageUrls): Boolean =
             oldItem.id == newItem.id
     }
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -36,8 +34,7 @@ class CarouselAdapter : ListAdapter<ImageUrls, CarouselAdapter.CarouselViewHolde
         val image = getItem(position)
         holder.bind(image)
 
-
-        //add listener to preview
+        // Add a listener to preview
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context, PreviewImageActivity::class.java)
             intent.putExtra("imageUrl", image.imageUrl)
@@ -48,11 +45,10 @@ class CarouselAdapter : ListAdapter<ImageUrls, CarouselAdapter.CarouselViewHolde
     class CarouselViewHolder(
         private val viewHolderCarouselBinding: ViewHolderCarouselBinding
     ) : RecyclerView.ViewHolder(viewHolderCarouselBinding.root) {
+        // Use ViewBinding to access views
         fun bind(image: ImageUrls) {
-        Log.d("image", image.imageUrl)
+            Log.d("image", image.imageUrl)
             Picasso.get().load(image.imageUrl).into(viewHolderCarouselBinding.carouselImageView)
-
         }
-
     }
 }
