@@ -30,7 +30,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class HomeFragment() : Fragment() {
+class HomeFragment : Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
@@ -38,7 +38,7 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private lateinit var shoppingCartViewModel :ShoppingCartViewModel
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -85,7 +85,7 @@ class HomeFragment() : Fragment() {
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> {
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
@@ -94,6 +94,7 @@ class HomeFragment() : Fragment() {
                         LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
+
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
@@ -104,10 +105,11 @@ class HomeFragment() : Fragment() {
         //get data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Success -> it.data?.let {
-                        it1 -> displaySliderProduct(it1)
+                Status.Success -> it.data?.let { it1 ->
+                    displaySliderProduct(it1)
                     swipeRefreshLayout.isRefreshing = false
                 }
+
                 else -> {}
             }
         }
@@ -132,12 +134,12 @@ class HomeFragment() : Fragment() {
 
         shoppingCartViewModel.loadProductsCartData()
         //shopping cart
-        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner){
+        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
 
 
-       // Update the cart RecyclerView with LiveData from ViewModel
+        // Update the cart RecyclerView with LiveData from ViewModel
 
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
@@ -228,6 +230,3 @@ class HomeFragment() : Fragment() {
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
 }
-
-
-

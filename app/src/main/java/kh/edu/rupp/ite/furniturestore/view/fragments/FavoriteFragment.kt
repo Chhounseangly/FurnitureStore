@@ -17,7 +17,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 
-class FavoriteFragment() : Fragment() {
+class FavoriteFragment : Fragment() {
     // View binding for the fragment
     private lateinit var fragmentFavoriteBinding: FragmentFavoriteBinding
 

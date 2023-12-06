@@ -3,15 +3,13 @@ package kh.edu.rupp.ite.furniturestore.utility
 import android.content.Context
 import android.content.SharedPreferences
 
-
 class AppPreference private constructor(context: Context){
 
-    private lateinit var pref: SharedPreferences
+    private var pref: SharedPreferences
 
     init {
         pref = context.getSharedPreferences("myapp", Context.MODE_PRIVATE)
     }
-
 
     fun setToken(token: String) {
         pref.edit().putString(KEY_TOKEN, token).apply()
@@ -38,7 +36,5 @@ class AppPreference private constructor(context: Context){
 
             return instance!!
         }
-
     }
-
 }

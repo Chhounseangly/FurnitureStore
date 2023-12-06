@@ -49,10 +49,3 @@ class ProductSliderAdapter : ListAdapter<ProductSlider, ProductSliderAdapter.Pro
         }
     }
 }
-
-
-
-
-
-
-

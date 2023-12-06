@@ -2,7 +2,6 @@ package kh.edu.rupp.ite.furniturestore.model.api.model
 
 import com.google.gson.annotations.SerializedName
 
-
 //key word data mean open for another class can inherited
   data class Product(
     var id: Int,
@@ -20,19 +19,16 @@ import com.google.gson.annotations.SerializedName
     val is_favorite: IsFavorite?
 )
 
-
 data class StoreTempList(
   var itemId : Int,
   var qty :Int
 )
-
 
 //model of ProductDetail
 data class ProductDetail(
   val message: String,
   val data: Product
 )
-
 
 //model of ImageUrls
 data class ImageUrls(

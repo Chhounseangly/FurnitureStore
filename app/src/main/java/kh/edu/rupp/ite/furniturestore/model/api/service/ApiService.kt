@@ -8,12 +8,12 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
+import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.Register
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import retrofit2.Call
@@ -21,7 +21,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
