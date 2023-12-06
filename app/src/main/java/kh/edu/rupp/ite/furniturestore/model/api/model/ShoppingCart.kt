@@ -7,7 +7,7 @@ data class ShoppingCart(
     var qty: Int,
     val created_at: String?,
     val updated_at: String?,
-    val product: ProductModel?
+    val product: ProductModel
 )
 
 data class ProductModel(

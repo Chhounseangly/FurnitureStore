@@ -29,16 +29,14 @@ class ShoppingCartViewModel : ViewModel() {
     private val _shoppingCartItems = MutableLiveData<ApIData<List<ShoppingCart>>>()
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
-
     private val _totalPrice = MutableLiveData(0.00)
     private val _toastMessage = MutableLiveData<String>()
 
     // LiveData to hold Shopping Cart Items.
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)
-    val totalPrice: LiveData<Double> get() = _totalPrice
     val itemCount: LiveData<Int> get() = _itemCount
-
+    val totalPrice: LiveData<Double> get() = _totalPrice
     val toastMessage: LiveData<String> get() = _toastMessage
 
 
@@ -114,7 +112,7 @@ class ShoppingCartViewModel : ViewModel() {
         val token = AppPreference.get(AppCore.get().applicationContext).getToken()
 
         var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
-        _shoppingCartItems.value = apiData
+        _shoppingCartItems.postValue(apiData)
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
