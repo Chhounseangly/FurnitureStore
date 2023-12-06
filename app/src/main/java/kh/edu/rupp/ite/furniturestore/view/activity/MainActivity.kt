@@ -12,20 +12,16 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
-import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var displayFragmentActivity: DisplayFragmentActivity
 
     private lateinit var activityMainBinding: ActivityMainBinding
 
-    private var shoppingCartViewModel = ShoppingCartViewModel()
-
     private var homeFragment = HomeFragment()
     private var searchFragment = SearchFragment()
     private var favoriteFragment = FavoriteFragment()
     private var shoppingCartFragment = ShoppingCartFragment()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +36,6 @@ class MainActivity : AppCompatActivity() {
             displayFragmentActivity.displayFragment(homeFragment)
             activityMainBinding.bottomNavigationView.selectedItemId = R.id.mnuHome
         }
-
-        // load products cart data
-        shoppingCartViewModel.loadProductsCartData()
 
         //display home fragment when starting app
         displayFragmentActivity.displayFragment(homeFragment)

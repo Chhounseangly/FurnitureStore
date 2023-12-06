@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.model.api.model
 
-
 data class ResponseMessage(
     val message: String,
     val data: String?
@@ -15,7 +14,6 @@ class Data(
     val id: Int,
     val qty: Int
 )
-
 
 data class ResAuth(
     val message: String,

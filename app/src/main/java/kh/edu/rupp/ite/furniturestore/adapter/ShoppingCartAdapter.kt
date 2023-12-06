@@ -15,17 +15,17 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import java.util.concurrent.TimeUnit
 
-class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel) :
-    ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
-        ProductAddToCartAdapter()
-    ) {
-    private class ProductAddToCartAdapter : DiffUtil.ItemCallback<ShoppingCart>() {
+class ShoppingCartAdapter(
+    private var shoppingCartViewModel: ShoppingCartViewModel
+) : ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
+    object : DiffUtil.ItemCallback<ShoppingCart>() {
         override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
             oldItem.id == newItem.id
     }
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -37,7 +37,6 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
     override fun onBindViewHolder(holder: ProductCartViewHolder, position: Int) {
         val products = getItem(position)
         holder.bind(products)
-
     }
 
     class ProductCartViewHolder(
@@ -53,7 +52,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
             with(viewHolderProductCartBinding) {
                 Picasso.get().load(item.product?.imageUrl).into(productImg)
                 nameProduct.text = item.product?.name
-                price.text = "$ "+ item.product?.price.toString()
+                price.text = "$ " + item.product?.price.toString()
                 displayQty.text = item.qty.toString()
 
                 productImg.setOnClickListener {
@@ -74,7 +73,7 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
 
                         // it will delay 6 to call executingQtyToApi()
                         handler.postDelayed({
-                            shoppingCartViewModel.executingQtyToApi()
+                            executingQtyToApi()
                         }, delayMillis)
                     }
                     //handle Decrease Qty
@@ -86,12 +85,11 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
 
                         // it will delay 5 to call executingQtyToApi()
                         handler.postDelayed({
-                            shoppingCartViewModel.executingQtyToApi()
+                            executingQtyToApi()
                         }, delayMillis)
                     }
                 }
             }
         }
     }
-
 }

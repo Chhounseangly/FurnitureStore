@@ -13,7 +13,6 @@ class ApiInterceptor: Interceptor {
         } else {
             chain.request()
         }
-
         return chain.proceed(request)
     }
 }
