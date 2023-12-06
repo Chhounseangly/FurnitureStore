@@ -7,20 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSliderImageBinding
-import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 
-
 class ProductDetailAdapter : ListAdapter<Product, ProductDetailAdapter.ProductDetailViewHolder>(
-    ProductDetailAdapter()
-) {
-    private class ProductDetailAdapter : DiffUtil.ItemCallback<Product>() {
+    // Use a direct instantiation of DiffUtil.ItemCallback in the constructor
+    object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem.id == newItem.id
     }
+) {
 
     class ProductDetailViewHolder(
         private val viewHolderSliderImageBinding: ViewHolderSliderImageBinding
@@ -41,12 +39,6 @@ class ProductDetailAdapter : ListAdapter<Product, ProductDetailAdapter.ProductDe
 
     override fun onBindViewHolder(holder: ProductDetailViewHolder, position: Int) {
         val products = getItem(position)
-
         holder.bind(products)
     }
 }
-
-
-
-
-

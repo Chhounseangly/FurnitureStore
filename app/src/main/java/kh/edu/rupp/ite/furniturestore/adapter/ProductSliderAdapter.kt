@@ -10,19 +10,15 @@ import com.denzcoskun.imageslider.models.SlideModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductSliderBinding
 
-class ProductSliderAdapter :
-    ListAdapter<ProductSlider, ProductSliderAdapter.ProductSliderViewHolder>(
-        ProductSliderAdapter()
-    ) {
-
-    private class ProductSliderAdapter : DiffUtil.ItemCallback<ProductSlider>() {
+class ProductSliderAdapter : ListAdapter<ProductSlider, ProductSliderAdapter.ProductSliderViewHolder>(
+    object : DiffUtil.ItemCallback<ProductSlider>() {
         override fun areItemsTheSame(oldItem: ProductSlider, newItem: ProductSlider): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: ProductSlider, newItem: ProductSlider): Boolean =
             oldItem.id == newItem.id
     }
-
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductSliderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

@@ -18,19 +18,14 @@ class ProductListAdapter(
     private val shoppingCartViewModel: ShoppingCartViewModel,
     private val productListViewModel: ProductListViewModel
 ) : ListAdapter<Product, ProductListAdapter.ProductListViewHolder>(
-    diffCallback
-) {
+    object : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
+            oldItem == newItem
 
-    // Companion object for the DiffUtil.ItemCallback
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
-                oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
+            oldItem.id == newItem.id
     }
+) {
 
     // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
@@ -59,7 +54,6 @@ class ProductListAdapter(
         private val shoppingCartViewModel: ShoppingCartViewModel,
         private val productListViewModel: ProductListViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
-
         // Bind data to views
         fun bind(product: Product) {
             with(binding) {

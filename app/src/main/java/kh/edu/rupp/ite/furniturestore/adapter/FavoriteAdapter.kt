@@ -12,21 +12,18 @@ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductFavoriteBindi
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 
-class FavoriteAdapter
-    : ListAdapter<Product, FavoriteAdapter.ProductListViewHolder>(
-    diffCallback
-) {
+class FavoriteAdapter : ListAdapter<Product, FavoriteAdapter.ProductListViewHolder>(
+    // DiffUtil for efficient updates in RecyclerView
+    object : DiffUtil.ItemCallback<Product>() {
+        // Check if items are the same (based on equals)
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
+            oldItem == newItem
 
-    // Companion object for the DiffUtil.ItemCallback
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
-                oldItem.id == newItem.id
-        }
+        // Check if item contents are the same (based on unique identifier)
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
+            oldItem.id == newItem.id
     }
+) {
 
     // Create and bind the view holder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
@@ -55,16 +52,17 @@ class FavoriteAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
         // Bind data to the views
         fun bind(product: Product) {
-            // Use Picasso to load and display the product image
-            with(binding.img) {
+            with(binding) {
+                // Use Picasso to load and display the product image
                 Picasso.get().load(product.imageUrl)
                     .placeholder(R.drawable.loading)
                     .error(R.drawable.ic_error)
-                    .into(this)
+                    .into(img)
+
+                // Set the product name and price
+                textName.text = product.name
+                textPrice.text = product.price.toString()
             }
-            // Set the product name and price
-            binding.textName.text = product.name
-            binding.textPrice.text = product.price.toString()
         }
     }
 }

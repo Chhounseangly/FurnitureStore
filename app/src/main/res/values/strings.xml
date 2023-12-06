@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">furniture-store</string>
+    <string name="app_name">Furniture Store</string>
     <string name="ic_pf_txt">Profile</string>
     <string name="ic_cart_txt">Cart</string>
     <string name="ic_home_txt">Home</string>

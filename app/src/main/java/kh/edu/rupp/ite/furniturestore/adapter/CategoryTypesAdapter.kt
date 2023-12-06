@@ -10,18 +10,16 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
 
-class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.CategoryTypesViewHolder>(
-    CategoryTypesAdapter()
-) {
-    private class CategoryTypesAdapter : DiffUtil.ItemCallback<CategoryTypes>() {
+class CategoryTypesAdapter : ListAdapter<CategoryTypes, CategoryTypesAdapter.CategoryTypesViewHolder>(
+    // Use a direct instantiation of DiffUtil.ItemCallback in the constructor
+    object : DiffUtil.ItemCallback<CategoryTypes>() {
         override fun areItemsTheSame(oldItem: CategoryTypes, newItem: CategoryTypes): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: CategoryTypes, newItem: CategoryTypes): Boolean =
             oldItem.id == newItem.id
     }
-
-
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryTypesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -41,22 +39,11 @@ class CategoryTypesAdapter: ListAdapter<CategoryTypes, CategoryTypesAdapter.Cate
         holder.bind(categoryTypes)
     }
 
-
     class CategoryTypesViewHolder(
         private val viewHolderCategoryTypeBinding: ViewHolderCategoryTypeBinding
     ) : RecyclerView.ViewHolder(viewHolderCategoryTypeBinding.root) {
         fun bind(categoryTypes: CategoryTypes) {
-            //add image url to ImageView by Library Picasso
-//            Picasso.get().load(categoryTypes.imageUrl).into(viewHolderCategoryTypeBinding.img)
             viewHolderCategoryTypeBinding.name.text = categoryTypes.name
-
         }
     }
 }
-
-
-
-
-
-
-

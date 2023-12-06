@@ -12,19 +12,17 @@ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 
-
-class ProductByCategoryAdapter(
-) :
-    ListAdapter<Product, ProductByCategoryAdapter.ProductListViewHolder>(ProductListAdapter()) {
-
-    //constructor
-    private class ProductListAdapter : DiffUtil.ItemCallback<Product>() {
+class ProductByCategoryAdapter : ListAdapter<Product, ProductByCategoryAdapter.ProductListViewHolder>(
+    // Use a direct instantiation of DiffUtil.ItemCallback in the constructor
+    object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem.id == newItem.id
     }
+) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductItemBinding.inflate(layoutInflater, parent, false)
@@ -44,24 +42,15 @@ class ProductByCategoryAdapter(
     }
 
     class ProductListViewHolder(
-        val viewHolderProductItemBinding: ViewHolderProductItemBinding
+        private val viewHolderProductItemBinding: ViewHolderProductItemBinding
     ) : RecyclerView.ViewHolder(viewHolderProductItemBinding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(product: Product) {
-
-
-            with(viewHolderProductItemBinding){
+            with(viewHolderProductItemBinding) {
                 Picasso.get().load(product.imageUrl).into(img)
                 name.text = product.name
                 price.text = "$ ${product.price}"
             }
         }
-
     }
-
 }
-
-
-
-
-
