@@ -14,26 +14,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProductDetailViewModel : ViewModel() {
-    private val _productsData = MutableLiveData<ApIData<Product>>()
-    val productsData: LiveData<ApIData<Product>>
+class FavoriteViewModel: ViewModel() {
+    // LiveData to observe products data changes
+    private val _productsData = MutableLiveData<ApIData<List<Product>>>()
+    val productsData: LiveData<ApIData<List<Product>>>
         get() = _productsData
 
-    fun loadProductDetail(id: Int) {
-        var apiData = ApIData<Product>(Status.Processing, null) //status 102 is processing
-        _productsData.value = apiData
-        //processing as background
+    fun loadFavoriteProducts(){
+        Log.e("FavoriteViewModel", "loadFavoriteProducts")
+        var apiData = ApIData<List<Product>>(Status.Processing,null)
+        _productsData.postValue(apiData)
+
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
-                val response = RetrofitInstance.get().api.loadProductDetail(id)
+                val response = RetrofitInstance.get().api.loadFavorite()
+                Log.e("FavoriteViewModel", "success")
                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
-                Log.e("error", "${ex.message}")
+                Log.e("FavoriteViewModel", "failed")
                 ApIData(Status.Failed, null)
             }
-            //process outside background
             withContext(Dispatchers.Main.immediate) {
-                _productsData.value = apiData
+                _productsData.postValue(apiData)
             }
         }
     }
@@ -45,8 +47,14 @@ class ProductDetailViewModel : ViewModel() {
                 val apiData = response.data
                 callback(apiData)
             } catch (ex: Exception) {
-                ex.message?.let { Log.d("ProductDetailVM", it) }
+                ex.message?.let { Log.d("FavoriteViewModel", it) }
                 callback(false)
+            }
+
+            // Performing UI-related operations outside the background thread
+            withContext(Dispatchers.Main.immediate) {
+                // Reloading the list of favorite products
+                loadFavoriteProducts()
             }
         }
     }

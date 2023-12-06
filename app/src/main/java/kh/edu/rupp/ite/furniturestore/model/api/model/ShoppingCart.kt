@@ -21,7 +21,6 @@ data class ProductModel(
     val updated_at: String?,
 )
 
-
 data class AddProductToShoppingCart(
     val product_id: Int,
 )

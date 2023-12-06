@@ -7,7 +7,6 @@ import com.google.android.material.textfield.TextInputEditText
 import kh.edu.rupp.ite.furniturestore.R
 
 class TogglePassword {
-
     fun togglePasswordVisibility(editText: TextInputEditText, toggleButton: ImageView) {
         toggleButton.setOnClickListener {
             if (editText.inputType != InputType.TYPE_TEXT_VARIATION_PASSWORD){
@@ -25,5 +24,4 @@ class TogglePassword {
             }
         }
     }
-
 }

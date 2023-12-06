@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,12 +27,12 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
-class HomeFragment() : Fragment() {
+class HomeFragment : Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
@@ -39,13 +40,13 @@ class HomeFragment() : Fragment() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var productSliderViewModel: ProductSliderViewModel
-    private lateinit var shoppingCartViewModel :ShoppingCartViewModel
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
-
     private lateinit var noDataMsg: TextView
+
+    private val shoppingCartViewModel: ShoppingCartViewModel by activityViewModels()
+    private val favoriteViewModel: FavoriteViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +57,6 @@ class HomeFragment() : Fragment() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
-        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
-
 
         //refresh layout loading data again
         swipeRefreshLayout = fragmentHomeBinding.refreshLayout
@@ -86,7 +85,7 @@ class HomeFragment() : Fragment() {
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing ->  LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> {
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
@@ -95,6 +94,7 @@ class HomeFragment() : Fragment() {
                         LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
+
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
@@ -105,10 +105,11 @@ class HomeFragment() : Fragment() {
         //get data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Success -> it.data?.let {
-                        it1 -> displaySliderProduct(it1)
+                Status.Success -> it.data?.let { it1 ->
+                    displaySliderProduct(it1)
                     swipeRefreshLayout.isRefreshing = false
                 }
+
                 else -> {}
             }
         }
@@ -133,12 +134,12 @@ class HomeFragment() : Fragment() {
 
         shoppingCartViewModel.loadProductsCartData()
         //shopping cart
-        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner){
+        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner) {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
 
 
-       // Update the cart RecyclerView with LiveData from ViewModel
+        // Update the cart RecyclerView with LiveData from ViewModel
 
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
@@ -201,7 +202,7 @@ class HomeFragment() : Fragment() {
         // Create adapter
         val productListAdapter = ProductListAdapter(
             shoppingCartViewModel,
-            productListViewModel,
+            favoriteViewModel,
         )
         productListAdapter.submitList(productsList)
         fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
@@ -229,6 +230,3 @@ class HomeFragment() : Fragment() {
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
     }
 }
-
-
-

@@ -3,13 +3,10 @@ package kh.edu.rupp.ite.furniturestore.displayFragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import kh.edu.rupp.ite.furniturestore.R
 
 class DisplayFragmentActivity(private val fragmentManager: FragmentManager): AppCompatActivity() {
-
-
     // Function to display fragments without reloading
     fun displayFragment(fragment: Fragment) {
         val fragmentTransaction = fragmentManager.beginTransaction()

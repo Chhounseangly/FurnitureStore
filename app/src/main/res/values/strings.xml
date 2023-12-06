@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">furniture-store</string>
+    <string name="app_name">Furniture Store</string>
     <string name="ic_pf_txt">Profile</string>
     <string name="ic_cart_txt">Cart</string>
     <string name="ic_home_txt">Home</string>
@@ -50,5 +50,7 @@
     <string name="explore">Explore</string>
     <string name="_1">1</string>
     <string name="checkout">Checkout</string>
+    <string name="image_content">This an image</string>
+    <string name="no_data">No Data</string>
 
 </resources>

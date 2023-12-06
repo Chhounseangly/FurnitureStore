@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-class CategoriesFragment(private var id: Int): Fragment() {
+class CategoriesFragment(private var id: Int) : Fragment() {
     private lateinit var fragmentCategoryBinding: FragmentCategoryBinding
     private var categoriesViewModel = CategoriesViewModel()
     override fun onCreateView(
@@ -40,6 +39,7 @@ class CategoriesFragment(private var id: Int): Fragment() {
                     it.data?.let { it1 -> displayProductByCate(it1.data) }
                     LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
                 }
+
                 else -> {
                     LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
                 }

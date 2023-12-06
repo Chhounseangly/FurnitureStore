@@ -12,21 +12,16 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 
 class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearchFoundViewHolder>(
-    SearchFoundAdapter()
-) {
-
-    private class SearchFoundAdapter : DiffUtil.ItemCallback<Product>() {
+    object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean =
             oldItem.id == newItem.id
     }
+) {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ProductSearchFoundViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductSearchFoundViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderSearchFoundBinding.inflate(layoutInflater, parent, false)
 
@@ -52,5 +47,4 @@ class SearchFoundAdapter : ListAdapter<Product, SearchFoundAdapter.ProductSearch
             viewHolderSearchFoundBinding.price.text = item.price.toString()
         }
     }
-
 }
