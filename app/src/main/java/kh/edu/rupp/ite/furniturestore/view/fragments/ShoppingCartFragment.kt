@@ -138,6 +138,15 @@ class ShoppingCartFragment : Fragment() {
                 isCurrentlyActive: Boolean
             ) {
                 drawSwipeToDelete(c, viewHolder, dX)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
         }
 
