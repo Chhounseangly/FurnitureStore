@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +30,10 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 class ShoppingCartFragment : Fragment() {
     private lateinit var fragmentCartBinding: FragmentCartBinding
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var cartContainerLoading: ShimmerFrameLayout
+
+    private val shoppingCartViewModel: ShoppingCartViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,9 +41,6 @@ class ShoppingCartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
-
-        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
-        shoppingCartViewModel.loadProductsCartData()
 
         // Set up SwipeRefreshLayout
         swipeRefreshLayout = fragmentCartBinding.refreshLayout

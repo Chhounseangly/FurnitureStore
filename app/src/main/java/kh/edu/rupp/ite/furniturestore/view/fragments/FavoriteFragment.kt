@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -34,7 +34,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var noDataMsg: TextView
 
     // ViewModel for handling favorite products
-    private lateinit var favoriteViewModel: FavoriteViewModel
+    private val favoriteViewModel: FavoriteViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +43,6 @@ class FavoriteFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment using view binding
         fragmentFavoriteBinding = FragmentFavoriteBinding.inflate(inflater, container, false)
-
-        // Initialize the ViewModel
-        favoriteViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
         return fragmentFavoriteBinding.root
     }
 

@@ -11,12 +11,12 @@ import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
-import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ProductListAdapter(
     private val shoppingCartViewModel: ShoppingCartViewModel,
-    private val productListViewModel: ProductListViewModel
+    private val favoriteViewModel: FavoriteViewModel
 ) : ListAdapter<Product, ProductListAdapter.ProductListViewHolder>(
     object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean =
@@ -31,7 +31,7 @@ class ProductListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewHolderProductItemBinding.inflate(layoutInflater, parent, false)
-        return ProductListViewHolder(binding, shoppingCartViewModel, productListViewModel)
+        return ProductListViewHolder(binding, shoppingCartViewModel, favoriteViewModel)
     }
 
     // onBindViewHolder
@@ -52,7 +52,7 @@ class ProductListAdapter(
     class ProductListViewHolder(
         private val binding: ViewHolderProductItemBinding,
         private val shoppingCartViewModel: ShoppingCartViewModel,
-        private val productListViewModel: ProductListViewModel
+        private val favoriteViewModel: FavoriteViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
         // Bind data to views
         fun bind(product: Product) {
@@ -79,9 +79,9 @@ class ProductListAdapter(
 
                 // Favorite button click listener
                 bntFav.setOnClickListener {
-                    productListViewModel.toggleFavorite(product) { result ->
+                    favoriteViewModel.toggleFavorite(product) {
                         // Set the favorite button image based on the result
-                        bntFav.setImageResource(if (result) R.drawable.ic_favorited else R.drawable.ic_fav)
+                        bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
                     }
                 }
             }
