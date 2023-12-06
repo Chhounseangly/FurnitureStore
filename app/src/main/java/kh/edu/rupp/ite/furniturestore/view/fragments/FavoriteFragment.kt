@@ -51,8 +51,6 @@ class FavoriteFragment : Fragment() {
 
         // Initialize UI elements
         noDataMsg = fragmentFavoriteBinding.noData
-        noDataMsg.text = "No Data"
-        noDataMsg.visibility = View.GONE
 
         // Initialize SwipeRefreshLayout
         swipeRefreshLayout = fragmentFavoriteBinding.refreshLayout
@@ -68,7 +66,7 @@ class FavoriteFragment : Fragment() {
         favoriteViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation()
-                Status.Success -> handleSuccess(it.data)
+                Status.Success -> it.data?.let { data -> handleSuccess(data) }
                 Status.Failed -> handleFailure()
             }
         }
@@ -88,14 +86,17 @@ class FavoriteFragment : Fragment() {
     }
 
     // Handle successful data retrieval
-    private fun handleSuccess(data: List<Product>?) {
+    private fun handleSuccess(data: List<Product>) {
         hideLoadingAnimation()
+        displayFavorite(data)
 
         // Check if the data is null or empty
-        if (!data.isNullOrEmpty()) {
+        if (data.isNotEmpty()) {
             // Hide the "No Data" message if there is data
             noDataMsg.visibility = View.GONE
-            displayFavorite(data)
+        } else {
+            // Show the "No Data" message if there is no data
+            noDataMsg.visibility = View.VISIBLE
         }
 
         // Stop the SwipeRefreshLayout refreshing animation
