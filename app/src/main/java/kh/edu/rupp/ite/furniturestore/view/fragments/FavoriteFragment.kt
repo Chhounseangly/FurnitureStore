@@ -10,19 +10,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
-import kh.edu.rupp.ite.furniturestore.adapter.FavoriteAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentFavoriteBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class FavoriteFragment : Fragment() {
     // View binding for the fragment
     private lateinit var fragmentFavoriteBinding: FragmentFavoriteBinding
 
     // Adapter for the list of favorite products
-    private lateinit var favoriteAdapter: FavoriteAdapter
+    private lateinit var productListAdapter: ProductListAdapter
 
     // SwipeRefreshLayout for refreshing the list
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -35,6 +36,7 @@ class FavoriteFragment : Fragment() {
 
     // ViewModel for handling favorite products
     private lateinit var favoriteViewModel: FavoriteViewModel
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +52,7 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
 
         // Initialize UI elements
         noDataMsg = fragmentFavoriteBinding.noData
@@ -123,8 +126,11 @@ class FavoriteFragment : Fragment() {
         fragmentFavoriteBinding.favoriteRecyclerView.layoutManager = gridLayoutManager
 
         // Create and set up the adapter
-        favoriteAdapter = FavoriteAdapter()
-        favoriteAdapter.submitList(data)
-        fragmentFavoriteBinding.favoriteRecyclerView.adapter = favoriteAdapter
+        productListAdapter = ProductListAdapter(
+            shoppingCartViewModel,
+            favoriteViewModel,
+        )
+        productListAdapter.submitList(data)
+        fragmentFavoriteBinding.favoriteRecyclerView.adapter = productListAdapter
     }
 }
