@@ -45,7 +45,7 @@ class ShoppingCartAdapter(
     ) : RecyclerView.ViewHolder(viewHolderProductCartBinding.root) {
 
         private val handler = Handler(Looper.getMainLooper())
-        private val delayMillis = TimeUnit.SECONDS.toMillis(5)
+        private val delayMillis = TimeUnit.SECONDS.toMillis(2)
 
         fun bind(item: ShoppingCart) {
             //passing data from api to view

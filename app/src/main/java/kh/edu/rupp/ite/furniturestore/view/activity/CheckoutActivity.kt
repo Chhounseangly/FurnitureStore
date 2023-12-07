@@ -17,7 +17,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class CheckoutActivity() : AppCompatActivity() {
 
-    private lateinit  var shoppingCartViewModel: ShoppingCartViewModel
+    private lateinit var  shoppingCartViewModel: ShoppingCartViewModel
     private lateinit  var paymentViewModel: PaymentViewModel
 
     private lateinit var paymentBtn: Button
@@ -33,33 +33,18 @@ class CheckoutActivity() : AppCompatActivity() {
         shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
 
-        shoppingCartViewModel.loadProductsCartData()
         shoppingCartViewModel.shoppingCartItems.observe(this){
-            when(it.status){
-                Status.Processing -> {
-
-                }
-                Status.Success -> {
-                    it.data?.let {data ->
-                        shoppingCartViewModel.calculateTotalPrice(data)
-                        displayUi(data)
-                        lateinit var list : List<PaymentModel>
-                        paymentBtn.setOnClickListener {
-                            for(i in data){
-                            }
-
-                        }
-                    }
-                }
-                Status.Failed -> {
-
+            it.data?.let {data->
+                shoppingCartViewModel.calculateTotalPrice(data)
+                displayUi(data)
+                paymentBtn.setOnClickListener {
+                    paymentViewModel.payment(data)
                 }
             }
         }
 
+        shoppingCartViewModel.loadProductsCartData()
         prevBack()
-
-
 
     }
 
@@ -68,10 +53,6 @@ class CheckoutActivity() : AppCompatActivity() {
         shoppingCartViewModel.totalPrice.observe(this) {
             totalPrice.text = "$ " + it.toString()
         }
-
-//        shoppingCartViewModel.itemCount.observe(this) {
-//            fragmentCartBinding.itemsCount.text = it.toString()
-//        }
 
     }
 

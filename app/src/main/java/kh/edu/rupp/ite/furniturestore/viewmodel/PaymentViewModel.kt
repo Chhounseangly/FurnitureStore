@@ -21,13 +21,18 @@ class PaymentViewModel: ViewModel() {
     val responseMessage: LiveData<ApIData<ResponseMessage>>
         get() = _responseMessage
 
+    fun payment(data: List<ShoppingCart>){
+        val list = mutableListOf<PaymentModel>()
+        //convert data to lists
+        for(i in data){
+            list.add(PaymentModel(i.product_id, i.id, i.product.price.toInt()))
+        }
 
-    fun payment(body: List<PaymentModel>){
         var apiData = ApIData<ResponseMessage>(Status.Processing, null)
         _responseMessage.postValue(apiData)
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
-                RetrofitInstance.get().api.postPayment(body)
+                RetrofitInstance.get().api.postPayment(list)
                 ApIData(Status.Success, null)
             }catch (ex: Exception){
                 ex.printStackTrace()
