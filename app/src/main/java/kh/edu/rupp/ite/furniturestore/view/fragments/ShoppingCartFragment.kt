@@ -47,8 +47,7 @@ class ShoppingCartFragment : Fragment() {
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
 
-        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
-//        checkoutViewModel = ViewModelProvider(this)[CheckoutViewModel::class.java]
+//        checkoutViewModel = ViewModelProvider(this).get[CheckoutViewModel::class.java]
 
         shoppingCartViewModel.loadProductsCartData()
         // Set up SwipeRefreshLayout
