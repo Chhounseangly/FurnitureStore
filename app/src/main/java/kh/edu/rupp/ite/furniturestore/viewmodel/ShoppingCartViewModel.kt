@@ -68,11 +68,9 @@ class ShoppingCartViewModel : ViewModel() {
     fun addProductToShoppingCart(productId: Int) {
         if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
             val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
-            if (existed != null) {
-                _toastMessage.postValue("Product existed on shopping cart")
-            } else {
-                addProductToCartApi(productId)
-            }
+            if (existed != null) _toastMessage.postValue("Product existed on shopping cart")
+            else addProductToCartApi(productId)
+
         } else addProductToCartApi(productId)
     }
 
@@ -80,9 +78,8 @@ class ShoppingCartViewModel : ViewModel() {
         //processing as background
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId)
-                )
-                loadProductsCartData()
+                RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
+                _toastMessage.postValue("Added to shopping cart")
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
@@ -107,7 +104,8 @@ class ShoppingCartViewModel : ViewModel() {
                 Log.e("error", "${ex.message}")
                 ApIData(Status.Failed, null)
             }
-            //process outside background
+
+            // Process outside background
             withContext(Dispatchers.Main.immediate) {
                 _shoppingCartItems.postValue(apiData)
             }
