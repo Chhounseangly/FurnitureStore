@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,8 +44,8 @@ class HomeFragment : Fragment() {
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var noDataMsg: TextView
 
-    private val shoppingCartViewModel: ShoppingCartViewModel by activityViewModels()
-    private val favoriteViewModel: FavoriteViewModel by activityViewModels()
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +56,8 @@ class HomeFragment : Fragment() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+        favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
         //refresh layout loading data again
         swipeRefreshLayout = fragmentHomeBinding.refreshLayout

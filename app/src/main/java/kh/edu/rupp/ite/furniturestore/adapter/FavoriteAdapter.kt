@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductFavoriteBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 
@@ -28,7 +28,7 @@ class FavoriteAdapter : ListAdapter<Product, FavoriteAdapter.ProductListViewHold
     // Create and bind the view holder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         // Use View Binding to inflate the layout
-        val binding = ViewHolderProductFavoriteBinding.inflate(
+        val binding = ViewHolderProductItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ProductListViewHolder(binding)
@@ -48,7 +48,7 @@ class FavoriteAdapter : ListAdapter<Product, FavoriteAdapter.ProductListViewHold
 
     // View Holder class for holding and binding views
     class ProductListViewHolder(
-        private val binding: ViewHolderProductFavoriteBinding
+        private val binding: ViewHolderProductItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         // Bind data to the views
         fun bind(product: Product) {
@@ -60,8 +60,8 @@ class FavoriteAdapter : ListAdapter<Product, FavoriteAdapter.ProductListViewHold
                     .into(img)
 
                 // Set the product name and price
-                textName.text = product.name
-                textPrice.text = product.price.toString()
+                name.text = product.name
+                price.text = product.price.toString()
             }
         }
     }

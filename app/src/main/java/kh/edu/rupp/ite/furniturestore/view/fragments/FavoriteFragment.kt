@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.adapter.FavoriteAdapter
@@ -34,7 +34,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var noDataMsg: TextView
 
     // ViewModel for handling favorite products
-    private val favoriteViewModel: FavoriteViewModel by activityViewModels()
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +48,8 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
         // Initialize UI elements
         noDataMsg = fragmentFavoriteBinding.noData
@@ -116,9 +118,9 @@ class FavoriteFragment : Fragment() {
 
     // Display the list of favorite products using a RecyclerView
     private fun displayFavorite(data: List<Product>) {
-        // Create LinearLayoutManager
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentFavoriteBinding.favoriteRecyclerView.layoutManager = linearLayoutManager
+        // Create GridLayout Manager
+        val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        fragmentFavoriteBinding.favoriteRecyclerView.layoutManager = gridLayoutManager
 
         // Create and set up the adapter
         favoriteAdapter = FavoriteAdapter()
