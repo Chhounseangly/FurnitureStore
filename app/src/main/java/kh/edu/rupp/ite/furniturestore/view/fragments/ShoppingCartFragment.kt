@@ -1,7 +1,9 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
+import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartFragment : Fragment() {
@@ -34,6 +38,7 @@ class ShoppingCartFragment : Fragment() {
     private lateinit var cartContainerLoading: ShimmerFrameLayout
 
     private val shoppingCartViewModel: ShoppingCartViewModel by activityViewModels()
+    private  var paymentViewModel = PaymentViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,19 +47,20 @@ class ShoppingCartFragment : Fragment() {
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
 
+//        checkoutViewModel = ViewModelProvider(this).get[CheckoutViewModel::class.java]
+
+        shoppingCartViewModel.loadProductsCartData()
         // Set up SwipeRefreshLayout
         swipeRefreshLayout = fragmentCartBinding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             shoppingCartViewModel.loadProductsCartData()
         }
-
         return fragmentCartBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Shimmer animation view
         cartContainerLoading = fragmentCartBinding.cartContainerLoading
 
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
@@ -65,6 +71,16 @@ class ShoppingCartFragment : Fragment() {
                     shoppingCartViewModel.calculateTotalPrice(it.data)
                     swipeRefreshLayout.isRefreshing = false
                     LoadingMethod().hideLoadingAnimation(cartContainerLoading)
+
+                    //handle navigate to checkout activity and passing data to checkout activity
+                    val checkoutBtn = fragmentCartBinding.checkoutBtn
+                    checkoutBtn.setOnClickListener {
+                        // Prepare intent to start CheckoutActivity
+                        val activityCheckoutIntent = Intent(activity, CheckoutActivity::class.java)
+
+                        // Start CheckoutActivity
+                        startActivity(activityCheckoutIntent)
+                    }
                 }
 
                 else -> {
@@ -74,12 +90,20 @@ class ShoppingCartFragment : Fragment() {
             }
         }
 
+
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             fragmentCartBinding.totalPrice.text = "$ " + it.toString()
         }
 
-        shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
+        shoppingCartViewModel.itemCount.observe(viewLifecycleOwner){
             fragmentCartBinding.itemsCount.text = it.toString()
+        }
+
+        val checkoutBtn = fragmentCartBinding.checkoutBtn
+
+        checkoutBtn.setOnClickListener {
+            val activityCheckoutIntent = Intent(context, CheckoutActivity::class.java)
+            startActivity(activityCheckoutIntent)
         }
     }
 

@@ -10,6 +10,12 @@ data class BodyPutData(
     val qty: Int
 )
 
+
+data class PaymentModel(
+    var product_id: Int,
+    var shopping_cart_id : Int
+)
+
 class Data(
     val id: Int,
     val qty: Int

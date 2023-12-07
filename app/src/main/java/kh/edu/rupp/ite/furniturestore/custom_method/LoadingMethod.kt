@@ -6,12 +6,12 @@ import com.facebook.shimmer.ShimmerFrameLayout
 class LoadingMethod {
     //hide loading
     fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
-        viewContainerLoadingId.stopShimmerAnimation()
+        viewContainerLoadingId.stopShimmer()
         viewContainerLoadingId.visibility = View.GONE;
     }
 
     //show loading
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
-        viewContainerLoadingId.startShimmerAnimation()
+        viewContainerLoadingId.startShimmer()
     }
 }
