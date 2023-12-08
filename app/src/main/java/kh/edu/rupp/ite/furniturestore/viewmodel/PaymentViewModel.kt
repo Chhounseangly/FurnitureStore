@@ -25,7 +25,7 @@ class PaymentViewModel: ViewModel() {
         val list = mutableListOf<PaymentModel>()
         //convert data to lists
         for(i in data){
-            list.add(PaymentModel(i.product_id, i.id, i.product.price.toInt()))
+            list.add(PaymentModel(i.product_id, i.id))
         }
 
         var apiData = ApIData<ResponseMessage>(Status.Processing, null)
@@ -44,6 +44,5 @@ class PaymentViewModel: ViewModel() {
                 _responseMessage.postValue(apiData)
             }
         }
-
     }
 }

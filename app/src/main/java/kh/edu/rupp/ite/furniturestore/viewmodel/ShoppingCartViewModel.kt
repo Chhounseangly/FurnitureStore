@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
+import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -33,7 +35,36 @@ class ShoppingCartViewModel : ViewModel() {
     val itemCount: LiveData<Int> get() = _itemCount
     val totalPrice: LiveData<Double> get() = _totalPrice
     val toastMessage: LiveData<String> get() = _toastMessage
+    private val _responseMessage = MutableLiveData<ApIData<ResponseMessage>>()
 
+    val responseMessage: LiveData<ApIData<ResponseMessage>>
+        get() = _responseMessage
+
+    fun payment(data: List<ShoppingCart>){
+        val list = mutableListOf<PaymentModel>()
+        //convert data to lists
+        for(i in data){
+            list.add(PaymentModel(i.product_id, i.id))
+        }
+
+        var apiData = ApIData<ResponseMessage>(Status.Processing, null)
+        _responseMessage.postValue(apiData)
+        viewModelScope.launch(Dispatchers.IO) {
+            apiData = try {
+                RetrofitInstance.get().api.postPayment(list)
+                ApIData(Status.Success, null)
+            }catch (ex: Exception){
+                ex.printStackTrace()
+                Log.e("failed", "${ex.message}")
+                ApIData(Status.Failed, null)
+            }
+
+            withContext(Dispatchers.Main.immediate){
+                _responseMessage.postValue(apiData)
+                loadProductsCartData()
+            }
+        }
+    }
 
     //calculate TotalPrice
     fun calculateTotalPrice(shoppingCart: List<ShoppingCart>) {

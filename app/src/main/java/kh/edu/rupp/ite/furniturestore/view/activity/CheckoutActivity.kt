@@ -38,7 +38,7 @@ class CheckoutActivity() : AppCompatActivity() {
                 shoppingCartViewModel.calculateTotalPrice(data)
                 displayUi(data)
                 paymentBtn.setOnClickListener {
-                    paymentViewModel.payment(data)
+                    shoppingCartViewModel.payment(data)
                 }
             }
         }

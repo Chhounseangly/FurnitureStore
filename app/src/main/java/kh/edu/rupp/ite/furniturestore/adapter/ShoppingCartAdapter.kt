@@ -15,21 +15,16 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 import java.util.concurrent.TimeUnit
 
-class ShoppingCartAdapter(
-    private var shoppingCartViewModel: ShoppingCartViewModel
-) : ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
+class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewModel)
+    : ListAdapter<ShoppingCart, ShoppingCartAdapter.ProductCartViewHolder>(
     object : DiffUtil.ItemCallback<ShoppingCart>() {
-        override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-            oldItem == newItem
-
-        override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-            oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart) = oldItem.id == newItem.id
     }
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ViewHolderProductCartBinding.inflate(layoutInflater, parent, false)
+        val binding = ViewHolderProductCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ProductCartViewHolder(binding, shoppingCartViewModel)
     }
@@ -63,31 +58,16 @@ class ShoppingCartAdapter(
 
                 //handle action of button
                 with(shoppingCartViewModel) {
-                    //handle Increase Qty
-                    addBtn.setOnClickListener {
-                        qtyOperation(item, "increaseQty")
+                    // Combine button click listeners
+                    val qtyButtonClick = { operation: String ->
+                        qtyOperation(item, operation)
                         displayQty.text = item.qty.toString()
-
-                        // Remove any existing callbacks before posting a new one
                         handler.removeCallbacksAndMessages(null)
-
-                        // it will delay 6 to call executingQtyToApi()
-                        handler.postDelayed({
-                            executingQtyToApi()
-                        }, delayMillis)
+                        handler.postDelayed({ executingQtyToApi() }, delayMillis)
                     }
-                    //handle Decrease Qty
-                    minusBtn.setOnClickListener {
-                        qtyOperation(item, "decreaseQty")
-                        displayQty.text = item.qty.toString()
-                        // Remove any existing callbacks before posting a new one
-                        handler.removeCallbacksAndMessages(null)
 
-                        // it will delay 5 to call executingQtyToApi()
-                        handler.postDelayed({
-                            executingQtyToApi()
-                        }, delayMillis)
-                    }
+                    addBtn.setOnClickListener { qtyButtonClick("increaseQty") }
+                    minusBtn.setOnClickListener { qtyButtonClick("decreaseQty") }
                 }
             }
         }

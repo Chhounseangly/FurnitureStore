@@ -102,7 +102,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-
     //method prev back
     private fun prevBack() {
         val backBtn = findViewById<ImageView>(R.id.backBtn)
