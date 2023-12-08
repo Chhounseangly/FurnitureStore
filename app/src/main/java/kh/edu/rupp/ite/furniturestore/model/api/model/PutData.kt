@@ -13,7 +13,7 @@ data class BodyPutData(
 
 data class PaymentModel(
     var product_id: Int,
-    var shopping_cart_id : Int
+    var shopping_cart_id : Int,
 )
 
 class Data(

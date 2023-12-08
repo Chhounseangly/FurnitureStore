@@ -13,7 +13,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
+        buildConfigField "String", "BASE_URL", '"http://3.106.58.14/"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,11 +22,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
+            buildConfigField "String", "BASE_URL", '"http://3.106.58.14/"'
 
         }
         debug {
-            buildConfigField "String", "BASE_URL", '"http://3.24.134.248:8000/"'
+            buildConfigField "String", "BASE_URL", '"http://3.106.58.14/"'
         }
     }
     compileOptions {
@@ -40,21 +40,16 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // To use constraintlayout in compose
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation 'androidx.compose.animation:animation-core-android:1.5.4'
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'com.google.android.material:material:1.10.0'
 
-    implementation 'com.google.android.material:material:1.10.0'
     //Library for add image to view Group imageView
     implementation 'com.squareup.picasso:picasso:2.71828'
 
@@ -82,4 +77,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 }

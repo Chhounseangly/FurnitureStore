@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -8,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kh.edu.rupp.ite.furniturestore.adapter.SearchFoundAdapter
+import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentSearchBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSearchFoundBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
 class SearchFragment : Fragment() {
@@ -120,9 +124,32 @@ class SearchFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         fragmentSearchBinding.searchFoundRecyclerView.layoutManager = linearLayoutManager
 
+        //create adapter, passing <Model, ViewHolderBinding>  and display ui
+        val searchFoundAdapter = DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate){
+            view, item, binding ->
+
+            //handle click on view navigation to ProductDetail
+            view.setOnClickListener {
+                val intent = Intent(it.context, ProductDetailActivity::class.java)
+                intent.putExtra("id", item.id)
+                it.context.startActivity(intent)
+            }
+
+            //passing data display ui
+            with(binding){
+                Picasso.get().load(item.imageUrl).into(img)
+                name.text = item.name
+                price.text = item.price.toString()
+            }
+        }
+
+        if (product != null) {
+            searchFoundAdapter.setData(product)
+        }
+
         // Create a SearchFoundAdapter and submit the product list
-        val searchFoundAdapter = SearchFoundAdapter()
-        searchFoundAdapter.submitList(product)
+//        val searchFoundAdapter = SearchFoundAdapter()
+//        searchFoundAdapter.submitList(product)
         fragmentSearchBinding.searchFoundRecyclerView.adapter = searchFoundAdapter
     }
 }

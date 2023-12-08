@@ -83,12 +83,6 @@ interface ApiService {
 
     @PUT("api/updateProfile")
     suspend fun updateProfile(@Body data: UpdateProfile): ResponseMessage
-    suspend fun updateProfile(
-        @Header("Authorization") authorization: String,
-        @Body data: UpdateProfile
-    ): ResponseMessage
-
-
     //history
     @POST("api/history")
     suspend fun postPayment(

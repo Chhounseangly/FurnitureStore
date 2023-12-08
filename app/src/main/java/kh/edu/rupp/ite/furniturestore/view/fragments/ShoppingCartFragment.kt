@@ -25,6 +25,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
+import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartFragment : Fragment() {
@@ -33,6 +34,7 @@ class ShoppingCartFragment : Fragment() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var cartContainerLoading: ShimmerFrameLayout
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
+    private lateinit var paymentViewModel: PaymentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +43,7 @@ class ShoppingCartFragment : Fragment() {
     ): View {
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
-
+        paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
         // Set up SwipeRefreshLayout
         swipeRefreshLayout = fragmentCartBinding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
@@ -81,6 +83,8 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
             fragmentCartBinding.itemsCount.text = it.toString()
         }
+
+        shoppingCartViewModel.loadProductsCartData()
     }
 
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {

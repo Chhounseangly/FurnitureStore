@@ -1,14 +1,17 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.adapter.CarouselAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductDetailBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCarouselBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
@@ -39,11 +42,13 @@ class ProductDetailActivity : AppCompatActivity() {
                 Status.Processing -> {
                     // Handle processing state if needed
                 }
+
                 Status.Success -> {
                     it.data?.let { data ->
                         displayUi(data)
                     }
                 }
+
                 else -> {
                     // Handle other states if needed
                 }
@@ -124,9 +129,21 @@ class ProductDetailActivity : AppCompatActivity() {
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carouselRecyclerView)
 
+        val carouselAdapter =
+            DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
+                // Add a listener to preview
+                view.setOnClickListener {
+                    val intent = Intent(it.context, PreviewImageActivity::class.java)
+                    intent.putExtra("imageUrl", item.imageUrl)
+                    it.context.startActivity(intent)
+                }
+                Picasso.get().load(item.imageUrl).into(binding.carouselImageView)
+            }
+
         // Set up CarouselAdapter and display carousel images
-        val carouselAdapter = CarouselAdapter()
-        carouselAdapter.submitList(carouselSlider)
+//        val carouselAdapter = CarouselAdapter()
+//        carouselAdapter.submitList(carouselSlider)
+        carouselAdapter.setData(carouselSlider)
         carouselRecyclerView.adapter = carouselAdapter
     }
 }

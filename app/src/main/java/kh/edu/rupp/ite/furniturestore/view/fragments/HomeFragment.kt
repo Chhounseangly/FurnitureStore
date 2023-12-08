@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +17,19 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.adapter.CategoryTypesAdapter
-import kh.edu.rupp.ite.furniturestore.adapter.ProductListAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
@@ -56,7 +61,8 @@ class HomeFragment : Fragment() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
-        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+        shoppingCartViewModel =
+            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
         //refresh layout loading data again
@@ -141,7 +147,6 @@ class HomeFragment : Fragment() {
 
 
         // Update the cart RecyclerView with LiveData from ViewModel
-
         nestedScrollView = view.findViewById(R.id.homeFragment)
         floatingActionButton = view.findViewById(R.id.fabBtn)
 
@@ -162,37 +167,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // Inside YourFragment
-//    private val handler = Handler(Looper.getMainLooper())
-//    private val refreshInterval = 10000L // 1 minute in milliseconds
-//
-////    private val refreshRunnable = object : Runnable {
-////        override fun run() {
-////            // Fetch data at regular intervals
-////            productListViewModel.loadProductsData()
-////            Log.d("Fetching", "Fetching")
-////            // Schedule the next refresh
-////            handler.postDelayed(this, refreshInterval)
-////        }
-////    }
-////
-////    override fun onResume() {
-////        super.onResume()
-////        Log.d("onResume", "onResume")
-////
-////        // Start the refresh loop when the Fragment is visible
-//        handler.postDelayed(refreshRunnable, refreshInterval)
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        Log.d("onPause", "onPause")
-//
-//        // Stop the refresh loop when the Fragment is not visible
-//        handler.removeCallbacks(refreshRunnable)
-//    }
-
-
     //display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager
@@ -200,14 +174,47 @@ class HomeFragment : Fragment() {
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
 
-        // Create adapter
-        val productListAdapter = ProductListAdapter(
-            shoppingCartViewModel,
-            favoriteViewModel,
-        )
-        productListAdapter.submitList(productsList)
-        fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
+        val productListAdapter = DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
+            { view, item, binding ->
+                view.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
 
+                with(binding) {
+                    // Load image using Picasso
+                    Picasso.get().load(item.imageUrl)
+                        .placeholder(R.drawable.loading)
+                        .error(R.drawable.ic_error)
+                        .into(img)
+
+                    // Set product name and price
+                    name.text = item.name
+                    val priceText = StringBuilder().append("$").append(item.price).toString()
+                    price.text = priceText
+
+                    // Set favorite button based on the isFavorite flag
+                    bntFav.setImageResource(if (item.isFavorite == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
+
+                    // Add to cart button click listener
+                    addToCartBtn.setOnClickListener {
+                        shoppingCartViewModel.addProductToShoppingCart(item.id)
+                    }
+
+                    // Favorite button click listener
+                    bntFav.setOnClickListener {
+                        favoriteViewModel.toggleFavorite(item) {
+                            // Set the favorite button image based on the result
+                            bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
+                        }
+                    }
+                }
+
+            }
+
+        productListAdapter.setData(productsList)
+        fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
     }
 
     //display slider product on the top
@@ -226,8 +233,21 @@ class HomeFragment : Fragment() {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         fragmentHomeBinding.categoryRecyclerView.layoutManager = linearLayoutManager
-        val categoryTypesAdapter = CategoryTypesAdapter()
-        categoryTypesAdapter.submitList(categoryTypes)
+
+        val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(ViewHolderCategoryTypeBinding::inflate)
+        { view, item, binding ->
+            view.setOnClickListener {
+                val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
+                intent.putExtra("id", item.id)
+                intent.putExtra("name", item.name)
+                it.context.startActivity(intent)
+            }
+
+            binding.name.text = item.name
+        }
+
+        categoryTypesAdapter.setData(categoryTypes)
         fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
+
     }
 }

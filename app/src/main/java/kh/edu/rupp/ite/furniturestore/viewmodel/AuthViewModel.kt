@@ -203,6 +203,7 @@ class AuthViewModel : ViewModel() {
                 val data = RetrofitInstance.get().api.loadProfile()
                 ApIData(Status.Success, data.data)
             } catch (e: Exception) {
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
                 e.printStackTrace()
                 ApIData(Status.Failed, null)
             }

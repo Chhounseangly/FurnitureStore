@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import kh.edu.rupp.ite.furniturestore.adapter.ProductByCategoryAdapter
+import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
+import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class CategoriesFragment(private var id: Int) : Fragment() {
@@ -52,8 +57,25 @@ class CategoriesFragment(private var id: Int) : Fragment() {
         val recyclerProductsByCate = fragmentCategoryBinding.recyclerProductsByCate
         recyclerProductsByCate.layoutManager = gridLayoutManager
 
-        val productByCategoryAdapter = ProductByCategoryAdapter();
-        productByCategoryAdapter.submitList(items.products)
+
+        val productByCategoryAdapter = DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate){
+            view, item, binding ->
+            view.setOnClickListener {
+                val intent = Intent(it.context, ProductDetailActivity::class.java)
+                intent.putExtra("id", item.id)
+                it.context.startActivity(intent)
+            }
+            with(binding) {
+                Picasso.get().load(item.imageUrl).into(img)
+                name.text = item.name
+                price.text = "$ ${item.price}"
+            }
+        }
+
+        productByCategoryAdapter.setData(items.products)
+
+//        val productByCategoryAdapter = ProductByCategoryAdapter();
+//        productByCategoryAdapter.submitList(items.products)
         recyclerProductsByCate.adapter = productByCategoryAdapter
     }
 }
