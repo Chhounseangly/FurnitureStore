@@ -21,6 +21,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class FavoriteFragment : Fragment() {
     // View binding for the fragment
@@ -37,6 +38,7 @@ class FavoriteFragment : Fragment() {
 
     // ViewModel for handling favorite products
     private lateinit var favoriteViewModel: FavoriteViewModel
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +54,7 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
 
         // Initialize UI elements
         noDataMsg = fragmentFavoriteBinding.noData
@@ -143,8 +146,22 @@ class FavoriteFragment : Fragment() {
                     // Set the product name and price
                     name.text = item.name
                     price.text = item.price.toString()
-                }
 
+                    // Set favorite button based on the isFavorite flag
+                    bntFav.setImageResource(if (item.isFavorite == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
+
+                    // Add to cart button click listener
+                    addToCartBtn.setOnClickListener {
+                        shoppingCartViewModel.addProductToShoppingCart(item.id)
+                    }
+
+                    // Favorite button click listener
+                    bntFav.setOnClickListener {
+                        favoriteViewModel.toggleFavorite(item) {
+
+                        }
+                    }
+                }
             }
 
         //set up data to Adapter
