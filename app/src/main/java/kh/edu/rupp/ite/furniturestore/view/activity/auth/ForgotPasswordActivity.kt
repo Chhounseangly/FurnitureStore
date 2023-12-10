@@ -38,7 +38,7 @@ class ForgotPasswordActivity: AppCompatActivity() {
 
     private fun handleVerifyForgotEmail (){
         val verifyBtn = findViewById<Button>(R.id.verifyBtn)
-        verifyEmail = findViewById(R.id.emVerifyInput)
+        verifyEmail = findViewById(R.id.codeVerifyInput)
         AuthValidation().handleOnChangeEditText(verifyEmail)
 
         verifyBtn.setOnClickListener {

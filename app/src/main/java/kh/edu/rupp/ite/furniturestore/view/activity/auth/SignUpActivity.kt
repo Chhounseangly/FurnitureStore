@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -110,22 +111,17 @@ class SignUpActivity : AppCompatActivity() {
                 // Sign-in successful, navigate to the next screen or perform other actions
                 authViewModel.resAuth.observe(this) {
                     when (it.status) {
-                        Status.Processing -> {
+                        StatusAuth.Processing -> {
                             errorMessage.visibility = View.GONE
                             signUpBtn.isEnabled = false
                             signUpBtn.setTextColor(Color.BLACK)
                             signUpBtn.setBackgroundResource(R.drawable.disable_btn)
                         }
-                        Status.Success -> {
-                            signUpBtn.isEnabled = true
-                            signUpBtn.setTextColor(Color.WHITE)
-                            signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
-                            val mainActivityIntent = Intent(this, MainActivity::class.java)
-                            mainActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(mainActivityIntent)
+                        StatusAuth.Success -> {
+
                         }
 
-                        Status.Failed -> {
+                        StatusAuth.Failed -> {
                             it.data.let { m->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -135,6 +131,16 @@ class SignUpActivity : AppCompatActivity() {
                             signUpBtn.setTextColor(Color.WHITE)
                             signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
+                        StatusAuth.NeedVerify -> {
+                            signUpBtn.isEnabled = true
+                            signUpBtn.setTextColor(Color.WHITE)
+                            signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                            val codeVerificationActivity = Intent(this, CodeVerificationActivity::class.java)
+                            codeVerificationActivity.putExtra("email", email.text.toString())
+                            codeVerificationActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(codeVerificationActivity)
+                        }
+
                     }
                 }
             } else {

@@ -167,8 +167,13 @@ class HomeFragment : Fragment() {
         }
     }
 
+
+
     //display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
+
+        val title = fragmentHomeBinding.cateTitle
+
         // Create GridLayout Manager
         val gridLayoutManager =
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
