@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -131,7 +132,7 @@ class SignInActivity : AppCompatActivity() {
                 //process with api
                 authViewModel.resAuth.observe(this) { it ->
                     when (it.status) {
-                        Status.Processing -> {
+                        StatusAuth.Processing -> {
                             errorMessage.visibility = View.GONE
                             // Disable the button to prevent multiple clicks
                             signInBtn.isEnabled = false
@@ -139,7 +140,7 @@ class SignInActivity : AppCompatActivity() {
                             signInBtn.setBackgroundResource(R.drawable.disable_btn)
                         }
 
-                        Status.Success -> {
+                        StatusAuth.Success -> {
                             signInBtn.isEnabled = true
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -149,7 +150,7 @@ class SignInActivity : AppCompatActivity() {
                             startActivity(mainActivityIntent)
                         }
 
-                        Status.Failed -> {
+                        StatusAuth.Failed -> {
                             it.data.let { m->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -158,7 +159,17 @@ class SignInActivity : AppCompatActivity() {
                             signInBtn.isEnabled = true
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
-
+                        }
+                        StatusAuth.NeedVerify -> {
+                            val codeVerificationActivity = Intent(this, CodeVerificationActivity::class.java).apply {
+                                putExtra("email", email.text.toString())
+                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                            startActivity(codeVerificationActivity)
+                            //Reset button to default
+                            signInBtn.isEnabled = true
+                            signInBtn.setTextColor(Color.WHITE)
+                            signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
                     }
                 }

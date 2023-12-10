@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -34,18 +35,31 @@ class CheckoutActivity() : AppCompatActivity() {
         paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
 
         shoppingCartViewModel.shoppingCartItems.observe(this){
-            it.data?.let {data->
+            it.data?.let { data->
                 shoppingCartViewModel.calculateTotalPrice(data)
                 displayUi(data)
                 paymentBtn.setOnClickListener {
                     shoppingCartViewModel.payment(data)
+                    shoppingCartViewModel.responseMessage.observe(this){ res ->
+                        when(res.status){
+                            Status.Processing->{
+
+                            }
+                            Status.Success -> {
+                                //navigate to payment Success Activity
+                                val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
+                                startActivity(paymentSuccessActivity)
+                            }
+                            Status.Failed -> {
+
+                            }
+                        }
+                    }
                 }
             }
         }
-
         shoppingCartViewModel.loadProductsCartData()
         prevBack()
-
     }
 
     fun displayUi(shoppingCart: List<ShoppingCart>){
@@ -53,9 +67,7 @@ class CheckoutActivity() : AppCompatActivity() {
         shoppingCartViewModel.totalPrice.observe(this) {
             totalPrice.text = "$ " + it.toString()
         }
-
     }
-
 
     private fun prevBack() {
         val backBtn = findViewById<ImageView>(R.id.backBtn)
@@ -63,6 +75,4 @@ class CheckoutActivity() : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
     }
-
-
 }
