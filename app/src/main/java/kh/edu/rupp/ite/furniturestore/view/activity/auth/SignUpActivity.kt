@@ -82,7 +82,7 @@ class SignUpActivity : AppCompatActivity() {
         password.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = password.compoundDrawables[2]
-//                // Check if the touch event is on the drawableEnd area
+//                 Check if the touch event is on the drawableEnd area
                 if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
                     togglePasswordVisibility()
                     return@setOnTouchListener true
@@ -93,6 +93,8 @@ class SignUpActivity : AppCompatActivity() {
 
         // event Processing of Sign In Button
         signUpBtn.setOnClickListener {
+            authViewModel.validationResult.removeObservers(this)
+            authViewModel.resAuth.removeObservers(this)
             signUpBtn.isEnabled = false
             signUpBtn.setTextColor(Color.BLACK)
             signUpBtn.setBackgroundResource(R.drawable.disable_btn)
@@ -220,7 +222,7 @@ class SignUpActivity : AppCompatActivity() {
         signInBtn.setOnClickListener {
             startActivity(signInScreen)
         }
-
-
     }
+
+
 }
