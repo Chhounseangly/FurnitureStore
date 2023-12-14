@@ -64,6 +64,8 @@ class CodeVerificationActivity : AppCompatActivity() {
      */
     private fun setupButtonClick() {
         verifyBtn.setOnClickListener {
+            authViewModel.resAuth.removeObservers(this)
+            authViewModel.validationVerify.removeObservers(this)
             // Disable the verification button and submit the verification request
             disableVerifyButton()
             authViewModel.verifyEmail(intent.getStringExtra(EMAIL_EXTRA).toString(), codeInput.text.toString())
@@ -90,7 +92,7 @@ class CodeVerificationActivity : AppCompatActivity() {
             // If validation is successful, proceed to handle the authentication response
             handleValidValidation()
         } else {
-            // If validation fails, show error messages
+            // If validation fails, show error messages and Enable the verification button
             handleInvalidValidation(errorMessages)
         }
     }
@@ -173,5 +175,11 @@ class CodeVerificationActivity : AppCompatActivity() {
             // Navigate back to the previous activity
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.resAuth.removeObservers(this)
+        authViewModel.validationVerify.removeObservers(this)
     }
 }

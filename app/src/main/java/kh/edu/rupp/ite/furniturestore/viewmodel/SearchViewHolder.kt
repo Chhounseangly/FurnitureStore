@@ -14,24 +14,30 @@ import kotlinx.coroutines.withContext
 
 class SearchViewHolder : ViewModel() {
 
+    // LiveData to observe changes in the search results
     private val _data = MutableLiveData<ApIData<List<Product>>>()
 
     val data: LiveData<ApIData<List<Product>>>
         get() = _data
 
+    // Function to perform a search based on the product name
     fun search(name: String) {
-        var apiData = ApIData<List<Product>>(Status.Processing,null) //status 102 is processing
+        // Initial status while processing
+        var apiData = ApIData<List<Product>>(Status.Processing, null)
         _data.postValue(apiData)
 
+        // Processing in the background
         viewModelScope.launch(Dispatchers.IO) {
-            //processing as background
-             apiData = try {
-                 val response = RetrofitInstance.get().api.searchProductByName(name)
-                 ApIData(Status.Success, response.data)
-             } catch (ex: Exception) {
+            apiData = try {
+                // Perform a product search by name through the API
+                val response = RetrofitInstance.get().api.searchProductByName(name)
+                ApIData(Status.Success, response.data)
+            } catch (ex: Exception) {
+                // Handle exceptions and set status to failed
                 ApIData(Status.Failed, null)
             }
-            //process outside background
+
+            // Process outside the background (update LiveData)
             withContext(Dispatchers.Main.immediate) {
                 _data.postValue(apiData)
             }

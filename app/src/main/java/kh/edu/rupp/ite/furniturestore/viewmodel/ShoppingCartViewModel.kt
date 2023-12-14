@@ -40,6 +40,7 @@ class ShoppingCartViewModel : ViewModel() {
     val responseMessage: LiveData<ApIData<ResponseMessage>>
         get() = _responseMessage
 
+    // Function to handle payment processing
     fun payment(data: List<ShoppingCart>){
         val list = mutableListOf<PaymentModel>()
         //convert data to lists
@@ -51,6 +52,7 @@ class ShoppingCartViewModel : ViewModel() {
         _responseMessage.postValue(apiData)
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
+                // Call API to process payment
                 RetrofitInstance.get().api.postPayment(list)
                 ApIData(Status.Success, null)
             }catch (ex: Exception){
@@ -59,6 +61,7 @@ class ShoppingCartViewModel : ViewModel() {
                 ApIData(Status.Failed, null)
             }
 
+            // Process outside background
             withContext(Dispatchers.Main.immediate){
                 _responseMessage.postValue(apiData)
                 loadProductsCartData()
@@ -66,7 +69,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    //calculate TotalPrice
+    // Calculate Total Price based on the items in the shopping cart
     fun calculateTotalPrice(shoppingCart: List<ShoppingCart>) {
         var total = 0.00
         var items = 0
@@ -80,8 +83,7 @@ class ShoppingCartViewModel : ViewModel() {
         _itemCount.value = items
     }
 
-
-    //Function iteration tempData summit to api
+    // Function to execute quantity updates to the API
     fun executingQtyToApi() {
         if (tempDataList.value?.isNotEmpty() == true) {
             val list = mutableListOf<BodyPutData>()
@@ -94,7 +96,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    //handle add product to Shopping Cart
+    // Function to add a product to the shopping cart
     @SuppressLint("SuspiciousIndentation")
     fun addProductToShoppingCart(productId: Int) {
         if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
@@ -105,30 +107,33 @@ class ShoppingCartViewModel : ViewModel() {
         } else addProductToCartApi(productId)
     }
 
+    // Add product to the shopping cart via API
     private fun addProductToCartApi(productId: Int) {
-        //processing as background
+        // Processing as background
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Call API to add a product to the shopping cart
                 RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
                 _toastMessage.postValue("Added to shopping cart")
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
 
-            //process outside background
+            // Process outside background
             withContext(Dispatchers.Main.immediate) {
                 loadProductsCartData()
             }
         }
     }
 
-    //Retrieve products of shopping cart
+    // Retrieve products in the shopping cart
     fun loadProductsCartData() {
         var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
         _shoppingCartItems.postValue(apiData)
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
+                // Call API to load products in the shopping cart
                 val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
@@ -143,7 +148,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    //operation of qty
+    // Perform quantity operation (increase/decrease) on a shopping cart item
     fun qtyOperation(item: ShoppingCart, operation: String) {
         val existingItem = shoppingCartItems.value?.data?.find { it.id == item.id }
         if (existingItem != null) {
@@ -163,7 +168,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    // handle check update qty and store tempDataList
+    // Update tempDataList with the latest quantity changes
     private fun updateTempDataList(existingItem: ShoppingCart) {
         if (_tempDataList.isNotEmpty()) {
             val found = _tempDataList.find { it.id == existingItem.id }
@@ -177,7 +182,7 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
-    //update total when increase or decrease qty in shopping cart
+    // Update total price after quantity changes
     private fun updateTotalPrice() {
         var total = 0.00
         var items = 0
@@ -191,17 +196,18 @@ class ShoppingCartViewModel : ViewModel() {
         _itemCount.postValue(items)
     }
 
-    //handle Summit Qty to api
+    // Perform quantity operation API call
     private fun qtyOperationApi(data: List<BodyPutData>) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Call API to update quantities
                 val response = RetrofitInstance.get().api.qtyOperation(data)
                 Log.e("message", response.message)
                 loadProductsCartData()
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
-            //process outside background
+            // Process outside background
             withContext(Dispatchers.Main.immediate) {
                 loadProductsCartData()
             }
@@ -213,6 +219,7 @@ class ShoppingCartViewModel : ViewModel() {
         // Launching a coroutine in the IO dispatcher to perform background network operations
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Call API to delete a product from the shopping cart
                 val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
                 // Logging the message from the response (you may want to handle this more gracefully)
                 Log.e("Msg", response.message)

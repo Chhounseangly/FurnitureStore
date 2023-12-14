@@ -13,22 +13,30 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProductListViewModel : ViewModel() {
-    // LiveData to observe products data changes
+
+    // LiveData to observe changes in the list of products
     private val _productsData = MutableLiveData<ApIData<List<Product>>>()
     val productsData: LiveData<ApIData<List<Product>>>
         get() = _productsData
 
+    // Function to load the list of products
     fun loadProductsData() {
+        // Initial status while processing
         var apiData = ApIData<List<Product>>(Status.Processing, null)
         _productsData.postValue(apiData)
 
+        // Processing in the background
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
+                // Fetch the list of products from the API
                 val response = RetrofitInstance.get().api.loadProductList()
                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
+                // Handle exceptions and set status to failed
                 ApIData(Status.Failed, null)
             }
+
+            // Process outside the background (update LiveData)
             withContext(Dispatchers.Main.immediate) {
                 _productsData.postValue(apiData)
             }

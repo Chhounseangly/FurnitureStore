@@ -16,31 +16,40 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PaymentViewModel: ViewModel() {
+
+    // LiveData to hold the response message from the payment API
     private val _responseMessage = MutableLiveData<ApIData<ResponseMessage>>()
 
     val responseMessage: LiveData<ApIData<ResponseMessage>>
         get() = _responseMessage
 
-    fun payment(data: List<ShoppingCart>){
+    // Function to initiate the payment process
+    fun payment(data: List<ShoppingCart>) {
+        // Convert data to a list of PaymentModel
         val list = mutableListOf<PaymentModel>()
-        //convert data to lists
-        for(i in data){
+        for (i in data) {
             list.add(PaymentModel(i.product_id, i.id))
         }
 
+        // Initial status while processing payment
         var apiData = ApIData<ResponseMessage>(Status.Processing, null)
         _responseMessage.postValue(apiData)
+
+        // Processing payment in the background
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
+                // Make a payment request to the API
                 RetrofitInstance.get().api.postPayment(list)
                 ApIData(Status.Success, null)
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
+                // Handle exceptions and set status to failed
                 ex.printStackTrace()
                 Log.e("failed", "${ex.message}")
                 ApIData(Status.Failed, null)
             }
 
-            withContext(Dispatchers.Main.immediate){
+            // Process outside the background (update LiveData)
+            withContext(Dispatchers.Main.immediate) {
                 _responseMessage.postValue(apiData)
             }
         }

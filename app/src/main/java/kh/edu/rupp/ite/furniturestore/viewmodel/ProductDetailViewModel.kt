@@ -15,36 +15,47 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProductDetailViewModel : ViewModel() {
+
+    // LiveData to hold the product details
     private val _productsData = MutableLiveData<ApIData<Product>>()
     val productsData: LiveData<ApIData<Product>>
         get() = _productsData
 
+    // Function to load product details by ID
     fun loadProductDetail(id: Int) {
-        var apiData = ApIData<Product>(Status.Processing, null) //status 102 is processing
+        // Initial status while processing
+        var apiData = ApIData<Product>(Status.Processing, null)
         _productsData.value = apiData
-        //processing as background
+
+        // Processing in the background
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
+                // Fetch product details from the API
                 val response = RetrofitInstance.get().api.loadProductDetail(id)
                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
+                // Handle exceptions and set status to failed
                 Log.e("error", "${ex.message}")
                 ApIData(Status.Failed, null)
             }
-            //process outside background
+
+            // Process outside the background (update LiveData)
             withContext(Dispatchers.Main.immediate) {
                 _productsData.value = apiData
             }
         }
     }
 
+    // Function to toggle favorite status of a product
     fun toggleFavorite(product: Product, callback: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Toggle favorite status through API
                 val response = RetrofitInstance.get().api.toggleFavorite(AddProductToShoppingCart(product.id))
                 val apiData = response.data
                 callback(apiData)
             } catch (ex: Exception) {
+                // Handle exceptions and log the error
                 ex.message?.let { Log.d("ProductDetailVM", it) }
                 callback(false)
             }
