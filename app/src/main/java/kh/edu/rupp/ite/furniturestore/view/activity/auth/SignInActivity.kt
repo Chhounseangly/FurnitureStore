@@ -4,27 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.opengl.Visibility
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-
 class SignInActivity : AppCompatActivity() {
+
+    private lateinit var activitySignInBinding: ActivitySignInBinding
 
     private lateinit var email: EditText
     private lateinit var password: EditText
@@ -38,7 +37,8 @@ class SignInActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        activitySignInBinding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(activitySignInBinding.root)
 
         //call method for handle go to sign up screen
         initSignUpScreen()
@@ -68,7 +68,7 @@ class SignInActivity : AppCompatActivity() {
 
     //handle back
     private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
+        val backBtn = activitySignInBinding.backBtn
         backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -76,7 +76,7 @@ class SignInActivity : AppCompatActivity() {
 
     //handel user click on forgot password
     private fun initForgotPasswordScreen() {
-        val forgotPassBtn = findViewById<TextView>(R.id.forgotPsBtn)
+        val forgotPassBtn = activitySignInBinding.forgotPsBtn
         val forgotPasswordScreen = Intent(this, ForgotPasswordActivity::class.java)
         forgotPassBtn.setOnClickListener {
             startActivity(forgotPasswordScreen)
@@ -86,7 +86,7 @@ class SignInActivity : AppCompatActivity() {
 
     //handel user click on  sign up
     private fun initSignUpScreen() {
-        val signUpBtn = findViewById<TextView>(R.id.signUpBtn)
+        val signUpBtn = activitySignInBinding.signUpBtn
         val signUpScreen = Intent(this, SignUpActivity::class.java)
         signUpBtn.setOnClickListener {
             startActivity(signUpScreen)
@@ -96,11 +96,11 @@ class SignInActivity : AppCompatActivity() {
 
     //handle Sign In Process
     private fun handleSignIn() {
-        email = findViewById(R.id.emInput)
-        password = findViewById(R.id.pwInput)
-        signInBtn = findViewById(R.id.signInBtn)
+        email = activitySignInBinding.emInput
+        password = activitySignInBinding.pwInput
+        signInBtn = activitySignInBinding.signInBtn
 
-        errorMessage = findViewById(R.id.errorMsg)
+        errorMessage = activitySignInBinding.errorMsg
 
         //call dynamic handleOnChangeEditText from AuthValidation Class
         AuthValidation().handleOnChangeEditText(email)
@@ -116,6 +116,20 @@ class SignInActivity : AppCompatActivity() {
 
             clearErrorUnderlines()
             authViewModel.signIn(email.text.toString(), password.text.toString())
+        }
+
+        activitySignInBinding.lytGoogleSignIn.setOnClickListener {
+            // Replace "https://www.example.com" with the URL you want to open
+            val url = "http://furniturestorecenter.tech/api/auth/google"
+
+            // Create an Intent with the ACTION_VIEW action
+            val intent = Intent(Intent.ACTION_VIEW)
+
+            // Set the data (URL) for the Intent
+            intent.data = Uri.parse(url)
+
+            // Start the activity using the created Intent
+            startActivity(intent)
         }
 
         //perform Login with api

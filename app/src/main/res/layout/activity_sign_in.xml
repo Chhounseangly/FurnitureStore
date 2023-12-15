@@ -186,6 +186,7 @@
                     android:layout_marginHorizontal="20dp">
 
                     <LinearLayout
+                        android:id="@+id/lytGoogleSignIn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

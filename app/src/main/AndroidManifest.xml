@@ -28,7 +28,17 @@
         <activity
             android:windowSoftInputMode="adjustNothing"
             android:name=".view.activity.MainActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="@string/app_scheme" />
+            </intent-filter>
+        </activity>
         <activity
             android:windowSoftInputMode="adjustNothing"
             android:name=".view.activity.auth.SignUpActivity"
@@ -44,10 +54,6 @@
         <activity
             android:windowSoftInputMode="adjustNothing"
             android:name=".view.activity.ProductDetailActivity"
-            android:exported="false" />
-        <activity
-            android:windowSoftInputMode="adjustNothing"
-            android:name=".view.activity.auth.CodeVerificationActivity"
             android:exported="false" />
         <activity
             android:windowSoftInputMode="adjustNothing"
