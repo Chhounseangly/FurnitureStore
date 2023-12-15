@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
-import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
@@ -40,44 +40,14 @@ class ShoppingCartViewModel : ViewModel() {
     val responseMessage: LiveData<ApIData<ResponseMessage>>
         get() = _responseMessage
 
-    // Function to handle payment processing
-    fun payment(data: List<ShoppingCart>){
-        val list = mutableListOf<PaymentModel>()
-        //convert data to lists
-        for(i in data){
-            list.add(PaymentModel(i.product_id, i.id))
-        }
-
-        var apiData = ApIData<ResponseMessage>(Status.Processing, null)
-        _responseMessage.postValue(apiData)
-        viewModelScope.launch(Dispatchers.IO) {
-            apiData = try {
-                // Call API to process payment
-                RetrofitInstance.get().api.postPayment(list)
-                ApIData(Status.Success, null)
-            }catch (ex: Exception){
-                ex.printStackTrace()
-                Log.e("failed", "${ex.message}")
-                ApIData(Status.Failed, null)
-            }
-
-            // Process outside background
-            withContext(Dispatchers.Main.immediate){
-                _responseMessage.postValue(apiData)
-                loadProductsCartData()
-            }
-        }
-    }
 
     // Calculate Total Price based on the items in the shopping cart
     fun calculateTotalPrice(shoppingCart: List<ShoppingCart>) {
         var total = 0.00
         var items = 0
         for (item in shoppingCart) {
-            if (item.product != null) {
-                total += item.product.price * item.qty
-                items += item.qty
-            }
+            total += item.product.price * item.qty
+            items += item.qty
         }
         _totalPrice.value = total
         _itemCount.value = items
