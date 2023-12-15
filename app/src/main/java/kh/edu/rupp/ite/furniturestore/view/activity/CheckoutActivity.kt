@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
@@ -18,8 +18,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class CheckoutActivity() : AppCompatActivity() {
 
-    private lateinit var  shoppingCartViewModel: ShoppingCartViewModel
-    private lateinit  var paymentViewModel: PaymentViewModel
+    private lateinit var paymentViewModel: PaymentViewModel
 
     private lateinit var paymentBtn: Button
 
@@ -31,42 +30,47 @@ class CheckoutActivity() : AppCompatActivity() {
         setContentView(R.layout.activity_checkout)
         paymentBtn = findViewById(R.id.paymentBtn)
 
-        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
 
-        shoppingCartViewModel.shoppingCartItems.observe(this){
-            it.data?.let { data->
-                shoppingCartViewModel.calculateTotalPrice(data)
-                displayUi(data)
-                paymentBtn.setOnClickListener {
-                    shoppingCartViewModel.payment(data)
-                    shoppingCartViewModel.responseMessage.observe(this){ res ->
-                        when(res.status){
-                            Status.Processing->{
+        val shoppingCartList =
+            intent.getParcelableArrayListExtra<ObjectPayment>("shoppingCartObject")
 
-                            }
-                            Status.Success -> {
-                                //navigate to payment Success Activity
-                                val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
-                                startActivity(paymentSuccessActivity)
-                            }
-                            Status.Failed -> {
+        if (shoppingCartList != null) {
+            displayUi(shoppingCartList)
+            handlePaymentListener(shoppingCartList)
+        }
 
-                            }
-                        }
+        prevBack()
+    }
+
+    private fun handlePaymentListener(value: List<ObjectPayment>){
+        paymentBtn.setOnClickListener {
+            paymentViewModel.payment(value)
+            paymentViewModel.responseMessage.observe(this){ res ->
+                when(res.status){
+                    Status.Processing->{
+
+                    }
+                    Status.Success -> {
+                        //navigate to payment Success Activity
+                        val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
+                        startActivity(paymentSuccessActivity)
+                    }
+                    Status.Failed -> {
+
                     }
                 }
             }
         }
-        shoppingCartViewModel.loadProductsCartData()
-        prevBack()
     }
 
-    fun displayUi(shoppingCart: List<ShoppingCart>){
+    fun displayUi(data: List<ObjectPayment>) {
         totalPrice = findViewById(R.id.totalPrice)
-        shoppingCartViewModel.totalPrice.observe(this) {
-            totalPrice.text = "$ " + it.toString()
+        var total = 0.0
+        for (i in data) {
+            total += i.price * i.qty
         }
+        totalPrice.text = total.toString()
     }
 
     private fun prevBack() {

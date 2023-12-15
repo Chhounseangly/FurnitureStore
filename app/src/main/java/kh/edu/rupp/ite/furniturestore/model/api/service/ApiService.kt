@@ -6,6 +6,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
+import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
@@ -16,9 +17,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
-import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -62,9 +61,6 @@ interface ApiService {
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Res<Product>
-
-    @GET("?name=luc")
-    fun getUser(): Call<User>
 
     @POST("api/favorite")
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Favorite

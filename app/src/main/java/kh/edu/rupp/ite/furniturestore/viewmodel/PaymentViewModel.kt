@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
@@ -24,11 +25,11 @@ class PaymentViewModel: ViewModel() {
         get() = _responseMessage
 
     // Function to initiate the payment process
-    fun payment(data: List<ShoppingCart>) {
+    fun payment(data: List<ObjectPayment>) {
         // Convert data to a list of PaymentModel
         val list = mutableListOf<PaymentModel>()
         for (i in data) {
-            list.add(PaymentModel(i.product_id, i.id))
+            list.add(PaymentModel(i.product_id, i.shopping_card_id))
         }
 
         // Initial status while processing payment
