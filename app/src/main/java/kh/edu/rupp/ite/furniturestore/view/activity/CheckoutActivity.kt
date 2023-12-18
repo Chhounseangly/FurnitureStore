@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -32,8 +33,8 @@ class CheckoutActivity() : AppCompatActivity() {
 
         paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
 
-        val shoppingCartList =
-            intent.getParcelableArrayListExtra<ObjectPayment>("shoppingCartObject")
+        //receives data from shopping Cart
+        val shoppingCartList = intent.getParcelableArrayListExtra<ObjectPayment>(EXTRA_LIST)
 
         if (shoppingCartList != null) {
             displayUi(shoppingCartList)
@@ -77,6 +78,15 @@ class CheckoutActivity() : AppCompatActivity() {
         val backBtn = findViewById<ImageView>(R.id.backBtn)
         backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    companion object {
+        private const val EXTRA_LIST = "shoppingCartObject"
+        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent{
+            val intent = Intent(context, CheckoutActivity::class.java)
+            intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
+            return intent
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -28,6 +30,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.SnackbarUtil
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
@@ -52,12 +55,18 @@ class HomeFragment : Fragment() {
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var favoriteViewModel: FavoriteViewModel
 
+    private lateinit var coordinatorLayout: CoordinatorLayout
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        coordinatorLayout = fragmentHomeBinding.myCoordinatorLayout
+
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
@@ -141,9 +150,8 @@ class HomeFragment : Fragment() {
 
         shoppingCartViewModel.loadProductsCartData()
         //shopping cart
-        shoppingCartViewModel.toastMessage.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        }
+
+
 
 
         // Update the cart RecyclerView with LiveData from ViewModel
@@ -168,7 +176,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
     //display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
 
@@ -179,7 +186,8 @@ class HomeFragment : Fragment() {
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
 
-        val productListAdapter = DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
+        val productListAdapter =
+            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
             { view, item, binding ->
                 view.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
@@ -205,6 +213,7 @@ class HomeFragment : Fragment() {
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
                     }
 
                     // Favorite button click listener
@@ -239,7 +248,9 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         fragmentHomeBinding.categoryRecyclerView.layoutManager = linearLayoutManager
 
-        val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(ViewHolderCategoryTypeBinding::inflate)
+        val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(
+            ViewHolderCategoryTypeBinding::inflate
+        )
         { view, item, binding ->
             view.setOnClickListener {
                 val intent = Intent(it.context, ProductsByCategoryActivity::class.java)

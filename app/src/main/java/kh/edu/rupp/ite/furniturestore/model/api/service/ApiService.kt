@@ -6,7 +6,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
-import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail

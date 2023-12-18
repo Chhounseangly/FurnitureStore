@@ -86,8 +86,6 @@ class ShoppingCartFragment : Fragment() {
         shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
             fragmentCartBinding.itemsCount.text = it.toString()
         }
-
-        shoppingCartViewModel.loadProductsCartData()
     }
 
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
@@ -112,10 +110,10 @@ class ShoppingCartFragment : Fragment() {
                 list.addAll(listOf(ObjectPayment(i.product_id, i.id, i.qty, i.product.price)))
             }
 
-            val activityCheckoutIntent = Intent(context, CheckoutActivity::class.java)
-            activityCheckoutIntent.putParcelableArrayListExtra("shoppingCartObject", ArrayList(list) )
-
+            //passing data and navigation to CheckoutActivity
+            val activityCheckoutIntent = CheckoutActivity.newIntent(requireContext(), list)
             startActivity(activityCheckoutIntent)
+
         }
     }
 
