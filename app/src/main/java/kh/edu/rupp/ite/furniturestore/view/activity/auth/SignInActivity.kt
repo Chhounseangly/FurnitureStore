@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kh.edu.rupp.ite.furniturestore.BuildConfig
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
@@ -119,10 +120,7 @@ class SignInActivity : AppCompatActivity() {
         }
 
         activitySignInBinding.lytGoogleSignIn.setOnClickListener {
-            // Replace "https://www.example.com" with the URL you want to open
-            val url = "http://furniturestorecenter.tech/api/auth/google"
-
-            // Create an Intent with the ACTION_VIEW action
+            val url = BuildConfig.BASE_URL + "api/auth/google"
             val intent = Intent(Intent.ACTION_VIEW)
 
             // Set the data (URL) for the Intent

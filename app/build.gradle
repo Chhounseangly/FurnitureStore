@@ -13,7 +13,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "BASE_URL", '"http://furniturestorecenter.tech/"'
+        buildConfigField "String", "BASE_URL", '"https://furniturestores.me/"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,11 +22,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"http://furniturestorecenter.tech/"'
+            buildConfigField "String", "BASE_URL", '"https://furniturestores.me/"'
 
         }
         debug {
-            buildConfigField "String", "BASE_URL", '"http://furniturestorecenter.tech/"'
+            buildConfigField "String", "BASE_URL", '"https://furniturestores.me/"'
         }
     }
     compileOptions {

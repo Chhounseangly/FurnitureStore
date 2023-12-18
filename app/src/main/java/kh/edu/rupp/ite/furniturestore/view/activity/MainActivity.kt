@@ -2,8 +2,6 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
@@ -27,6 +25,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val intent = intent
+
+        if (intent != null && intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data
+
+            // TODO: Handle the case when user sign in with google
+            if (data != null && data.scheme == getString(R.string.app_scheme)) {
+                // TODO: Save token to shared preference
+                val token = data.getQueryParameter("token")
+                AppPreference.get(this).setToken(token!!)
+            }
+        }
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
@@ -70,20 +81,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             true
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val intent = intent
-
-        if (intent != null && intent.action == Intent.ACTION_VIEW) {
-            val data = intent.data
-            if (data != null && data.scheme == "furniturestore") {
-                val path = data.path // Extract the path from the URL
-                Log.d("Test...................", "onResume: $path")
-            }
         }
     }
 }
