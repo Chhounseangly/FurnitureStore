@@ -1,17 +1,10 @@
 package kh.edu.rupp.ite.furniturestore.utility
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.setPadding
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
 
@@ -29,7 +22,6 @@ object SnackbarUtil {
         params.marginStart = context.resources.getDimensionPixelSize(R.dimen.padding_10)
         params.marginEnd = context.resources.getDimensionPixelSize(R.dimen.padding_10)
         snackbarView.layoutParams = params
-
 
         // Show the Snackbar
         snackbar.show()

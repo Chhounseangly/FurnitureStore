@@ -22,13 +22,26 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://furniturestores.me/"'
 
         }
         debug {
-            buildConfigField "String", "BASE_URL", '"https://furniturestores.me/"'
         }
     }
+
+    flavorDimensions "FurnitureStore"
+    productFlavors{
+        uat{
+            dimension 'FurnitureStore'
+            resValue 'string', 'app_name', 'Furniture Store UAT'
+            buildConfigField "String", 'BASE_URL', '"http://10.0.2.2:8000/"'
+        }
+        prd{
+            dimension 'FurnitureStore'
+            resValue 'string', 'app_name', 'Furniture Store'
+            buildConfigField "String", 'BASE_URL', '"https://furniturestores.me/"'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -58,7 +71,7 @@ dependencies {
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     // Material Components for Android. Replace the version with the latest version of Material Components library.
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
     // Circle Indicator (To fix the xml preview "Missing classes" error)
     implementation 'me.relex:circleindicator:2.1.6'
