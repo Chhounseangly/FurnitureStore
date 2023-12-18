@@ -213,8 +213,7 @@ class HomeFragment : Fragment() {
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                            SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
-
+                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
                     }
 
                     // Favorite button click listener
