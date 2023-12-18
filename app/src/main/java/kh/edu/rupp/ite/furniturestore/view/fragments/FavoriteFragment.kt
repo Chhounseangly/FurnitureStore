@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -19,6 +21,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentFavoriteBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.SnackbarUtil
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
@@ -47,6 +50,8 @@ class FavoriteFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment using view binding
         fragmentFavoriteBinding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        // Initialize SwipeRefreshLayout
+        swipeRefreshLayout = fragmentFavoriteBinding.refreshLayout
         return fragmentFavoriteBinding.root
     }
 
@@ -54,13 +59,13 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
-        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+        shoppingCartViewModel =
+            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
 
         // Initialize UI elements
         noDataMsg = fragmentFavoriteBinding.noData
 
-        // Initialize SwipeRefreshLayout
-        swipeRefreshLayout = fragmentFavoriteBinding.refreshLayout
+
         swipeRefreshLayout.setOnRefreshListener {
             // Refresh the list when SwipeRefreshLayout is triggered
             favoriteViewModel.loadFavoriteProducts()
@@ -153,7 +158,10 @@ class FavoriteFragment : Fragment() {
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
                     }
+
+
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {

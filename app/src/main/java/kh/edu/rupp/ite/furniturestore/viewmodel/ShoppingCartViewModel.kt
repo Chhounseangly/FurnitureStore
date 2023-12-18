@@ -27,14 +27,18 @@ class ShoppingCartViewModel : ViewModel() {
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
     private val _totalPrice = MutableLiveData(0.00)
-    private val _toastMessage = MutableLiveData<String>()
+    private var _toastMessage: String? = null
+    val toastMessage get() = _toastMessage!!
+
+
 
     // LiveData to hold Shopping Cart Items.
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)
+
     val itemCount: LiveData<Int> get() = _itemCount
     val totalPrice: LiveData<Double> get() = _totalPrice
-    val toastMessage: LiveData<String> get() = _toastMessage
+//    val toastMessage: LiveData<String> get() = _toastMessage
     private val _responseMessage = MutableLiveData<ApIData<ResponseMessage>>()
 
     val responseMessage: LiveData<ApIData<ResponseMessage>>
@@ -71,7 +75,9 @@ class ShoppingCartViewModel : ViewModel() {
     fun addProductToShoppingCart(productId: Int) {
         if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
             val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
-            if (existed != null) _toastMessage.postValue("Product existed on shopping cart")
+            if (existed != null) {
+                _toastMessage = "Product existed on shopping cart"
+            }
             else addProductToCartApi(productId)
 
         } else addProductToCartApi(productId)
@@ -84,7 +90,7 @@ class ShoppingCartViewModel : ViewModel() {
             try {
                 // Call API to add a product to the shopping cart
                 RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
-                _toastMessage.postValue("Added to shopping cart")
+                _toastMessage = ("Added to shopping cart")
             } catch (ex: Exception) {
                 Log.e("error", "${ex.message}")
             }
