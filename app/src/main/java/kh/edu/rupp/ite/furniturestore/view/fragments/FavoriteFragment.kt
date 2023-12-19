@@ -22,10 +22,7 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class FavoriteFragment : BaseFragment() {
-    // View binding for the fragment
-    private lateinit var fragmentFavoriteBinding: FragmentFavoriteBinding
-
+class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteBinding::inflate) {
     // SwipeRefreshLayout for refreshing the list
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -39,16 +36,9 @@ class FavoriteFragment : BaseFragment() {
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment using view binding
-        fragmentFavoriteBinding = FragmentFavoriteBinding.inflate(inflater, container, false)
+    override fun bindUi() {
         // Initialize SwipeRefreshLayout
-        swipeRefreshLayout = fragmentFavoriteBinding.refreshLayout
-        return fragmentFavoriteBinding.root
+        swipeRefreshLayout = binding.refreshLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +49,7 @@ class FavoriteFragment : BaseFragment() {
             ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
 
         // Initialize UI elements
-        noDataMsg = fragmentFavoriteBinding.noData
+        noDataMsg = binding.noData
 
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -68,7 +58,7 @@ class FavoriteFragment : BaseFragment() {
         }
 
         // Initialize ShimmerFrameLayout
-        mShimmerViewContainer = fragmentFavoriteBinding.loading
+        mShimmerViewContainer = binding.loading
 
         // Observe changes in the list of favorite products
         favoriteViewModel.productsData.observe(viewLifecycleOwner) {
@@ -126,7 +116,7 @@ class FavoriteFragment : BaseFragment() {
     private fun displayFavorite(data: List<Product>) {
         // Create GridLayout Manager
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        fragmentFavoriteBinding.favoriteRecyclerView.layoutManager = gridLayoutManager
+        binding.favoriteRecyclerView.layoutManager = gridLayoutManager
 
 
         //create adapter, passing <Model, ViewHolderBinding>  and display ui
@@ -173,6 +163,6 @@ class FavoriteFragment : BaseFragment() {
         // Create and set up the adapter
 //        favoriteAdapter = FavoriteAdapter()
 //        favoriteAdapter.submitList(data)
-        fragmentFavoriteBinding.favoriteRecyclerView.adapter = favoriteAdapter
+        binding.favoriteRecyclerView.adapter = favoriteAdapter
     }
 }

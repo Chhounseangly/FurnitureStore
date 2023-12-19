@@ -2,9 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
@@ -35,8 +33,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class HomeFragment : BaseFragment() {
-    private lateinit var fragmentHomeBinding: FragmentHomeBinding
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
 
@@ -52,16 +49,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var favoriteViewModel: FavoriteViewModel
 
     private lateinit var coordinatorLayout: CoordinatorLayout
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        coordinatorLayout = fragmentHomeBinding.myCoordinatorLayout
+    override fun bindUi() {
+        coordinatorLayout = binding.myCoordinatorLayout
 
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
@@ -71,14 +60,12 @@ class HomeFragment : BaseFragment() {
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
         //refresh layout loading data again
-        swipeRefreshLayout = fragmentHomeBinding.refreshLayout
+        swipeRefreshLayout = binding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             productListViewModel.loadProductsData()
             categoriesViewModel.loadCategoryTypes()
             productSliderViewModel.loadProductSliderData()
         }
-        return fragmentHomeBinding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,11 +75,11 @@ class HomeFragment : BaseFragment() {
         categoriesViewModel.loadCategoryTypes()
         productSliderViewModel.loadProductSliderData()
 
-        noDataMsg = fragmentHomeBinding.noData
+        noDataMsg = binding.noData
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
 
-        mShimmerViewContainer = fragmentHomeBinding.shimmerViewContainer
+        mShimmerViewContainer = binding.shimmerViewContainer
 
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
@@ -137,7 +124,7 @@ class HomeFragment : BaseFragment() {
                 }
 
                 else -> {
-                    fragmentHomeBinding.cateTitle.visibility = View.GONE
+                    binding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
                 }
@@ -174,12 +161,12 @@ class HomeFragment : BaseFragment() {
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
 
-        val title = fragmentHomeBinding.cateTitle
+        val title = binding.cateTitle
 
         // Create GridLayout Manager
         val gridLayoutManager =
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        fragmentHomeBinding.productListRecyclerView.layoutManager = gridLayoutManager
+        binding.productListRecyclerView.layoutManager = gridLayoutManager
 
         val productListAdapter =
             DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
@@ -223,7 +210,7 @@ class HomeFragment : BaseFragment() {
             }
 
         productListAdapter.setData(productsList)
-        fragmentHomeBinding.productListRecyclerView.adapter = productListAdapter
+        binding.productListRecyclerView.adapter = productListAdapter
     }
 
     //display slider product on the top
@@ -234,14 +221,14 @@ class HomeFragment : BaseFragment() {
                 sliderModels.add(SlideModel(data.imageUrl, ScaleTypes.FIT))
             }
         }
-        fragmentHomeBinding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
+        binding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
     }
 
     //display Types of Category
     private fun displayCategory(categoryTypes: List<CategoryTypes>) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        fragmentHomeBinding.categoryRecyclerView.layoutManager = linearLayoutManager
+        binding.categoryRecyclerView.layoutManager = linearLayoutManager
 
         val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(
             ViewHolderCategoryTypeBinding::inflate
@@ -258,7 +245,7 @@ class HomeFragment : BaseFragment() {
         }
 
         categoryTypesAdapter.setData(categoryTypes)
-        fragmentHomeBinding.categoryRecyclerView.adapter = categoryTypesAdapter
+        binding.categoryRecyclerView.adapter = categoryTypesAdapter
 
     }
 }

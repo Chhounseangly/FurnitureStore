@@ -2,9 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
@@ -17,24 +15,18 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-class CategoriesFragment(private var id: Int) : BaseFragment() {
-    private lateinit var fragmentCategoryBinding: FragmentCategoryBinding
+class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private var categoriesViewModel = CategoriesViewModel()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentCategoryBinding = FragmentCategoryBinding.inflate(inflater, container, false)
+    override fun bindUi() {
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         categoriesViewModel.loadProductByCategoryApi(id)
         categoriesViewModel.loadCategoryTypes()
-        return fragmentCategoryBinding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val loadingLoadProducts = fragmentCategoryBinding.loadingLoadProducts
+        val loadingLoadProducts = binding.loadingLoadProducts
         categoriesViewModel.productByCategory.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(loadingLoadProducts)
@@ -52,7 +44,7 @@ class CategoriesFragment(private var id: Int) : BaseFragment() {
 
     private fun displayProductByCate(items: ProductByCate) {
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        val recyclerProductsByCate = fragmentCategoryBinding.recyclerProductsByCate
+        val recyclerProductsByCate = binding.recyclerProductsByCate
         recyclerProductsByCate.layoutManager = gridLayoutManager
 
 

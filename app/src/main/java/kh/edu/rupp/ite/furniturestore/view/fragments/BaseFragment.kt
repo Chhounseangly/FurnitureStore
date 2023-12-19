@@ -1,10 +1,35 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 
-open class BaseFragment: Fragment() {
+abstract class BaseFragment<T : ViewBinding>(
+    private val bindingFunction: (LayoutInflater, ViewGroup?, Boolean) -> T
+) : Fragment() {
+    private var _binding: T? = null
+    protected val binding: T
+        get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = bindingFunction(inflater, container, false)
+
+        bindUi()
+
+        return binding.root
+    }
+
+    abstract fun bindUi()
+
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         val baseActivity = activity as BaseActivity<*>
         baseActivity.showLoadingAnimation(viewContainerLoadingId)

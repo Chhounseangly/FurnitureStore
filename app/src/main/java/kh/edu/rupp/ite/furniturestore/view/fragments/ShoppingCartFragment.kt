@@ -7,9 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,36 +24,28 @@ import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ShoppingCartFragment : BaseFragment() {
-    private lateinit var fragmentCartBinding: FragmentCartBinding
+class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate) {
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var cartContainerLoading: ShimmerFrameLayout
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var paymentViewModel: PaymentViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
+    override fun bindUi() {
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
         // Set up SwipeRefreshLayout
-        swipeRefreshLayout = fragmentCartBinding.refreshLayout
+        swipeRefreshLayout = binding.refreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             shoppingCartViewModel.loadProductsCartData()
         }
-
-        return fragmentCartBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Shimmer animation view
-        cartContainerLoading = fragmentCartBinding.cartContainerLoading
+        cartContainerLoading = binding.cartContainerLoading
 
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -75,30 +65,30 @@ class ShoppingCartFragment : BaseFragment() {
         }
 
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
-            fragmentCartBinding.totalPrice.text = "$ " + it.toString()
+            binding.totalPrice.text = "$ " + it.toString()
         }
 
         shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
-            fragmentCartBinding.itemsCount.text = it.toString()
+            binding.itemsCount.text = it.toString()
         }
     }
 
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
         // Set up RecyclerView layout manager
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentCartBinding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
+        binding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
 
         // Set up shopping cart adapter
         shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
         shoppingCartAdapter.submitList(shoppingCart)
-        fragmentCartBinding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
+        binding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
 
         // Attach ItemTouchHelper to RecyclerView for swipe-to-delete
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.shoppingCartRecyclerView)
 
         // Set up checkout button click listener
-        fragmentCartBinding.checkoutBtn.setOnClickListener {
+        binding.checkoutBtn.setOnClickListener {
 
             val list = ArrayList<ObjectPayment>()
             for (i in shoppingCart){

@@ -18,21 +18,13 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
-class SearchFragment : BaseFragment() {
-
-    private lateinit var fragmentSearchBinding: FragmentSearchBinding
-
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
     private val handler = Handler()
     private var searchRunnable: Runnable? = null
     private var searchViewHolder = SearchViewHolder()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentSearchBinding = FragmentSearchBinding.inflate(inflater, container, false)
-        return fragmentSearchBinding.root
+    override fun bindUi() {
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -45,7 +37,7 @@ class SearchFragment : BaseFragment() {
 
     // Function to set up the search view
     private fun setupSearchView() {
-        val searchView = fragmentSearchBinding.searchProduct
+        val searchView = binding.searchProduct
 
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -56,7 +48,7 @@ class SearchFragment : BaseFragment() {
 
             override fun onQueryTextChange(query: String?): Boolean {
                 // Hide noData view initially
-                fragmentSearchBinding.notFound.visibility = View.GONE
+                binding.notFound.visibility = View.GONE
 
                 // Use a delay before triggering the search
                 handler.removeCallbacksAndMessages(null)
@@ -88,7 +80,7 @@ class SearchFragment : BaseFragment() {
 
     // Function to handle the search results
     private fun handleSearchResult(searchData: ApIData<List<Product>>) {
-        with(fragmentSearchBinding) {
+        with(binding) {
             when (searchData.status) {
                 Status.Processing -> {
                     // Show loading view and hide other views
@@ -121,7 +113,7 @@ class SearchFragment : BaseFragment() {
     private fun displayProductSearchFound(product: List<Product>?) {
         // Set up a LinearLayoutManager for the RecyclerView
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentSearchBinding.searchFoundRecyclerView.layoutManager = linearLayoutManager
+        binding.searchFoundRecyclerView.layoutManager = linearLayoutManager
 
         //create adapter, passing <Model, ViewHolderBinding>  and display ui
         val searchFoundAdapter = DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate){
@@ -149,6 +141,6 @@ class SearchFragment : BaseFragment() {
         // Create a SearchFoundAdapter and submit the product list
 //        val searchFoundAdapter = SearchFoundAdapter()
 //        searchFoundAdapter.submitList(product)
-        fragmentSearchBinding.searchFoundRecyclerView.adapter = searchFoundAdapter
+        binding.searchFoundRecyclerView.adapter = searchFoundAdapter
     }
 }
