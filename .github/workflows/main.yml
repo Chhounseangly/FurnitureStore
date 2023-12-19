@@ -20,14 +20,34 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
-
-      - name: Grant execute permission to build script
-        run: chmod +x ./build_script.sh
+      - name: Determine flavor based on tag
+        run: |
+          tag=$CI_COMMIT_TAG
+          build_type='release'
+          if [[ $tag == 'uat'* ]]; then
+            flavor='uat'
+          else
+            flavor='prd'
+          fi
+          echo "Flavor: $flavor"
+          echo "Build Type: $build_type"
+          echo "::set-output name=flavor::$flavor"
+          echo "::set-output name=build_type::$build_type"
 
       - name: Build APK
-        run: ./build_script.sh
+        run: |
+          flavor=$(/bin/bash -c "echo ${{ steps.determine-flavor.outputs.flavor }}")
+          build_type=$(/bin/bash -c "echo ${{ steps.determine-flavor.outputs.build_type }}")
+          ./gradlew "assemble${flavor}${build_type}"
+
+      - name: Copy APK
+        run: |
+          flavor=$(/bin/bash -c "echo ${{ steps.determine-flavor.outputs.flavor }}")
+          build_type=$(/bin/bash -c "echo ${{ steps.determine-flavor.outputs.build_type }}")
+          apkDir="app/build/outputs/apk/${flavor}/${build_type}"
+          apkMetaFile="$apkDir/output-metadata.json"
+          apkFile=$(cat $apkMetaFile | jq -r '.elements[0].outputFile')
+          cp "${apkDir}/${apkFile}" "furniture-store.apk"
 
   deploy:
     runs-on: ubuntu-latest
