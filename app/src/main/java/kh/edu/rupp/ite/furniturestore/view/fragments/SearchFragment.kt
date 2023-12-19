@@ -129,25 +129,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.searchFoundRecyclerView.layoutManager = linearLayoutManager
 
-        //create adapter, passing <Model, ViewHolderBinding>  and display ui
-        val searchFoundAdapter = DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate){
-            view, item, binding ->
+        // Initialize the searchFoundAdapter, passing <Model, ViewHolderBinding> and display UI
+        val searchFoundAdapter =
+            DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate) { view, item, binding ->
+                // Handle click on view to navigate to ProductDetail
+                view.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
 
-            //handle click on view navigation to ProductDetail
-            view.setOnClickListener {
-                val intent = Intent(it.context, ProductDetailActivity::class.java)
-                intent.putExtra("id", item.id)
-                it.context.startActivity(intent)
+                // Passing data to display UI
+                with(binding) {
+                    Picasso.get().load(item.imageUrl).into(img)
+                    name.text = item.name
+                    price.text = item.price.toString()
+                }
             }
 
-            //passing data display ui
-            with(binding){
-                Picasso.get().load(item.imageUrl).into(img)
-                name.text = item.name
-                price.text = item.price.toString()
-            }
-        }
-
+        // Set data for the searchFoundAdapter
         if (product != null) {
             searchFoundAdapter.setData(product)
         }
@@ -155,6 +155,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         // Create a SearchFoundAdapter and submit the product list
 //        val searchFoundAdapter = SearchFoundAdapter()
 //        searchFoundAdapter.submitList(product)
+        // Set the adapter for the searchFoundRecyclerView
         binding.searchFoundRecyclerView.adapter = searchFoundAdapter
     }
 }

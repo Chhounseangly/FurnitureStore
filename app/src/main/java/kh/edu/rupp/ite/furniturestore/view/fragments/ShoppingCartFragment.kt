@@ -23,9 +23,16 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate) {
+    // Adapter for the shopping cart
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
+
+    // Swipe-to-refresh layout
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+    // Shimmer effect for loading
     private lateinit var cartContainerLoading: ShimmerFrameLayout
+
+    // ViewModels for shopping cart and payment
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var paymentViewModel: PaymentViewModel
 
@@ -35,6 +42,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
     }
 
     override fun initFields() {
+        // Initialize ViewModels
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
     }
@@ -44,17 +52,21 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
     }
 
     override fun setupListeners() {
+        // Set up refresh listener to reload the shopping cart data
         swipeRefreshLayout.setOnRefreshListener {
             shoppingCartViewModel.loadProductsCartData()
         }
     }
 
     override fun setupObservers() {
+        // Observe changes in the shopping cart items
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(cartContainerLoading)
                 Status.Success -> it.data?.let { it1 ->
+                    // Display the shopping cart items
                     displayProductCart(it1)
+                    // Calculate and display the total price
                     shoppingCartViewModel.calculateTotalPrice(it.data)
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(cartContainerLoading)
@@ -67,15 +79,18 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
             }
         }
 
+        // Observe changes in the total price
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
             binding.totalPrice.text = "$ " + it.toString()
         }
 
+        // Observe changes in the item count
         shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
             binding.itemsCount.text = it.toString()
         }
     }
 
+    // Function to display the shopping cart items in the RecyclerView
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
         // Set up RecyclerView layout manager
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -92,16 +107,15 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
 
         // Set up checkout button click listener
         binding.checkoutBtn.setOnClickListener {
-
+            // Prepare data for payment and navigate to CheckoutActivity
             val list = ArrayList<ObjectPayment>()
-            for (i in shoppingCart){
+            for (i in shoppingCart) {
                 list.addAll(listOf(ObjectPayment(i.product_id, i.id, i.qty, i.product.price)))
             }
 
-            //passing data and navigation to CheckoutActivity
+            // Passing data and navigation to CheckoutActivity
             val activityCheckoutIntent = CheckoutActivity.newIntent(requireContext(), list)
             startActivity(activityCheckoutIntent)
-
         }
     }
 
@@ -136,6 +150,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
+                // Draw UI for swipe-to-delete
                 drawSwipeToDelete(c, viewHolder, dX)
                 super.onChildDraw(
                     c,
@@ -166,48 +181,53 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
         alertDialog.show()
     }
 
-    // Function to draw swipe-to-delete UI
+    // Function to draw the UI for swipe-to-delete action in the RecyclerView
     private fun drawSwipeToDelete(c: Canvas, viewHolder: RecyclerView.ViewHolder, dX: Float) {
+        // Get the current item view
         val itemView = viewHolder.itemView
-        // Take bottom of card and top of card remove it
+
+        // Calculate the height of the item view
         val height = itemView.bottom.toFloat() - itemView.top.toFloat()
-        // 3 / of height display text delete
+
+        // Calculate the width of the delete area as one-third of the item height
         val width = height / 3
 
-        val p = Paint()
-        p.isAntiAlias = true
+        // Create a Paint object for drawing
+        val paint = Paint()
+        paint.isAntiAlias = true
 
+        // Check if the swipe is to the left (negative dX)
         if (dX < 0) {
-            // Draw red background for delete action
-            p.color = Color.parseColor("#D32F2F")
+            // Draw a red background for the delete action
+            paint.color = Color.parseColor("#D32F2F")
             val background = RectF(
                 itemView.right.toFloat() + dX,
                 itemView.top.toFloat(),
                 itemView.right.toFloat(),
                 itemView.bottom.toFloat()
             )
-            c.drawRect(background, p)
+            c.drawRect(background, paint)
 
-            // Draw delete icon
-            val icon = BitmapFactory.decodeResource(resources, R.drawable.ic_cart)
-            if (icon != null) {
-                val iconDest = RectF(
+            // Draw the delete icon on the background
+            val deleteIcon = BitmapFactory.decodeResource(resources, R.drawable.ic_cart)
+            if (deleteIcon != null) {
+                val iconDestination = RectF(
                     itemView.right.toFloat() - 2 * width,
                     itemView.top.toFloat() + width,
                     itemView.right.toFloat() - width,
                     itemView.bottom.toFloat() - width
                 )
-                c.drawBitmap(icon, null, iconDest, p)
+                c.drawBitmap(deleteIcon, null, iconDestination, paint)
             }
 
             // Draw the "Delete" text
-            p.color = Color.WHITE
-            p.textSize = 44f
-            p.textAlign = Paint.Align.CENTER
-            val text = "Delete"
+            paint.color = Color.WHITE
+            paint.textSize = 44f
+            paint.textAlign = Paint.Align.CENTER
+            val deleteText = "Delete"
             val textX = itemView.right.toFloat() - 2 * width + 40
             val textY = itemView.top.toFloat() + height / 2
-            c.drawText(text, textX, textY, p)
+            c.drawText(deleteText, textX, textY, paint)
         }
     }
 }

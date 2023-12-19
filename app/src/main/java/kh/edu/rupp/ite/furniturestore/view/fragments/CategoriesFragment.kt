@@ -13,16 +13,19 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
+class CategoriesFragment(private var id: Int) :
+    BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private var categoriesViewModel = CategoriesViewModel()
     override fun bindUi() {
     }
 
     override fun initFields() {
+        // Initialize CategoriesViewModel using ViewModelProvider
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
     }
 
     override fun initActions() {
+        // Load product data by category and category types
         categoriesViewModel.loadProductByCategoryApi(id)
         categoriesViewModel.loadCategoryTypes()
     }
@@ -32,6 +35,7 @@ class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBin
     }
 
     override fun setupObservers() {
+        // Set up observer for load product by category LiveData
         val loadingLoadProducts = binding.loadingLoadProducts
         categoriesViewModel.productByCategory.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -48,26 +52,32 @@ class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBin
         }
     }
 
+    // Display products by category in the RecyclerView
     private fun displayProductByCate(items: ProductByCate) {
+        // Set up GridLayoutManager for the RecyclerView
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         val recyclerProductsByCate = binding.recyclerProductsByCate
         recyclerProductsByCate.layoutManager = gridLayoutManager
 
-
-        val productByCategoryAdapter = DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate){
-            view, item, binding ->
-            view.setOnClickListener {
-                val intent = Intent(it.context, ProductDetailActivity::class.java)
-                intent.putExtra("id", item.id)
-                it.context.startActivity(intent)
+        // Create DynamicAdapter for products with ViewHolderProductItemBinding
+        val productByCategoryAdapter =
+            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
+            { view, item, binding ->
+                // Set click listener to navigate to ProductDetailActivity
+                view.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
+                // Load product data into the ViewHolderProductItemBinding
+                with(binding) {
+                    Picasso.get().load(item.imageUrl).into(img)
+                    name.text = item.name
+                    price.text = "$ ${item.price}"
+                }
             }
-            with(binding) {
-                Picasso.get().load(item.imageUrl).into(img)
-                name.text = item.name
-                price.text = "$ ${item.price}"
-            }
-        }
 
+        // Set data to the adapter and attach it to the RecyclerView
         productByCategoryAdapter.setData(items.products)
 
 //        val productByCategoryAdapter = ProductByCategoryAdapter();

@@ -60,23 +60,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initFields() {
+        // Initialize ViewModels
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
+        // Set initial state for the "No Data" message
         noDataMsg.text = "No Data"
         noDataMsg.visibility = View.GONE
     }
 
     override fun initActions() {
+        // Load initial data from ViewModels
         productListViewModel.loadProductsData()
         categoriesViewModel.loadCategoryTypes()
         productSliderViewModel.loadProductSliderData()
         shoppingCartViewModel.loadProductsCartData()
 
-        // Auto hide floating button go to go
+        // Auto hide floating button go to top
         floatingActionButton.hide()
     }
 
@@ -104,7 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun setupObservers() {
-        //get data of products to display on recycler view
+        // Observe data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
@@ -116,7 +119,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
-
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
@@ -125,19 +127,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        //get data of product slider images to display on slider
+        // Observe data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Success -> it.data?.let { it1 ->
                     displaySliderProduct(it1)
                     swipeRefreshLayout.isRefreshing = false
                 }
-
                 else -> {}
             }
         }
 
-        //get data from CategoriesViewModel
+        // Observe data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
@@ -146,7 +147,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
                 }
-
                 else -> {
                     binding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
@@ -159,21 +159,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager
-        val gridLayoutManager =
-            GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         binding.productListRecyclerView.layoutManager = gridLayoutManager
 
+        // Initialize the product list adapter
         val productListAdapter =
             DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
             { view, item, binding ->
+                // Handle item click to open the ProductDetailActivity
                 view.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
                     intent.putExtra("id", item.id)
                     it.context.startActivity(intent)
                 }
 
+                // Bind data to the view using Picasso for image loading
                 with(binding) {
-                    // Load image using Picasso
                     Picasso.get().load(item.imageUrl)
                         .placeholder(R.drawable.loading)
                         .error(R.drawable.ic_error)
@@ -205,9 +206,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
                     }
                 }
-
             }
 
+        // Set data and adapter for the product list
         productListAdapter.setData(productsList)
         binding.productListRecyclerView.adapter = productListAdapter
     }
@@ -215,23 +216,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     // Display slider product on the top
     private fun displaySliderProduct(productSlider: List<ProductSlider?>) {
         val sliderModels = ArrayList<SlideModel>()
+
+        // Convert productSlider data to SlideModel for the image slider
         for (data in productSlider) {
             if (data != null) {
                 sliderModels.add(SlideModel(data.imageUrl, ScaleTypes.FIT))
             }
         }
+
+        // Set the image slider data
         binding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
     }
 
     // Display Types of Category
     private fun displayCategory(categoryTypes: List<CategoryTypes>) {
+        // Create LinearLayoutManager for the category RecyclerView
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.categoryRecyclerView.layoutManager = linearLayoutManager
 
+        // Initialize the category types adapter
         val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(
             ViewHolderCategoryTypeBinding::inflate
         ) { view, item, binding ->
+            // Handle item click to open ProductsByCategoryActivity
             view.setOnClickListener {
                 val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
                 intent.putExtra("id", item.id)
@@ -239,9 +247,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 it.context.startActivity(intent)
             }
 
+            // Set category name
             binding.name.text = item.name
         }
 
+        // Set data and adapter for the category RecyclerView
         categoryTypesAdapter.setData(categoryTypes)
         binding.categoryRecyclerView.adapter = categoryTypesAdapter
     }

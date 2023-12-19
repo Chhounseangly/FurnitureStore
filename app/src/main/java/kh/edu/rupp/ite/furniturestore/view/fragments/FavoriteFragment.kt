@@ -35,8 +35,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
     override fun initFields() {
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
-        shoppingCartViewModel =
-            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
     }
 
     override fun initActions() {
@@ -94,10 +93,11 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         binding.favoriteRecyclerView.layoutManager = gridLayoutManager
 
-        //create adapter, passing <Model, ViewHolderBinding>  and display ui
+        // Create DynamicAdapter for products with ViewHolderProductItemBinding
         val favoriteAdapter =
             DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate) { view, item, binding ->
                 view.setOnClickListener {
+                    // Click listener to navigate to ProductDetailActivity
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
                     intent.putExtra("id", item.id)
                     it.context.startActivity(intent)
@@ -129,12 +129,13 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                     // Favorite button click listener
                     bntFav.setOnClickListener {
                         favoriteViewModel.toggleFavorite(item) {
+                            // Callback function if needed
                         }
                     }
                 }
             }
 
-        //set up data to Adapter
+        // Set data to the adapter and attach it to the RecyclerView
         favoriteAdapter.setData(data)
         // Create and set up the adapter
 //        favoriteAdapter = FavoriteAdapter()
