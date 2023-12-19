@@ -18,18 +18,8 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle', 'gradle.properties') }}
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
-#      # Build and sign debug APK
-#      - name: Build Debug APK
-#        run: ./gradlew assembleDebug
 
       - name: Build with Gradle
         run: ./gradlew build --stacktrace --info
