@@ -13,36 +13,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - run: mkdir -p home/to/artifact
-      - run: echo hello > home/to/artifact/world.txt
-      - uses: actions/upload-artifact@v4
+      - name: Setup JDK
+        uses: actions/setup-java@v3
         with:
-          name: my-artifact
-          path: home/to/artifact/world.txt
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-#      - name: Setup JDK
-#        uses: actions/setup-java@v3
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Grant execute permission to build script
+        run: chmod +x ./build_script.sh
+
+      - name: Build APK
+        run: ./build_script.sh
+
+  deploy:
+    name: Deploy App
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: furniture-store
+          path: furniture-store.apk
+#      - run: mkdir -p home/to/artifact
+#      - run: echo hello > home/to/artifact/world.txt
+#      - uses: actions/upload-artifact@v4
 #        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#          cache: gradle
-
-#      - name: Make gradlew executable
-#        run: chmod +x gradlew
-#
-#      - name: Grant execute permission to build script
-#        run: chmod +x ./build_script.sh
-#
-#      - name: Build APK
-#        run: ./build_script.sh
-
-#  deploy:
-#    name: Deploy App
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: Upload APK
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: furniture-store
-#          path: furniture-store.txt
+#          name: my-artifact
+#          path: home/to/artifact/world.txt

@@ -9,14 +9,12 @@ else
   flavor='prd'
 fi
 
-#./gradlew "assemble$flavor$build_type"
-#apkDir="app/build/outputs/apk/$flavor/$build_type"
-#apkMetaFile="$apkDir/output-metadata.json"
-#apkFile=$(cat $apkMetaFile | jq -r '.elements[0].outputFile')
-#cp "$apkDir/$apkFile" "furniture-store.apk"
-echo "flavor: $flavor" > file.txt
-cp "file.txt" "furniture-store.txt"
+./gradlew "assemble$flavor$build_type"
+apkDir="app/build/outputs/apk/$flavor/$build_type"
+apkMetaFile="$apkDir/output-metadata.json"
+apkFile=$(cat $apkMetaFile | jq -r '.elements[0].outputFile')
+cp "$apkDir/$apkFile" "furniture-store.apk"
 
-#echo "apk file: $apkFile"
-#echo "apk dir: $apkDir"
-#echo "apk meta file: $apkMetaFile"
+echo "apk file: $apkFile"
+echo "apk dir: $apkDir"
+echo "apk meta file: $apkMetaFile"
