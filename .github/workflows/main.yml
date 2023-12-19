@@ -8,9 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Fetch Sources
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Setup JDK
@@ -19,18 +18,12 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
       - name: Build with Gradle
         run: ./gradlew build
 
   deploy:
-
     runs-on: ubuntu-latest
-
     needs: build
-
     steps:
       - name: Upload APK
         uses: actions/upload-artifact@v2
