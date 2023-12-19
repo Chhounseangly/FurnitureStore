@@ -1,8 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
@@ -34,11 +32,6 @@ class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBin
     }
 
     override fun setupObservers() {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val loadingLoadProducts = binding.loadingLoadProducts
         categoriesViewModel.productByCategory.observe(viewLifecycleOwner) {
             when (it.status) {

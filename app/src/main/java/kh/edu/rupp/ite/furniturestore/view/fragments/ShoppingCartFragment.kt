@@ -6,8 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +31,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
 
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
+        cartContainerLoading = binding.cartContainerLoading
     }
 
     override fun initFields() {
@@ -51,15 +50,6 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
     }
 
     override fun setupObservers() {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Shimmer animation view
-        cartContainerLoading = binding.cartContainerLoading
-
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(cartContainerLoading)

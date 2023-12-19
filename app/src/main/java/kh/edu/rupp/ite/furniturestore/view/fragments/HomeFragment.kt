@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -52,6 +51,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
         swipeRefreshLayout = binding.refreshLayout
+
+        noDataMsg = binding.noData
+        mShimmerViewContainer = binding.shimmerViewContainer
+
+        nestedScrollView = binding.homeFragment
+        floatingActionButton = binding.fabBtn
     }
 
     override fun initFields() {
@@ -60,10 +65,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
+
+        noDataMsg.text = "No Data"
+        noDataMsg.visibility = View.GONE
     }
 
     override fun initActions() {
+        productListViewModel.loadProductsData()
+        categoriesViewModel.loadCategoryTypes()
+        productSliderViewModel.loadProductSliderData()
+        shoppingCartViewModel.loadProductsCartData()
 
+        // Auto hide floating button go to go
+        floatingActionButton.hide()
     }
 
     override fun setupListeners() {
@@ -73,25 +87,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             categoriesViewModel.loadCategoryTypes()
             productSliderViewModel.loadProductSliderData()
         }
+
+        // Add a scroll listener to the NestedScrollView.
+        nestedScrollView.setOnScrollChangeListener { _, scrollX, scrollY, oldScrollX, oldScrollY ->
+            // Check if the user is scrolling up or down.
+            if (scrollY > oldScrollY) {
+                floatingActionButton.show()
+            } else
+                floatingActionButton.hide()
+        }
+
+        // Scroll to the top of the NestedScrollView when the user clicks on the fabToTop button.
+        floatingActionButton.setOnClickListener {
+            nestedScrollView.smoothScrollTo(0, 0, 500)
+        }
     }
 
     override fun setupObservers() {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //init load data from api
-        productListViewModel.loadProductsData()
-        categoriesViewModel.loadCategoryTypes()
-        productSliderViewModel.loadProductSliderData()
-
-        noDataMsg = binding.noData
-        noDataMsg.text = "No Data"
-        noDataMsg.visibility = View.GONE
-
-        mShimmerViewContainer = binding.shimmerViewContainer
-
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -112,6 +124,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
             }
         }
+
         //get data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -141,39 +154,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
             }
         }
-
-        shoppingCartViewModel.loadProductsCartData()
-        //shopping cart
-
-
-
-
-        // Update the cart RecyclerView with LiveData from ViewModel
-        nestedScrollView = view.findViewById(R.id.homeFragment)
-        floatingActionButton = view.findViewById(R.id.fabBtn)
-
-        //auto hide floating button go to go
-        floatingActionButton.hide()
-
-        // Add a scroll listener to the NestedScrollView.
-        nestedScrollView.setOnScrollChangeListener { _, scrollX, scrollY, oldScrollX, oldScrollY ->
-            // Check if the user is scrolling up or down.
-            if (scrollY > oldScrollY) {
-                floatingActionButton.show()
-            } else
-                floatingActionButton.hide()
-        }
-        // Scroll to the top of the NestedScrollView when the user clicks on the fabToTop button.
-        floatingActionButton.setOnClickListener {
-            nestedScrollView.smoothScrollTo(0, 0, 500)
-        }
     }
 
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
-
-        val title = binding.cateTitle
-
         // Create GridLayout Manager
         val gridLayoutManager =
             GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -206,7 +190,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
+                        SnackbarUtil.showSnackBar(
+                            requireContext(),
+                            requireView(),
+                            shoppingCartViewModel.toastMessage
+                        )
                     }
 
                     // Favorite button click listener
@@ -224,7 +212,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.productListRecyclerView.adapter = productListAdapter
     }
 
-    //display slider product on the top
+    // Display slider product on the top
     private fun displaySliderProduct(productSlider: List<ProductSlider?>) {
         val sliderModels = ArrayList<SlideModel>()
         for (data in productSlider) {
@@ -235,7 +223,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.carousel.setImageList(sliderModels, ScaleTypes.FIT)
     }
 
-    //display Types of Category
+    // Display Types of Category
     private fun displayCategory(categoryTypes: List<CategoryTypes>) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -243,8 +231,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(
             ViewHolderCategoryTypeBinding::inflate
-        )
-        { view, item, binding ->
+        ) { view, item, binding ->
             view.setOnClickListener {
                 val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
                 intent.putExtra("id", item.id)
@@ -257,6 +244,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         categoryTypesAdapter.setData(categoryTypes)
         binding.categoryRecyclerView.adapter = categoryTypesAdapter
-
     }
 }

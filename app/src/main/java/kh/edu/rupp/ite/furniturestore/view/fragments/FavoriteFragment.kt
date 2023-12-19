@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -21,84 +20,48 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteBinding::inflate) {
-    // SwipeRefreshLayout for refreshing the list
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
-    // ShimmerFrameLayout for loading animation
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
-
-    // TextView for displaying a message when there is no data
     private lateinit var noDataMsg: TextView
 
-    // ViewModel for handling favorite products
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
+        noDataMsg = binding.noData
+        mShimmerViewContainer = binding.loading
     }
 
     override fun initFields() {
-
-    }
-
-    override fun initActions() {
-
-    }
-
-    override fun setupListeners() {
-
-    }
-
-    override fun setupObservers() {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
         shoppingCartViewModel =
             ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+    }
 
-        // Initialize UI elements
-        noDataMsg = binding.noData
+    override fun initActions() {
+        favoriteViewModel.loadFavoriteProducts()
+    }
 
-
+    override fun setupListeners() {
         swipeRefreshLayout.setOnRefreshListener {
-            // Refresh the list when SwipeRefreshLayout is triggered
             favoriteViewModel.loadFavoriteProducts()
         }
+    }
 
-        // Initialize ShimmerFrameLayout
-        mShimmerViewContainer = binding.loading
-
-        // Observe changes in the list of favorite products
+    override fun setupObservers() {
         favoriteViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> showLoadingAnimation()
+                Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> it.data?.let { data -> handleSuccess(data) }
                 Status.Failed -> handleFailure()
             }
         }
-
-        // Load initial data
-        favoriteViewModel.loadFavoriteProducts()
-    }
-
-    // Show loading animation
-    private fun showLoadingAnimation() {
-        showLoadingAnimation(mShimmerViewContainer)
-    }
-
-    // Hide loading animation
-    private fun hideLoadingAnimation() {
-        hideLoadingAnimation(mShimmerViewContainer)
     }
 
     // Handle successful data retrieval
     private fun handleSuccess(data: List<Product>) {
-        hideLoadingAnimation()
+        hideLoadingAnimation(mShimmerViewContainer)
         displayFavorite(data)
 
         // Check if the data is null or empty
@@ -116,7 +79,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
     // Handle data retrieval failure
     private fun handleFailure() {
-        hideLoadingAnimation()
+        hideLoadingAnimation(mShimmerViewContainer)
 
         // Show the "No Data" message on failure
         noDataMsg.visibility = View.VISIBLE
@@ -130,7 +93,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
         // Create GridLayout Manager
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         binding.favoriteRecyclerView.layoutManager = gridLayoutManager
-
 
         //create adapter, passing <Model, ViewHolderBinding>  and display ui
         val favoriteAdapter =
@@ -157,15 +119,16 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
+                        SnackbarUtil.showSnackBar(
+                            requireContext(),
+                            requireView(),
+                            shoppingCartViewModel.toastMessage
+                        )
                     }
-
-
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {
                         favoriteViewModel.toggleFavorite(item) {
-
                         }
                     }
                 }

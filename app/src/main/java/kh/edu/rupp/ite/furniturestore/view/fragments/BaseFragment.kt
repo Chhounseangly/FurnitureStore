@@ -26,10 +26,15 @@ abstract class BaseFragment<T : ViewBinding>(
         bindUi()
         initFields()
         initActions()
-        setupListeners()
-        setupObservers()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupListeners()
+        setupObservers()
     }
 
     abstract fun bindUi()
