@@ -1,19 +1,15 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +18,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
@@ -31,7 +26,7 @@ import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ShoppingCartFragment : Fragment() {
+class ShoppingCartFragment : BaseFragment() {
     private lateinit var fragmentCartBinding: FragmentCartBinding
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -64,17 +59,17 @@ class ShoppingCartFragment : Fragment() {
 
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(cartContainerLoading)
+                Status.Processing -> showLoadingAnimation(cartContainerLoading)
                 Status.Success -> it.data?.let { it1 ->
                     displayProductCart(it1)
                     shoppingCartViewModel.calculateTotalPrice(it.data)
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(cartContainerLoading)
+                    hideLoadingAnimation(cartContainerLoading)
                 }
 
                 else -> {
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(cartContainerLoading)
+                    hideLoadingAnimation(cartContainerLoading)
                 }
             }
         }

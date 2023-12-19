@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +16,9 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentHomeBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCategoryTypeBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
@@ -39,7 +35,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
@@ -101,20 +97,20 @@ class HomeFragment : Fragment() {
         //get data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> {
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
-                        LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
+                        hideLoadingAnimation(mShimmerViewContainer)
                     }
                 }
 
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation(mShimmerViewContainer)
                 }
             }
         }
@@ -133,17 +129,17 @@ class HomeFragment : Fragment() {
         //get data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> it.data?.let { it1 ->
                     displayCategory(it1)
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation(mShimmerViewContainer)
                 }
 
                 else -> {
                     fragmentHomeBinding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation(mShimmerViewContainer)
                 }
             }
         }
@@ -175,8 +171,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-
-    //display product list on home screen
+    // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
 
         val title = fragmentHomeBinding.cateTitle

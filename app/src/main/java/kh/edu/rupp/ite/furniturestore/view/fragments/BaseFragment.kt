@@ -1,17 +1,18 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import androidx.fragment.app.Fragment
+import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 
 open class BaseFragment: Fragment() {
-    fun showLoading() {
+    fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         val baseActivity = activity as BaseActivity<*>
-        baseActivity.showLoading()
+        baseActivity.showLoadingAnimation(viewContainerLoadingId)
     }
 
-    fun hideLoading() {
+    fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         val baseActivity = activity as BaseActivity<*>
-        baseActivity.hideLoading()
+        baseActivity.hideLoadingAnimation(viewContainerLoadingId)
     }
 
     fun showLongToast(message: String) {

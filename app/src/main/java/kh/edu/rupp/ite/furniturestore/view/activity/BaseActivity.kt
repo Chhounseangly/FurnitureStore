@@ -2,8 +2,10 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.facebook.shimmer.ShimmerFrameLayout
 
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
@@ -29,12 +31,13 @@ abstract class BaseActivity<T : ViewBinding>(
     abstract fun setupObservers()
     abstract fun initActions()
 
-    fun showLoading() {
-
+    fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+        viewContainerLoadingId.startShimmer()
     }
 
-    fun hideLoading() {
-
+    fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+        viewContainerLoadingId.stopShimmer()
+        viewContainerLoadingId.visibility = View.GONE;
     }
 
     fun showDialog() {

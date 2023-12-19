@@ -6,17 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentFavoriteBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
@@ -26,7 +22,7 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : BaseFragment() {
     // View binding for the fragment
     private lateinit var fragmentFavoriteBinding: FragmentFavoriteBinding
 
@@ -89,12 +85,12 @@ class FavoriteFragment : Fragment() {
 
     // Show loading animation
     private fun showLoadingAnimation() {
-        LoadingMethod().showLoadingAnimation(mShimmerViewContainer)
+        showLoadingAnimation(mShimmerViewContainer)
     }
 
     // Hide loading animation
     private fun hideLoadingAnimation() {
-        LoadingMethod().hideLoadingAnimation(mShimmerViewContainer)
+        hideLoadingAnimation(mShimmerViewContainer)
     }
 
     // Handle successful data retrieval

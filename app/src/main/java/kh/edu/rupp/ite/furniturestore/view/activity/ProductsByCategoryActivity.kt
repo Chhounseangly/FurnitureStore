@@ -1,32 +1,24 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
-import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.tabs.TabLayout
-
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
-
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductByCategoryBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.fragments.CategoriesFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-
-class ProductsByCategoryActivity : AppCompatActivity() {
+class ProductsByCategoryActivity :
+    BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
     private val categoriesViewModel = CategoriesViewModel()
     private lateinit var categoriesFragment: CategoriesFragment
     private var id = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_by_category)
-
+    override fun bindUi() {
         //call method prev back
         prevBack()
 
@@ -35,16 +27,16 @@ class ProductsByCategoryActivity : AppCompatActivity() {
         id = intent.getIntExtra("id", 0)
         val titleTypeCate = findViewById<TextView>(R.id.titleTypeCate)
 
-        //assign category title to appBar
+        // assign category title to appBar
         titleTypeCate.text = "Categories"
 
-//        displayFragment(CategoriesFragment(id))
+        // displayFragment(CategoriesFragment(id))
         val lytTab = findViewById<TabLayout>(R.id.lytTab)
         val loadingLoadProducts = findViewById<ShimmerFrameLayout>(R.id.loadingLoadProducts)
         categoriesViewModel.loadCategoryTypes()
         categoriesViewModel.categoryTypesData.observe(this) { it ->
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(loadingLoadProducts)
+                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
                     it.data?.let {
                         for (data in it) {
@@ -52,11 +44,11 @@ class ProductsByCategoryActivity : AppCompatActivity() {
                             lytTab.addTab(tab)
                         }
                     }
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
 
                 else -> {
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
             }
         }
@@ -71,7 +63,7 @@ class ProductsByCategoryActivity : AppCompatActivity() {
                     if (!tab.isSelected) {
                         // Load and display the fragment only if the tab is not reselected
                         displayFragment(CategoriesFragment(tab.id))
-                    }else displayFragment(CategoriesFragment(tab.id))
+                    } else displayFragment(CategoriesFragment(tab.id))
                 }
             }
 
@@ -83,6 +75,17 @@ class ProductsByCategoryActivity : AppCompatActivity() {
                 // Handle tab reselection if needed
             }
         })
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
+
+    }
+
+    override fun initActions() {
 
     }
 
@@ -118,11 +121,9 @@ class ProductsByCategoryActivity : AppCompatActivity() {
         }
 
         // Add the transaction to the back stack
-//        fragmentTransaction.addToBackStack(null)
+        // fragmentTransaction.addToBackStack(null)
 
         // Commit the transaction
         fragmentTransaction.commit()
     }
-
-
 }
