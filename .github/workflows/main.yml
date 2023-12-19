@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: furniture-store
-          path: furniture-store.apk
+          path: /FurnitureStore/furniture-store.apk
 #      - run: mkdir -p home/to/artifact
 #      - run: echo hello > home/to/artifact/world.txt
 #      - uses: actions/upload-artifact@v4

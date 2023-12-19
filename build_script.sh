@@ -14,7 +14,7 @@ apkDir="app/build/outputs/apk/$flavor/$build_type"
 apkMetaFile="$apkDir/output-metadata.json"
 apkFile=$(cat $apkMetaFile | jq -r '.elements[0].outputFile')
 cp "$apkDir/$apkFile" "furniture-store.apk"
-cd ../
+
 ls
 
 echo "apk file: $apkFile"
