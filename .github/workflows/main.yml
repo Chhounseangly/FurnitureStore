@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: Generate App Bundle
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -15,14 +16,17 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
           java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
 
       - name: Make gradlew executable
-        run: chmod +x ./gradlew
+        run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build --stacktrace --info
+      - name: Bundle 'release' with Gradle
+        run: ./gradlew bundleRelease
+
+      - run: echo "Build status report=${{ job.status }}."
 
   deploy:
     runs-on: ubuntu-latest
