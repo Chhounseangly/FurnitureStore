@@ -27,6 +27,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         displayFragmentActivity.displayFragment(homeFragment)
     }
 
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
+        if (intent.action == Intent.ACTION_VIEW) {
+            val data = intent.data
+
+            // Handle the case when the user signs in with Google
+            if (data != null && data.scheme == getString(R.string.app_scheme)) {
+                // Save the token to shared preferences
+                val token = data.getQueryParameter("token")
+                AppPreference.get(this).setToken(token ?: "")
+            }
+        }
+    }
+
     override fun setupListeners() {
         // Click on the app title goes back to the home fragment and sets the home menu as active
         binding.titleTxt.setOnClickListener {
@@ -67,19 +84,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun setupObservers() {
 
-    }
-
-    override fun initActions() {
-        if (intent.action == Intent.ACTION_VIEW) {
-            val data = intent.data
-
-            // Handle the case when the user signs in with Google
-            if (data != null && data.scheme == getString(R.string.app_scheme)) {
-                // Save the token to shared preferences
-                val token = data.getQueryParameter("token")
-                AppPreference.get(this).setToken(token ?: "")
-            }
-        }
     }
 
     /**

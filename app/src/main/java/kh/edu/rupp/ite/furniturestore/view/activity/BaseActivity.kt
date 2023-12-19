@@ -21,15 +21,17 @@ abstract class BaseActivity<T : ViewBinding>(
         setContentView(binding.root)
 
         bindUi()
+        initFields()
+        initActions()
         setupListeners()
         setupObservers()
-        initActions()
     }
 
     abstract fun bindUi()
+    abstract fun initFields()
+    abstract fun initActions()
     abstract fun setupListeners()
     abstract fun setupObservers()
-    abstract fun initActions()
 
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
         viewContainerLoadingId.startShimmer()

@@ -77,15 +77,19 @@ class ProductsByCategoryActivity :
         })
     }
 
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
+
+    }
+
     override fun setupListeners() {
 
     }
 
     override fun setupObservers() {
-
-    }
-
-    override fun initActions() {
 
     }
 

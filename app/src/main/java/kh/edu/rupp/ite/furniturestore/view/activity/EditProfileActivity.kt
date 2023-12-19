@@ -2,22 +2,21 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.custom_method.PrevBackButton
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityEditProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity :
+    BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate) {
 
     private lateinit var prevBackButton: PrevBackButton
     private lateinit var backBtn: ImageView
@@ -28,18 +27,41 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var authViewModel: AuthViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+    override fun bindUi() {
+        avatar = binding.profile
+        name = binding.username
+        editAvatarBtn = binding.editAvatarBtn
+        saveBtn = binding.saveBtn
+        backBtn = binding.backBtn
+    }
 
+    override fun initFields() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        prevBackButton = PrevBackButton(this)
+    }
 
-        avatar = findViewById(R.id.profile)
-        name = findViewById(R.id.username)
-        editAvatarBtn = findViewById(R.id.editAvatarBtn)
-        saveBtn = findViewById(R.id.saveBtn)
-
+    override fun initActions() {
+        // Load profile
         authViewModel.loadProfile()
+
+        // Back to prev activity
+        prevBackButton.prevBack(backBtn)
+    }
+
+    override fun setupListeners() {
+        // Handle upload change profile
+        editAvatarBtn.setOnClickListener {
+            openImageChooser()
+        }
+
+        // Handle save button to submit api
+        saveBtn.setOnClickListener {
+            val getName = name.text.toString()
+            authViewModel.updateProfile(getName, null)
+        }
+    }
+
+    override fun setupObservers() {
         authViewModel.userData.observe(this) {
             when (it.status) {
                 Status.Success -> {
@@ -57,23 +79,6 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
-
-        //handle upload change profile
-        editAvatarBtn.setOnClickListener {
-            openImageChooser()
-        }
-
-
-        //handle save button to submit api
-        saveBtn.setOnClickListener {
-            val getName = name.text.toString()
-            authViewModel.updateProfile(getName, null)
-        }
-
-        //back to prev activity
-        backBtn = findViewById(R.id.backBtn)
-        prevBackButton = PrevBackButton(this)
-        prevBackButton.prevBack(backBtn)
     }
 
 

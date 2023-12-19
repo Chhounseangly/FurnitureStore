@@ -45,9 +45,9 @@ class ShoppingCartAdapter(private var shoppingCartViewModel: ShoppingCartViewMod
         fun bind(item: ShoppingCart) {
             //passing data from api to view
             with(viewHolderProductCartBinding) {
-                Picasso.get().load(item.product?.imageUrl).into(productImg)
-                nameProduct.text = item.product?.name
-                price.text = "$ " + item.product?.price.toString()
+                Picasso.get().load(item.product.imageUrl).into(productImg)
+                nameProduct.text = item.product.name
+                "$ ${item.product.price}".also { price.text = it }
                 displayQty.text = item.qty.toString()
 
                 productImg.setOnClickListener {
