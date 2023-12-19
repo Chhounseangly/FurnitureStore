@@ -7,12 +7,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,15 +24,18 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
 import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.HistoryActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ShoppingCartFragment : Fragment() {
+class ShoppingCartFragment() : Fragment() {
     private lateinit var fragmentCartBinding: FragmentCartBinding
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -39,11 +43,13 @@ class ShoppingCartFragment : Fragment() {
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var paymentViewModel: PaymentViewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
@@ -59,7 +65,6 @@ class ShoppingCartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Shimmer animation view
         cartContainerLoading = fragmentCartBinding.cartContainerLoading
 
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
@@ -87,6 +92,7 @@ class ShoppingCartFragment : Fragment() {
             fragmentCartBinding.itemsCount.text = it.toString()
         }
     }
+
 
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
         // Set up RecyclerView layout manager

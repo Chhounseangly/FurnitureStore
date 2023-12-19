@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.io.IOException
 
 class AuthViewModel : ViewModel() {
     // LiveData and MutableLiveData declarations for various data associated with authentication and user actions

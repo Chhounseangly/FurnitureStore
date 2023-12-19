@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="10dp"
         android:background="@drawable/bg_search"
         app:iconifiedByDefault="false"
         app:queryHint="Search Here..." />
 
     <ProgressBar
         android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="@color/grey_font"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/notFound"

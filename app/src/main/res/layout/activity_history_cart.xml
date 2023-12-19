@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="button back to prev activity"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="History Purchase"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+   <LinearLayout
+       android:visibility="gone"
+       android:id="@+id/ltyLoading"
+       android:gravity="center"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <ProgressBar
+           android:visibility="gone"
+           android:layout_gravity="center_vertical"
+           android:backgroundTintMode="multiply"
+           android:indeterminateTint="@color/grey_font"
+           android:id="@+id/loadingCircle"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:minHeight="50dp"
+           android:minWidth="50dp" />
+   </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

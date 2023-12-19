@@ -5,6 +5,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
+import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
@@ -78,11 +79,15 @@ interface ApiService {
 
     @PUT("api/updateProfile")
     suspend fun updateProfile(@Body data: UpdateProfile): ResponseMessage
-    //history
+    //payment
     @POST("api/history")
     suspend fun postPayment(
         @Body data: List<PaymentModel>
     ): ResponseMessage
+
+    //load history data
+    @GET("api/history")
+    suspend fun loadHistoryPurchase(): Res<HistoryModel>
 
     //End Point fetching products
     @GET("api/favorite")

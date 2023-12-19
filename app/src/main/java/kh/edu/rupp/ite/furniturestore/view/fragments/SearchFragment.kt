@@ -54,7 +54,6 @@ class SearchFragment : Fragment() {
                 // Handling submit if needed
                 return true
             }
-
             override fun onQueryTextChange(query: String?): Boolean {
                 // Hide noData view initially
                 fragmentSearchBinding.notFound.visibility = View.GONE

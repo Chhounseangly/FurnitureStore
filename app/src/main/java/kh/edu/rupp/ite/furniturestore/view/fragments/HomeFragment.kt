@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -30,7 +29,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
-import kh.edu.rupp.ite.furniturestore.utility.SnackbarUtil
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
@@ -213,7 +211,7 @@ class HomeFragment : Fragment() {
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
+                        Snackbar.make(requireView(), shoppingCartViewModel.toastMessage, Snackbar.LENGTH_LONG).show()
                     }
 
                     // Favorite button click listener

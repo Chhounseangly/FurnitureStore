@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -21,7 +20,6 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentFavoriteBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
-import kh.edu.rupp.ite.furniturestore.utility.SnackbarUtil
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
@@ -158,10 +156,8 @@ class FavoriteFragment : Fragment() {
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                        SnackbarUtil.showSnackBar(requireContext(), requireView(), shoppingCartViewModel.toastMessage)
+                        Snackbar.make(requireView(), shoppingCartViewModel.toastMessage, Snackbar.LENGTH_LONG).show()
                     }
-
-
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {

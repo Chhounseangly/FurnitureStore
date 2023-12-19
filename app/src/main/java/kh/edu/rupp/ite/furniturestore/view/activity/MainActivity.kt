@@ -2,6 +2,8 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
@@ -41,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        handleHistoryButton()
 
         displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
 
@@ -82,5 +86,14 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+    private fun handleHistoryButton(){
+        val historyBtn = activityMainBinding.historyBtn
+        historyBtn?.visibility = View.VISIBLE
+        historyBtn?.setOnClickListener {
+            val historyIntent = Intent(this, HistoryActivity::class.java)
+            startActivity(historyIntent)
+        }
+
     }
 }

@@ -9,7 +9,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
-import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers

@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
-import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
