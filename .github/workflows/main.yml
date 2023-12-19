@@ -20,6 +20,9 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
       - name: Grant execute permission to build script
         run: chmod +x ./build_script.sh
 
