@@ -18,9 +18,22 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 class CategoriesFragment(private var id: Int) : BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private var categoriesViewModel = CategoriesViewModel()
     override fun bindUi() {
+    }
+
+    override fun initFields() {
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+    }
+
+    override fun initActions() {
         categoriesViewModel.loadProductByCategoryApi(id)
         categoriesViewModel.loadCategoryTypes()
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
 
     }
 

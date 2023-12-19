@@ -51,21 +51,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var coordinatorLayout: CoordinatorLayout
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
+        swipeRefreshLayout = binding.refreshLayout
+    }
 
+    override fun initFields() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
-        shoppingCartViewModel =
-            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
+    }
 
-        //refresh layout loading data again
-        swipeRefreshLayout = binding.refreshLayout
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
+        // Refresh layout loading data again
         swipeRefreshLayout.setOnRefreshListener {
             productListViewModel.loadProductsData()
             categoriesViewModel.loadCategoryTypes()
             productSliderViewModel.loadProductSliderData()
         }
+    }
+
+    override fun setupObservers() {
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

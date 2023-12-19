@@ -27,6 +27,22 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     }
 
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
+
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

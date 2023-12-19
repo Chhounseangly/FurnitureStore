@@ -32,13 +32,26 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
     private lateinit var paymentViewModel: PaymentViewModel
 
     override fun bindUi() {
+        swipeRefreshLayout = binding.refreshLayout
+    }
+
+    override fun initFields() {
         shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
-        // Set up SwipeRefreshLayout
-        swipeRefreshLayout = binding.refreshLayout
+    }
+
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
         swipeRefreshLayout.setOnRefreshListener {
             shoppingCartViewModel.loadProductsCartData()
         }
+    }
+
+    override fun setupObservers() {
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

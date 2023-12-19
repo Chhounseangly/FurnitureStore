@@ -24,11 +24,19 @@ abstract class BaseFragment<T : ViewBinding>(
         _binding = bindingFunction(inflater, container, false)
 
         bindUi()
+        initFields()
+        initActions()
+        setupListeners()
+        setupObservers()
 
         return binding.root
     }
 
     abstract fun bindUi()
+    abstract fun initFields()
+    abstract fun initActions()
+    abstract fun setupListeners()
+    abstract fun setupObservers()
 
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         val baseActivity = activity as BaseActivity<*>
