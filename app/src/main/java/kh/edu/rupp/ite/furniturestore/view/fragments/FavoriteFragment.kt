@@ -136,9 +136,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
         // Set data to the adapter and attach it to the RecyclerView
         favoriteAdapter.setData(data)
-        // Create and set up the adapter
-//        favoriteAdapter = FavoriteAdapter()
-//        favoriteAdapter.submitList(data)
         binding.favoriteRecyclerView.adapter = favoriteAdapter
     }
 }

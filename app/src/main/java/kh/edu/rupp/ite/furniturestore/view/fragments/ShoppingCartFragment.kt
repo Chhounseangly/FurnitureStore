@@ -63,11 +63,11 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(cartContainerLoading)
-                Status.Success -> it.data?.let { it1 ->
+                Status.Success -> it.data?.let { data ->
                     // Display the shopping cart items
-                    displayProductCart(it1)
+                    displayProductCart(data)
                     // Calculate and display the total price
-                    shoppingCartViewModel.calculateTotalPrice(it.data)
+                    shoppingCartViewModel.calculateTotalPrice(data)
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(cartContainerLoading)
                 }

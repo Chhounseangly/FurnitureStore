@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApiResponse
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +22,8 @@ class CategoriesViewModel : ViewModel() {
         get() = _categoryTypesData
 
     // LiveData to observe changes in the product list based on selected category
-    private val _productByCategory = MutableLiveData<ApIData<ApiResponse>>()
-    val productByCategory: LiveData<ApIData<ApiResponse>>
+    private val _productByCategory = MutableLiveData<ApIData<ProductByCate>>()
+    val productByCategory: LiveData<ApIData<ProductByCate>>
         get() = _productByCategory
 
     // Function to load the list of available category types
@@ -53,7 +53,7 @@ class CategoriesViewModel : ViewModel() {
     // Function to load products based on the selected category
     fun loadProductByCategoryApi(id: Int) {
         // Initial status while processing
-        var apiData = ApIData<ApiResponse>(Status.Processing, null)
+        var apiData = ApIData<ProductByCate>(Status.Processing, null)
         _productByCategory.value = apiData
 
         // Processing in the background
@@ -61,7 +61,7 @@ class CategoriesViewModel : ViewModel() {
             apiData = try {
                 // Fetch products by the selected category from the API
                 val response = RetrofitInstance.get().api.loadProductsByCategory(id)
-                ApIData(Status.Success, response)
+                ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
                 // Handle exceptions and log the error
                 Log.d("Error", "${ex.message}")

@@ -18,7 +18,6 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
     private val handler = Handler()
-    private var searchRunnable: Runnable? = null
     private var searchViewHolder = SearchViewHolder()
 
     override fun bindUi() {

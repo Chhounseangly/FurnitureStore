@@ -20,7 +20,6 @@ class CategoriesFragment(private var id: Int) :
     }
 
     override fun initFields() {
-        // Initialize CategoriesViewModel using ViewModelProvider
         categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
     }
 
@@ -41,7 +40,7 @@ class CategoriesFragment(private var id: Int) :
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
-                    it.data?.let { it1 -> displayProductByCate(it1.data) }
+                    it.data?.let { data -> displayProductByCate(data) }
                     hideLoadingAnimation(loadingLoadProducts)
                 }
 
@@ -79,9 +78,6 @@ class CategoriesFragment(private var id: Int) :
 
         // Set data to the adapter and attach it to the RecyclerView
         productByCategoryAdapter.setData(items.products)
-
-//        val productByCategoryAdapter = ProductByCategoryAdapter();
-//        productByCategoryAdapter.submitList(items.products)
         recyclerProductsByCate.adapter = productByCategoryAdapter
     }
 }

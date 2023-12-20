@@ -91,7 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         // Add a scroll listener to the NestedScrollView.
-        nestedScrollView.setOnScrollChangeListener { _, scrollX, scrollY, oldScrollX, oldScrollY ->
+        nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             // Check if the user is scrolling up or down.
             if (scrollY > oldScrollY) {
                 floatingActionButton.show()
@@ -129,8 +129,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Observe data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Success -> it.data?.let { it1 ->
-                    displaySliderProduct(it1)
+                Status.Success -> it.data?.let { data ->
+                    displaySliderProduct(data)
                     swipeRefreshLayout.isRefreshing = false
                 }
                 else -> {}
@@ -141,8 +141,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
-                Status.Success -> it.data?.let { it1 ->
-                    displayCategory(it1)
+                Status.Success -> it.data?.let { data ->
+                    displayCategory(data)
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
                 }
