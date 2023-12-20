@@ -38,6 +38,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // Handle the case when the user signs in with Google
             if (data != null && data.scheme == getString(R.string.app_scheme)) {
+                showSnackBar(this, binding.root, getString(R.string.sign_in_success))
+
                 // Save the token to shared preferences
                 val token = data.getQueryParameter("token")
                 AppPreference.get(this).setToken(token ?: "")
@@ -87,10 +89,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     }
 
-    /**
-     * Check if the user is signed in.
-     * @return True if the user is signed in, false otherwise.
-     */
+    override fun onResume() {
+        super.onResume()
+
+        // Set the active menu item to current fragment
+        when (displayFragmentActivity.getCurrentFragment()) {
+            homeFragment -> binding.bottomNavigationView.selectedItemId = R.id.mnuHome
+            favoriteFragment -> binding.bottomNavigationView.selectedItemId = R.id.mnuFav
+            searchFragment -> binding.bottomNavigationView.selectedItemId = R.id.mnuSearch
+            shoppingCartFragment -> binding.bottomNavigationView.selectedItemId = R.id.mnuCart
+        }
+    }
+
+    // Check if the user is signed in
     private fun isUserSignedIn(): Boolean {
         return AppPreference.get(this).getToken() != null
     }

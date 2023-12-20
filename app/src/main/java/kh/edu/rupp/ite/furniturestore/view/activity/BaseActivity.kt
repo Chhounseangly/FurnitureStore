@@ -57,7 +57,6 @@ abstract class BaseActivity<T : ViewBinding>(
         val snackbarView = snackbar.view
         snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.blue))
 
-
         val params = snackbarView.layoutParams as ViewGroup.MarginLayoutParams
         params.marginStart = context.resources.getDimensionPixelSize(R.dimen.padding_10)
         params.marginEnd = context.resources.getDimensionPixelSize(R.dimen.padding_10)

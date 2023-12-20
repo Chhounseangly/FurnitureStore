@@ -59,7 +59,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         //route to edit profile activity screen
         editProfileBtn.setOnClickListener {
             val intentEditProfileActivity = Intent(this, EditProfileActivity::class.java)
-//            intentEditProfileActivity.putExtra("profile", image)
             startActivity(intentEditProfileActivity)
         }
     }
@@ -104,5 +103,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        authViewModel.loadProfile()
     }
 }
