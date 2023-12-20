@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Generate App
+    name: Build App
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,11 +16,11 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Make gradlew executable
+      - name: Grant execute permission to make gradlew executable
         run: chmod +x gradlew
 
       - name: Grant execute permission to build script
@@ -30,7 +30,7 @@ jobs:
         run: ./build_script.sh
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: furniture-store
           path: furniture-store.apk

@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.tabs.TabLayout
 import kh.edu.rupp.ite.furniturestore.R
@@ -14,49 +15,35 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class ProductsByCategoryActivity :
     BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
-    private val categoriesViewModel = CategoriesViewModel()
-    private lateinit var categoriesFragment: CategoriesFragment
-    private var id = 0
+
+    private lateinit var titleTypeCate: TextView
+    private lateinit var lytTab: TabLayout
+    private lateinit var loadingLoadProducts: ShimmerFrameLayout
+
+    private lateinit var categoriesViewModel: CategoriesViewModel
 
     override fun bindUi() {
-        //call method prev back
-        prevBack()
+        titleTypeCate = binding.titleTypeCate
 
-        // Get data from previous activity
-        val intent = intent
-        id = intent.getIntExtra("id", 0)
-        val titleTypeCate = findViewById<TextView>(R.id.titleTypeCate)
+        lytTab = binding.lytTab
+        loadingLoadProducts = binding.loadingLoadProducts
+    }
+
+    override fun initFields() {
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+    }
+
+    override fun initActions() {
+        // call method prev back
+        prevBack()
 
         // assign category title to appBar
         titleTypeCate.text = "Categories"
 
-        // displayFragment(CategoriesFragment(id))
-        val lytTab = findViewById<TabLayout>(R.id.lytTab)
-        val loadingLoadProducts = findViewById<ShimmerFrameLayout>(R.id.loadingLoadProducts)
         categoriesViewModel.loadCategoryTypes()
-        categoriesViewModel.categoryTypesData.observe(this) { it ->
-            when (it.status) {
-                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
-                Status.Success -> {
-                    it.data?.let {
-                        for (data in it) {
-                            val tab = lytTab.newTab().setText(data.name).setId(data.id)
-                            lytTab.addTab(tab)
-                        }
-                    }
-                    hideLoadingAnimation(loadingLoadProducts)
-                }
+    }
 
-                else -> {
-                    hideLoadingAnimation(loadingLoadProducts)
-                }
-            }
-        }
-
-        // Declare prevId as a property of your class
-        var prevId: Int = 0
-
-        // Set up TabLayout.OnTabSelectedListener if needed
+    override fun setupListeners() {
         lytTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
@@ -77,20 +64,25 @@ class ProductsByCategoryActivity :
         })
     }
 
-    override fun initFields() {
-
-    }
-
-    override fun initActions() {
-
-    }
-
-    override fun setupListeners() {
-
-    }
-
     override fun setupObservers() {
+        categoriesViewModel.categoryTypesData.observe(this) { it ->
+            when (it.status) {
+                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
+                Status.Success -> {
+                    it.data?.let {
+                        for (data in it) {
+                            val tab = lytTab.newTab().setText(data.name).setId(data.id)
+                            lytTab.addTab(tab)
+                        }
+                    }
+                    hideLoadingAnimation(loadingLoadProducts)
+                }
 
+                else -> {
+                    hideLoadingAnimation(loadingLoadProducts)
+                }
+            }
+        }
     }
 
     //method prev back
@@ -100,7 +92,6 @@ class ProductsByCategoryActivity :
             onBackPressedDispatcher.onBackPressed()
         }
     }
-
 
     private fun displayFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager

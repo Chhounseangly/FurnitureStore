@@ -13,6 +13,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 
 class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutBinding::inflate) {
+
     private lateinit var paymentViewModel: PaymentViewModel
     private lateinit var paymentBtn: Button
     private lateinit var totalPrice: TextView
@@ -44,19 +45,22 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
 
     }
 
-    private fun handlePaymentListener(value: List<ObjectPayment>){
+    private fun handlePaymentListener(value: List<ObjectPayment>) {
         paymentBtn.setOnClickListener {
             paymentViewModel.payment(value)
-            paymentViewModel.responseMessage.observe(this){ res ->
-                when(res.status){
-                    Status.Processing->{
+            paymentViewModel.responseMessage.observe(this) { res ->
+                when (res.status) {
+                    Status.Processing -> {
 
                     }
+
                     Status.Success -> {
                         //navigate to payment Success Activity
-                        val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
+                        val paymentSuccessActivity =
+                            Intent(this, PaymentSuccessActivity::class.java)
                         startActivity(paymentSuccessActivity)
                     }
+
                     Status.Failed -> {
 
                     }
@@ -83,7 +87,7 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
 
     companion object {
         private const val EXTRA_LIST = "shoppingCartObject"
-        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent{
+        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent {
             val intent = Intent(context, CheckoutActivity::class.java)
             intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
             return intent

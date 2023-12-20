@@ -12,6 +12,7 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+
     private lateinit var displayFragmentActivity: DisplayFragmentActivity
     private lateinit var signInScreen: Intent
 

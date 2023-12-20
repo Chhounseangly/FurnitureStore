@@ -10,6 +10,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
 ) : AppCompatActivity() {
+
     private var _binding: T? = null
     protected val binding: T
         get() = _binding!!
@@ -33,11 +34,11 @@ abstract class BaseActivity<T : ViewBinding>(
     abstract fun setupListeners()
     abstract fun setupObservers()
 
-    fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+    fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         viewContainerLoadingId.startShimmer()
     }
 
-    fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout){
+    fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         viewContainerLoadingId.stopShimmer()
         viewContainerLoadingId.visibility = View.GONE;
     }
