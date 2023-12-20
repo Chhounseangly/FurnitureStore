@@ -3,10 +3,8 @@ package kh.edu.rupp.ite.furniturestore.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 
 class DynamicAdapter<T, VB : ViewBinding>(
     private val inflater: (LayoutInflater, ViewGroup?, Boolean) -> VB,

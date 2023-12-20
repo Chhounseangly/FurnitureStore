@@ -15,7 +15,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
-import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -23,8 +22,9 @@ import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
-import java.io.IOException
 
 class AuthViewModel : ViewModel() {
     // LiveData and MutableLiveData declarations for various data associated with authentication and user actions
@@ -364,15 +364,13 @@ class AuthViewModel : ViewModel() {
     }
 
     // Function to handle updating profile data
-    fun updateProfile(name: String, avatar: String?) {
+    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part?) {
 //        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
 //        _resMsg.postValue(resMessage)
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val res = RetrofitInstance.get().api.updateProfile(
-                    UpdateProfile(name, avatar)
-                )
+                val res = RetrofitInstance.get().api.updateProfile(name, avatar)
 //                    loadProfile()
                 Log.d("name", "${res.data}")
                 ApIData(Status.Success, null);

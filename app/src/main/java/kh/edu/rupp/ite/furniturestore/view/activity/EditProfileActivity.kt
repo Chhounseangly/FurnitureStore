@@ -1,10 +1,14 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +20,10 @@ import kh.edu.rupp.ite.furniturestore.databinding.ActivityEditProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 
 class EditProfileActivity :
     BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate) {
@@ -58,7 +66,7 @@ class EditProfileActivity :
         prevBackButton.prevBack(backBtn)
 
         // Initialize the ActivityResultLauncher for image picking
-        setupImagePickerLauncher()
+//        setupImagePickerLauncher()
     }
 
     override fun setupListeners() {
@@ -69,8 +77,31 @@ class EditProfileActivity :
 
         // Handle click on "Save" button to update the user's profile
         saveBtn.setOnClickListener {
-            val getName = name.text.toString()
-            authViewModel.updateProfile(getName, null)
+            val name = RequestBody.create(MediaType.parse("text/plain"), name.text.toString())
+
+            val drawable: Drawable? = avatar.drawable
+
+            if (drawable is BitmapDrawable) {
+                val bitmap: Bitmap = drawable.bitmap
+
+                // Convert Bitmap to ByteArray
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+                val byteArray = byteArrayOutputStream.toByteArray()
+
+                // Now 'byteArray' contains the image data in bytes
+                // You can proceed to upload this to your API using Retrofit
+                // Assuming 'byteArray' contains the image data
+                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), byteArray)
+                val imagePart = MultipartBody.Part.createFormData("avatar", "image.jpg", requestFile)
+
+                authViewModel.updateProfile(name, imagePart)
+            } else {
+                // Handle the case where the drawable is not a BitmapDrawable
+                authViewModel.updateProfile(name, null)
+            }
+
+            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -102,19 +133,17 @@ class EditProfileActivity :
     }
 
     // Function to set up the ActivityResultLauncher for image picking
-    private fun setupImagePickerLauncher() {
-        imagePickerLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data: Intent? = result.data
-                data?.data?.let { imageUri ->
-                    // Retrieve the selected image and display it in the ImageView
-                    val imageStream = contentResolver.openInputStream(imageUri)
-                    val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    avatar.setImageBitmap(selectedImage)
-                }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+            val imageUri = data.data
+            val imageStream = imageUri?.let {
+                contentResolver.openInputStream(it)
             }
+            val selectedImage = BitmapFactory.decodeStream(imageStream)
+            avatar.setImageBitmap(selectedImage)
         }
     }
 
