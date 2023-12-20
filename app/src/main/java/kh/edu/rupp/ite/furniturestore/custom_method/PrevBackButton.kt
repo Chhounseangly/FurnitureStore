@@ -4,10 +4,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class PrevBackButton(private val activity: AppCompatActivity) {
-
-     fun prevBack(backBtn: ImageView){
+    fun prevBack(backBtn: ImageView) {
         backBtn.setOnClickListener {
-           activity.onBackPressedDispatcher.onBackPressed()
+            activity.onBackPressedDispatcher.onBackPressed()
         }
     }
 }

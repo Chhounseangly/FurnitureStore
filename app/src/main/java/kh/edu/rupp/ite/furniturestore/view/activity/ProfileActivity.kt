@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.custom_method.PrevBackButton
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
@@ -15,10 +16,12 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBinding::inflate) {
 
+    private lateinit var prevBackButton: PrevBackButton
     private lateinit var editProfileBtn: Button
     private lateinit var changePwBtn: Button
     private lateinit var logoutBtn: Button
     private lateinit var profile: ImageView
+    private lateinit var backBtn: ImageView
     private lateinit var username: TextView
 
     private lateinit var authViewModel: AuthViewModel
@@ -29,15 +32,18 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         username = binding.username
         profile = binding.profile
         logoutBtn = binding.logoutBtn
+        backBtn = binding.backBtn
     }
 
     override fun initFields() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        prevBackButton = PrevBackButton(this)
     }
 
     override fun initActions() {
         authViewModel.loadProfile()
-        prevBack()
+        // Set up back button navigation
+        prevBackButton.prevBack(backBtn)
     }
 
     override fun setupListeners() {
@@ -97,14 +103,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
                 }
             }
-        }
-    }
-
-    //method prev back
-    private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
         }
     }
 }
