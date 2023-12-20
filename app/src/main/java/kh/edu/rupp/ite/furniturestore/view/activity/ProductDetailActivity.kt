@@ -42,9 +42,7 @@ class ProductDetailActivity :
             binding.seeMoreBtn.visibility = View.VISIBLE
         }
         toggleTextViewMaxLines(binding.seeMoreBtn)
-
-        // Handle back button click
-        prevBack()
+        prevBack(binding.backBtn)
     }
 
     override fun setupListeners() {
@@ -121,13 +119,6 @@ class ProductDetailActivity :
         }
     }
 
-    // Handle back button click to navigate back to the previous activity
-    private fun prevBack() {
-        binding.backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
     private fun displayCarousel(carouselSlider: List<ImageUrls>) {
         val carouselRecyclerView = binding.carouselRecyclerView
 
@@ -148,8 +139,6 @@ class ProductDetailActivity :
             }
 
         // Set up CarouselAdapter and display carousel images
-//        val carouselAdapter = CarouselAdapter()
-//        carouselAdapter.submitList(carouselSlider)
         carouselAdapter.setData(carouselSlider)
         carouselRecyclerView.adapter = carouselAdapter
     }

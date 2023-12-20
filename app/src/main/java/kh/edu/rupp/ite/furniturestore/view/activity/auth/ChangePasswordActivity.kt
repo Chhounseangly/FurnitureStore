@@ -1,14 +1,13 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
-import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
-import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.custom_method.PrevBackButton
 import kh.edu.rupp.ite.furniturestore.custom_method.TogglePassword
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
+import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 
-class ChangePasswordActivity: AppCompatActivity() {
+class ChangePasswordActivity :
+    BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
 
     private lateinit var currentPwField: TextInputEditText
     private lateinit var changePwField: TextInputEditText
@@ -16,33 +15,37 @@ class ChangePasswordActivity: AppCompatActivity() {
     private lateinit var toggleCurrentPwVisibilityBtn: ImageView
     private lateinit var toggleNewPwVisibilityBtn: ImageView
     private lateinit var toggleCfPwVisibilityBtn: ImageView
-    private lateinit var prevBackButton: PrevBackButton
-    private lateinit var backBtn: ImageView
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_password)
 
-        currentPwField = findViewById(R.id.currentPwField)
-        changePwField = findViewById(R.id.changeNewPwField)
-        cfNewPwField = findViewById(R.id.cfNewPwInput)
+    override fun bindUi() {
+        currentPwField = binding.currentPwField
+        changePwField = binding.changeNewPwField
+        cfNewPwField = binding.cfNewPwInput
 
-        toggleCurrentPwVisibilityBtn = findViewById(R.id.toggleCurrentPwVisibilityBtn)
-        toggleNewPwVisibilityBtn = findViewById(R.id.toggleNewPwVisibilityBtn)
-        toggleCfPwVisibilityBtn = findViewById(R.id.toggleCfPwVisibilityBtn)
+        toggleCurrentPwVisibilityBtn = binding.toggleCurrentPwVisibilityBtn
+        toggleNewPwVisibilityBtn = binding.toggleNewPwVisibilityBtn
+        toggleCfPwVisibilityBtn = binding.toggleCfPwVisibilityBtn
+    }
 
-        //current password
-        TogglePassword().togglePasswordVisibility(currentPwField, toggleCurrentPwVisibilityBtn)
-        //New password
-        TogglePassword().togglePasswordVisibility(changePwField, toggleNewPwVisibilityBtn)
-        //Confirm New password
-        TogglePassword().togglePasswordVisibility(cfNewPwField, toggleCfPwVisibilityBtn)
-
-        backBtn = findViewById(R.id.backBtn)
-        prevBackButton = PrevBackButton(this)
-        prevBackButton.prevBack(backBtn)
+    override fun initFields() {
 
     }
 
+    override fun initActions() {
+        // Current password
+        TogglePassword().togglePasswordVisibility(currentPwField, toggleCurrentPwVisibilityBtn)
+        // New password
+        TogglePassword().togglePasswordVisibility(changePwField, toggleNewPwVisibilityBtn)
+        // Confirm New password
+        TogglePassword().togglePasswordVisibility(cfNewPwField, toggleCfPwVisibilityBtn)
+        // Back button
+        prevBack(binding.backBtn)
+    }
 
+    override fun setupListeners() {
 
+    }
+
+    override fun setupObservers() {
+
+    }
 }

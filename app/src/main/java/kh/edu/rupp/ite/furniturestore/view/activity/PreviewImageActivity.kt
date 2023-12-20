@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.widget.ImageView
-import android.widget.LinearLayout
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityPreviewImageBinding
 
@@ -9,11 +8,9 @@ class PreviewImageActivity :
     BaseActivity<ActivityPreviewImageBinding>(ActivityPreviewImageBinding::inflate) {
 
     private lateinit var previewImg: ImageView
-    private lateinit var close: LinearLayout
 
     override fun bindUi() {
         previewImg = binding.previewImg
-        close = binding.closePreview
     }
 
     override fun initFields() {
@@ -27,9 +24,7 @@ class PreviewImageActivity :
     }
 
     override fun setupListeners() {
-        close.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        prevBack(binding.closePreview)
     }
 
     override fun setupObservers() {

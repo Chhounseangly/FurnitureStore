@@ -18,6 +18,15 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
     private lateinit var paymentBtn: Button
     private lateinit var totalPrice: TextView
 
+    companion object {
+        private const val EXTRA_LIST = "shoppingCartObject"
+        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent {
+            val intent = Intent(context, CheckoutActivity::class.java)
+            intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
+            return intent
+        }
+    }
+
     override fun bindUi() {
         paymentBtn = binding.paymentBtn
     }
@@ -34,7 +43,8 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             handlePaymentListener(shoppingCartList)
         }
 
-        prevBack()
+        // Set up back button navigation
+        prevBack(binding.backBtn)
     }
 
     override fun setupListeners() {
@@ -76,21 +86,5 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             total += i.price * i.qty
         }
         totalPrice.text = total.toString()
-    }
-
-    private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
-    companion object {
-        private const val EXTRA_LIST = "shoppingCartObject"
-        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent {
-            val intent = Intent(context, CheckoutActivity::class.java)
-            intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
-            return intent
-        }
     }
 }

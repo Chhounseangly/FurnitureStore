@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.custom_method.PrevBackButton
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityEditProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
@@ -28,14 +27,12 @@ import java.io.ByteArrayOutputStream
 class EditProfileActivity :
     BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate) {
 
-    private lateinit var prevBackButton: PrevBackButton
-    private lateinit var backBtn: ImageView
+    private lateinit var authViewModel: AuthViewModel
+
     private lateinit var editAvatarBtn: ImageView
     private lateinit var name: TextInputEditText
     private lateinit var avatar: ImageView
     private lateinit var saveBtn: Button
-
-    private lateinit var authViewModel: AuthViewModel
 
     // ActivityResultLauncher to handle image selection result
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
@@ -45,12 +42,10 @@ class EditProfileActivity :
         name = binding.username
         editAvatarBtn = binding.editAvatarBtn
         saveBtn = binding.saveBtn
-        backBtn = binding.backBtn
     }
 
     override fun initFields() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
-        prevBackButton = PrevBackButton(this)
     }
 
     override fun initActions() {
@@ -58,7 +53,7 @@ class EditProfileActivity :
         authViewModel.loadProfile()
 
         // Set up back button navigation
-        prevBackButton.prevBack(backBtn)
+        prevBack(binding.backBtn)
 
         // Initialize the ActivityResultLauncher for image picking
         setupImagePickerLauncher()

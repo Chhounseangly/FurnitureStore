@@ -35,7 +35,7 @@ class ProductsByCategoryActivity :
 
     override fun initActions() {
         // call method prev back
-        prevBack()
+        prevBack(binding.backBtn)
 
         // assign category title to appBar
         titleTypeCate.text = "Categories"
@@ -55,7 +55,7 @@ class ProductsByCategoryActivity :
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Handle tab unselection
+                // Handle tab un selection
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -82,14 +82,6 @@ class ProductsByCategoryActivity :
                     hideLoadingAnimation(loadingLoadProducts)
                 }
             }
-        }
-    }
-
-    //method prev back
-    private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
         }
     }
 
