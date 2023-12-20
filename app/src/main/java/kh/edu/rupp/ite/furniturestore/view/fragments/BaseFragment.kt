@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,8 +54,8 @@ abstract class BaseFragment<T : ViewBinding>(
         baseActivity.hideLoadingAnimation(viewContainerLoadingId)
     }
 
-    fun showLongToast(message: String) {
+    fun showSnackBar(context: Context, view: View, message: String) {
         val baseActivity = activity as BaseActivity<*>
-        baseActivity.showLongToast(message)
+        baseActivity.showSnackBar(context, view, message)
     }
 }

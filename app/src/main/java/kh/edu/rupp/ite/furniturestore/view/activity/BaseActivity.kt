@@ -1,11 +1,17 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.snackbar.Snackbar
+import kh.edu.rupp.ite.furniturestore.R
 
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
@@ -43,15 +49,21 @@ abstract class BaseActivity<T : ViewBinding>(
         viewContainerLoadingId.visibility = View.GONE;
     }
 
-    fun showDialog() {
+    @SuppressLint("ResourceAsColor")
+    fun showSnackBar(context: Context, view: View, message: String) {
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
 
-    }
+        // If you want to customize the Snackbar, you can use snackbar.getView()
+        val snackbarView = snackbar.view
+        snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.blue))
 
-    fun showLongToast(message: String) {
 
-    }
+        val params = snackbarView.layoutParams as ViewGroup.MarginLayoutParams
+        params.marginStart = context.resources.getDimensionPixelSize(R.dimen.padding_10)
+        params.marginEnd = context.resources.getDimensionPixelSize(R.dimen.padding_10)
+        snackbarView.layoutParams = params
 
-    fun showShortToast(message: String) {
-
+        // Show the Snackbar
+        snackbar.show()
     }
 }
