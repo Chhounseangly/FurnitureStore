@@ -2,22 +2,23 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.custom_method.PrevBackButton
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityEditProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity :
+    BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate) {
 
     private lateinit var prevBackButton: PrevBackButton
     private lateinit var backBtn: ImageView
@@ -28,84 +29,105 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var authViewModel: AuthViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+    // ActivityResultLauncher to handle image selection result
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
 
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
-
-        avatar = findViewById(R.id.profile)
-        name = findViewById(R.id.username)
-        editAvatarBtn = findViewById(R.id.editAvatarBtn)
-        saveBtn = findViewById(R.id.saveBtn)
-
-        authViewModel.loadProfile()
-        authViewModel.userData.observe(this) {
-            when (it.status) {
-                Status.Success -> {
-                    it.data?.let { it1 ->
-                        displayUi(it1)
-                    }
-                }
-
-                Status.Failed -> {
-
-                }
-
-                else -> {
-
-                }
-            }
-        }
-
-        //handle upload change profile
-        editAvatarBtn.setOnClickListener {
-            openImageChooser()
-        }
-
-
-        //handle save button to submit api
-        saveBtn.setOnClickListener {
-            val getName = name.text.toString()
-            authViewModel.updateProfile(getName, null)
-        }
-
-        //back to prev activity
-        backBtn = findViewById(R.id.backBtn)
-        prevBackButton = PrevBackButton(this)
-        prevBackButton.prevBack(backBtn)
-    }
-
-
-    private fun openImageChooser() {
-        val openGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(openGallery, PICK_IMAGE_REQUEST)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val imageUri = data.data
-            val imageStream = imageUri?.let {
-                contentResolver.openInputStream(it)
-            }
-            val selectedImage = BitmapFactory.decodeStream(imageStream)
-            avatar.setImageBitmap(selectedImage)
-        }
-    }
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
     }
 
-    private fun displayUi(data: User) {
-        Picasso.get()
-            .load(data.avatar)
-            .placeholder(R.drawable.loading) // Add a placeholder image
-            .error(R.drawable.ic_error) // Add an error image
-            .into(avatar);
+    override fun bindUi() {
+        avatar = binding.profile
+        name = binding.username
+        editAvatarBtn = binding.editAvatarBtn
+        saveBtn = binding.saveBtn
+        backBtn = binding.backBtn
+    }
 
-        name.setText(data.name)
+    override fun initFields() {
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        prevBackButton = PrevBackButton(this)
+    }
+
+    override fun initActions() {
+        // Load user profile data
+        authViewModel.loadProfile()
+
+        // Set up back button navigation
+        prevBackButton.prevBack(backBtn)
+
+        // Initialize the ActivityResultLauncher for image picking
+        setupImagePickerLauncher()
+    }
+
+    override fun setupListeners() {
+        // Handle click on "Edit Avatar" button to open image chooser
+        editAvatarBtn.setOnClickListener {
+            openImageChooser()
+        }
+
+        // Handle click on "Save" button to update the user's profile
+        saveBtn.setOnClickListener {
+            val getName = name.text.toString()
+            authViewModel.updateProfile(getName, null)
+        }
+    }
+
+    override fun setupObservers() {
+        authViewModel.userData.observe(this) {
+            when (it.status) {
+                Status.Success -> {
+                    it.data?.let { userData ->
+                        // Display user profile data in the UI
+                        displayUi(userData)
+                    }
+                }
+
+                Status.Failed -> {
+                    // Handle failure
+                }
+
+                else -> {
+                    // Handle other cases
+                }
+            }
+        }
+    }
+
+    // Function to open the image chooser for selecting a new profile picture
+    private fun openImageChooser() {
+        val openGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(openGallery, PICK_IMAGE_REQUEST)
+    }
+
+    // Function to set up the ActivityResultLauncher for image picking
+    private fun setupImagePickerLauncher() {
+        imagePickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                data?.data?.let { imageUri ->
+                    // Retrieve the selected image and display it in the ImageView
+                    val imageStream = contentResolver.openInputStream(imageUri)
+                    val selectedImage = BitmapFactory.decodeStream(imageStream)
+                    avatar.setImageBitmap(selectedImage)
+                }
+            }
+        }
+    }
+
+    // Function to display user profile data in the UI
+    private fun displayUi(userData: User) {
+        // Use Picasso library to load and display the user's avatar
+        Picasso.get()
+            .load(userData.avatar)
+            .placeholder(R.drawable.loading) // Placeholder image while loading
+            .error(R.drawable.ic_error) // Error image if loading fails
+            .into(avatar)
+
+        // Set the user's name in the TextInputEditText
+        name.setText(userData.name)
     }
 }

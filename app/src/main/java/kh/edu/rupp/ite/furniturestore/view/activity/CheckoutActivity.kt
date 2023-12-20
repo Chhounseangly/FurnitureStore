@@ -2,38 +2,31 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityCheckoutBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
-import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
-import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-
-class CheckoutActivity() : AppCompatActivity() {
+class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutBinding::inflate) {
 
     private lateinit var paymentViewModel: PaymentViewModel
-
     private lateinit var paymentBtn: Button
-
-    private lateinit var shippingTxt: TextView
     private lateinit var totalPrice: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_checkout)
-        paymentBtn = findViewById(R.id.paymentBtn)
+    override fun bindUi() {
+        paymentBtn = binding.paymentBtn
+    }
 
+    override fun initFields() {
         paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
+    }
 
-        //receives data from shopping Cart
+    override fun initActions() {
         val shoppingCartList = intent.getParcelableArrayListExtra<ObjectPayment>(EXTRA_LIST)
 
         if (shoppingCartList != null) {
@@ -44,19 +37,30 @@ class CheckoutActivity() : AppCompatActivity() {
         prevBack()
     }
 
-    private fun handlePaymentListener(value: List<ObjectPayment>){
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
+
+    }
+
+    private fun handlePaymentListener(value: List<ObjectPayment>) {
         paymentBtn.setOnClickListener {
             paymentViewModel.payment(value)
-            paymentViewModel.responseMessage.observe(this){ res ->
-                when(res.status){
-                    Status.Processing->{
+            paymentViewModel.responseMessage.observe(this) { res ->
+                when (res.status) {
+                    Status.Processing -> {
 
                     }
+
                     Status.Success -> {
                         //navigate to payment Success Activity
-                        val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
+                        val paymentSuccessActivity =
+                            Intent(this, PaymentSuccessActivity::class.java)
                         startActivity(paymentSuccessActivity)
                     }
+
                     Status.Failed -> {
 
                     }
@@ -65,7 +69,7 @@ class CheckoutActivity() : AppCompatActivity() {
         }
     }
 
-    fun displayUi(data: List<ObjectPayment>) {
+    private fun displayUi(data: List<ObjectPayment>) {
         totalPrice = findViewById(R.id.totalPrice)
         var total = 0.0
         for (i in data) {
@@ -83,7 +87,7 @@ class CheckoutActivity() : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_LIST = "shoppingCartObject"
-        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent{
+        fun newIntent(context: Context, shoppingCart: List<ObjectPayment>): Intent {
             val intent = Intent(context, CheckoutActivity::class.java)
             intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
             return intent

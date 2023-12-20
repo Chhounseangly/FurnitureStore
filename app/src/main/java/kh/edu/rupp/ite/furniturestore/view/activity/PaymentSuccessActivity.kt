@@ -1,24 +1,36 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityPaymentSuccessBinding
 
-class PaymentSuccessActivity: AppCompatActivity() {
+class PaymentSuccessActivity :
+    BaseActivity<ActivityPaymentSuccessBinding>(ActivityPaymentSuccessBinding::inflate) {
 
     private lateinit var continueBtn: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_success)
+    override fun bindUi() {
+        continueBtn = binding.continueBtn
+    }
 
-        continueBtn = findViewById(R.id.continueBtn)
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
         continueBtn.setOnClickListener {
             val mainActivityIntent = Intent(this, MainActivity::class.java)
-            mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            mainActivityIntent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(mainActivityIntent)
         }
+    }
+
+    override fun setupObservers() {
+
     }
 }

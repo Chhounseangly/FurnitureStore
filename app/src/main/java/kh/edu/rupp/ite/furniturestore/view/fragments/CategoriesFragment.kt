@@ -1,16 +1,10 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
@@ -19,59 +13,71 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-class CategoriesFragment(private var id: Int) : Fragment() {
-    private lateinit var fragmentCategoryBinding: FragmentCategoryBinding
+class CategoriesFragment(private var id: Int) :
+    BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private var categoriesViewModel = CategoriesViewModel()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentCategoryBinding = FragmentCategoryBinding.inflate(inflater, container, false)
-        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
-        categoriesViewModel.loadProductByCategoryApi(id)
-        categoriesViewModel.loadCategoryTypes()
-        return fragmentCategoryBinding.root
+    override fun bindUi() {
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val loadingLoadProducts = fragmentCategoryBinding.loadingLoadProducts
+    override fun initFields() {
+        // Initialize CategoriesViewModel using ViewModelProvider
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+    }
+
+    override fun initActions() {
+        // Load product data by category and category types
+        categoriesViewModel.loadProductByCategoryApi(id)
+        categoriesViewModel.loadCategoryTypes()
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
+        // Set up observer for load product by category LiveData
+        val loadingLoadProducts = binding.loadingLoadProducts
         categoriesViewModel.productByCategory.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(loadingLoadProducts)
+                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
                     it.data?.let { it1 -> displayProductByCate(it1.data) }
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
 
                 else -> {
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
             }
         }
     }
 
+    // Display products by category in the RecyclerView
     private fun displayProductByCate(items: ProductByCate) {
+        // Set up GridLayoutManager for the RecyclerView
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        val recyclerProductsByCate = fragmentCategoryBinding.recyclerProductsByCate
+        val recyclerProductsByCate = binding.recyclerProductsByCate
         recyclerProductsByCate.layoutManager = gridLayoutManager
 
-
-        val productByCategoryAdapter = DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate){
-            view, item, binding ->
-            view.setOnClickListener {
-                val intent = Intent(it.context, ProductDetailActivity::class.java)
-                intent.putExtra("id", item.id)
-                it.context.startActivity(intent)
+        // Create DynamicAdapter for products with ViewHolderProductItemBinding
+        val productByCategoryAdapter =
+            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
+            { view, item, binding ->
+                // Set click listener to navigate to ProductDetailActivity
+                view.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
+                // Load product data into the ViewHolderProductItemBinding
+                with(binding) {
+                    Picasso.get().load(item.imageUrl).into(img)
+                    name.text = item.name
+                    price.text = "$ ${item.price}"
+                }
             }
-            with(binding) {
-                Picasso.get().load(item.imageUrl).into(img)
-                name.text = item.name
-                price.text = "$ ${item.price}"
-            }
-        }
 
+        // Set data to the adapter and attach it to the RecyclerView
         productByCategoryAdapter.setData(items.products)
 
 //        val productByCategoryAdapter = ProductByCategoryAdapter();

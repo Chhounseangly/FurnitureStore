@@ -1,29 +1,38 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
-import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
-import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityPreviewImageBinding
 
-class PreviewImageActivity: AppCompatActivity() {
+class PreviewImageActivity :
+    BaseActivity<ActivityPreviewImageBinding>(ActivityPreviewImageBinding::inflate) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_preview_image)
-        val intent = intent
-        val imageUrl = intent.getStringExtra("imageUrl")
+    private lateinit var previewImg: ImageView
+    private lateinit var close: LinearLayout
 
-        val previewImg = findViewById<ImageView>(R.id.previewImg)
-        val close  = findViewById<LinearLayout>(R.id.closePreview)
+    override fun bindUi() {
+        previewImg = binding.previewImg
+        close = binding.closePreview
+    }
 
-        Picasso.get().load(imageUrl).into(previewImg)
-
-        close.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+    override fun initFields() {
 
     }
 
+    override fun initActions() {
+        val intent = intent
+        val imageUrl = intent.getStringExtra("imageUrl")
+        Picasso.get().load(imageUrl).into(previewImg)
+    }
+
+    override fun setupListeners() {
+        close.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    override fun setupObservers() {
+
+    }
 }

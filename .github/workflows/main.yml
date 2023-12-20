@@ -1,0 +1,36 @@
+name: Furniture Store CI/CD
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission to make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Grant execute permission to build script
+        run: chmod +x ./build_script.sh
+
+      - name: Build APK
+        run: ./build_script.sh
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: furniture-store
+          path: furniture-store.apk
