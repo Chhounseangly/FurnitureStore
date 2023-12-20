@@ -40,11 +40,6 @@ class EditProfileActivity :
     // ActivityResultLauncher to handle image selection result
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
 
-
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-    }
-
     override fun bindUi() {
         avatar = binding.profile
         name = binding.username
@@ -66,7 +61,7 @@ class EditProfileActivity :
         prevBackButton.prevBack(backBtn)
 
         // Initialize the ActivityResultLauncher for image picking
-//        setupImagePickerLauncher()
+        setupImagePickerLauncher()
     }
 
     override fun setupListeners() {
@@ -77,31 +72,7 @@ class EditProfileActivity :
 
         // Handle click on "Save" button to update the user's profile
         saveBtn.setOnClickListener {
-            val name = RequestBody.create(MediaType.parse("text/plain"), name.text.toString())
-
-            val drawable: Drawable? = avatar.drawable
-
-            if (drawable is BitmapDrawable) {
-                val bitmap: Bitmap = drawable.bitmap
-
-                // Convert Bitmap to ByteArray
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                val byteArray = byteArrayOutputStream.toByteArray()
-
-                // Now 'byteArray' contains the image data in bytes
-                // You can proceed to upload this to your API using Retrofit
-                // Assuming 'byteArray' contains the image data
-                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), byteArray)
-                val imagePart = MultipartBody.Part.createFormData("avatar", "image.jpg", requestFile)
-
-                authViewModel.updateProfile(name, imagePart)
-            } else {
-                // Handle the case where the drawable is not a BitmapDrawable
-                authViewModel.updateProfile(name, null)
-            }
-
-            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+            saveUserProfile()
         }
     }
 
@@ -129,22 +100,58 @@ class EditProfileActivity :
     // Function to open the image chooser for selecting a new profile picture
     private fun openImageChooser() {
         val openGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(openGallery, PICK_IMAGE_REQUEST)
+        imagePickerLauncher.launch(openGallery)
     }
 
     // Function to set up the ActivityResultLauncher for image picking
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val imageUri = data.data
-            val imageStream = imageUri?.let {
-                contentResolver.openInputStream(it)
+    private fun setupImagePickerLauncher() {
+        imagePickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                // Process the result
+                data?.let { handleImageChooserResult(it) }
             }
-            val selectedImage = BitmapFactory.decodeStream(imageStream)
-            avatar.setImageBitmap(selectedImage)
         }
+    }
+
+    // Function to handle the result of image selection
+    private fun handleImageChooserResult(data: Intent) {
+        val imageUri = data.data
+        val imageStream = imageUri?.let {
+            contentResolver.openInputStream(it)
+        }
+        val selectedImage = BitmapFactory.decodeStream(imageStream)
+        avatar.setImageBitmap(selectedImage)
+    }
+
+    // Function to handle click on the "Save" button
+    private fun saveUserProfile() {
+        val name = RequestBody.create(MediaType.parse("text/plain"), name.text.toString())
+
+        val drawable: Drawable? = avatar.drawable
+
+        if (drawable is BitmapDrawable) {
+            val bitmap: Bitmap = drawable.bitmap
+
+            // Convert Bitmap to ByteArray
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+
+            // Create RequestBody for image data
+            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), byteArray)
+            val imagePart = MultipartBody.Part.createFormData("avatar", "image.jpg", requestFile)
+
+            // Update the user's profile with the new data
+            authViewModel.updateProfile(name, imagePart)
+        } else {
+            // Handle the case where the drawable is not a BitmapDrawable
+            authViewModel.updateProfile(name, null)
+        }
+
+        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
     }
 
     // Function to display user profile data in the UI
