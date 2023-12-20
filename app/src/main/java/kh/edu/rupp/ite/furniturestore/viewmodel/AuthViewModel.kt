@@ -12,10 +12,10 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.AuthApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
-import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -23,8 +23,9 @@ import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
-import java.io.IOException
 
 class AuthViewModel : ViewModel() {
     // LiveData and MutableLiveData declarations for various data associated with authentication and user actions
@@ -33,6 +34,7 @@ class AuthViewModel : ViewModel() {
     private val _validationResult = MutableLiveData<Pair<Boolean, List<String>>>()
     private val _resMsg = MutableLiveData<ApIData<ResponseMessage>>()
     private val _validationVerify = MutableLiveData<Pair<Boolean, String>>()
+    private val _updateMsg = MutableLiveData<ApIData<ResProfile>>()
 
     // Exposed LiveData properties for observing in the UI
     val validationVerify: LiveData<Pair<Boolean, String>> get() = _validationVerify
@@ -40,6 +42,7 @@ class AuthViewModel : ViewModel() {
     val resMsg: LiveData<ApIData<ResponseMessage>> get() = _resMsg
     val resAuth: LiveData<AuthApiData<ResAuth>> get() = _resAuth
     val userData: LiveData<ApIData<User>> get() = _userData
+    val updateMsg: LiveData<ApIData<ResProfile>> get() = _updateMsg
 
     /**
      * Function to handle validation and sign up.
@@ -287,7 +290,7 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun verifyEmailService(email: String, code: String) {
+    private fun verifyEmailService(email: String, code: String) {
         // Use the generic performApiCall function to handle the API call and response
         performApiCall(
             // Make the API call to verify the email with the provided code
@@ -364,26 +367,22 @@ class AuthViewModel : ViewModel() {
     }
 
     // Function to handle updating profile data
-    fun updateProfile(name: String, avatar: String?) {
-//        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
-//        _resMsg.postValue(resMessage)
+    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part?) {
+        var resMessage = ApIData<ResProfile>(Status.Processing, null)
+        _updateMsg.postValue(resMessage)
 
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val res = RetrofitInstance.get().api.updateProfile(
-                    UpdateProfile(name, avatar)
-                )
-//                    loadProfile()
-                Log.d("name", "${res.data}")
-                ApIData(Status.Success, null);
-
+            resMessage = try {
+                RetrofitInstance.get().api.updateProfile(name, avatar)
+                Log.e("AuthViewModel...", "Success")
+                ApIData(Status.Success, null)
             } catch (e: Exception) {
-                Log.e("error", "${e.message}")
-                ApIData(Status.Failed, null);
+                Log.e("AuthViewModel...", e.message.toString())
+                ApIData(Status.Failed, null)
             }
 
             withContext(Dispatchers.Main.immediate) {
-//                _resMsg.postValue(resMessage)
+                _updateMsg.postValue(resMessage)
             }
         }
     }
