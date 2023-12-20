@@ -95,6 +95,25 @@ class EditProfileActivity :
                 }
             }
         }
+
+        authViewModel.updateMsg.observe(this) {
+            when (it.status) {
+                Status.Success -> {
+                    // Edit successful, display a toast message
+                    Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+
+                    // Finish the activity to navigate back
+                    finish()
+                }
+                Status.Failed -> {
+                    // Handle failure
+                    Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // Handle other cases
+                }
+            }
+        }
     }
 
     // Function to open the image chooser for selecting a new profile picture
@@ -150,8 +169,6 @@ class EditProfileActivity :
             // Handle the case where the drawable is not a BitmapDrawable
             authViewModel.updateProfile(name, null)
         }
-
-        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
     }
 
     // Function to display user profile data in the UI

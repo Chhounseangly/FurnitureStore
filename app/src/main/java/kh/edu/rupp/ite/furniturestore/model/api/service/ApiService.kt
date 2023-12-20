@@ -84,7 +84,7 @@ interface ApiService {
     suspend fun updateProfile(
         @Part("name") name: RequestBody?,
         @Part file: MultipartBody.Part?,
-    ): ResponseMessage
+    ): ResProfile
 
     //history
     @POST("api/history")
