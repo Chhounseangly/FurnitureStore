@@ -7,15 +7,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.ActivityPaymentSuccessBinding
 class PaymentSuccessActivity :
     BaseActivity<ActivityPaymentSuccessBinding>(ActivityPaymentSuccessBinding::inflate) {
 
-    private lateinit var continueBtn: Button
-
-    override fun bindUi() {
-        continueBtn = binding.continueBtn
-    }
-
-    override fun initFields() {
-
-    }
+    private val continueBtn: Button by lazy { binding.continueBtn }
 
     override fun initActions() {
 

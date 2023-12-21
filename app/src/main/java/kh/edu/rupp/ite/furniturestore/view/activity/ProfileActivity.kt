@@ -1,11 +1,13 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProfileBinding
@@ -17,22 +19,15 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBinding::inflate) {
 
     private val authViewModel: AuthViewModel by viewModels()
-    private lateinit var editProfileBtn: Button
-    private lateinit var changePwBtn: Button
-    private lateinit var logoutBtn: Button
-    private lateinit var profile: ImageView
-    private lateinit var username: TextView
+    private val editProfileBtn: Button by lazy { binding.editAvatarBtn }
+    private val changePwBtn: Button by lazy { binding.changePwBtn }
+    private val logoutBtn: Button by lazy { binding.logoutBtn }
+    private val profile: ImageView by lazy { binding.profile }
+    private val username: TextView by lazy { binding.username }
 
-    override fun bindUi() {
-        editProfileBtn = binding.editAvatarBtn
-        changePwBtn = binding.changePwBtn
-        username = binding.username
-        profile = binding.profile
-        logoutBtn = binding.logoutBtn
-    }
-
-    override fun initFields() {
-
+    private companion object {
+        const val TOAST_SUCCESS_MESSAGE = "Profile updated successfully"
+        const val TOAST_FAILURE_MESSAGE = "Failed to update profile"
     }
 
     override fun initActions() {
@@ -53,8 +48,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
         //route to edit profile activity screen
         editProfileBtn.setOnClickListener {
-            val intentEditProfileActivity = Intent(this, EditProfileActivity::class.java)
-            startActivity(intentEditProfileActivity)
+            editProfileLauncher.launch(Intent(this, EditProfileActivity::class.java))
         }
     }
 
@@ -74,11 +68,26 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         }
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        authViewModel.loadProfile()
-    }
+    private val editProfileLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                authViewModel.loadProfile()
+
+                Snackbar.make(
+                    binding.root,
+                    TOAST_SUCCESS_MESSAGE,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                Snackbar.make(
+                    binding.root,
+                    TOAST_FAILURE_MESSAGE,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+
 
     private fun displayUi(data: User) {
         Picasso.get()

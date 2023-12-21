@@ -1,11 +1,9 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.tabs.TabLayout
 import kh.edu.rupp.ite.furniturestore.R
@@ -18,20 +16,9 @@ class ProductsByCategoryActivity :
     BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
 
     private val categoriesViewModel: CategoriesViewModel by viewModels()
-    private lateinit var titleTypeCate: TextView
-    private lateinit var lytTab: TabLayout
-    private lateinit var loadingLoadProducts: ShimmerFrameLayout
-
-    override fun bindUi() {
-        titleTypeCate = binding.titleTypeCate
-
-        lytTab = binding.lytTab
-        loadingLoadProducts = binding.loadingLoadProducts
-    }
-
-    override fun initFields() {
-
-    }
+    private val titleTypeCate: TextView by lazy { binding.titleTypeCate }
+    private val lytTab: TabLayout by lazy { binding.lytTab }
+    private val loadingLoadProducts: ShimmerFrameLayout by lazy { binding.loadingLoadProducts }
 
     override fun initActions() {
         // call method prev back

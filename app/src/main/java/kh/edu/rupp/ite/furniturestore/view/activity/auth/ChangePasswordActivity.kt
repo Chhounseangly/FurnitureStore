@@ -9,26 +9,12 @@ import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 class ChangePasswordActivity :
     BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
 
-    private lateinit var currentPwField: TextInputEditText
-    private lateinit var changePwField: TextInputEditText
-    private lateinit var cfNewPwField: TextInputEditText
-    private lateinit var toggleCurrentPwVisibilityBtn: ImageView
-    private lateinit var toggleNewPwVisibilityBtn: ImageView
-    private lateinit var toggleCfPwVisibilityBtn: ImageView
-
-    override fun bindUi() {
-        currentPwField = binding.currentPwField
-        changePwField = binding.changeNewPwField
-        cfNewPwField = binding.cfNewPwInput
-
-        toggleCurrentPwVisibilityBtn = binding.toggleCurrentPwVisibilityBtn
-        toggleNewPwVisibilityBtn = binding.toggleNewPwVisibilityBtn
-        toggleCfPwVisibilityBtn = binding.toggleCfPwVisibilityBtn
-    }
-
-    override fun initFields() {
-
-    }
+    private val currentPwField: TextInputEditText by lazy { binding.currentPwField }
+    private val changePwField: TextInputEditText by lazy { binding.changeNewPwField }
+    private val cfNewPwField: TextInputEditText by lazy { binding.cfNewPwInput }
+    private val toggleCurrentPwVisibilityBtn: ImageView by lazy { binding.toggleCurrentPwVisibilityBtn }
+    private val toggleNewPwVisibilityBtn: ImageView by lazy { binding.toggleNewPwVisibilityBtn }
+    private val toggleCfPwVisibilityBtn: ImageView by lazy { binding.toggleCfPwVisibilityBtn }
 
     override fun initActions() {
         // Current password

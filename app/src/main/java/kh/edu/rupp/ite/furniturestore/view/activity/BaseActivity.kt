@@ -23,15 +23,11 @@ abstract class BaseActivity<T : ViewBinding>(
         _binding = bindingFunction(layoutInflater)
         setContentView(binding.root)
 
-        bindUi()
-        initFields()
         initActions()
         setupListeners()
         setupObservers()
     }
 
-    abstract fun bindUi()
-    abstract fun initFields()
     abstract fun initActions()
     abstract fun setupListeners()
     abstract fun setupObservers()

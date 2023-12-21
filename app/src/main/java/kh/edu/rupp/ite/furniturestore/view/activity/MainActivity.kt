@@ -23,18 +23,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private var favoriteFragment = FavoriteFragment()
     private var shoppingCartFragment = ShoppingCartFragment()
 
-    override fun bindUi() {
+    override fun initActions() {
         // Initialize DisplayFragmentActivity to manage fragment transactions
         displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
         // Display the home fragment initially
         displayFragmentActivity.displayFragment(homeFragment)
-    }
 
-    override fun initFields() {
-        displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
-    }
-
-    override fun initActions() {
         if (intent.action == Intent.ACTION_VIEW) {
             val data = intent.data
 

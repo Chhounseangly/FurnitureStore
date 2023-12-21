@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,7 +9,6 @@ import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -29,23 +29,18 @@ class EditProfileActivity :
 
     private val authViewModel: AuthViewModel by viewModels()
 
-    private lateinit var editAvatarBtn: ImageView
-    private lateinit var name: TextInputEditText
-    private lateinit var avatar: ImageView
-    private lateinit var saveBtn: Button
+    private val avatar: ImageView by lazy { binding.profile }
+    private val name: TextInputEditText by lazy { binding.username }
+    private val editAvatarBtn: ImageView by lazy { binding.editAvatarBtn }
+    private val saveBtn: Button by lazy { binding.saveBtn }
 
     // ActivityResultLauncher to handle image selection result
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
 
-    override fun bindUi() {
-        avatar = binding.profile
-        name = binding.username
-        editAvatarBtn = binding.editAvatarBtn
-        saveBtn = binding.saveBtn
-    }
-
-    override fun initFields() {
-
+    private companion object {
+        const val MEDIA_TYPE_IMAGE = "image/jpeg"
+        const val IMAGE_FORM_DATA_NAME = "avatar"
+        const val IMAGE_FILE_NAME = "image.jpg"
     }
 
     override fun initActions() {
@@ -75,10 +70,7 @@ class EditProfileActivity :
         authViewModel.userData.observe(this) {
             when (it.status) {
                 Status.Success -> {
-                    it.data?.let { userData ->
-                        // Display user profile data in the UI
-                        displayUi(userData)
-                    }
+                    it.data?.let { userData -> displayUi(userData) }
                 }
 
                 Status.Failed -> {
@@ -94,16 +86,15 @@ class EditProfileActivity :
         authViewModel.updateMsg.observe(this) {
             when (it.status) {
                 Status.Success -> {
-                    // Edit successful, display a toast message
-                    Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-
-                    // Finish the activity to navigate back
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
+
                 Status.Failed -> {
-                    // Handle failure
-                    Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
                 }
+
                 else -> {
                     // Handle other cases
                 }
@@ -154,9 +145,12 @@ class EditProfileActivity :
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             val byteArray = byteArrayOutputStream.toByteArray()
 
-            // Create RequestBody for image data
-            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), byteArray)
-            val imagePart = MultipartBody.Part.createFormData("avatar", "image.jpg", requestFile)
+            val requestFile = RequestBody.create(MediaType.parse(MEDIA_TYPE_IMAGE), byteArray)
+            val imagePart = MultipartBody.Part.createFormData(
+                IMAGE_FORM_DATA_NAME,
+                IMAGE_FILE_NAME,
+                requestFile
+            )
 
             // Update the user's profile with the new data
             authViewModel.updateProfile(name, imagePart)
@@ -168,14 +162,12 @@ class EditProfileActivity :
 
     // Function to display user profile data in the UI
     private fun displayUi(userData: User) {
-        // Use Picasso library to load and display the user's avatar
         Picasso.get()
             .load(userData.avatar)
-            .placeholder(R.drawable.loading) // Placeholder image while loading
-            .error(R.drawable.ic_error) // Error image if loading fails
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.ic_error)
             .into(avatar)
 
-        // Set the user's name in the TextInputEditText
         name.setText(userData.name)
     }
 }

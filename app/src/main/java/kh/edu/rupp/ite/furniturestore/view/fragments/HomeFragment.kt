@@ -25,6 +25,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
@@ -219,6 +220,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
+                        val token = AppPreference.get(requireContext()).getToken()
+                        if (token == null) {
+                            Snackbar.make(
+                                requireView(),
+                                "Please login to add product to shopping cart",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            return@setOnClickListener
+                        }
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
 
                         Snackbar.make(

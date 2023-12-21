@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
-import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
@@ -13,34 +12,27 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.BuildConfig
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
+import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-class SignInActivity : AppCompatActivity() {
+class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
+    private val email: EditText by lazy { binding.emInput }
+    private val password: EditText by lazy { binding.pwInput }
+    private val errorMessage: TextView by lazy { binding.errorMsg }
 
-    private lateinit var activitySignInBinding: ActivitySignInBinding
-
-    private lateinit var email: EditText
-    private lateinit var password: EditText
-    private lateinit var errorMessage: TextView
-
-    private lateinit var signInBtn: Button
+    private val signInBtn: Button by lazy { binding.signInBtn }
 
     private var authViewModel = AuthViewModel()
     private var isPasswordVisible = false
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activitySignInBinding = ActivitySignInBinding.inflate(layoutInflater)
-        setContentView(activitySignInBinding.root)
-
+    override fun initActions() {
         //call method for handle go to sign up screen
         initSignUpScreen()
         //class method for handle go to forgot password screen
@@ -49,7 +41,7 @@ class SignInActivity : AppCompatActivity() {
         handleSignIn()
 
         //return to prev activity
-        prevBack()
+        prevBack(binding.backBtn)
 
         togglePasswordVisibility()
         password.setOnTouchListener { _, event ->
@@ -63,21 +55,25 @@ class SignInActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    override fun setupListeners() {
 
     }
 
+    override fun setupObservers() {
 
-    //handle back
-    private fun prevBack() {
-        val backBtn = activitySignInBinding.backBtn
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.validationResult.removeObservers(this)
+        authViewModel.resAuth.removeObservers(this)
     }
 
     //handel user click on forgot password
     private fun initForgotPasswordScreen() {
-        val forgotPassBtn = activitySignInBinding.forgotPsBtn
+        val forgotPassBtn = binding.forgotPsBtn
         val forgotPasswordScreen = Intent(this, ForgotPasswordActivity::class.java)
         forgotPassBtn.setOnClickListener {
             startActivity(forgotPasswordScreen)
@@ -87,7 +83,7 @@ class SignInActivity : AppCompatActivity() {
 
     //handel user click on  sign up
     private fun initSignUpScreen() {
-        val signUpBtn = activitySignInBinding.signUpBtn
+        val signUpBtn = binding.signUpBtn
         val signUpScreen = Intent(this, SignUpActivity::class.java)
         signUpBtn.setOnClickListener {
             startActivity(signUpScreen)
@@ -97,12 +93,6 @@ class SignInActivity : AppCompatActivity() {
 
     //handle Sign In Process
     private fun handleSignIn() {
-        email = activitySignInBinding.emInput
-        password = activitySignInBinding.pwInput
-        signInBtn = activitySignInBinding.signInBtn
-
-        errorMessage = activitySignInBinding.errorMsg
-
         //call dynamic handleOnChangeEditText from AuthValidation Class
         AuthValidation().handleOnChangeEditText(email)
         AuthValidation().handleOnChangeEditText(password)
@@ -119,7 +109,7 @@ class SignInActivity : AppCompatActivity() {
             authViewModel.signIn(email.text.toString(), password.text.toString())
         }
 
-        activitySignInBinding.lytGoogleSignIn.setOnClickListener {
+        binding.lytGoogleSignIn.setOnClickListener {
             val url = BuildConfig.BASE_URL + "api/auth/google"
             val intent = Intent(Intent.ACTION_VIEW)
 
@@ -163,7 +153,7 @@ class SignInActivity : AppCompatActivity() {
                         }
 
                         StatusAuth.Failed -> {
-                            it.data.let { m->
+                            it.data.let { m ->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
                             }
@@ -172,11 +162,13 @@ class SignInActivity : AppCompatActivity() {
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
+
                         StatusAuth.NeedVerify -> {
-                            val codeVerificationActivity = Intent(this, CodeVerificationActivity::class.java).apply {
-                                putExtra("email", email.text.toString())
-                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            }
+                            val codeVerificationActivity =
+                                Intent(this, CodeVerificationActivity::class.java).apply {
+                                    putExtra("email", email.text.toString())
+                                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                }
                             startActivity(codeVerificationActivity)
                             //Reset button to default
                             signInBtn.isEnabled = true
@@ -237,11 +229,5 @@ class SignInActivity : AppCompatActivity() {
         // Move the cursor to the end of the text
         password.setSelection(password.text.length)
         password.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authViewModel.validationResult.removeObservers(this)
-        authViewModel.resAuth.removeObservers(this)
     }
 }

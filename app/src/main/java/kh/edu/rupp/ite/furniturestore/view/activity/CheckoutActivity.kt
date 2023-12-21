@@ -14,7 +14,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutBinding::inflate) {
 
     private val paymentViewModel: PaymentViewModel by viewModels()
-    private lateinit var paymentBtn: Button
+    private val paymentBtn: Button by lazy { binding.paymentBtn }
     private lateinit var totalPrice: TextView
 
     companion object {
@@ -24,14 +24,6 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             intent.putParcelableArrayListExtra(EXTRA_LIST, ArrayList(shoppingCart))
             return intent
         }
-    }
-
-    override fun bindUi() {
-        paymentBtn = binding.paymentBtn
-    }
-
-    override fun initFields() {
-
     }
 
     override fun initActions() {
