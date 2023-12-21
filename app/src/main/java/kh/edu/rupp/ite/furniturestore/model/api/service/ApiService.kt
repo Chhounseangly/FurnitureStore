@@ -32,8 +32,10 @@ import retrofit2.http.Query
 
 interface ApiService {
     //End Point fetching products
-    @GET("api/products")
-    suspend fun loadProductList(): Res<Product>
+    @GET("api/products?size=4")
+    suspend fun loadProductList(
+        @Query("page") page: Int = 1
+    ): Res<Product>
 
     //End Point fetching product Detail By passing id
     @GET("api/products/{id}")

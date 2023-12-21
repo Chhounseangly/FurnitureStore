@@ -141,6 +141,12 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     android:paddingBottom="50dp"/>
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:indeterminateTint="@color/grey_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:visibility="gone"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

@@ -7,15 +7,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.ActivityPreviewImageBinding
 class PreviewImageActivity :
     BaseActivity<ActivityPreviewImageBinding>(ActivityPreviewImageBinding::inflate) {
 
-    private lateinit var previewImg: ImageView
-
-    override fun bindUi() {
-        previewImg = binding.previewImg
-    }
-
-    override fun initFields() {
-
-    }
+    private val previewImg: ImageView by lazy { binding.previewImg }
 
     override fun initActions() {
         val intent = intent

@@ -11,20 +11,12 @@ class SplashScreenActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashB
 
     private val splashTimeOut = 500
 
-    override fun bindUi() {
+    override fun initActions() {
         Handler(Looper.getMainLooper()).postDelayed({
             val homeIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)
             startActivity(homeIntent)
             finish()
         }, splashTimeOut.toLong())
-    }
-
-    override fun initFields() {
-
-    }
-
-    override fun initActions() {
-
     }
 
     override fun setupListeners() {

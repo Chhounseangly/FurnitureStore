@@ -1,20 +1,17 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityCodeVerificationBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
+import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -22,60 +19,41 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 /**
  * Activity for verifying a user's email with a code.
  */
-class CodeVerificationActivity : AppCompatActivity() {
+class CodeVerificationActivity :
+    BaseActivity<ActivityCodeVerificationBinding>(ActivityCodeVerificationBinding::inflate) {
 
-    private lateinit var authViewModel: AuthViewModel
-    private lateinit var codeInput: EditText
-    private lateinit var verifyBtn: Button
-    private lateinit var errMsg: TextView
+    private val authViewModel: AuthViewModel by viewModels()
+    private val codeInput: EditText by lazy { binding.codeVerifyInput }
+    private val verifyBtn: Button by lazy { binding.verifyBtn }
+    private val errMsg: TextView by lazy { binding.errorMsg }
 
     companion object {
         private const val EMAIL_EXTRA = "email"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_code_verification)
-
-        // Initialize views and set up event listeners
-        initViews()
-        setupButtonClick()
-        setupResponseObserver()
-        setupBackButton()
-    }
-
-    /**
-     * Initialize views and necessary components.
-     */
-    private fun initViews() {
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+    override fun initActions() {
         val email = intent.getStringExtra(EMAIL_EXTRA)
-
-        codeInput = findViewById(R.id.codeVerifyInput)
-        verifyBtn = findViewById(R.id.verifyBtn)
-        errMsg = findViewById(R.id.errorMsg)
 
         // Set up text input validation
         AuthValidation().handleOnChangeEditText(codeInput)
+
+        prevBack(binding.backBtn)
     }
 
-    /**
-     * Set up the click listener for the verification button.
-     */
-    private fun setupButtonClick() {
+    override fun setupListeners() {
         verifyBtn.setOnClickListener {
             authViewModel.resAuth.removeObservers(this)
             authViewModel.validationVerify.removeObservers(this)
             // Disable the verification button and submit the verification request
             disableVerifyButton()
-            authViewModel.verifyEmail(intent.getStringExtra(EMAIL_EXTRA).toString(), codeInput.text.toString())
+            authViewModel.verifyEmail(
+                intent.getStringExtra(EMAIL_EXTRA).toString(),
+                codeInput.text.toString()
+            )
         }
     }
 
-    /**
-     * Set up the observer for the validation response.
-     */
-    private fun setupResponseObserver() {
+    override fun setupObservers() {
         authViewModel.validationVerify.observe(this) {
             // Handle the validation response
             handleValidationResponse(it)
@@ -118,7 +96,8 @@ class CodeVerificationActivity : AppCompatActivity() {
                 StatusAuth.Success -> {
                     // Handle the success status, e.g., navigate to the main activity
                     val mainActivityIntent = Intent(this, MainActivity::class.java)
-                    mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    mainActivityIntent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(mainActivityIntent)
                 }
 
@@ -163,18 +142,6 @@ class CodeVerificationActivity : AppCompatActivity() {
         verifyBtn.setTextColor(Color.BLACK)
         verifyBtn.setBackgroundResource(R.drawable.disable_btn)
         codeInput.backgroundTintList = null
-    }
-
-    /**
-     * Set up the click listener for the back button.
-     */
-    private fun setupBackButton() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-
-        backBtn.setOnClickListener {
-            // Navigate back to the previous activity
-            onBackPressedDispatcher.onBackPressed()
-        }
     }
 
     override fun onDestroy() {

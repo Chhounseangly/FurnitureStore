@@ -21,14 +21,6 @@ class ProductDetailActivity :
     private var id = 0
     private val productDetailViewModel = ProductDetailViewModel()
 
-    override fun bindUi() {
-
-    }
-
-    override fun initFields() {
-
-    }
-
     override fun initActions() {
         // Get id from previous activity
         val intent = intent

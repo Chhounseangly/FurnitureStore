@@ -1,34 +1,30 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
+import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 
-
-class ForgotPasswordActivity: AppCompatActivity() {
+class ForgotPasswordActivity: BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
 
     private lateinit var verifyEmail: EditText
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgot_password)
+
+    override fun initActions() {
         //return to prev activity
-        prevBack()
+        prevBack(binding.backBtn)
 
         handleVerifyForgotEmail()
+    }
+
+    override fun setupListeners() {
 
     }
 
-    private fun prevBack(){
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
+    override fun setupObservers() {
 
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
     }
 
     private  fun initVerifyScreen(){
@@ -49,6 +45,4 @@ class ForgotPasswordActivity: AppCompatActivity() {
             }
         }
     }
-
-
 }

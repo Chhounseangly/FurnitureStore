@@ -1,7 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -15,12 +15,12 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class CategoriesFragment(private var id: Int) :
     BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
-    private var categoriesViewModel = CategoriesViewModel()
+    private val categoriesViewModel: CategoriesViewModel by viewModels()
     override fun bindUi() {
     }
 
     override fun initFields() {
-        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+
     }
 
     override fun initActions() {

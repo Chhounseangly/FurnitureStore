@@ -7,6 +7,10 @@ import androidx.lifecycle.Lifecycle
 import kh.edu.rupp.ite.furniturestore.R
 
 class DisplayFragmentActivity(private val fragmentManager: FragmentManager): AppCompatActivity() {
+
+    // Maintain a reference to the currently visible fragment
+    private var currentFragment: Fragment? = null
+
     // Function to display fragments without reloading
     fun displayFragment(fragment: Fragment) {
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -27,10 +31,12 @@ class DisplayFragmentActivity(private val fragmentManager: FragmentManager): App
 
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+
+        currentFragment = fragment
     }
 
     // Function to get the current fragment
-    fun getCurrentFragment(): Fragment {
-        return fragmentManager.fragments.last()
+    fun getCurrentFragment(): Fragment? {
+        return currentFragment
     }
 }

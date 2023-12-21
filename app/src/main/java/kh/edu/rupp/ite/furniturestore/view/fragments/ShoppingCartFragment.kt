@@ -6,7 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,18 +24,11 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate) {
 
-    // Adapter for the shopping cart
+    private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
+    private val paymentViewModel: PaymentViewModel by viewModels({ requireActivity() })
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-
-    // Swipe-to-refresh layout
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
-    // Shimmer effect for loading
     private lateinit var cartContainerLoading: ShimmerFrameLayout
-
-    // ViewModels for shopping cart and payment
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
-    private lateinit var paymentViewModel: PaymentViewModel
 
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
@@ -43,10 +36,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
     }
 
     override fun initFields() {
-        // Initialize ViewModels
-        shoppingCartViewModel =
-            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
-        paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
+
     }
 
     override fun initActions() {

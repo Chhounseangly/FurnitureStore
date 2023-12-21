@@ -1,63 +1,67 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
-import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityHistoryCartBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductHistoryBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.HistoryViewModel
 
+class HistoryActivity :
+    BaseActivity<ActivityHistoryCartBinding>(ActivityHistoryCartBinding::inflate) {
 
-class HistoryActivity : AppCompatActivity() {
+    private val historyViewModel: HistoryViewModel by viewModels()
+    private val lytLoading: View by lazy { binding.ltyLoading }
+    private val loading: ProgressBar by lazy { binding.loadingCircle }
 
-    private lateinit var historyViewModel: HistoryViewModel
-    private lateinit var lytLoading: View
-    private lateinit var loading: ProgressBar
+    override fun initActions() {
+        historyViewModel.loadHistoryData()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history_cart)
-        lytLoading  = findViewById(R.id.ltyLoading)
-        loading = findViewById(R.id.loadingCircle)
+        //handle back to prev activity
+        prevBack(binding.backBtn)
+    }
 
-        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
         historyViewModel.historyData.observe(this) {
             when (it.status) {
                 Status.Processing -> {
-                    showLoading(lytLoading , loading)
+                    showLoading(lytLoading, loading)
                 }
+
                 Status.Success -> {
-                    hideLoading(lytLoading , loading)
+                    hideLoading(lytLoading, loading)
                     if (it.data != null) {
                         displayHistoryData(it.data)
                     }
                 }
+
                 Status.Failed -> {
-                    hideLoading(lytLoading , loading)
+                    hideLoading(lytLoading, loading)
                 }
+
+                else -> {}
             }
         }
-        historyViewModel.loadHistoryData()
-
-        //handle back to prev activity
-        prevBack()
     }
 
-    fun showLoading(lytLoading: View, loading: ProgressBar ){
+    private fun showLoading(lytLoading: View, loading: ProgressBar) {
         lytLoading.visibility = View.VISIBLE
         loading.visibility = View.VISIBLE
     }
-    fun hideLoading(ltyLoading: View, loading: ProgressBar){
+
+    private fun hideLoading(ltyLoading: View, loading: ProgressBar) {
         lytLoading.visibility = View.GONE
         loading.visibility = View.GONE
     }
@@ -90,15 +94,5 @@ class HistoryActivity : AppCompatActivity() {
         }
         historyData.setData(data)
         recyclerViewHistory.adapter = historyData
-
-
     }
-
-    private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
 }
