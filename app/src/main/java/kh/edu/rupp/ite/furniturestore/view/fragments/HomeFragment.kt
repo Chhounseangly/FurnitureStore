@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
@@ -42,15 +43,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
+    private lateinit var processBar: ProgressBar
     private lateinit var noDataMsg: TextView
 
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var favoriteViewModel: FavoriteViewModel
 
     private lateinit var coordinatorLayout: CoordinatorLayout
+
+    private var currentPage = 1
+
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
         swipeRefreshLayout = binding.refreshLayout
+        processBar = binding.loading!!
 
         noDataMsg = binding.noData
         mShimmerViewContainer = binding.shimmerViewContainer
@@ -98,6 +104,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 floatingActionButton.show()
             } else
                 floatingActionButton.hide()
+
+            val childView = nestedScrollView.getChildAt(0)
+            // Check if the childView is not null
+            if (childView != null && scrollY == childView.measuredHeight - nestedScrollView.measuredHeight) {
+                // Load more data (increment the page and fetch new data)
+                productListViewModel.loadMoreProductsData(++currentPage)
+            }
         }
 
         // Scroll to the top of the NestedScrollView when the user clicks on the fabToTop button.
@@ -114,6 +127,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Status.Success -> {
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
+                        processBar.visibility = View.GONE
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
                         hideLoadingAnimation(mShimmerViewContainer)
@@ -121,8 +135,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
+                    processBar.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
+                }
+                Status.LoadingMore -> {
+                    processBar.visibility = View.VISIBLE
                 }
             }
         }

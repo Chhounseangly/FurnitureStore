@@ -117,6 +117,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                     // Display an empty product list on failure
                     displayProductSearchFound(null)
                 }
+
+                else -> {}
             }
         }
     }

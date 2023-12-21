@@ -74,6 +74,8 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
                     Status.Failed -> {
 
                     }
+
+                    else -> {}
                 }
             }
         }

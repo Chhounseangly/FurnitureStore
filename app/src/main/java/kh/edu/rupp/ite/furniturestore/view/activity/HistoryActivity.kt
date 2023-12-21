@@ -45,6 +45,8 @@ class HistoryActivity : AppCompatActivity() {
                 Status.Failed -> {
                     hideLoading(lytLoading , loading)
                 }
+
+                else -> {}
             }
         }
         historyViewModel.loadHistoryData()

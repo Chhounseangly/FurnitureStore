@@ -54,6 +54,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> it.data?.let { data -> handleSuccess(data) }
                 Status.Failed -> handleFailure()
+                else -> {}
             }
         }
     }

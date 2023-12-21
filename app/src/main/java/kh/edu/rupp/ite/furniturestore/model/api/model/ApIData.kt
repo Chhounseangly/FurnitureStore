@@ -5,7 +5,7 @@ data class ApIData<T>(
     val data: T?
 )
 enum class Status{
-    Processing, Success, Failed
+    Processing, Success, Failed, LoadingMore
 }
 
 data class AuthApiData<T>(
