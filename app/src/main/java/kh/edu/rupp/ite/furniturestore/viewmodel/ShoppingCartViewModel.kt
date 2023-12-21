@@ -90,7 +90,7 @@ class ShoppingCartViewModel : ViewModel() {
                 RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
                 _toastMessage = ("Added to shopping cart")
             } catch (ex: Exception) {
-                Log.e("error", "${ex.message}")
+                Log.e("ShoppingCartViewModel", "${ex.message}")
             }
 
             // Process outside background
@@ -111,7 +111,7 @@ class ShoppingCartViewModel : ViewModel() {
                 val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
                 ApIData(Status.Success, response.data)
             } catch (ex: Exception) {
-                Log.e("error", "${ex.message}")
+                Log.e("ShoppingCartViewModel", "${ex.message}")
                 ApIData(Status.Failed, null)
             }
 
@@ -176,10 +176,10 @@ class ShoppingCartViewModel : ViewModel() {
             try {
                 // Call API to update quantities
                 val response = RetrofitInstance.get().api.qtyOperation(data)
-                Log.e("message", response.message)
+                Log.d("ShoppingCartViewModel", response.message)
                 loadProductsCartData()
             } catch (ex: Exception) {
-                Log.e("error", "${ex.message}")
+                Log.e("ShoppingCartViewModel", "${ex.message}")
             }
             // Process outside background
             withContext(Dispatchers.Main.immediate) {
@@ -196,12 +196,12 @@ class ShoppingCartViewModel : ViewModel() {
                 // Call API to delete a product from the shopping cart
                 val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
                 // Logging the message from the response (you may want to handle this more gracefully)
-                Log.e("Msg", response.message)
+                Log.d("ShoppingCartViewModel", response.message)
                 // Reloading the shopping cart data after the product is successfully deleted
                 loadProductsCartData()
             } catch (ex: Exception) {
                 // Handling exceptions, logging the error message
-                Log.e("error", "${ex.message}")
+                Log.e("ShoppingCartViewModel", "${ex.message}")
             }
 
             // Performing UI-related operations on the main thread after the background work is done

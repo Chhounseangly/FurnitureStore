@@ -1,10 +1,8 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.squareup.picasso.Picasso
@@ -17,18 +15,21 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 
-class ProductDetailActivity : AppCompatActivity() {
+class ProductDetailActivity :
+    BaseActivity<ActivityProductDetailBinding>(ActivityProductDetailBinding::inflate) {
 
-    private lateinit var binding: ActivityProductDetailBinding
     private var id = 0
     private val productDetailViewModel = ProductDetailViewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Initialize ViewBinding
-        binding = ActivityProductDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun bindUi() {
 
+    }
+
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
         // Get id from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
@@ -36,6 +37,19 @@ class ProductDetailActivity : AppCompatActivity() {
         // Pass id to loadProductDetail
         productDetailViewModel.loadProductDetail(id)
 
+        // If the TextView's height is more than 10 lines, set the visibility of the seeMoreButton to VISIBLE.
+        if (binding.description.lineCount > 10) {
+            binding.seeMoreBtn.visibility = View.VISIBLE
+        }
+        toggleTextViewMaxLines(binding.seeMoreBtn)
+        prevBack(binding.backBtn)
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
         // Observe changes in product data
         productDetailViewModel.productsData.observe(this) {
             when (it.status) {
@@ -54,15 +68,6 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // If the TextView's height is more than 10 lines, set the visibility of the seeMoreButton to VISIBLE.
-        if (binding.description.lineCount > 10) {
-            binding.seeMoreBtn.visibility = View.VISIBLE
-        }
-        toggleTextViewMaxLines(binding.seeMoreBtn)
-
-        // Handle back button click
-        prevBack()
     }
 
     private fun displayUi(data: Product) {
@@ -114,13 +119,6 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-    // Handle back button click to navigate back to the previous activity
-    private fun prevBack() {
-        binding.backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
     private fun displayCarousel(carouselSlider: List<ImageUrls>) {
         val carouselRecyclerView = binding.carouselRecyclerView
 
@@ -141,8 +139,6 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
         // Set up CarouselAdapter and display carousel images
-//        val carouselAdapter = CarouselAdapter()
-//        carouselAdapter.submitList(carouselSlider)
         carouselAdapter.setData(carouselSlider)
         carouselRecyclerView.adapter = carouselAdapter
     }

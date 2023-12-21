@@ -1,50 +1,73 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
-import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.tabs.TabLayout
-
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
-
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductByCategoryBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.fragments.CategoriesFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
+class ProductsByCategoryActivity :
+    BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
 
-class ProductsByCategoryActivity : AppCompatActivity() {
-    private val categoriesViewModel = CategoriesViewModel()
-    private lateinit var categoriesFragment: CategoriesFragment
-    private var id = 0
+    private lateinit var titleTypeCate: TextView
+    private lateinit var lytTab: TabLayout
+    private lateinit var loadingLoadProducts: ShimmerFrameLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_by_category)
+    private lateinit var categoriesViewModel: CategoriesViewModel
 
-        //call method prev back
-        prevBack()
+    override fun bindUi() {
+        titleTypeCate = binding.titleTypeCate
 
-        // Get data from previous activity
-        val intent = intent
-        id = intent.getIntExtra("id", 0)
-        val titleTypeCate = findViewById<TextView>(R.id.titleTypeCate)
+        lytTab = binding.lytTab
+        loadingLoadProducts = binding.loadingLoadProducts
+    }
 
-        //assign category title to appBar
+    override fun initFields() {
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+    }
+
+    override fun initActions() {
+        // call method prev back
+        prevBack(binding.backBtn)
+
+        // assign category title to appBar
         titleTypeCate.text = "Categories"
 
-//        displayFragment(CategoriesFragment(id))
-        val lytTab = findViewById<TabLayout>(R.id.lytTab)
-        val loadingLoadProducts = findViewById<ShimmerFrameLayout>(R.id.loadingLoadProducts)
         categoriesViewModel.loadCategoryTypes()
+    }
+
+    override fun setupListeners() {
+        lytTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    if (!tab.isSelected) {
+                        // Load and display the fragment only if the tab is not reselected
+                        displayFragment(CategoriesFragment(tab.id))
+                    } else displayFragment(CategoriesFragment(tab.id))
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle tab un selection
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle tab reselection if needed
+            }
+        })
+    }
+
+    override fun setupObservers() {
         categoriesViewModel.categoryTypesData.observe(this) { it ->
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(loadingLoadProducts)
+                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
                     it.data?.let {
                         for (data in it) {
@@ -52,48 +75,15 @@ class ProductsByCategoryActivity : AppCompatActivity() {
                             lytTab.addTab(tab)
                         }
                     }
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
 
                 else -> {
-                    LoadingMethod().hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(loadingLoadProducts)
                 }
             }
         }
-
-        // Declare prevId as a property of your class
-        var prevId: Int = 0
-
-        // Set up TabLayout.OnTabSelectedListener if needed
-        lytTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null) {
-                    if (!tab.isSelected) {
-                        // Load and display the fragment only if the tab is not reselected
-                        displayFragment(CategoriesFragment(tab.id))
-                    }else displayFragment(CategoriesFragment(tab.id))
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Handle tab unselection
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                // Handle tab reselection if needed
-            }
-        })
-
     }
-
-    //method prev back
-    private fun prevBack() {
-        val backBtn = findViewById<ImageView>(R.id.backBtn)
-        backBtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
 
     private fun displayFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
@@ -118,11 +108,9 @@ class ProductsByCategoryActivity : AppCompatActivity() {
         }
 
         // Add the transaction to the back stack
-//        fragmentTransaction.addToBackStack(null)
+        // fragmentTransaction.addToBackStack(null)
 
         // Commit the transaction
         fragmentTransaction.commit()
     }
-
-
 }

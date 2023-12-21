@@ -1,0 +1,46 @@
+name: Furniture Store CI/CD
+on:
+  push:
+#    branches: ["main"]
+    tags:
+      - "v*.*.*"
+#  pull_request:
+#    branches: ["main"]
+
+jobs:
+  build:
+    name: Build and Deploy App to Firebase App Distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          cache: gradle
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Grant execute permission to make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Grant execute permission to build script
+        run: chmod +x ./build_script.sh
+
+      - name: Build APK
+        run: ./build_script.sh
+
+#      - name: Upload APK to artifacts
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: furniture-store
+#          path: furniture-store.apk
+
+      - name: Upload APK to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.APP_ID}}
+          serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
+          groups: testers
+          file: furniture-store.apk

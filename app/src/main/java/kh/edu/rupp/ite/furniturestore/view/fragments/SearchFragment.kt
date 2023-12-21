@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -19,21 +16,28 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
-class SearchFragment : Fragment() {
-
-    private lateinit var fragmentSearchBinding: FragmentSearchBinding
-
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
     private val handler = Handler()
-    private var searchRunnable: Runnable? = null
     private var searchViewHolder = SearchViewHolder()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        fragmentSearchBinding = FragmentSearchBinding.inflate(inflater, container, false)
-        return fragmentSearchBinding.root
+    override fun bindUi() {
+
+    }
+
+    override fun initFields() {
+
+    }
+
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
+
+    }
+
+    override fun setupObservers() {
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -46,7 +50,7 @@ class SearchFragment : Fragment() {
 
     // Function to set up the search view
     private fun setupSearchView() {
-        val searchView = fragmentSearchBinding.searchProduct
+        val searchView = binding.searchProduct
 
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -56,7 +60,7 @@ class SearchFragment : Fragment() {
             }
             override fun onQueryTextChange(query: String?): Boolean {
                 // Hide noData view initially
-                fragmentSearchBinding.notFound.visibility = View.GONE
+                binding.notFound.visibility = View.GONE
 
                 // Use a delay before triggering the search
                 handler.removeCallbacksAndMessages(null)
@@ -88,7 +92,7 @@ class SearchFragment : Fragment() {
 
     // Function to handle the search results
     private fun handleSearchResult(searchData: ApIData<List<Product>>) {
-        with(fragmentSearchBinding) {
+        with(binding) {
             when (searchData.status) {
                 Status.Processing -> {
                     // Show loading view and hide other views
@@ -121,27 +125,27 @@ class SearchFragment : Fragment() {
     private fun displayProductSearchFound(product: List<Product>?) {
         // Set up a LinearLayoutManager for the RecyclerView
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentSearchBinding.searchFoundRecyclerView.layoutManager = linearLayoutManager
+        binding.searchFoundRecyclerView.layoutManager = linearLayoutManager
 
-        //create adapter, passing <Model, ViewHolderBinding>  and display ui
-        val searchFoundAdapter = DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate){
-            view, item, binding ->
+        // Initialize the searchFoundAdapter, passing <Model, ViewHolderBinding> and display UI
+        val searchFoundAdapter =
+            DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate) { view, item, binding ->
+                // Handle click on view to navigate to ProductDetail
+                view.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    it.context.startActivity(intent)
+                }
 
-            //handle click on view navigation to ProductDetail
-            view.setOnClickListener {
-                val intent = Intent(it.context, ProductDetailActivity::class.java)
-                intent.putExtra("id", item.id)
-                it.context.startActivity(intent)
+                // Passing data to display UI
+                with(binding) {
+                    Picasso.get().load(item.imageUrl).into(img)
+                    name.text = item.name
+                    price.text = item.price.toString()
+                }
             }
 
-            //passing data display ui
-            with(binding){
-                Picasso.get().load(item.imageUrl).into(img)
-                name.text = item.name
-                price.text = item.price.toString()
-            }
-        }
-
+        // Set data for the searchFoundAdapter
         if (product != null) {
             searchFoundAdapter.setData(product)
         }
@@ -149,6 +153,7 @@ class SearchFragment : Fragment() {
         // Create a SearchFoundAdapter and submit the product list
 //        val searchFoundAdapter = SearchFoundAdapter()
 //        searchFoundAdapter.submitList(product)
-        fragmentSearchBinding.searchFoundRecyclerView.adapter = searchFoundAdapter
+        // Set the adapter for the searchFoundRecyclerView
+        binding.searchFoundRecyclerView.adapter = searchFoundAdapter
     }
 }

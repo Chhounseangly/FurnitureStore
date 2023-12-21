@@ -10,20 +10,23 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
+import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.Register
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
-import kh.edu.rupp.ite.furniturestore.model.api.model.UpdateProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -77,9 +80,14 @@ interface ApiService {
     @GET("api/logout")
     suspend fun logout(): ResponseMessage
 
-    @PUT("api/updateProfile")
-    suspend fun updateProfile(@Body data: UpdateProfile): ResponseMessage
-    //payment
+    @Multipart
+    @POST("api/updateProfile?_method=PUT")
+    suspend fun updateProfile(
+        @Part("name") name: RequestBody?,
+        @Part file: MultipartBody.Part?,
+    ): ResProfile
+
+    //history
     @POST("api/history")
     suspend fun postPayment(
         @Body data: List<PaymentModel>

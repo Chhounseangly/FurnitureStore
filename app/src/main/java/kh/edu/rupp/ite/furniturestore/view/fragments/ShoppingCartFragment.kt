@@ -1,20 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.opengl.Visibility
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,103 +14,111 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
-import kh.edu.rupp.ite.furniturestore.custom_method.LoadingMethod
-import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
-import kh.edu.rupp.ite.furniturestore.view.activity.HistoryActivity
-import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
-class ShoppingCartFragment() : Fragment() {
-    private lateinit var fragmentCartBinding: FragmentCartBinding
+class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate) {
+
+    // Adapter for the shopping cart
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
+
+    // Swipe-to-refresh layout
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+    // Shimmer effect for loading
     private lateinit var cartContainerLoading: ShimmerFrameLayout
+
+    // ViewModels for shopping cart and payment
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var paymentViewModel: PaymentViewModel
 
+    override fun bindUi() {
+        swipeRefreshLayout = binding.refreshLayout
+        cartContainerLoading = binding.cartContainerLoading
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        fragmentCartBinding = FragmentCartBinding.inflate(inflater, container, false)
-        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+    override fun initFields() {
+        // Initialize ViewModels
+        shoppingCartViewModel =
+            ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
         paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
-        // Set up SwipeRefreshLayout
-        swipeRefreshLayout = fragmentCartBinding.refreshLayout
+    }
+
+    override fun initActions() {
+
+    }
+
+    override fun setupListeners() {
+        // Set up refresh listener to reload the shopping cart data
         swipeRefreshLayout.setOnRefreshListener {
             shoppingCartViewModel.loadProductsCartData()
         }
-
-        return fragmentCartBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        cartContainerLoading = fragmentCartBinding.cartContainerLoading
-
+    override fun setupObservers() {
+        // Observe changes in the shopping cart items
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> LoadingMethod().showLoadingAnimation(cartContainerLoading)
-                Status.Success -> it.data?.let { it1 ->
-                    displayProductCart(it1)
-                    shoppingCartViewModel.calculateTotalPrice(it.data)
+                Status.Processing -> showLoadingAnimation(cartContainerLoading)
+                Status.Success -> it.data?.let { data ->
+                    // Display the shopping cart items
+                    displayProductCart(data)
+                    // Calculate and display the total price
+                    shoppingCartViewModel.calculateTotalPrice(data)
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(cartContainerLoading)
+                    hideLoadingAnimation(cartContainerLoading)
                 }
 
                 else -> {
                     swipeRefreshLayout.isRefreshing = false
-                    LoadingMethod().hideLoadingAnimation(cartContainerLoading)
+                    hideLoadingAnimation(cartContainerLoading)
                 }
             }
         }
 
+        // Observe changes in the total price
         shoppingCartViewModel.totalPrice.observe(viewLifecycleOwner) {
-            fragmentCartBinding.totalPrice.text = "$ " + it.toString()
+            binding.totalPrice.text = "$ " + it.toString()
         }
 
+        // Observe changes in the item count
         shoppingCartViewModel.itemCount.observe(viewLifecycleOwner) {
-            fragmentCartBinding.itemsCount.text = it.toString()
+            binding.itemsCount.text = it.toString()
         }
     }
 
-
+    // Function to display the shopping cart items in the RecyclerView
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
         // Set up RecyclerView layout manager
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        fragmentCartBinding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
 
         // Set up shopping cart adapter
         shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
         shoppingCartAdapter.submitList(shoppingCart)
-        fragmentCartBinding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
+        binding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
 
         // Attach ItemTouchHelper to RecyclerView for swipe-to-delete
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(fragmentCartBinding.shoppingCartRecyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.shoppingCartRecyclerView)
 
         // Set up checkout button click listener
-        fragmentCartBinding.checkoutBtn.setOnClickListener {
-
+        binding.checkoutBtn.setOnClickListener {
+            // Prepare data for payment and navigate to CheckoutActivity
             val list = ArrayList<ObjectPayment>()
-            for (i in shoppingCart){
+            for (i in shoppingCart) {
                 list.addAll(listOf(ObjectPayment(i.product_id, i.id, i.qty, i.product.price)))
             }
 
-            //passing data and navigation to CheckoutActivity
+            // Passing data and navigation to CheckoutActivity
             val activityCheckoutIntent = CheckoutActivity.newIntent(requireContext(), list)
             startActivity(activityCheckoutIntent)
-
         }
     }
 
@@ -154,6 +153,7 @@ class ShoppingCartFragment() : Fragment() {
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
+                // Draw UI for swipe-to-delete
                 drawSwipeToDelete(c, viewHolder, dX)
                 super.onChildDraw(
                     c,
@@ -184,48 +184,53 @@ class ShoppingCartFragment() : Fragment() {
         alertDialog.show()
     }
 
-    // Function to draw swipe-to-delete UI
+    // Function to draw the UI for swipe-to-delete action in the RecyclerView
     private fun drawSwipeToDelete(c: Canvas, viewHolder: RecyclerView.ViewHolder, dX: Float) {
+        // Get the current item view
         val itemView = viewHolder.itemView
-        // Take bottom of card and top of card remove it
+
+        // Calculate the height of the item view
         val height = itemView.bottom.toFloat() - itemView.top.toFloat()
-        // 3 / of height display text delete
+
+        // Calculate the width of the delete area as one-third of the item height
         val width = height / 3
 
-        val p = Paint()
-        p.isAntiAlias = true
+        // Create a Paint object for drawing
+        val paint = Paint()
+        paint.isAntiAlias = true
 
+        // Check if the swipe is to the left (negative dX)
         if (dX < 0) {
-            // Draw red background for delete action
-            p.color = Color.parseColor("#D32F2F")
+            // Draw a red background for the delete action
+            paint.color = Color.parseColor("#D32F2F")
             val background = RectF(
                 itemView.right.toFloat() + dX,
                 itemView.top.toFloat(),
                 itemView.right.toFloat(),
                 itemView.bottom.toFloat()
             )
-            c.drawRect(background, p)
+            c.drawRect(background, paint)
 
-            // Draw delete icon
-            val icon = BitmapFactory.decodeResource(resources, R.drawable.ic_cart)
-            if (icon != null) {
-                val iconDest = RectF(
+            // Draw the delete icon on the background
+            val deleteIcon = BitmapFactory.decodeResource(resources, R.drawable.ic_cart)
+            if (deleteIcon != null) {
+                val iconDestination = RectF(
                     itemView.right.toFloat() - 2 * width,
                     itemView.top.toFloat() + width,
                     itemView.right.toFloat() - width,
                     itemView.bottom.toFloat() - width
                 )
-                c.drawBitmap(icon, null, iconDest, p)
+                c.drawBitmap(deleteIcon, null, iconDestination, paint)
             }
 
             // Draw the "Delete" text
-            p.color = Color.WHITE
-            p.textSize = 44f
-            p.textAlign = Paint.Align.CENTER
-            val text = "Delete"
+            paint.color = Color.WHITE
+            paint.textSize = 44f
+            paint.textAlign = Paint.Align.CENTER
+            val deleteText = "Delete"
             val textX = itemView.right.toFloat() - 2 * width + 40
             val textY = itemView.top.toFloat() + height / 2
-            c.drawText(text, textX, textY, p)
+            c.drawText(deleteText, textX, textY, paint)
         }
     }
 }

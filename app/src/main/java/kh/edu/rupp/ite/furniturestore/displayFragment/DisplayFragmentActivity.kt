@@ -28,4 +28,9 @@ class DisplayFragmentActivity(private val fragmentManager: FragmentManager): App
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
+
+    // Function to get the current fragment
+    fun getCurrentFragment(): Fragment {
+        return fragmentManager.fragments.last()
+    }
 }

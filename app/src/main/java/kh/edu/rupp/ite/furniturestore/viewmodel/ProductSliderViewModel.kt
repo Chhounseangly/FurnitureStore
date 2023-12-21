@@ -16,7 +16,7 @@ class ProductSliderViewModel: ViewModel() {
 
     fun loadProductSliderData(){
 
-        val apiData = ApIData<List<ProductSlider>>(Status.Success, listOf(
+        val apiData = ApIData(Status.Success, listOf(
             ProductSlider(
                 1,
                 "test  ",

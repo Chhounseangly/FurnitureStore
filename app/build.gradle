@@ -18,8 +18,41 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "FurnitureStore"
+
+    productFlavors {
+        uat {
+            dimension 'FurnitureStore'
+            resValue 'string', 'app_name', 'Furniture Store UAT'
+            buildConfigField "String", 'BASE_URL', '"http://10.0.2.2:8000/"'
+        }
+        prd {
+            dimension 'FurnitureStore'
+            resValue 'string', 'app_name', 'Furniture Store'
+            buildConfigField "String", 'BASE_URL', '"https://furniturestores.me/"'
+        }
+    }
+
+    signingConfigs {
+        uatRelease {
+            storeFile file('furniture-store.keystore')
+            storePassword '123456'
+            keyAlias 'furniture-store'
+            keyPassword '123456'
+        }
+        prdRelease {
+            storeFile file('furniture-store.keystore')
+            storePassword '123456'
+            keyAlias 'furniture-store'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
+            productFlavors.uat.signingConfig signingConfigs.uatRelease
+            productFlavors.prd.signingConfig signingConfigs.prdRelease
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
@@ -28,28 +61,15 @@ android {
         }
     }
 
-    flavorDimensions "FurnitureStore"
-    productFlavors{
-        uat{
-            dimension 'FurnitureStore'
-            resValue 'string', 'app_name', 'Furniture Store UAT'
-            buildConfigField "String", 'BASE_URL', '"http://10.0.2.2:8000/"'
-        }
-        prd{
-            dimension 'FurnitureStore'
-            resValue 'string', 'app_name', 'Furniture Store'
-            buildConfigField "String", 'BASE_URL', '"https://furniturestores.me/"'
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    //config binding for fragment
+
     buildFeatures {
         viewBinding true
     }
@@ -87,8 +107,14 @@ dependencies {
     //library Shimmer Effect
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
 }

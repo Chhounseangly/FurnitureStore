@@ -31,8 +31,3 @@ class Token(
     val token_type: String,
     val expires_at: Any
 )
-
-data class UpdateProfile(
-    val name: String?,
-    val avatar: String?
-)
