@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.displayFragment.DisplayFragmentActivity
@@ -39,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // Handle the case when the user signs in with Google
             if (data != null && data.scheme == getString(R.string.app_scheme)) {
-                showSnackBar(this, binding.root, getString(R.string.sign_in_success))
+                Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
 
                 // Save the token to shared preferences
                 val token = data.getQueryParameter("token")

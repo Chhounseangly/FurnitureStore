@@ -121,13 +121,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
 
                         Snackbar.make(requireView(), shoppingCartViewModel.toastMessage, Snackbar.LENGTH_LONG).show()
-
-//                        showSnackBar(
-//                            requireContext(),
-//                            requireView(),
-//                            shoppingCartViewModel.toastMessage
-//                        )
-
                     }
 
                     // Favorite button click listener
