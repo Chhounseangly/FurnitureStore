@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream
 class EditProfileActivity :
     BaseActivity<ActivityEditProfileBinding>(ActivityEditProfileBinding::inflate) {
 
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels()
 
     private lateinit var editAvatarBtn: ImageView
     private lateinit var name: TextInputEditText
@@ -45,7 +45,7 @@ class EditProfileActivity :
     }
 
     override fun initFields() {
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
     }
 
     override fun initActions() {

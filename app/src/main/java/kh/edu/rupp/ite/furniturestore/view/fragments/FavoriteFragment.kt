@@ -3,7 +3,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -20,12 +20,12 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteBinding::inflate) {
+
+    private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
+    private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var noDataMsg: TextView
-
-    private lateinit var favoriteViewModel: FavoriteViewModel
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
@@ -34,8 +34,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
     }
 
     override fun initFields() {
-        favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
-        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
+
     }
 
     override fun initActions() {

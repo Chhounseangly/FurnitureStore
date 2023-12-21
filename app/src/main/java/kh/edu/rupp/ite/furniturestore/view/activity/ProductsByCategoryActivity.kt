@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -16,11 +17,10 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 class ProductsByCategoryActivity :
     BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
 
+    private val categoriesViewModel: CategoriesViewModel by viewModels()
     private lateinit var titleTypeCate: TextView
     private lateinit var lytTab: TabLayout
     private lateinit var loadingLoadProducts: ShimmerFrameLayout
-
-    private lateinit var categoriesViewModel: CategoriesViewModel
 
     override fun bindUi() {
         titleTypeCate = binding.titleTypeCate
@@ -30,7 +30,7 @@ class ProductsByCategoryActivity :
     }
 
     override fun initFields() {
-        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+
     }
 
     override fun initActions() {

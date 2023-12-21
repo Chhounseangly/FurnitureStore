@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,7 +21,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.HistoryViewModel
 
 class HistoryActivity : AppCompatActivity() {
 
-    private lateinit var historyViewModel: HistoryViewModel
+    private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var lytLoading: View
     private lateinit var loading: ProgressBar
 
@@ -30,7 +31,6 @@ class HistoryActivity : AppCompatActivity() {
         lytLoading  = findViewById(R.id.ltyLoading)
         loading = findViewById(R.id.loadingCircle)
 
-        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         historyViewModel.historyData.observe(this) {
             when (it.status) {
                 Status.Processing -> {

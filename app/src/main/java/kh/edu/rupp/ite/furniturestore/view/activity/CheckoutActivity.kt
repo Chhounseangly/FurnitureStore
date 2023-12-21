@@ -3,9 +3,8 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 import android.content.Context
 import android.content.Intent
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityCheckoutBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
@@ -14,7 +13,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
 
 class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutBinding::inflate) {
 
-    private lateinit var paymentViewModel: PaymentViewModel
+    private val paymentViewModel: PaymentViewModel by viewModels()
     private lateinit var paymentBtn: Button
     private lateinit var totalPrice: TextView
 
@@ -32,7 +31,7 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
     }
 
     override fun initFields() {
-        paymentViewModel = ViewModelProvider(this)[PaymentViewModel::class.java]
+
     }
 
     override fun initActions() {

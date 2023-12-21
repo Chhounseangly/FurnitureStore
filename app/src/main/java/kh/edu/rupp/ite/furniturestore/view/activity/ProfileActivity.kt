@@ -4,6 +4,7 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -15,13 +16,12 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBinding::inflate) {
 
+    private val authViewModel: AuthViewModel by viewModels()
     private lateinit var editProfileBtn: Button
     private lateinit var changePwBtn: Button
     private lateinit var logoutBtn: Button
     private lateinit var profile: ImageView
     private lateinit var username: TextView
-
-    private lateinit var authViewModel: AuthViewModel
 
     override fun bindUi() {
         editProfileBtn = binding.editAvatarBtn
@@ -32,7 +32,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     }
 
     override fun initFields() {
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
     }
 
     override fun initActions() {
