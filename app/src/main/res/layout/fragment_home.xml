@@ -80,6 +80,7 @@
                     android:textSize="18sp" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
+                    app:shimmer_auto_start="true"
                     android:id="@+id/shimmer_view_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,6 +127,7 @@
                     android:gravity="center">
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/noData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

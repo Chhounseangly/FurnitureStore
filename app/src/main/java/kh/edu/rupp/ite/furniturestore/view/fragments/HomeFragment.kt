@@ -6,7 +6,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -37,44 +37,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
 
-    private lateinit var productListViewModel: ProductListViewModel
-    private lateinit var categoriesViewModel: CategoriesViewModel
-    private lateinit var productSliderViewModel: ProductSliderViewModel
+    private val productListViewModel: ProductListViewModel by viewModels()
+    private val categoriesViewModel: CategoriesViewModel by viewModels()
+    private val productSliderViewModel: ProductSliderViewModel by viewModels()
+    private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
+    private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var processBar: ProgressBar
     private lateinit var noDataMsg: TextView
 
-    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
-    private lateinit var favoriteViewModel: FavoriteViewModel
-
     private lateinit var coordinatorLayout: CoordinatorLayout
 
     private var currentPage = 1
+    private var totalPage = 0
+    private var isLoading = false
 
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
         swipeRefreshLayout = binding.refreshLayout
-        processBar = binding.loading!!
-
+        processBar = binding.loading
         noDataMsg = binding.noData
         mShimmerViewContainer = binding.shimmerViewContainer
-
         nestedScrollView = binding.homeFragment
         floatingActionButton = binding.fabBtn
     }
 
     override fun initFields() {
-        // Initialize ViewModels
-        productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
-        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
-        productSliderViewModel = ViewModelProvider(this)[ProductSliderViewModel::class.java]
-        shoppingCartViewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
-        favoriteViewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
-
         // Set initial state for the "No Data" message
-        noDataMsg.text = "No Data"
+        noDataMsg.text = getString(R.string.no_data)
         noDataMsg.visibility = View.GONE
     }
 
@@ -95,6 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             productListViewModel.loadProductsData()
             categoriesViewModel.loadCategoryTypes()
             productSliderViewModel.loadProductSliderData()
+            currentPage = 1
         }
 
         // Add a scroll listener to the NestedScrollView.
@@ -102,14 +95,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // Check if the user is scrolling up or down.
             if (scrollY > oldScrollY) {
                 floatingActionButton.show()
-            } else
+            } else {
                 floatingActionButton.hide()
+            }
 
+            // Get the NestedScrollView's child view
             val childView = nestedScrollView.getChildAt(0)
-            // Check if the childView is not null
-            if (childView != null && scrollY == childView.measuredHeight - nestedScrollView.measuredHeight) {
-                // Load more data (increment the page and fetch new data)
-                productListViewModel.loadMoreProductsData(++currentPage)
+            // Adjust the threshold as needed
+            val threshold = 50
+
+            // Check if the childView is not null and not already loading
+            if (!isLoading && childView != null && scrollY >= childView.measuredHeight - nestedScrollView.measuredHeight - threshold) {
+                // Set loading flag to true to prevent multiple requests
+                isLoading = true
+                if (currentPage < totalPage) productListViewModel.loadMoreProductsData(++currentPage)
             }
         }
 
@@ -131,14 +130,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         displayProductList(it.data)
                         swipeRefreshLayout.isRefreshing = false
                         hideLoadingAnimation(mShimmerViewContainer)
+                        isLoading = false
+
+                        // Calculate total page
+                        val total = it.meta?.total ?: 0
+                        totalPage = total / 4 + if (total % 4 == 0) 0 else 1
                     }
                 }
+
                 Status.Failed -> {
                     noDataMsg.visibility = View.VISIBLE
                     processBar.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
+                    isLoading = false
                 }
+
                 Status.LoadingMore -> {
                     processBar.visibility = View.VISIBLE
                 }
@@ -152,7 +159,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     displaySliderProduct(data)
                     swipeRefreshLayout.isRefreshing = false
                 }
-                else -> {}
+
+                else -> {
+                    // Handle other cases if needed
+                }
             }
         }
 
@@ -165,6 +175,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
                 }
+
                 else -> {
                     binding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
@@ -210,7 +221,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     addToCartBtn.setOnClickListener {
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
 
-                        Snackbar.make(requireView(), shoppingCartViewModel.toastMessage, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            requireView(),
+                            shoppingCartViewModel.toastMessage,
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
 
                     // Favorite button click listener
