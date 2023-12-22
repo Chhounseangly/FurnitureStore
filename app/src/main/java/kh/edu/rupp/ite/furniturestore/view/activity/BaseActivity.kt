@@ -1,8 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -49,6 +52,20 @@ abstract class BaseActivity<T : ViewBinding>(
     fun prevBack(backBtn: View) {
         backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    fun navigationBetweenEditTexts(editText: EditText, nextEditText: EditText?, onAction: (() -> Unit)? = null) {
+        editText.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                nextEditText?.requestFocus()
+                true
+            } else if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                onAction?.invoke()
+                true
+            } else {
+                false
+            }
         }
     }
 }

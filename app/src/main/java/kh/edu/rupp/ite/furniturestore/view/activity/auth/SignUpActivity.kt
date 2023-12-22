@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -33,66 +32,33 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
     private var isPasswordVisible = false
 
     override fun initActions() {
-        //call method SignInScreenDisplay
+        // Initialize sign-in screen display
         initSignInScreenDisplay()
 
-        //class method handleSignUpProcessing
+        // Initialize sign-up processing
         handleSignUpProcessing()
 
+        // Set up listeners and actions
         prevBack(binding.backBtn)
         setupImagePickerLauncher(avatar)
+        setupPasswordToggle(password, cfPassword)
+
+        // Set up navigation between EditTexts
+        navigationBetweenEditTexts(name, email)
+        navigationBetweenEditTexts(email, password)
+        navigationBetweenEditTexts(password, cfPassword)
+        navigationBetweenEditTexts(cfPassword, null) {
+            handleSignUp()
+        }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun setupListeners() {
         avatar.setOnClickListener {
             openImageChooser()
         }
 
-        password.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = password.compoundDrawables[2]
-                // Check if the touch event is on the drawableEnd area
-                if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
-                    togglePasswordVisibility()
-                    return@setOnTouchListener true
-                }
-            }
-            false
-        }
-        cfPassword.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = password.compoundDrawables[2]
-                // Check if the touch event is on the drawableEnd area
-                if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
-                    togglePasswordVisibility()
-                    return@setOnTouchListener true
-                }
-            }
-            false
-        }
-
         signUpBtn.setOnClickListener {
-            signUpBtn.isEnabled = false
-            signUpBtn.setTextColor(Color.BLACK)
-            signUpBtn.setBackgroundResource(R.drawable.disable_btn)
-            clearErrorUnderlines()
-            if (isImageChanged()) {
-                authViewModel.signUp(
-                    name.text.toString(),
-                    email.text.toString(),
-                    password.text.toString(),
-                    cfPassword.text.toString(),
-                    getAvatar()
-                )
-            } else {
-                authViewModel.signUp(
-                    name.text.toString(),
-                    email.text.toString(),
-                    password.text.toString(),
-                    cfPassword.text.toString()
-                )
-            }
+            handleSignUp()
         }
     }
 
@@ -135,7 +101,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                             codeVerificationActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(codeVerificationActivity)
                         }
-
                     }
                 }
             } else {
@@ -158,10 +123,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         authViewModel.resAuth.removeObservers(this)
     }
 
-    //handle Sign In Process
     private fun handleSignUpProcessing() {
-//        cfPassword = findViewById(R.id.cfPwInput)
-
         //call dynamic handleOnChangeEditText from AuthValidation Class
         AuthValidation().handleOnChangeEditText(name)
         AuthValidation().handleOnChangeEditText(email)
@@ -191,6 +153,22 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         name.backgroundTintList = null
         email.backgroundTintList = null
         password.backgroundTintList = null
+    }
+
+    private fun setupPasswordToggle(passwordEditText: EditText, confirmPasswordEditText: EditText) {
+        val touchListener: (View, MotionEvent) -> Boolean = setOnTouchListener@{ _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = passwordEditText.compoundDrawables[2]
+                if (event.rawX >= (passwordEditText.right - drawableEnd.bounds.width())) {
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
+        passwordEditText.run { setOnTouchListener(touchListener) }
+        confirmPasswordEditText.run { setOnTouchListener(touchListener) }
     }
 
     private fun togglePasswordVisibility() {
@@ -231,6 +209,29 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         //action when user click sign in button it will go to sign in screen
         signInBtn.setOnClickListener {
             startActivity(signInScreen)
+        }
+    }
+
+    private fun handleSignUp() {
+        signUpBtn.isEnabled = false
+        signUpBtn.setTextColor(Color.BLACK)
+        signUpBtn.setBackgroundResource(R.drawable.disable_btn)
+        clearErrorUnderlines()
+        if (isImageChanged()) {
+            authViewModel.signUp(
+                name.text.toString(),
+                email.text.toString(),
+                password.text.toString(),
+                cfPassword.text.toString(),
+                getAvatar()
+            )
+        } else {
+            authViewModel.signUp(
+                name.text.toString(),
+                email.text.toString(),
+                password.text.toString(),
+                cfPassword.text.toString()
+            )
         }
     }
 }

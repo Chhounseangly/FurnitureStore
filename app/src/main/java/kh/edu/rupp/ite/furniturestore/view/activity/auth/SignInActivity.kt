@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -31,34 +30,56 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     private var authViewModel = AuthViewModel()
     private var isPasswordVisible = false
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun initActions() {
         //call method for handle go to sign up screen
         initSignUpScreen()
         //class method for handle go to forgot password screen
         initForgotPasswordScreen()
         //call method handle Sign In Processing
-        handleSignIn()
+        handleSignInProcession()
 
         //return to prev activity
         prevBack(binding.backBtn)
-
+        setupPasswordToggle(password)
         togglePasswordVisibility()
-        password.setOnTouchListener { _, event ->
+
+        // Set up navigation between EditTexts
+        navigationBetweenEditTexts(email, password)
+        navigationBetweenEditTexts(password, null) {
+            handleSignIn()
+        }
+    }
+
+    private fun setupPasswordToggle(passwordEditText: EditText) {
+        val touchListener: (View, MotionEvent) -> Boolean = setOnTouchListener@{ _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = password.compoundDrawables[2]
-                // Check if the touch event is on the drawableEnd area
-                if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
+                val drawableEnd = passwordEditText.compoundDrawables[2]
+                if (event.rawX >= (passwordEditText.right - drawableEnd.bounds.width())) {
                     togglePasswordVisibility()
                     return@setOnTouchListener true
                 }
             }
             false
         }
+
+        passwordEditText.run { setOnTouchListener(touchListener) }
     }
 
     override fun setupListeners() {
+        signInBtn.setOnClickListener {
+            handleSignIn()
+        }
 
+        binding.lytGoogleSignIn.setOnClickListener {
+            val url = BuildConfig.BASE_URL + "api/auth/google"
+            val intent = Intent(Intent.ACTION_VIEW)
+
+            // Set the data (URL) for the Intent
+            intent.data = Uri.parse(url)
+
+            // Start the activity using the created Intent
+            startActivity(intent)
+        }
     }
 
     override fun setupObservers() {
@@ -92,37 +113,25 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
 
     //handle Sign In Process
-    private fun handleSignIn() {
+    private fun handleSignInProcession() {
         //call dynamic handleOnChangeEditText from AuthValidation Class
         AuthValidation().handleOnChangeEditText(email)
         AuthValidation().handleOnChangeEditText(password)
 
-        // event Processing of Sign In Button
-        signInBtn.setOnClickListener {
-            authViewModel.resAuth.removeObservers(this)
-            // Disable the button to prevent multiple clicks
-            signInBtn.isEnabled = false
-            signInBtn.setTextColor(Color.BLACK)
-            signInBtn.setBackgroundResource(R.drawable.disable_btn)
-
-            clearErrorUnderlines()
-            authViewModel.signIn(email.text.toString(), password.text.toString())
-        }
-
-        binding.lytGoogleSignIn.setOnClickListener {
-            val url = BuildConfig.BASE_URL + "api/auth/google"
-            val intent = Intent(Intent.ACTION_VIEW)
-
-            // Set the data (URL) for the Intent
-            intent.data = Uri.parse(url)
-
-            // Start the activity using the created Intent
-            startActivity(intent)
-        }
-
         //perform Login with api
         performLogin()
 
+    }
+
+    private fun handleSignIn() {
+        authViewModel.resAuth.removeObservers(this)
+        // Disable the button to prevent multiple clicks
+        signInBtn.isEnabled = false
+        signInBtn.setTextColor(Color.BLACK)
+        signInBtn.setBackgroundResource(R.drawable.disable_btn)
+
+        clearErrorUnderlines()
+        authViewModel.signIn(email.text.toString(), password.text.toString())
     }
 
     private fun performLogin() {
