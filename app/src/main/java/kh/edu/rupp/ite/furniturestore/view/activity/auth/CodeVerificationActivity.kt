@@ -32,8 +32,6 @@ class CodeVerificationActivity :
     }
 
     override fun initActions() {
-        val email = intent.getStringExtra(EMAIL_EXTRA)
-
         // Set up text input validation
         AuthValidation().handleOnChangeEditText(codeInput)
 

@@ -65,6 +65,23 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profileCard"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                app:cardCornerRadius="64dp">
+
+                <ImageView
+                    android:id="@+id/profile"
+                    android:background="@drawable/ic_pf"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/image_content"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:visibility="gone"
                 android:paddingStart="5dp"
@@ -73,16 +90,16 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:id="@+id/errorMsg"
-                android:text="fsa"
+                android:text=""
                 android:textColor="@color/white"
-                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_below="@id/profileCard"
                 tools:ignore="RtlSymmetry" />
 
             <EditText
-                android:layout_below="@id/errorMsg"
                 android:id="@+id/nameInput"
+                android:layout_below="@id/profileCard"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="2dp"
@@ -112,22 +129,24 @@
                 android:autofillHints="password"
                 android:hint="@string/pwInput"
                 android:inputType="textPassword" />
-            <!--            <EditText-->
-            <!--                android:id="@+id/cfPwInput"-->
-            <!--                android:layout_below="@id/pwInput"-->
-            <!--                android:autofillHints="password"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:layout_marginBottom="2dp"-->
-            <!--                android:hint="@string/confirmation_password_txt"-->
-            <!--                android:layout_height="60dp"-->
-            <!--                android:inputType="textPassword" />-->
+
+            <EditText
+                android:drawableEnd="@drawable/ic_invisible_pw"
+                android:id="@+id/cfPwInput"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/pwInput"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:autofillHints="password"
+                android:hint="@string/confirmation_password_txt"
+                android:inputType="textPassword" />
 
             <Button
                 android:id="@+id/signUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/pwInput"
+                android:layout_below="@id/cfPwInput"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="20dp"
@@ -159,6 +178,4 @@
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
-
-
 </RelativeLayout>

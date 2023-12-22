@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -47,7 +46,7 @@ abstract class BaseActivity<T : ViewBinding>(
         }
     }
 
-    fun prevBack(backBtn: LinearLayout) {
+    fun prevBack(backBtn: View) {
         backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }

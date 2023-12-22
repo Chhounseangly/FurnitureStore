@@ -10,7 +10,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignUpBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
@@ -20,15 +22,16 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding::inflate) {
 
+    private val authViewModel: AuthViewModel by viewModels()
+    private val profile: ImageView by lazy { binding.profile }
     private val name: EditText by lazy { binding.nameInput }
     private val email: EditText by lazy { binding.emInput }
     private val password: EditText by lazy { binding.pwInput }
-    private lateinit var cfPassword: EditText
+    private val cfPassword: EditText by lazy { binding.cfPwInput }
     private val signUpBtn: Button by lazy { binding.signUpBtn }
-    private var authViewModel = AuthViewModel()
-    private var isPasswordVisible = false
-
     private val errorMessage: TextView by lazy { binding.errorMsg }
+
+    private var isPasswordVisible = false
 
     override fun initActions() {
         //call method SignInScreenDisplay
@@ -40,49 +43,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         prevBack(binding.backBtn)
     }
 
-    override fun setupListeners() {
-        signUpBtn.setOnClickListener {
-            authViewModel.validationResult.removeObservers(this)
-            authViewModel.resAuth.removeObservers(this)
-            signUpBtn.isEnabled = false
-            signUpBtn.setTextColor(Color.BLACK)
-            signUpBtn.setBackgroundResource(R.drawable.disable_btn)
-            clearErrorUnderlines()
-            authViewModel.signUp(
-                name.text.toString(),
-                email.text.toString(),
-                password.text.toString()
-            )
-        }
-    }
-
-    override fun setupObservers() {
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authViewModel.validationResult.removeObservers(this)
-        authViewModel.resAuth.removeObservers(this)
-    }
-
-    //handle Sign In Process
     @SuppressLint("ClickableViewAccessibility")
-    private fun handleSignUpProcessing() {
-//        cfPassword = findViewById(R.id.cfPwInput)
-
-        //call dynamic handleOnChangeEditText from AuthValidation Class
-        AuthValidation().handleOnChangeEditText(name)
-        AuthValidation().handleOnChangeEditText(email)
-        AuthValidation().handleOnChangeEditText(password)
-//        AuthValidation().handleOnChangeEditText(cfPassword)
-
-        togglePasswordVisibility()
-
+    override fun setupListeners() {
         password.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = password.compoundDrawables[2]
-//                 Check if the touch event is on the drawableEnd area
+                // Check if the touch event is on the drawableEnd area
                 if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
                     togglePasswordVisibility()
                     return@setOnTouchListener true
@@ -90,10 +56,33 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
             }
             false
         }
-        performSignUp()
+        cfPassword.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = password.compoundDrawables[2]
+                // Check if the touch event is on the drawableEnd area
+                if (event.rawX >= (password.right - drawableEnd.bounds.width())) {
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
+        signUpBtn.setOnClickListener {
+            signUpBtn.isEnabled = false
+            signUpBtn.setTextColor(Color.BLACK)
+            signUpBtn.setBackgroundResource(R.drawable.disable_btn)
+            clearErrorUnderlines()
+            authViewModel.signUp(
+                name.text.toString(),
+                email.text.toString(),
+                password.text.toString(),
+                cfPassword.text.toString()
+            )
+        }
     }
 
-    private fun performSignUp() {
+    override fun setupObservers() {
         authViewModel.validationResult.observe(this) { validationResult ->
             val (isValid, errorMessages) = validationResult
             if (isValid) {
@@ -108,7 +97,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         StatusAuth.Success -> {
-
+                            signUpBtn.isEnabled = true
                         }
 
                         StatusAuth.Failed -> {
@@ -149,13 +138,32 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.validationResult.removeObservers(this)
+        authViewModel.resAuth.removeObservers(this)
+    }
+
+    //handle Sign In Process
+    private fun handleSignUpProcessing() {
+//        cfPassword = findViewById(R.id.cfPwInput)
+
+        //call dynamic handleOnChangeEditText from AuthValidation Class
+        AuthValidation().handleOnChangeEditText(name)
+        AuthValidation().handleOnChangeEditText(email)
+        AuthValidation().handleOnChangeEditText(password)
+        AuthValidation().handleOnChangeEditText(cfPassword)
+
+        togglePasswordVisibility()
+    }
+
     private fun handleFieldError(errorMessage: String) {
         when {
             errorMessage.contains("Name") -> underlineField(name, errorMessage)
             errorMessage.contains("Email") -> underlineField(email, errorMessage)
             errorMessage.contains("Invalided") -> underlineField(email, errorMessage)
             errorMessage.contains("Password") -> underlineField(password, errorMessage)
-
+            errorMessage.contains("Confirm") -> underlineField(cfPassword, errorMessage)
         }
     }
 
@@ -171,19 +179,20 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         password.backgroundTintList = null
     }
 
-
     private fun togglePasswordVisibility() {
         isPasswordVisible = !isPasswordVisible
 
         val drawableResId = if (isPasswordVisible) {
             // Show password
             password.transformationMethod = PasswordTransformationMethod.getInstance()
+            cfPassword.transformationMethod = PasswordTransformationMethod.getInstance()
 
             // Post a delayed action to toggle icon visibility every 2 seconds
             R.drawable.ic_invisible_pw
         } else {
             // Hide password after a delay
             password.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            cfPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
 
             // Update drawableEnd icon after hiding the password
             R.drawable.ic_visible_pw
@@ -192,7 +201,11 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
 
         // Move the cursor to the end of the text
         password.setSelection(password.text.length)
+        cfPassword.setSelection(cfPassword.text.length)
+
+        // Update the drawableEnd icon
         password.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
+        cfPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
     }
 
     private fun initSignInScreenDisplay() {

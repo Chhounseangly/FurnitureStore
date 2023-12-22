@@ -51,16 +51,16 @@ class AuthViewModel : ViewModel() {
      * @param email The email input for sign-up.
      * @param password The password input for sign-up.
      */
-    fun signUp(name: String, email: String, password: String) {
+    fun signUp(name: String, email: String, password: String, cfPassword: String) {
         // Validate the input fields for sign-up
-        val validationResult = validateInputs(name, email, password)
+        val validationResult = validateInputs(name, email, password, cfPassword)
 
         // Update the LiveData with the validation result
         _validationResult.value = validationResult
 
         // If validation passes, submit the sign-up request to the API
         if (validationResult.first) {
-            signUpService(name, email, password)
+            signUpService(name, email, password, cfPassword)
         }
     }
 
@@ -159,7 +159,8 @@ class AuthViewModel : ViewModel() {
     private fun validateInputs(
         name: String,
         email: String,
-        password: String
+        password: String,
+        cfPassword: String = ""
     ): Pair<Boolean, List<String>> {
         // Create a list to store error messages
         val errorMessages = mutableListOf<String>()
@@ -193,10 +194,14 @@ class AuthViewModel : ViewModel() {
             errorMessages.add("Password is required")
         }
 
-        // Check if password has at least 8 characters
         if (password.isNotEmpty()) {
+            // Check if password has at least 8 characters
             if (password.length < 8) {
                 errorMessages.add("Password must be at least 8 characters")
+            }
+            // Check if confirm password is not matched
+            if (password != cfPassword && cfPassword.isNotEmpty()) {
+                errorMessages.add("Confirm password is not matched")
             }
         }
 
@@ -257,11 +262,11 @@ class AuthViewModel : ViewModel() {
      * @param email The email of the user.
      * @param password The password for the user.
      */
-    private fun signUpService(name: String, email: String, password: String) {
+    private fun signUpService(name: String, email: String, password: String, cfPassword: String) {
         // Use the generic performApiCall function to handle the API call and response
         performApiCall(
             // Make the API call to register a new user with the provided credentials
-            request = { RetrofitInstance.get().api.register(Register(name, email, password)) },
+            request = { RetrofitInstance.get().api.register(Register(name, email, password, cfPassword)) },
             // Define the expected success HTTP status code for registration
             successCode = 201,
             // Define the block to execute on success
@@ -422,9 +427,10 @@ class AuthViewModel : ViewModel() {
                     // If the status code is not the expected success code, execute the failure block
                     else -> failureBlock(response)
                 }
+                Log.d("AuthViewModel", "responseData: $responseData")
             } catch (e: Exception) {
                 // Handle exceptions, e.g., network issues
-                e.printStackTrace()
+                Log.e("AuthViewModel", e.message.toString())
                 // Set failure status in case of an exception
                 responseData = AuthApiData(StatusAuth.Failed, null)
             }
