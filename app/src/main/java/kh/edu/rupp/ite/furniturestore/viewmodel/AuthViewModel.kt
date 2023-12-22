@@ -10,7 +10,6 @@ import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.AuthApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
-import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
@@ -23,6 +22,7 @@ import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -51,7 +51,13 @@ class AuthViewModel : ViewModel() {
      * @param email The email input for sign-up.
      * @param password The password input for sign-up.
      */
-    fun signUp(name: String, email: String, password: String, cfPassword: String) {
+    fun signUp(
+        name: String,
+        email: String,
+        password: String,
+        cfPassword: String,
+        avatar: MultipartBody.Part? = null
+    ) {
         // Validate the input fields for sign-up
         val validationResult = validateInputs(name, email, password, cfPassword)
 
@@ -60,7 +66,7 @@ class AuthViewModel : ViewModel() {
 
         // If validation passes, submit the sign-up request to the API
         if (validationResult.first) {
-            signUpService(name, email, password, cfPassword)
+            signUpService(name, email, password, cfPassword, avatar)
         }
     }
 
@@ -262,11 +268,24 @@ class AuthViewModel : ViewModel() {
      * @param email The email of the user.
      * @param password The password for the user.
      */
-    private fun signUpService(name: String, email: String, password: String, cfPassword: String) {
+    private fun signUpService(
+        name: String,
+        email: String,
+        password: String,
+        cfPassword: String,
+        avatar: MultipartBody.Part?
+    ) {
         // Use the generic performApiCall function to handle the API call and response
         performApiCall(
             // Make the API call to register a new user with the provided credentials
-            request = { RetrofitInstance.get().api.register(Register(name, email, password, cfPassword)) },
+            request = {
+                val n = RequestBody.create(MediaType.parse("text/plain"), name)
+                val e = RequestBody.create(MediaType.parse("text/plain"), email)
+                val p = RequestBody.create(MediaType.parse("text/plain"), password)
+                val cfP = RequestBody.create(MediaType.parse("text/plain"), cfPassword)
+
+                RetrofitInstance.get().api.register(n, e, p, cfP, avatar)
+            },
             // Define the expected success HTTP status code for registration
             successCode = 201,
             // Define the block to execute on success
@@ -372,17 +391,17 @@ class AuthViewModel : ViewModel() {
     }
 
     // Function to handle updating profile data
-    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part?) {
+    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part? = null) {
         var resMessage = ApIData<ResProfile>(Status.Processing, null)
         _updateMsg.postValue(resMessage)
 
         viewModelScope.launch(Dispatchers.IO) {
             resMessage = try {
                 RetrofitInstance.get().api.updateProfile(name, avatar)
-                Log.e("AuthViewModel...", "Success")
+                Log.e("AuthViewModel", "Success")
                 ApIData(Status.Success, null)
             } catch (e: Exception) {
-                Log.e("AuthViewModel...", e.message.toString())
+                Log.e("AuthViewModel", e.message.toString())
                 ApIData(Status.Failed, null)
             }
 

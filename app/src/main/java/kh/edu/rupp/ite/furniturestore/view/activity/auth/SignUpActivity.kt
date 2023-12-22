@@ -16,14 +16,13 @@ import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignUpBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
-import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding::inflate) {
+class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding::inflate) {
 
     private val authViewModel: AuthViewModel by viewModels()
-    private val profile: ImageView by lazy { binding.profile }
+    private val avatar: ImageView by lazy { binding.profile }
     private val name: EditText by lazy { binding.nameInput }
     private val email: EditText by lazy { binding.emInput }
     private val password: EditText by lazy { binding.pwInput }
@@ -41,10 +40,15 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         handleSignUpProcessing()
 
         prevBack(binding.backBtn)
+        setupImagePickerLauncher(avatar)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun setupListeners() {
+        avatar.setOnClickListener {
+            openImageChooser()
+        }
+
         password.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = password.compoundDrawables[2]
@@ -73,12 +77,22 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
             signUpBtn.setTextColor(Color.BLACK)
             signUpBtn.setBackgroundResource(R.drawable.disable_btn)
             clearErrorUnderlines()
-            authViewModel.signUp(
-                name.text.toString(),
-                email.text.toString(),
-                password.text.toString(),
-                cfPassword.text.toString()
-            )
+            if (isImageChanged()) {
+                authViewModel.signUp(
+                    name.text.toString(),
+                    email.text.toString(),
+                    password.text.toString(),
+                    cfPassword.text.toString(),
+                    getAvatar()
+                )
+            } else {
+                authViewModel.signUp(
+                    name.text.toString(),
+                    email.text.toString(),
+                    password.text.toString(),
+                    cfPassword.text.toString()
+                )
+            }
         }
     }
 

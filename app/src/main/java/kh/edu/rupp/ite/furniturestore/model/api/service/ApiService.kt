@@ -10,7 +10,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
-import kh.edu.rupp.ite.furniturestore.model.api.model.Register
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
@@ -73,8 +72,15 @@ interface ApiService {
     @POST("api/login")
     suspend fun login(@Body login: Login): Response<ResAuth>
 
+    @Multipart
     @POST("api/register")
-    suspend fun register(@Body register: Register): Response<ResAuth>
+    suspend fun register(
+        @Part("name") name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("password_confirmation") passwordConfirmation: RequestBody?,
+        @Part file: MultipartBody.Part?,
+    ): Response<ResAuth>
 
     @GET("api/loadProfile")
     suspend fun loadProfile(): ResProfile

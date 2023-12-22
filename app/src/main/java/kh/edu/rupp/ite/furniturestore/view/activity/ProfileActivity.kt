@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +26,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private val profile: ImageView by lazy { binding.profile }
     private val username: TextView by lazy { binding.username }
 
+    private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
+
     private companion object {
         const val TOAST_SUCCESS_MESSAGE = "Profile updated successfully"
         const val TOAST_FAILURE_MESSAGE = "Failed to update profile"
@@ -32,8 +35,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
     override fun initActions() {
         authViewModel.loadProfile()
-        // Set up back button navigation
         prevBack(binding.backBtn)
+
+        // Initialize the ActivityResultLauncher for edit profile
+        setupEditProfileLauncher()
     }
 
     override fun setupListeners() {
@@ -68,9 +73,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         }
     }
 
-
-    private val editProfileLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private fun setupEditProfileLauncher() {
+        editProfileLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 authViewModel.loadProfile()
 
@@ -87,7 +93,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
                 ).show()
             }
         }
-
+    }
 
     private fun displayUi(data: User) {
         Picasso.get()

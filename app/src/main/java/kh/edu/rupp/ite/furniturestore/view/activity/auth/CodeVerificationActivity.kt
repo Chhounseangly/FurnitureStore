@@ -40,8 +40,6 @@ class CodeVerificationActivity :
 
     override fun setupListeners() {
         verifyBtn.setOnClickListener {
-            authViewModel.resAuth.removeObservers(this)
-            authViewModel.validationVerify.removeObservers(this)
             // Disable the verification button and submit the verification request
             disableVerifyButton()
             authViewModel.verifyEmail(
@@ -56,31 +54,6 @@ class CodeVerificationActivity :
             // Handle the validation response
             handleValidationResponse(it)
         }
-    }
-
-    /**
-     * Handle the validation response from the API.
-     */
-    private fun handleValidationResponse(validateRes: Pair<Boolean, String>) {
-        val (isValid, errorMessages) = validateRes
-
-        if (isValid) {
-            // If validation is successful, proceed to handle the authentication response
-            handleValidValidation()
-        } else {
-            // If validation fails, show error messages and Enable the verification button
-            handleInvalidValidation(errorMessages)
-        }
-    }
-
-    /**
-     * Handle the case when validation is successful.
-     */
-    private fun handleValidValidation() {
-        // Enable the verification button and set its appearance
-        verifyBtn.isEnabled = true
-        verifyBtn.setTextColor(Color.WHITE)
-        verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
 
         // Observe the authentication response
         authViewModel.resAuth.observe(this) {
@@ -116,6 +89,31 @@ class CodeVerificationActivity :
                 }
             }
         }
+    }
+
+    /**
+     * Handle the validation response from the API.
+     */
+    private fun handleValidationResponse(validateRes: Pair<Boolean, String>) {
+        val (isValid, errorMessages) = validateRes
+
+        if (isValid) {
+            // If validation is successful, proceed to handle the authentication response
+            handleValidValidation()
+        } else {
+            // If validation fails, show error messages and Enable the verification button
+            handleInvalidValidation(errorMessages)
+        }
+    }
+
+    /**
+     * Handle the case when validation is successful.
+     */
+    private fun handleValidValidation() {
+        // Enable the verification button and set its appearance
+        verifyBtn.isEnabled = true
+        verifyBtn.setTextColor(Color.WHITE)
+        verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
     }
 
     /**
