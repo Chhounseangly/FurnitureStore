@@ -79,7 +79,7 @@ class AuthViewModel : ViewModel() {
     fun signIn(email: String, password: String) {
         // Validate the input fields for sign-in
         val validationResult =
-            validateInputs("null", email, password) // Use an empty string for username in sign-in
+            validateInputs("null", email, password, null) // Use an empty string for username in sign-in
         _validationResult.value = validationResult
 
         // If validation passes, submit the sign-in request to the API
@@ -166,7 +166,7 @@ class AuthViewModel : ViewModel() {
         name: String,
         email: String,
         password: String,
-        cfPassword: String = ""
+        cfPassword: String?
     ): Pair<Boolean, List<String>> {
         // Create a list to store error messages
         val errorMessages = mutableListOf<String>()
@@ -205,8 +205,12 @@ class AuthViewModel : ViewModel() {
             if (password.length < 8) {
                 errorMessages.add("Password must be at least 8 characters")
             }
+            // Check if confirm password is provided
+            if (cfPassword == null) {
+                errorMessages.add("Confirm password is required")
+            }
             // Check if confirm password is not matched
-            if (password != cfPassword && cfPassword.isNotEmpty()) {
+            if (password != cfPassword) {
                 errorMessages.add("Confirm password is not matched")
             }
         }

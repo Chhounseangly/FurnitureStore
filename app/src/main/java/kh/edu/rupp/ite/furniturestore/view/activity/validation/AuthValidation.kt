@@ -41,36 +41,6 @@ class AuthValidation {
         return false
     }
 
-    fun signUpValidation(
-        username: EditText,
-        email: EditText,
-        password: EditText,
-//        cfPassword: EditText
-    ): Boolean {
-        val usernameCheck = checkFields(username)
-        val emailCheck = checkFields(email)
-        val passwordCheck = checkFields(password)
-//        val cfPasswordCheck = checkFields(cfPassword)
-
-        if (usernameCheck && emailCheck && passwordCheck) {
-            if (username.text.length < 4) {
-                username.error = "Username must be at least 4 characters"
-                username.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                return false
-            } else if (!isValidEmail(email)) {
-                email.error = "Email invalid address"
-                email.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                return false
-            } else if (password.text.length < 8) {
-                password.error = "Passwords must be at least 8 characters"
-                password.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                return false
-            }
-            return  true
-        }
-        return false
-    }
-
     fun forgotPasswordValidation(emailVerify:EditText): Boolean {
         val emailVerifyCheck = checkFields(emailVerify)
         if (emailVerifyCheck){
@@ -103,7 +73,7 @@ class AuthValidation {
     }
 
     //function validation checked
-    fun checkFields(obj: EditText): Boolean {
+    private fun checkFields(obj: EditText): Boolean {
         if (obj.text?.isEmpty() == true) {
             obj.error = "This field is required"
             obj.backgroundTintList = ColorStateList.valueOf(Color.RED)
