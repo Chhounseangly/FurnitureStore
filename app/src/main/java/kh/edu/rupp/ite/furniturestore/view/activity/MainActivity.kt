@@ -86,8 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun handleHistoryButton(){
         val historyBtn = binding.historyBtn
-        historyBtn?.visibility = View.VISIBLE
-        historyBtn?.setOnClickListener {
+        historyBtn.setOnClickListener {
             val historyIntent = Intent(this, HistoryActivity::class.java)
             startActivity(historyIntent)
         }
