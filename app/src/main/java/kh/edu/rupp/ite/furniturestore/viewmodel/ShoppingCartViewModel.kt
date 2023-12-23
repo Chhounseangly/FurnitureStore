@@ -29,7 +29,6 @@ class ShoppingCartViewModel : ViewModel() {
     private var _toastMessage: String? = null
     val toastMessage get() = _toastMessage!!
 
-
     // LiveData to hold Shopping Cart Items.
     val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)

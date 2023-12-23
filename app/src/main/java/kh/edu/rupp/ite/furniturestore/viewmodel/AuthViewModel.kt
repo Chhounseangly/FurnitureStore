@@ -16,6 +16,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
+import kh.edu.rupp.ite.furniturestore.model.api.model.ValidationTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kh.edu.rupp.ite.furniturestore.utility.AppPreference
@@ -59,7 +60,10 @@ class AuthViewModel : ViewModel() {
         avatar: MultipartBody.Part? = null
     ) {
         // Validate the input fields for sign-up
-        val validationResult = validateInputs(name, email, password, cfPassword)
+        val validationResult = validateInputs(
+            ValidationTypes.SIGN_UP,
+            name, email, password, cfPassword
+        )
 
         // Update the LiveData with the validation result
         _validationResult.value = validationResult
@@ -79,7 +83,13 @@ class AuthViewModel : ViewModel() {
     fun signIn(email: String, password: String) {
         // Validate the input fields for sign-in
         val validationResult =
-            validateInputs("null", email, password, null) // Use an empty string for username in sign-in
+            validateInputs(
+                ValidationTypes.SIGN_IN,
+                "null",
+                email,
+                password,
+                "null"
+            ) // Use an empty string for username in sign-in
         _validationResult.value = validationResult
 
         // If validation passes, submit the sign-in request to the API
@@ -163,59 +173,56 @@ class AuthViewModel : ViewModel() {
      *         error messages if any validation errors occur.
      */
     private fun validateInputs(
-        name: String,
+        type: ValidationTypes,
+        name: String?,
         email: String,
         password: String,
         cfPassword: String?
     ): Pair<Boolean, List<String>> {
-        // Create a list to store error messages
         val errorMessages = mutableListOf<String>()
-
-        // Check if name is provided
-        if (name.isEmpty()) {
-            errorMessages.add("Name is required")
-        }
-
-        // Check if name has at least 4 characters
-        if (name.isNotEmpty()) {
-            if (name.length < 4) {
-                errorMessages.add("Name must be at least 4 characters")
-            }
-        }
-
+        // Common validations for both sign-in and sign-up
         // Check if email is provided
-        if (email.isEmpty()) {
+        if (email.isBlank()) {
             errorMessages.add("Email is required")
-        }
-
-        // Check if email is a valid format
-        if (email.isNotEmpty()) {
-            if (!isValidEmail(email)) {
-                errorMessages.add("Invalid email address")
-            }
+        } else if (!isValidEmail(email)) {
+            errorMessages.add("Invalid Email")
         }
 
         // Check if password is provided
-        if (password.isEmpty()) {
+        if (password.isBlank()) {
             errorMessages.add("Password is required")
+        } else if (password.length < 8 || password.length > 16) {
+            errorMessages.add("Password must be at least 8 characters")
         }
 
-        if (password.isNotEmpty()) {
-            // Check if password has at least 8 characters
-            if (password.length < 8) {
-                errorMessages.add("Password must be at least 8 characters")
+        when (type) {
+            ValidationTypes.SIGN_UP -> {
+                // Check if name is provided
+                if (name.isNullOrBlank()) {
+                    errorMessages.add("Name is required")
+                }
+
+                // Check if name has at least 4 characters
+                if ((name?.length ?: 0) < 4) {
+                    errorMessages.add("Name must be at least 4 characters")
+                }
+
+                // Check if confirm password is provided
+                if (cfPassword.isNullOrBlank()) {
+                    errorMessages.add("Confirm password is required")
+                }
+
+                // Check if confirm password is not matched
+                if (password != cfPassword) {
+                    errorMessages.add("Confirm password is not matched")
+                }
+
             }
-            // Check if confirm password is provided
-            if (cfPassword == null) {
-                errorMessages.add("Confirm password is required")
-            }
-            // Check if confirm password is not matched
-            if (password != cfPassword) {
-                errorMessages.add("Confirm password is not matched")
+
+            else -> {
+
             }
         }
-
-        // Return the validation result as a Pair
         return Pair(errorMessages.isEmpty(), errorMessages)
     }
 

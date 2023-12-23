@@ -26,6 +26,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     private val errorMessage: TextView by lazy { binding.errorMsg }
 
     private val signInBtn: Button by lazy { binding.signInBtn }
+    private val forgotPwBtn: TextView by lazy { binding.forgotPwBtn }
 
     private var authViewModel = AuthViewModel()
     private var isPasswordVisible = false
@@ -94,15 +95,14 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
     //handel user click on forgot password
     private fun initForgotPasswordScreen() {
-        val forgotPassBtn = binding.forgotPsBtn
+        val forgotPassBtn = binding.forgotPwBtn
         val forgotPasswordScreen = Intent(this, ForgotPasswordActivity::class.java)
         forgotPassBtn.setOnClickListener {
             startActivity(forgotPasswordScreen)
         }
     }
 
-
-    //handel user click on  sign up
+    //handel user click on sign up
     private fun initSignUpScreen() {
         val signUpBtn = binding.signUpBtn
         val signUpScreen = Intent(this, SignUpActivity::class.java)
@@ -110,7 +110,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
             startActivity(signUpScreen)
         }
     }
-
 
     //handle Sign In Process
     private fun handleSignInProcession() {
@@ -124,7 +123,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     }
 
     private fun handleSignIn() {
-        authViewModel.resAuth.removeObservers(this)
         // Disable the button to prevent multiple clicks
         signInBtn.isEnabled = false
         signInBtn.setTextColor(Color.BLACK)
@@ -210,7 +208,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     private fun underlineField(editText: EditText, message: String) {
         editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
         editText.error = message
-
     }
 
     private fun clearErrorUnderlines() {
