@@ -10,13 +10,13 @@ import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.AuthApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
-import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
+import kh.edu.rupp.ite.furniturestore.model.api.model.ValidationTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kh.edu.rupp.ite.furniturestore.utility.AppPreference
@@ -60,7 +60,10 @@ class AuthViewModel : ViewModel() {
         avatar: MultipartBody.Part? = null
     ) {
         // Validate the input fields for sign-up
-        val validationResult = validateInputs(name, email, password, cfPassword)
+        val validationResult = validateInputs(
+            ValidationTypes.SIGN_UP,
+            name, email, password, cfPassword
+        )
 
         // Update the LiveData with the validation result
         _validationResult.value = validationResult
@@ -79,7 +82,14 @@ class AuthViewModel : ViewModel() {
      */
     fun signIn(email: String, password: String) {
         // Validate the input fields for sign-in
-        val validationResult = validateInputs(email, password)
+        val validationResult =
+            validateInputs(
+                ValidationTypes.SIGN_IN,
+                "null",
+                email,
+                password,
+                "null"
+            ) // Use an empty string for username in sign-in
         _validationResult.value = validationResult
 
         // If validation passes, submit the sign-in request to the API
@@ -107,89 +117,6 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Function to handle loading profile from API
-    fun loadProfile() {
-        var responseData = ApIData<User>(Status.Processing, null)
-        _userData.value = responseData
-
-        viewModelScope.launch(Dispatchers.IO) {
-            responseData = try {
-                val data = RetrofitInstance.get().api.loadProfile()
-                ApIData(Status.Success, data.data)
-            } catch (e: Exception) {
-                AppPreference.get(AppCore.get().applicationContext).removeToken()
-                e.printStackTrace()
-                ApIData(Status.Failed, null)
-            }
-            withContext(Dispatchers.Main.immediate) {
-                _userData.value = responseData
-            }
-        }
-    }
-
-    // Function to handle logging out user and clearing token
-    fun logout() {
-        var responseData = ApIData<ResponseMessage>(Status.Processing, null)
-        _resMsg.postValue(responseData)
-        viewModelScope.launch(Dispatchers.IO) {
-            responseData = try {
-                RetrofitInstance.get().api.logout()
-                AppPreference.get(AppCore.get().applicationContext).removeToken()
-                Log.e("AuthViewModel", "Logout Success")
-                ApIData(Status.Success, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("AuthViewModel", "Logout Error: ${e.message}")
-                AppPreference.get(AppCore.get().applicationContext).removeToken()
-                ApIData(Status.Failed, null)
-            }
-            withContext(Dispatchers.Main.immediate) {
-                _resMsg.postValue(responseData)
-            }
-        }
-    }
-
-    // Function to handle updating profile data
-    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part? = null) {
-        var resMessage = ApIData<ResProfile>(Status.Processing, null)
-        _updateMsg.postValue(resMessage)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            resMessage = try {
-                RetrofitInstance.get().api.updateProfile(name, avatar)
-                Log.e("AuthViewModel", "Update Success")
-                ApIData(Status.Success, null)
-            } catch (e: Exception) {
-                Log.e("AuthViewModel", "Update Error: ${e.message}")
-                ApIData(Status.Failed, null)
-            }
-
-            withContext(Dispatchers.Main.immediate) {
-                _updateMsg.postValue(resMessage)
-            }
-        }
-    }
-
-    // Function to change password
-    fun changePassword(current: String, new: String, confirm: String) {
-        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
-        _resMsg.postValue(resMessage)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            resMessage = try {
-                val res = RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
-                Log.e("AuthViewModel", "Update Success: $res")
-                ApIData(Status.Success, res)
-            } catch (e: Exception) {
-                Log.e("AuthViewModel", "Update Error: ${e.message}")
-                ApIData(Status.Failed, null)
-            }
-
-            withContext(Dispatchers.Main.immediate) {
-                _resMsg.postValue(resMessage)
-            }
-        }
-    }
 
     /**
      * Validates the input for an OTP (One-Time Password) code.
@@ -235,73 +162,70 @@ class AuthViewModel : ViewModel() {
         return regex.matches(email)
     }
 
-    private fun validateName(name: String): String? {
-        return if (name.isEmpty()) {
-            "Name is required"
-        } else if (name.length < 4) {
-            "Name must be at least 4 characters"
-        } else {
-            null
-        }
-    }
-
-    private fun validateEmail(email: String): String? {
-        return if (email.isEmpty()) {
-            "Email is required"
-        } else if (!isValidEmail(email)) {
-            "Invalid email address"
-        } else {
-            null
-        }
-    }
-
-    private fun validatePassword(password: String): String? {
-        return if (password.isEmpty()) {
-            "Password is required"
-        } else if (password.length < 8) {
-            "Password must be at least 8 characters"
-        } else {
-            null
-        }
-    }
-
-    private fun validateConfirmPassword(password: String, cfPassword: String): String? {
-        return if (cfPassword.isEmpty()) {
-            "Confirm password is required"
-        } else if (password != cfPassword) {
-            "Confirm password is not matched"
-        } else {
-            null
-        }
-    }
-
+    /**
+     * Validates the input fields for a user registration.
+     *
+     * @param name The name input.
+     * @param email The email input.
+     * @param password The password input.
+     * @return A Pair<Boolean, List<String>> where the first element indicates
+     *         whether the inputs are valid, and the second element is a list of
+     *         error messages if any validation errors occur.
+     */
     private fun validateInputs(
-        email: String,
-        password: String
-    ): Pair<Boolean, List<String>> {
-        val errorMessages = listOfNotNull(
-            validateEmail(email),
-            validatePassword(password)
-        )
-
-        return Pair(errorMessages.isEmpty(), errorMessages)
-    }
-
-    private fun validateInputs(
-        name: String,
+        type: ValidationTypes,
+        name: String?,
         email: String,
         password: String,
-        cfPassword: String
+        cfPassword: String?
     ): Pair<Boolean, List<String>> {
-        val errorMessages = listOfNotNull(
-            validateName(name),
-            validateEmail(email),
-            validatePassword(password),
-            validateConfirmPassword(password, cfPassword)
-        )
+        val errorMessages = mutableListOf<String>()
+        // Common validations for both sign-in and sign-up
+        // Check if email is provided
+        if (email.isBlank()) {
+            errorMessages.add("Email is required")
+        } else if (!isValidEmail(email)) {
+            errorMessages.add("Invalid Email")
+        }
 
+        // Check if password is provided
+        if (password.isBlank()) {
+            errorMessages.add("Password is required")
+        } else if (password.length < 8 || password.length > 16) {
+            errorMessages.add("Password must be at least 8 characters")
+        }
+
+        when (type) {
+            ValidationTypes.SIGN_UP -> {
+                // Check if name is provided
+                if (name.isNullOrBlank()) {
+                    errorMessages.add("Name is required")
+                }
+
+                // Check if name has at least 4 characters
+                if ((name?.length ?: 0) < 4) {
+                    errorMessages.add("Name must be at least 4 characters")
+                }
+
+                // Check if confirm password is provided
+                if (cfPassword.isNullOrBlank()) {
+                    errorMessages.add("Confirm password is required")
+                }
+
+                // Check if confirm password is not matched
+                if (password != cfPassword) {
+                    errorMessages.add("Confirm password is not matched")
+                }
+
+            }
+
+            else -> {
+
+            }
+        }
         return Pair(errorMessages.isEmpty(), errorMessages)
     }
+
 
     /**
      * Function to handle login service with API.
@@ -435,6 +359,70 @@ class AuthViewModel : ViewModel() {
         )
     }
 
+
+    // Function to handle loading profile from API
+    fun loadProfile() {
+        var responseData = ApIData<User>(Status.Processing, null)
+        _userData.value = responseData
+
+        viewModelScope.launch(Dispatchers.IO) {
+            responseData = try {
+                val data = RetrofitInstance.get().api.loadProfile()
+                ApIData(Status.Success, data.data)
+            } catch (e: Exception) {
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
+                e.printStackTrace()
+                ApIData(Status.Failed, null)
+            }
+            withContext(Dispatchers.Main.immediate) {
+                _userData.value = responseData
+            }
+        }
+    }
+
+    // Function to handle logging out user and clearing token
+    fun logout() {
+        var responseData = ApIData<ResponseMessage>(Status.Processing, null)
+        _resMsg.postValue(responseData)
+        viewModelScope.launch(Dispatchers.IO) {
+            responseData = try {
+                RetrofitInstance.get().api.logout()
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
+                ApIData(Status.Success, null)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Error", "${e.message}")
+                AppPreference.get(AppCore.get().applicationContext).removeToken()
+                ApIData(Status.Failed, null)
+            }
+            withContext(Dispatchers.Main.immediate) {
+                _resMsg.postValue(responseData)
+            }
+        }
+    }
+
+    // Function to handle updating profile data
+    fun updateProfile(name: RequestBody, avatar: MultipartBody.Part? = null) {
+        var resMessage = ApIData<ResProfile>(Status.Processing, null)
+        _updateMsg.postValue(resMessage)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            resMessage = try {
+                RetrofitInstance.get().api.updateProfile(name, avatar)
+                Log.e("AuthViewModel", "Success")
+                ApIData(Status.Success, null)
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", e.message.toString())
+                ApIData(Status.Failed, null)
+            }
+
+            withContext(Dispatchers.Main.immediate) {
+                _updateMsg.postValue(resMessage)
+            }
+        }
+    }
+
+
     /**
      * A generic function to perform API calls asynchronously and handle the response.
      *
@@ -472,7 +460,7 @@ class AuthViewModel : ViewModel() {
                 Log.d("AuthViewModel", "responseData: $responseData")
             } catch (e: Exception) {
                 // Handle exceptions, e.g., network issues
-                Log.e("AuthViewModel", "${e.message}")
+                Log.e("AuthViewModel", e.message.toString())
                 // Set failure status in case of an exception
                 responseData = AuthApiData(StatusAuth.Failed, null)
             }
@@ -483,4 +471,5 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
+
 }
