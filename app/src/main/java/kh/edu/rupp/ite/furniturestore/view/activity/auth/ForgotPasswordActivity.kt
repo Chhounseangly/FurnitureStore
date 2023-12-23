@@ -5,11 +5,12 @@ import android.widget.Button
 import android.widget.EditText
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityForgotPasswordBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 
 class ForgotPasswordActivity :
-    BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
+    BaseActivity<ActivityForgotPasswordBinding>(ActivityForgotPasswordBinding::inflate) {
 
     private lateinit var verifyEmail: EditText
 

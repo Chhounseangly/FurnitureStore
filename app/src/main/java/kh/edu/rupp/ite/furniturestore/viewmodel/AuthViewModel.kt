@@ -10,6 +10,7 @@ import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
 import kh.edu.rupp.ite.furniturestore.model.api.model.AuthApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
+import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
@@ -114,6 +115,27 @@ class AuthViewModel : ViewModel() {
         // If validation passes, submit the email verification request to the API
         if (validateVerify.first) {
             verifyEmailService(email, code)
+        }
+    }
+
+    // Function to change password
+    fun changePassword(current: String, new: String, confirm: String) {
+        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
+        _resMsg.postValue(resMessage)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            resMessage = try {
+                val res = RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
+                Log.e("AuthViewModel", "Update Success: $res")
+                ApIData(Status.Success, res)
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Update Error: ${e.message}")
+                ApIData(Status.Failed, null)
+            }
+
+            withContext(Dispatchers.Main.immediate) {
+                _resMsg.postValue(resMessage)
+            }
         }
     }
 
