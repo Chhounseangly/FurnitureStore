@@ -1,6 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.model.api.model
 
-data class ApIData<T>(
+data class ApiData<T>(
     val status: Status,
     val data: T?
 )
@@ -18,14 +18,5 @@ data class Meta(
 )
 
 enum class Status{
-    Processing, Success, Failed, LoadingMore
-}
-
-data class AuthApiData<T>(
-    val status: StatusAuth,
-    val data: T?
-)
-
-enum class StatusAuth{
-    Processing, Success, Failed, NeedVerify
+    Processing, Success, Failed, LoadingMore, NeedVerify
 }

@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignUpBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
@@ -66,18 +66,18 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                 // Sign-in successful, navigate to the next screen or perform other actions
                 authViewModel.resAuth.observe(this) {
                     when (it.status) {
-                        StatusAuth.Processing -> {
+                        Status.Processing -> {
                             errorMessage.visibility = View.GONE
                             signUpBtn.isEnabled = false
                             signUpBtn.setTextColor(Color.BLACK)
                             signUpBtn.setBackgroundResource(R.drawable.disable_btn)
                         }
 
-                        StatusAuth.Success -> {
+                        Status.Success -> {
                             signUpBtn.isEnabled = true
                         }
 
-                        StatusAuth.Failed -> {
+                        Status.Failed -> {
                             it.data.let { m ->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -88,7 +88,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                             signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
 
-                        StatusAuth.NeedVerify -> {
+                        Status.NeedVerify -> {
                             signUpBtn.isEnabled = true
                             signUpBtn.setTextColor(Color.WHITE)
                             signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -98,6 +98,8 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                             codeVerificationActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(codeVerificationActivity)
                         }
+
+                        else -> {}
                     }
                 }
             } else {

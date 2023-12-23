@@ -12,7 +12,7 @@ import android.widget.TextView
 import kh.edu.rupp.ite.furniturestore.BuildConfig
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -93,7 +93,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                 //process with api
                 authViewModel.resAuth.observe(this) { it ->
                     when (it.status) {
-                        StatusAuth.Processing -> {
+                        Status.Processing -> {
                             errorMessage.visibility = View.GONE
                             // Disable the button to prevent multiple clicks
                             signInBtn.isEnabled = false
@@ -101,7 +101,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             signInBtn.setBackgroundResource(R.drawable.disable_btn)
                         }
 
-                        StatusAuth.Success -> {
+                        Status.Success -> {
                             signInBtn.isEnabled = true
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -111,7 +111,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             startActivity(mainActivityIntent)
                         }
 
-                        StatusAuth.Failed -> {
+                        Status.Failed -> {
                             it.data.let { m ->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -122,7 +122,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
 
-                        StatusAuth.NeedVerify -> {
+                        Status.NeedVerify -> {
                             val codeVerificationActivity =
                                 Intent(this, CodeVerificationActivity::class.java).apply {
                                     putExtra("email", email.text.toString())
@@ -134,6 +134,8 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
+
+                        else -> {}
                     }
                 }
             } else {

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
@@ -18,9 +18,9 @@ import kotlinx.coroutines.withContext
 class PaymentViewModel: ViewModel() {
 
     // LiveData to hold the response message from the payment API
-    private val _responseMessage = MutableLiveData<ApIData<ResponseMessage>>()
+    private val _responseMessage = MutableLiveData<ApiData<ResponseMessage>>()
 
-    val responseMessage: LiveData<ApIData<ResponseMessage>>
+    val responseMessage: LiveData<ApiData<ResponseMessage>>
         get() = _responseMessage
 
     // Function to initiate the payment process
@@ -32,7 +32,7 @@ class PaymentViewModel: ViewModel() {
         }
 
         // Initial status while processing payment
-        var apiData = ApIData<ResponseMessage>(Status.Processing, null)
+        var apiData = ApiData<ResponseMessage>(Status.Processing, null)
         _responseMessage.postValue(apiData)
 
         // Processing payment in the background
@@ -40,12 +40,12 @@ class PaymentViewModel: ViewModel() {
             apiData = try {
                 // Make a payment request to the API
                 RetrofitInstance.get().api.postPayment(list)
-                ApIData(Status.Success, null)
+                ApiData(Status.Success, null)
             } catch (ex: Exception) {
                 // Handle exceptions and set status to failed
                 ex.printStackTrace()
                 Log.e("failed", "${ex.message}")
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
 
             // Process outside the background (update LiveData)

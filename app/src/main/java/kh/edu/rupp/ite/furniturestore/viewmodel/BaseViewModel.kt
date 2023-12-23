@@ -1,39 +1,37 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-open class BaseViewModel<T> : ViewModel() {
-
-    private val _resData = MutableLiveData<ApIData<T>>()
-    val resData: LiveData<ApIData<T>> get() = _resData
+open class BaseViewModel : ViewModel() {
 
     /**
      * A generic function to perform API calls asynchronously and handle the response.
      *
+     * @param resData LiveData to update with the API response.
      * @param request A suspend function representing the API call.
      * @param successBlock A block to execute when the response is successful.
      * @param failureBlock A block to execute when the response is an error.
      */
-    fun performApiCall(
+    fun <T> performApiCall(
+        resData: MutableLiveData<ApiData<T>>,
         request: suspend () -> Response<T>,
-        successBlock: (T) -> ApIData<T>,
-        failureBlock: (Response<T>) -> ApIData<T>
+        successBlock: (T) -> ApiData<T>,
+        failureBlock: (Response<T>) -> ApiData<T>
     ) {
         // Create an initial AuthApiData with Processing status
-        var responseData: ApIData<T> = ApIData(Status.Processing, null)
+        var responseData: ApiData<T> = ApiData(Status.Processing, null)
 
-        // Set the initial value in the ViewModel
-        _resData.value = responseData
+        // Set the initial value in the LiveData
+        resData.value = responseData
 
         // Launch a coroutine in the IO dispatcher
         viewModelScope.launch(Dispatchers.IO) {
@@ -44,17 +42,17 @@ open class BaseViewModel<T> : ViewModel() {
                 // Check the HTTP status code of the response
                 when (response.code()) {
                     200 -> successBlock(response.body()!!)
+                    201 -> successBlock(response.body()!!)
                     else -> failureBlock(response)
                 }
             } catch (e: Exception) {
                 // Handle exceptions, e.g., network issues
                 Log.e("BaseViewModel", "${e.message}")
-                // Set failure status in case of an exception
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
 
             withContext(Dispatchers.Main.immediate) {
-                _resData.value = responseData
+                resData.value = responseData
             }
         }
     }

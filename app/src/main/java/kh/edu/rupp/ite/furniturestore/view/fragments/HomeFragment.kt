@@ -150,6 +150,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Status.LoadingMore -> {
                     processBar.visibility = View.VISIBLE
                 }
+
+                else -> {}
             }
         }
 

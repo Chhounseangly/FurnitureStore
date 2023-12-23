@@ -11,7 +11,7 @@ import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentSearchBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSearchFoundBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
@@ -82,7 +82,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     // Function to handle the search results
-    private fun handleSearchResult(searchData: ApIData<List<Product>>) {
+    private fun handleSearchResult(searchData: ApiData<List<Product>>) {
         with(binding) {
             when (searchData.status) {
                 Status.Processing -> {

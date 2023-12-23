@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -17,14 +17,14 @@ import kotlinx.coroutines.withContext
 class ProductDetailViewModel : ViewModel() {
 
     // LiveData to hold the product details
-    private val _productsData = MutableLiveData<ApIData<Product>>()
-    val productsData: LiveData<ApIData<Product>>
+    private val _productsData = MutableLiveData<ApiData<Product>>()
+    val productsData: LiveData<ApiData<Product>>
         get() = _productsData
 
     // Function to load product details by ID
     fun loadProductDetail(id: Int) {
         // Initial status while processing
-        var apiData = ApIData<Product>(Status.Processing, null)
+        var apiData = ApiData<Product>(Status.Processing, null)
         _productsData.value = apiData
 
         // Processing in the background
@@ -32,11 +32,11 @@ class ProductDetailViewModel : ViewModel() {
             apiData = try {
                 // Fetch product details from the API
                 val response = RetrofitInstance.get().api.loadProductDetail(id)
-                ApIData(Status.Success, response.data)
+                ApiData(Status.Success, response.data)
             } catch (ex: Exception) {
                 // Handle exceptions and set status to failed
                 Log.e("error", "${ex.message}")
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
 
             // Process outside the background (update LiveData)

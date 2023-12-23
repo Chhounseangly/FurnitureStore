@@ -6,15 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kh.edu.rupp.ite.furniturestore.core.AppCore
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
-import kh.edu.rupp.ite.furniturestore.model.api.model.AuthApiData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
-import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.model.ValidationTypes
 import kh.edu.rupp.ite.furniturestore.model.api.model.VerifyEmailRequest
@@ -26,24 +24,26 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 
-class AuthViewModel : BaseViewModel<ResponseMessage>() {
+class AuthViewModel : BaseViewModel() {
     // LiveData and MutableLiveData declarations for various data associated with authentication and user actions
-    private val _resAuth = MutableLiveData<AuthApiData<ResAuth>>()
-    private val _userData = MutableLiveData<ApIData<User>>()
+    private val _resAuth = MutableLiveData<ApiData<ResAuth>>()
+    private val _userData = MutableLiveData<ApiData<User>>()
     private val _validationResult = MutableLiveData<Pair<Boolean, List<String>>>()
-    private val _resMsg = MutableLiveData<ApIData<ResponseMessage>>()
+    private val _resMsg = MutableLiveData<ApiData<ResponseMessage>>()
     private val _validationVerify = MutableLiveData<Pair<Boolean, String>>()
-    private val _updateMsg = MutableLiveData<ApIData<ResProfile>>()
+    private val _updateMsg = MutableLiveData<ApiData<ResProfile>>()
+    private val _resData = MutableLiveData<ApiData<ResponseMessage>>()
+    val resData: LiveData<ApiData<ResponseMessage>> get() = _resData
+
 
     // Exposed LiveData properties for observing in the UI
     val validationVerify: LiveData<Pair<Boolean, String>> get() = _validationVerify
     val validationResult: LiveData<Pair<Boolean, List<String>>> = _validationResult
-    val resMsg: LiveData<ApIData<ResponseMessage>> get() = _resMsg
-    val resAuth: LiveData<AuthApiData<ResAuth>> get() = _resAuth
-    val userData: LiveData<ApIData<User>> get() = _userData
-    val updateMsg: LiveData<ApIData<ResProfile>> get() = _updateMsg
+    val resMsg: LiveData<ApiData<ResponseMessage>> get() = _resMsg
+    val resAuth: LiveData<ApiData<ResAuth>> get() = _resAuth
+    val userData: LiveData<ApiData<User>> get() = _userData
+    val updateMsg: LiveData<ApiData<ResProfile>> get() = _updateMsg
 
     /**
      * Function to handle validation and sign up.
@@ -120,12 +120,13 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
     // Function to change password
     fun changePassword(current: String, new: String, confirm: String) {
         performApiCall(
+            resData = _resData,
             request = {
                 RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
             },
             successBlock = { data ->
                 Log.e("AuthViewModel", "Update Success: $data")
-                ApIData(Status.Success, data)
+                ApiData(Status.Success, data)
             },
             failureBlock = { response ->
                 // Handle specific failure cases based on HTTP status code
@@ -136,10 +137,10 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                         val errorResAuth = Gson().fromJson(errorBody, ResponseMessage::class.java)
 
                         Log.e("AuthViewModel", "Update Error: $errorBody")
-                        ApIData(Status.Failed, errorResAuth)
+                        ApiData(Status.Failed, errorResAuth)
                     }
                     // Handle other failure cases
-                    else -> ApIData(Status.Failed, null)
+                    else -> ApiData(Status.Failed, null)
                 }
             }
         )
@@ -262,11 +263,10 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
      */
     private fun loginService(email: String, password: String) {
         // Use the generic performApiCall function to handle the API call and response
-        performAuthApiCall(
+        performApiCall(
+            resData = _resAuth,
             // Make the API call to log in with the provided email and password
             request = { RetrofitInstance.get().api.login(Login(email, password)) },
-            // Define the expected success HTTP status code for login
-            successCode = 200,
             // Define the block to execute on success
             successBlock = { auth ->
                 // Update the token in AppPreference if available
@@ -274,7 +274,7 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                     AppPreference.get(AppCore.get().applicationContext).setToken(it.token)
                 }
                 // Return success status with null data
-                AuthApiData(StatusAuth.Success, null)
+                ApiData(Status.Success, null)
             },
             // Define the block to execute on failure
             failureBlock = { response ->
@@ -285,15 +285,15 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                         // Parse error response and return failure status with relevant data
                         val errorBody = response.errorBody()?.string()
                         val errorResAuth = Gson().fromJson(errorBody, ResAuth::class.java)
-                        AuthApiData(
-                            StatusAuth.Failed,
+                        ApiData(
+                            Status.Failed,
                             ResAuth(errorResAuth.message, errorResAuth.data)
                         )
                     }
                     // Handle 403 Forbidden error
-                    403 -> AuthApiData(StatusAuth.NeedVerify, null)
+                    403 -> ApiData(Status.NeedVerify, null)
                     // Handle other failure cases
-                    else -> AuthApiData(StatusAuth.Failed, null)
+                    else -> ApiData(Status.Failed, null)
                 }
             }
         )
@@ -314,7 +314,8 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
         avatar: MultipartBody.Part?
     ) {
         // Use the generic performApiCall function to handle the API call and response
-        performAuthApiCall(
+        performApiCall(
+            resData = _resAuth,
             // Make the API call to register a new user with the provided credentials
             request = {
                 val n = RequestBody.create(MediaType.parse("text/plain"), name)
@@ -324,12 +325,10 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
 
                 RetrofitInstance.get().api.register(n, e, p, cfP, avatar)
             },
-            // Define the expected success HTTP status code for registration
-            successCode = 201,
             // Define the block to execute on success
             successBlock = {
                 // Return success status with the need for email verification
-                AuthApiData(StatusAuth.NeedVerify, null)
+                ApiData(Status.NeedVerify, null)
             },
             // Define the block to execute on failure
             failureBlock = { response ->
@@ -340,13 +339,13 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                         // Parse error response and return failure status with relevant data
                         val errorBody = response.errorBody()?.string()
                         val errorResAuth = Gson().fromJson(errorBody, ResAuth::class.java)
-                        AuthApiData(
-                            StatusAuth.Failed,
+                        ApiData(
+                            Status.Failed,
                             ResAuth(errorResAuth.message, errorResAuth.data)
                         )
                     }
                     // Handle other failure cases
-                    else -> AuthApiData(StatusAuth.Failed, null)
+                    else -> ApiData(Status.Failed, null)
                 }
             }
         )
@@ -354,11 +353,10 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
 
     private fun verifyEmailService(email: String, code: String) {
         // Use the generic performApiCall function to handle the API call and response
-        performAuthApiCall(
+        performApiCall(
+            resData = _resAuth,
             // Make the API call to verify the email with the provided code
             request = { RetrofitInstance.get().api.verifyEmail(VerifyEmailRequest(email, code)) },
-            // Define the expected success HTTP status code
-            successCode = 200,
             // Define the block to execute on success
             successBlock = { auth ->
                 // Update the token in AppPreference if available
@@ -366,7 +364,7 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                     AppPreference.get(AppCore.get().applicationContext).setToken(it.token)
                 }
                 // Return success status with null data
-                AuthApiData(StatusAuth.Success, null)
+                ApiData(Status.Success, null)
             },
             // Define the block to execute on failure
             failureBlock = { response ->
@@ -377,10 +375,10 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
                         // Parse error response and return failure status with relevant data
                         val errorBody = response.errorBody()?.string()
                         val errorResAuth = Gson().fromJson(errorBody, ResAuth::class.java)
-                        AuthApiData(StatusAuth.Failed, ResAuth(errorResAuth.message, null))
+                        ApiData(Status.Failed, ResAuth(errorResAuth.message, null))
                     }
                     // Handle other failure cases
-                    else -> AuthApiData(StatusAuth.Failed, null)
+                    else -> ApiData(Status.Failed, null)
                 }
             }
         )
@@ -389,17 +387,17 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
 
     // Function to handle loading profile from API
     fun loadProfile() {
-        var responseData = ApIData<User>(Status.Processing, null)
+        var responseData = ApiData<User>(Status.Processing, null)
         _userData.value = responseData
 
         viewModelScope.launch(Dispatchers.IO) {
             responseData = try {
                 val data = RetrofitInstance.get().api.loadProfile()
-                ApIData(Status.Success, data.data)
+                ApiData(Status.Success, data.data)
             } catch (e: Exception) {
                 AppPreference.get(AppCore.get().applicationContext).removeToken()
                 e.printStackTrace()
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
             withContext(Dispatchers.Main.immediate) {
                 _userData.value = responseData
@@ -409,18 +407,18 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
 
     // Function to handle logging out user and clearing token
     fun logout() {
-        var responseData = ApIData<ResponseMessage>(Status.Processing, null)
+        var responseData = ApiData<ResponseMessage>(Status.Processing, null)
         _resMsg.postValue(responseData)
         viewModelScope.launch(Dispatchers.IO) {
             responseData = try {
                 RetrofitInstance.get().api.logout()
                 AppPreference.get(AppCore.get().applicationContext).removeToken()
-                ApIData(Status.Success, null)
+                ApiData(Status.Success, null)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("Error", "${e.message}")
                 AppPreference.get(AppCore.get().applicationContext).removeToken()
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
             withContext(Dispatchers.Main.immediate) {
                 _resMsg.postValue(responseData)
@@ -430,70 +428,21 @@ class AuthViewModel : BaseViewModel<ResponseMessage>() {
 
     // Function to handle updating profile data
     fun updateProfile(name: RequestBody, avatar: MultipartBody.Part? = null) {
-        var resMessage = ApIData<ResProfile>(Status.Processing, null)
+        var resMessage = ApiData<ResProfile>(Status.Processing, null)
         _updateMsg.postValue(resMessage)
 
         viewModelScope.launch(Dispatchers.IO) {
             resMessage = try {
                 RetrofitInstance.get().api.updateProfile(name, avatar)
                 Log.e("AuthViewModel", "Success")
-                ApIData(Status.Success, null)
+                ApiData(Status.Success, null)
             } catch (e: Exception) {
                 Log.e("AuthViewModel", e.message.toString())
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
 
             withContext(Dispatchers.Main.immediate) {
                 _updateMsg.postValue(resMessage)
-            }
-        }
-    }
-
-    /**
-     * A generic function to perform API calls asynchronously and handle the response.
-     *
-     * @param T The type of the response body.
-     * @param request A suspend function representing the API call.
-     * @param successCode The expected HTTP status code for a successful response.
-     * @param successBlock A block to execute when the response is successful.
-     * @param failureBlock A block to execute when the response is unsuccessful.
-     */
-    private fun <T> performAuthApiCall(
-        request: suspend () -> Response<T>,
-        successCode: Int,
-        successBlock: (T) -> AuthApiData<ResAuth>,
-        failureBlock: (Response<T>) -> AuthApiData<ResAuth>
-    ) {
-        // Create an initial AuthApiData with Processing status
-        var responseData = AuthApiData<ResAuth>(StatusAuth.Processing, null)
-
-        // Set the initial value in the ViewModel
-        _resAuth.value = responseData
-
-        // Launch a coroutine in the IO dispatcher
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                // Make the API call
-                val response = request.invoke()
-
-                // Check the HTTP status code of the response
-                responseData = when (response.code()) {
-                    // If the status code is the expected success code, execute the success block
-                    successCode -> successBlock(response.body()!!)
-                    // If the status code is not the expected success code, execute the failure block
-                    else -> failureBlock(response)
-                }
-                Log.d("AuthViewModel", "responseData: $responseData")
-            } catch (e: Exception) {
-                // Handle exceptions, e.g., network issues
-                Log.e("AuthViewModel", e.message.toString())
-                // Set failure status in case of an exception
-                responseData = AuthApiData(StatusAuth.Failed, null)
-            }
-
-            // Update the LiveData in the Main dispatcher after the API call completion
-            withContext(Dispatchers.Main.immediate) {
-                _resAuth.value = responseData
             }
         }
     }

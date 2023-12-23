@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityCodeVerificationBinding
-import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
@@ -58,13 +58,13 @@ class CodeVerificationActivity :
         // Observe the authentication response
         authViewModel.resAuth.observe(this) {
             when (it.status) {
-                StatusAuth.Processing -> {
+                Status.Processing -> {
                     // Handle the processing status, e.g., show loading indicator
                     errMsg.visibility = View.GONE
                     disableVerifyButton()
                 }
 
-                StatusAuth.Success -> {
+                Status.Success -> {
                     // Handle the success status, e.g., navigate to the main activity
                     val mainActivityIntent = Intent(this, MainActivity::class.java)
                     mainActivityIntent.flags =
@@ -72,7 +72,7 @@ class CodeVerificationActivity :
                     startActivity(mainActivityIntent)
                 }
 
-                StatusAuth.Failed -> {
+                Status.Failed -> {
                     // Handle the failure status, e.g., show error message
                     it.data?.let { m ->
                         handleInvalidValidation(m.message)

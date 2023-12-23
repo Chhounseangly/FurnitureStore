@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 class ShoppingCartViewModel : ViewModel() {
 
     // Create list for Shopping Cart items
-    private val _shoppingCartItems = MutableLiveData<ApIData<List<ShoppingCart>>>()
+    private val _shoppingCartItems = MutableLiveData<ApiData<List<ShoppingCart>>>()
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
     private val _totalPrice = MutableLiveData(0.00)
@@ -30,15 +30,15 @@ class ShoppingCartViewModel : ViewModel() {
     val toastMessage get() = _toastMessage!!
 
     // LiveData to hold Shopping Cart Items.
-    val shoppingCartItems: LiveData<ApIData<List<ShoppingCart>>> get() = _shoppingCartItems
+    val shoppingCartItems: LiveData<ApiData<List<ShoppingCart>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)
 
     val itemCount: LiveData<Int> get() = _itemCount
     val totalPrice: LiveData<Double> get() = _totalPrice
 //    val toastMessage: LiveData<String> get() = _toastMessage
-    private val _responseMessage = MutableLiveData<ApIData<ResponseMessage>>()
+    private val _responseMessage = MutableLiveData<ApiData<ResponseMessage>>()
 
-    val responseMessage: LiveData<ApIData<ResponseMessage>>
+    val responseMessage: LiveData<ApiData<ResponseMessage>>
         get() = _responseMessage
 
 
@@ -101,17 +101,17 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Retrieve products in the shopping cart
     fun loadProductsCartData() {
-        var apiData = ApIData<List<ShoppingCart>>(Status.Processing, null)
+        var apiData = ApiData<List<ShoppingCart>>(Status.Processing, null)
         _shoppingCartItems.postValue(apiData)
 
         viewModelScope.launch(Dispatchers.IO) {
             apiData = try {
                 // Call API to load products in the shopping cart
                 val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
-                ApIData(Status.Success, response.data)
+                ApiData(Status.Success, response.data)
             } catch (ex: Exception) {
                 Log.e("ShoppingCartViewModel", "${ex.message}")
-                ApIData(Status.Failed, null)
+                ApiData(Status.Failed, null)
             }
 
             // Process outside background

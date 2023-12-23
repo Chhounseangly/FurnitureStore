@@ -3,20 +3,20 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kh.edu.rupp.ite.furniturestore.model.api.model.ApIData
+import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 
 class ProductSliderViewModel: ViewModel() {
 
-    private val _productSliderData = MutableLiveData<ApIData<List<ProductSlider>>>()
-    val productSliderData: LiveData<ApIData<List<ProductSlider>>>
+    private val _productSliderData = MutableLiveData<ApiData<List<ProductSlider>>>()
+    val productSliderData: LiveData<ApiData<List<ProductSlider>>>
         get() = _productSliderData
 
 
     fun loadProductSliderData(){
 
-        val apiData = ApIData(Status.Success, listOf(
+        val apiData = ApiData(Status.Success, listOf(
             ProductSlider(
                 1,
                 "test  ",
