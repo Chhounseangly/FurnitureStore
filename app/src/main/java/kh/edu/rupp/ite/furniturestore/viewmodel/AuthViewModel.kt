@@ -3,7 +3,6 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kh.edu.rupp.ite.furniturestore.core.AppCore
@@ -29,7 +28,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 
-class AuthViewModel : BaseViewModel() {
+class AuthViewModel : BaseViewModel<ResponseMessage>() {
     // LiveData and MutableLiveData declarations for various data associated with authentication and user actions
     private val _resAuth = MutableLiveData<AuthApiData<ResAuth>>()
     private val _userData = MutableLiveData<ApIData<User>>()
@@ -120,55 +119,28 @@ class AuthViewModel : BaseViewModel() {
 
     // Function to change password
     fun changePassword(current: String, new: String, confirm: String) {
-//        var resMessage = ApIData<ResponseMessage>(Status.Processing, null)
-//        _resMsg.postValue(resMessage)
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            resMessage = try {
-//                val response = RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
-//
-//                if (response.isSuccessful) {
-//                    val res = response.body()
-//                    Log.e("AuthViewModel", "Update Success: $res")
-//
-//                    // Access the HTTP status code
-//                    val statusCode = response.code()
-//                    Log.e("AuthViewModel", "Status Code: $statusCode")
-//
-//                    ApIData(Status.Success, res)
-//                } else {
-//                    // If the request was not successful, handle the error
-//                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
-//                    val errorResAuth = Gson().fromJson(errorBody, ResponseMessage::class.java)
-//
-//                    Log.e("AuthViewModel", "Update Error: $errorBody")
-//                    ApIData(Status.Failed, errorResAuth)
-//                }
-//            } catch (e: Exception) {
-//                // Handle exceptions during the network request
-//                Log.e("AuthViewModel", "Update Error: ${e.message}")
-//                ApIData(Status.Failed, null)
-//            }
-//
-//            withContext(Dispatchers.Main.immediate) {
-//                _resMsg.postValue(resMessage)
-//            }
-//        }
         performApiCall(
-            // Make the API call to log in with the provided email and password
             request = {
-                RetrofitInstance.get().api.changePassword(
-                    Password(
-                        current,
-                        new,
-                        confirm
-                    )
-                )
+                RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
             },
-            // Define the block to execute on success
             successBlock = { data ->
                 Log.e("AuthViewModel", "Update Success: $data")
                 ApIData(Status.Success, data)
+            },
+            failureBlock = { response ->
+                // Handle specific failure cases based on HTTP status code
+                when (response.code()) {
+                    // Handle 400 Bad Request error
+                    400 -> {
+                        val errorBody = response.errorBody()?.string() ?: "Unknown error"
+                        val errorResAuth = Gson().fromJson(errorBody, ResponseMessage::class.java)
+
+                        Log.e("AuthViewModel", "Update Error: $errorBody")
+                        ApIData(Status.Failed, errorResAuth)
+                    }
+                    // Handle other failure cases
+                    else -> ApIData(Status.Failed, null)
+                }
             }
         )
     }
@@ -477,7 +449,6 @@ class AuthViewModel : BaseViewModel() {
         }
     }
 
-
     /**
      * A generic function to perform API calls asynchronously and handle the response.
      *
@@ -526,5 +497,4 @@ class AuthViewModel : BaseViewModel() {
             }
         }
     }
-
 }
