@@ -2,9 +2,9 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -18,6 +18,9 @@ import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
+
+    private val searchView: SearchView by lazy { binding.searchProduct }
+
     private val handler = Handler()
     private var searchViewHolder = SearchViewHolder()
 
@@ -33,32 +36,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     }
 
-    override fun setupListeners() {
-
-    }
-
-    override fun setupObservers() {
-
-    }
-
     @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Set up the search view
-        setupSearchView()
-    }
-
-    // Function to set up the search view
-    private fun setupSearchView() {
-        val searchView = binding.searchProduct
-
+    override fun setupListeners() {
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handling submit if needed
                 return true
             }
+
             override fun onQueryTextChange(query: String?): Boolean {
                 // Hide noData view initially
                 binding.notFound.visibility = View.GONE
@@ -73,6 +59,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                 return true
             }
         })
+    }
+
+    override fun setupObservers() {
+
     }
 
     // Function to perform the search
@@ -156,9 +146,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             searchFoundAdapter.setData(product)
         }
 
-        // Create a SearchFoundAdapter and submit the product list
-//        val searchFoundAdapter = SearchFoundAdapter()
-//        searchFoundAdapter.submitList(product)
         // Set the adapter for the searchFoundRecyclerView
         binding.searchFoundRecyclerView.adapter = searchFoundAdapter
     }

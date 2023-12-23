@@ -7,6 +7,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Favorite
 import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
+import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductDetail
@@ -94,6 +95,9 @@ interface ApiService {
         @Part("name") name: RequestBody?,
         @Part file: MultipartBody.Part?,
     ): ResProfile
+
+    @POST("api/password/change")
+    suspend fun changePassword(@Body data: Password): ResponseMessage
 
     //history
     @POST("api/history")

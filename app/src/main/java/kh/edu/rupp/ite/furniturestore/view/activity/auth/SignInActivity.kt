@@ -4,8 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -15,12 +13,11 @@ import kh.edu.rupp.ite.furniturestore.BuildConfig
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.StatusAuth
-import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
-class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
+class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
     private val email: EditText by lazy { binding.emInput }
     private val password: EditText by lazy { binding.pwInput }
     private val errorMessage: TextView by lazy { binding.errorMsg }
@@ -28,7 +25,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     private val signInBtn: Button by lazy { binding.signInBtn }
 
     private var authViewModel = AuthViewModel()
-    private var isPasswordVisible = false
 
     override fun initActions() {
         //call method for handle go to sign up screen
@@ -41,7 +37,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         //return to prev activity
         prevBack(binding.backBtn)
         setupPasswordToggle(password)
-        togglePasswordVisibility()
+        togglePasswordVisibility(password)
 
         // Set up navigation between EditTexts
         navigationBetweenEditTexts(email, password)
@@ -55,7 +51,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = passwordEditText.compoundDrawables[2]
                 if (event.rawX >= (passwordEditText.right - drawableEnd.bounds.width())) {
-                    togglePasswordVisibility()
+                    togglePasswordVisibility(password)
                     return@setOnTouchListener true
                 }
             }
@@ -83,60 +79,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     }
 
     override fun setupObservers() {
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authViewModel.validationResult.removeObservers(this)
-        authViewModel.resAuth.removeObservers(this)
-    }
-
-    //handel user click on forgot password
-    private fun initForgotPasswordScreen() {
-        val forgotPassBtn = binding.forgotPsBtn
-        val forgotPasswordScreen = Intent(this, ForgotPasswordActivity::class.java)
-        forgotPassBtn.setOnClickListener {
-            startActivity(forgotPasswordScreen)
-        }
-    }
-
-
-    //handel user click on  sign up
-    private fun initSignUpScreen() {
-        val signUpBtn = binding.signUpBtn
-        val signUpScreen = Intent(this, SignUpActivity::class.java)
-        signUpBtn.setOnClickListener {
-            startActivity(signUpScreen)
-        }
-    }
-
-
-    //handle Sign In Process
-    private fun handleSignInProcession() {
-        //call dynamic handleOnChangeEditText from AuthValidation Class
-        AuthValidation().handleOnChangeEditText(email)
-        AuthValidation().handleOnChangeEditText(password)
-
-        //perform Login with api
-        performLogin()
-
-    }
-
-    private fun handleSignIn() {
-        authViewModel.resAuth.removeObservers(this)
-        // Disable the button to prevent multiple clicks
-        signInBtn.isEnabled = false
-        signInBtn.setTextColor(Color.BLACK)
-        signInBtn.setBackgroundResource(R.drawable.disable_btn)
-
-        clearErrorUnderlines()
-        authViewModel.signIn(email.text.toString(), password.text.toString())
-    }
-
-    private fun performLogin() {
-
-        // Remove previous observers before adding a new one
         authViewModel.validationResult.observe(this) { validationResult ->
             val (isValid, errorMessages) = validationResult
             if (isValid) {
@@ -195,8 +137,51 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
                     handleFieldError(errorMessage)
                 }
             }
-
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.validationResult.removeObservers(this)
+        authViewModel.resAuth.removeObservers(this)
+    }
+
+    //handel user click on forgot password
+    private fun initForgotPasswordScreen() {
+        val forgotPassBtn = binding.forgotPsBtn
+        val forgotPasswordScreen = Intent(this, ForgotPasswordActivity::class.java)
+        forgotPassBtn.setOnClickListener {
+            startActivity(forgotPasswordScreen)
+        }
+    }
+
+
+    //handel user click on  sign up
+    private fun initSignUpScreen() {
+        val signUpBtn = binding.signUpBtn
+        val signUpScreen = Intent(this, SignUpActivity::class.java)
+        signUpBtn.setOnClickListener {
+            startActivity(signUpScreen)
+        }
+    }
+
+
+    //handle Sign In Process
+    private fun handleSignInProcession() {
+        //call dynamic handleOnChangeEditText from AuthValidation Class
+        AuthValidation().handleOnChangeEditText(email)
+        AuthValidation().handleOnChangeEditText(password)
+    }
+
+    private fun handleSignIn() {
+        authViewModel.resAuth.removeObservers(this)
+        // Disable the button to prevent multiple clicks
+        signInBtn.isEnabled = false
+        signInBtn.setTextColor(Color.BLACK)
+        signInBtn.setBackgroundResource(R.drawable.disable_btn)
+
+        clearErrorUnderlines()
+        authViewModel.signIn(email.text.toString(), password.text.toString())
     }
 
     private fun handleFieldError(errorMessage: String) {
@@ -216,27 +201,5 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
     private fun clearErrorUnderlines() {
         email.backgroundTintList = null
         password.backgroundTintList = null
-    }
-
-    private fun togglePasswordVisibility() {
-        isPasswordVisible = !isPasswordVisible
-
-        val drawableResId = if (isPasswordVisible) {
-            // Show password
-            password.transformationMethod = PasswordTransformationMethod.getInstance()
-
-            // Post a delayed action to toggle icon visibility every 2 seconds
-            R.drawable.ic_invisible_pw
-        } else {
-            // Hide password after a delay
-            password.transformationMethod = HideReturnsTransformationMethod.getInstance()
-
-            // Update drawableEnd icon after hiding the password
-            R.drawable.ic_visible_pw
-
-        }
-        // Move the cursor to the end of the text
-        password.setSelection(password.text.length)
-        password.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
     }
 }

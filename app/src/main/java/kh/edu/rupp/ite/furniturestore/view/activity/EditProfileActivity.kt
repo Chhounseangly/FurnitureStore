@@ -68,7 +68,6 @@ class EditProfileActivity :
                 }
 
                 Status.Failed -> {
-                    setResult(Activity.RESULT_CANCELED)
                     finish()
                 }
 

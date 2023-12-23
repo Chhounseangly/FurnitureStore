@@ -3,8 +3,6 @@ package kh.edu.rupp.ite.furniturestore.view.activity.auth
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -29,8 +27,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
     private val signUpBtn: Button by lazy { binding.signUpBtn }
     private val errorMessage: TextView by lazy { binding.errorMsg }
 
-    private var isPasswordVisible = false
-
     override fun initActions() {
         // Initialize sign-in screen display
         initSignInScreenDisplay()
@@ -42,6 +38,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         prevBack(binding.backBtn)
         setupImagePickerLauncher(avatar)
         setupPasswordToggle(password, cfPassword)
+        togglePasswordVisibility(password, cfPassword)
 
         // Set up navigation between EditTexts
         navigationBetweenEditTexts(name, email)
@@ -129,8 +126,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
         AuthValidation().handleOnChangeEditText(email)
         AuthValidation().handleOnChangeEditText(password)
         AuthValidation().handleOnChangeEditText(cfPassword)
-
-        togglePasswordVisibility()
     }
 
     private fun handleFieldError(errorMessage: String) {
@@ -160,7 +155,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = passwordEditText.compoundDrawables[2]
                 if (event.rawX >= (passwordEditText.right - drawableEnd.bounds.width())) {
-                    togglePasswordVisibility()
+                    togglePasswordVisibility(password, cfPassword)
                     return@setOnTouchListener true
                 }
             }
@@ -169,35 +164,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
 
         passwordEditText.run { setOnTouchListener(touchListener) }
         confirmPasswordEditText.run { setOnTouchListener(touchListener) }
-    }
-
-    private fun togglePasswordVisibility() {
-        isPasswordVisible = !isPasswordVisible
-
-        val drawableResId = if (isPasswordVisible) {
-            // Show password
-            password.transformationMethod = PasswordTransformationMethod.getInstance()
-            cfPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-
-            // Post a delayed action to toggle icon visibility every 2 seconds
-            R.drawable.ic_invisible_pw
-        } else {
-            // Hide password after a delay
-            password.transformationMethod = HideReturnsTransformationMethod.getInstance()
-            cfPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-
-            // Update drawableEnd icon after hiding the password
-            R.drawable.ic_visible_pw
-
-        }
-
-        // Move the cursor to the end of the text
-        password.setSelection(password.text.length)
-        cfPassword.setSelection(cfPassword.text.length)
-
-        // Update the drawableEnd icon
-        password.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
-        cfPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawableResId, 0)
     }
 
     private fun initSignInScreenDisplay() {

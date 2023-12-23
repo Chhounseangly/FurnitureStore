@@ -185,6 +185,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager

@@ -27,6 +27,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private val username: TextView by lazy { binding.username }
 
     private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
+    private lateinit var changePasswordLauncher: ActivityResultLauncher<Intent>
 
     private companion object {
         const val TOAST_SUCCESS_MESSAGE = "Profile updated successfully"
@@ -39,21 +40,20 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
         // Initialize the ActivityResultLauncher for edit profile
         setupEditProfileLauncher()
+        setupChangePasswordLauncher()
     }
 
     override fun setupListeners() {
-        val intentChangePasswordActivity = Intent(this, ChangePasswordActivity::class.java)
         changePwBtn.setOnClickListener {
-            startActivity(intentChangePasswordActivity)
+            changePasswordLauncher.launch(Intent(this, ChangePasswordActivity::class.java))
+        }
+
+        editProfileBtn.setOnClickListener {
+            editProfileLauncher.launch(Intent(this, EditProfileActivity::class.java))
         }
 
         logoutBtn.setOnClickListener {
             logOut()
-        }
-
-        //route to edit profile activity screen
-        editProfileBtn.setOnClickListener {
-            editProfileLauncher.launch(Intent(this, EditProfileActivity::class.java))
         }
     }
 
@@ -73,24 +73,56 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         }
     }
 
+    private fun setupChangePasswordLauncher() {
+        changePasswordLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    Snackbar.make(
+                        binding.root,
+                        TOAST_SUCCESS_MESSAGE,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                Activity.RESULT_CANCELED -> {
+
+                }
+                else -> {
+                    Snackbar.make(
+                        binding.root,
+                        TOAST_FAILURE_MESSAGE,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
     private fun setupEditProfileLauncher() {
         editProfileLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                authViewModel.loadProfile()
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    authViewModel.loadProfile()
 
-                Snackbar.make(
-                    binding.root,
-                    TOAST_SUCCESS_MESSAGE,
-                    Snackbar.LENGTH_LONG
-                ).show()
-            } else if (result.resultCode == Activity.RESULT_CANCELED) {
-                Snackbar.make(
-                    binding.root,
-                    TOAST_FAILURE_MESSAGE,
-                    Snackbar.LENGTH_LONG
-                ).show()
+                    Snackbar.make(
+                        binding.root,
+                        TOAST_SUCCESS_MESSAGE,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                Activity.RESULT_CANCELED -> {
+
+                }
+                else -> {
+                    Snackbar.make(
+                        binding.root,
+                        TOAST_FAILURE_MESSAGE,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
