@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
@@ -18,10 +18,10 @@ import kotlinx.coroutines.withContext
 class PaymentViewModel: ViewModel() {
 
     // LiveData to hold the response message from the payment API
-    private val _responseMessage = MutableLiveData<ApiData<ResponseMessage>>()
+    private val _resMessage = MutableLiveData<ApiData<ResMessage>>()
 
-    val responseMessage: LiveData<ApiData<ResponseMessage>>
-        get() = _responseMessage
+    val resMessage: LiveData<ApiData<ResMessage>>
+        get() = _resMessage
 
     // Function to initiate the payment process
     fun payment(data: List<ObjectPayment>) {
@@ -32,8 +32,8 @@ class PaymentViewModel: ViewModel() {
         }
 
         // Initial status while processing payment
-        var apiData = ApiData<ResponseMessage>(Status.Processing, null)
-        _responseMessage.postValue(apiData)
+        var apiData = ApiData<ResMessage>(Status.Processing, null)
+        _resMessage.postValue(apiData)
 
         // Processing payment in the background
         viewModelScope.launch(Dispatchers.IO) {
@@ -50,7 +50,7 @@ class PaymentViewModel: ViewModel() {
 
             // Process outside the background (update LiveData)
             withContext(Dispatchers.Main.immediate) {
-                _responseMessage.postValue(apiData)
+                _resMessage.postValue(apiData)
             }
         }
     }

@@ -11,7 +11,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResAuth
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResProfile
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
 import kh.edu.rupp.ite.furniturestore.model.api.model.ValidationTypes
@@ -30,17 +30,17 @@ class AuthViewModel : BaseViewModel() {
     private val _resAuth = MutableLiveData<ApiData<ResAuth>>()
     private val _userData = MutableLiveData<ApiData<User>>()
     private val _validationResult = MutableLiveData<Pair<Boolean, List<String>>>()
-    private val _resMsg = MutableLiveData<ApiData<ResponseMessage>>()
+    private val _resMsg = MutableLiveData<ApiData<ResMessage>>()
     private val _validationVerify = MutableLiveData<Pair<Boolean, String>>()
     private val _updateMsg = MutableLiveData<ApiData<ResProfile>>()
-    private val _resData = MutableLiveData<ApiData<ResponseMessage>>()
-    val resData: LiveData<ApiData<ResponseMessage>> get() = _resData
+    private val _resData = MutableLiveData<ApiData<ResMessage>>()
+    val resData: LiveData<ApiData<ResMessage>> get() = _resData
 
 
     // Exposed LiveData properties for observing in the UI
     val validationVerify: LiveData<Pair<Boolean, String>> get() = _validationVerify
     val validationResult: LiveData<Pair<Boolean, List<String>>> = _validationResult
-    val resMsg: LiveData<ApiData<ResponseMessage>> get() = _resMsg
+    val resMsg: LiveData<ApiData<ResMessage>> get() = _resMsg
     val resAuth: LiveData<ApiData<ResAuth>> get() = _resAuth
     val userData: LiveData<ApiData<User>> get() = _userData
     val updateMsg: LiveData<ApiData<ResProfile>> get() = _updateMsg
@@ -134,7 +134,7 @@ class AuthViewModel : BaseViewModel() {
                     // Handle 400 Bad Request error
                     400 -> {
                         val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                        val errorResAuth = Gson().fromJson(errorBody, ResponseMessage::class.java)
+                        val errorResAuth = Gson().fromJson(errorBody, ResMessage::class.java)
 
                         Log.e("AuthViewModel", "Update Error: $errorBody")
                         ApiData(Status.Failed, errorResAuth)
@@ -407,7 +407,7 @@ class AuthViewModel : BaseViewModel() {
 
     // Function to handle logging out user and clearing token
     fun logout() {
-        var responseData = ApiData<ResponseMessage>(Status.Processing, null)
+        var responseData = ApiData<ResMessage>(Status.Processing, null)
         _resMsg.postValue(responseData)
         viewModelScope.launch(Dispatchers.IO) {
             responseData = try {

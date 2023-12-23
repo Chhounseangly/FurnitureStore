@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
-import kh.edu.rupp.ite.furniturestore.model.api.model.ResponseMessage
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResMessage
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
@@ -36,10 +36,10 @@ class ShoppingCartViewModel : ViewModel() {
     val itemCount: LiveData<Int> get() = _itemCount
     val totalPrice: LiveData<Double> get() = _totalPrice
 //    val toastMessage: LiveData<String> get() = _toastMessage
-    private val _responseMessage = MutableLiveData<ApiData<ResponseMessage>>()
+    private val _resMessage = MutableLiveData<ApiData<ResMessage>>()
 
-    val responseMessage: LiveData<ApiData<ResponseMessage>>
-        get() = _responseMessage
+    val resMessage: LiveData<ApiData<ResMessage>>
+        get() = _resMessage
 
 
     // Calculate Total Price based on the items in the shopping cart

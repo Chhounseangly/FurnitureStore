@@ -49,7 +49,7 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
     private fun handlePaymentListener(value: List<ObjectPayment>) {
         paymentBtn.setOnClickListener {
             paymentViewModel.payment(value)
-            paymentViewModel.responseMessage.observe(this) { res ->
+            paymentViewModel.resMessage.observe(this) { res ->
                 when (res.status) {
                     Status.Processing -> {
 

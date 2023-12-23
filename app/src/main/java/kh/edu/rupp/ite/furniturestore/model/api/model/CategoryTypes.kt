@@ -5,12 +5,8 @@ class CategoryTypes (
     var name: String
 )
 
-class  CategoryModel(
-    val message: String,
-    val data: List<CategoryTypes>
-)
 
-data class ApiResponse(
+data class CategoryTypeById(
     val message: String,
     val data: ProductByCate
 )
