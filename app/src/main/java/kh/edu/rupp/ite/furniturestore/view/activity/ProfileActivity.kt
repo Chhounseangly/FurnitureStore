@@ -29,11 +29,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
     private lateinit var changePasswordLauncher: ActivityResultLauncher<Intent>
 
-    private companion object {
-        const val TOAST_SUCCESS_MESSAGE = "Profile updated successfully"
-        const val TOAST_FAILURE_MESSAGE = "Failed to update profile"
-    }
-
     override fun initActions() {
         authViewModel.loadProfile()
         prevBack(binding.backBtn)
@@ -78,22 +73,16 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             when (result.resultCode) {
-                Activity.RESULT_OK -> {
+                RESULT_OK -> {
                     Snackbar.make(
                         binding.root,
-                        TOAST_SUCCESS_MESSAGE,
+                        R.string.passwordUpdateSuccess,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-                Activity.RESULT_CANCELED -> {
 
-                }
                 else -> {
-                    Snackbar.make(
-                        binding.root,
-                        TOAST_FAILURE_MESSAGE,
-                        Snackbar.LENGTH_LONG
-                    ).show()
+
                 }
             }
         }
@@ -109,19 +98,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
                     Snackbar.make(
                         binding.root,
-                        TOAST_SUCCESS_MESSAGE,
+                        R.string.profileUpdateSuccess,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-                Activity.RESULT_CANCELED -> {
 
-                }
                 else -> {
-                    Snackbar.make(
-                        binding.root,
-                        TOAST_FAILURE_MESSAGE,
-                        Snackbar.LENGTH_LONG
-                    ).show()
+
                 }
             }
         }

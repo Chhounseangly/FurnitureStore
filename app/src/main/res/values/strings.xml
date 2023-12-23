@@ -55,5 +55,9 @@
     <string name="image_content">This an image</string>
     <string name="no_data">No Data</string>
     <string name="sign_in_success">You are singed in successfully</string>
+    <string name="profileUpdateSuccess">Profile updated successfully</string>
+    <string name="profileUpdateFail">Can not update profile</string>
+    <string name="passwordUpdateSuccess">Password changed successfully</string>
+    <string name="passwordUpdateFail">Can not change password</string>
 
 </resources>

@@ -1,11 +1,12 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -55,7 +56,11 @@ class ChangePasswordActivity :
                 }
 
                 Status.Failed -> {
-                    finish()
+                    Snackbar.make(
+                        binding.root,
+                        R.string.passwordUpdateFail,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
 
                 else -> {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -68,7 +69,11 @@ class EditProfileActivity :
                 }
 
                 Status.Failed -> {
-                    finish()
+                    Snackbar.make(
+                        binding.root,
+                        R.string.profileUpdateFail,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
 
                 else -> {
