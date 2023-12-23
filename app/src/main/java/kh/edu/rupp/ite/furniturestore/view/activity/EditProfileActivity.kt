@@ -95,7 +95,7 @@ class EditProfileActivity :
     private fun displayUi(userData: User) {
         Picasso.get()
             .load(userData.avatar)
-            .placeholder(R.drawable.loading)
+            .placeholder(loadingImg(this))
             .error(R.drawable.ic_error)
             .into(avatar)
 

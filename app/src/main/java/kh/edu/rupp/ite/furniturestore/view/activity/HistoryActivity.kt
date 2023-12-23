@@ -81,7 +81,7 @@ class HistoryActivity :
 
             with(binding) {
                 Picasso.get().load(item.product.imageUrl)
-                    .placeholder(R.drawable.loading)
+                    .placeholder(loadingImg(this@HistoryActivity))
                     .error(R.drawable.ic_error)
                     .into(img)
 

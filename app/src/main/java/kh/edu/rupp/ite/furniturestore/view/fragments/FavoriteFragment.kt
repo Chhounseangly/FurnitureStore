@@ -105,7 +105,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                 with(binding) {
                     // Use Picasso to load and display the product image
                     Picasso.get().load(item.imageUrl)
-                        .placeholder(R.drawable.loading)
+                        .placeholder(loadingImg(requireContext()))
                         .error(R.drawable.ic_error)
                         .into(img)
 

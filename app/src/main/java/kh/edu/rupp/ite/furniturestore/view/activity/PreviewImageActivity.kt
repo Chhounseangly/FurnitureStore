@@ -12,7 +12,9 @@ class PreviewImageActivity :
     override fun initActions() {
         val intent = intent
         val imageUrl = intent.getStringExtra("imageUrl")
-        Picasso.get().load(imageUrl).into(previewImg)
+        Picasso.get().load(imageUrl)
+            .placeholder(loadingImg(this))
+            .into(previewImg)
     }
 
     override fun setupListeners() {

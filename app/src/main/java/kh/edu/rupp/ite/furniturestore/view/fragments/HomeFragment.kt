@@ -185,7 +185,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
         // Create GridLayout Manager
@@ -202,11 +201,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     intent.putExtra("id", item.id)
                     it.context.startActivity(intent)
                 }
-
                 // Bind data to the view using Picasso for image loading
                 with(binding) {
                     Picasso.get().load(item.imageUrl)
-                        .placeholder(R.drawable.loading)
+                        .placeholder(loadingImg(requireContext()))
                         .error(R.drawable.ic_error)
                         .into(img)
 

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentSearchBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSearchFoundBinding
@@ -141,7 +142,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
                 // Passing data to display UI
                 with(binding) {
-                    Picasso.get().load(item.imageUrl).into(img)
+                    Picasso.get().load(item.imageUrl)
+                        .placeholder(loadingImg(requireContext()))
+                        .error(R.drawable.ic_error)
+                        .into(img)
                     name.text = item.name
                     price.text = item.price.toString()
                 }
