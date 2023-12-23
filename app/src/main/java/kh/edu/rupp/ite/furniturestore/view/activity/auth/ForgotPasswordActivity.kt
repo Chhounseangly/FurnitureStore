@@ -8,7 +8,8 @@ import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
 
-class ForgotPasswordActivity: BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
+class ForgotPasswordActivity :
+    BaseActivity<ActivityChangePasswordBinding>(ActivityChangePasswordBinding::inflate) {
 
     private lateinit var verifyEmail: EditText
 
@@ -16,7 +17,7 @@ class ForgotPasswordActivity: BaseActivity<ActivityChangePasswordBinding>(Activi
         //return to prev activity
         prevBack(binding.backBtn)
 
-        handleVerifyForgotEmail()
+//        handleVerifyForgotEmail()
     }
 
     override fun setupListeners() {
@@ -27,22 +28,22 @@ class ForgotPasswordActivity: BaseActivity<ActivityChangePasswordBinding>(Activi
 
     }
 
-    private  fun initVerifyScreen(){
+    private fun initVerifyScreen() {
         val verifyScreen = Intent(this, CodeVerificationActivity::class.java)
         startActivity(verifyScreen)
     }
 
-    private fun handleVerifyForgotEmail (){
-        val verifyBtn = findViewById<Button>(R.id.verifyBtn)
+    private fun handleVerifyForgotEmail() {
+//        val verifyBtn = findViewById<Button>(R.id.verifyBtn)
         verifyEmail = findViewById(R.id.codeVerifyInput)
         AuthValidation().handleOnChangeEditText(verifyEmail)
 
-        verifyBtn.setOnClickListener {
-            val checkField = AuthValidation().forgotPasswordValidation(verifyEmail)
-            if (checkField){
-                initVerifyScreen()
-//                Toast.makeText(this, "Validation Success", Toast.LENGTH_LONG).show()
-            }
-        }
+//        verifyBtn.setOnClickListener {
+//            val checkField = AuthValidation().forgotPasswordValidation(verifyEmail)
+//            if (checkField){
+//                initVerifyScreen()
+////                Toast.makeText(this, "Validation Success", Toast.LENGTH_LONG).show()
+//            }
+//        }
     }
 }
