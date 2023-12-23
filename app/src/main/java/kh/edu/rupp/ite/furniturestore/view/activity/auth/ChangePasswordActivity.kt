@@ -44,7 +44,7 @@ class ChangePasswordActivity :
     }
 
     override fun setupObservers() {
-        authViewModel.resMsg.observe(this) {
+        authViewModel.resData.observe(this) {
             when (it.status) {
                 Status.Processing -> {
 
@@ -56,11 +56,13 @@ class ChangePasswordActivity :
                 }
 
                 Status.Failed -> {
-                    Snackbar.make(
-                        binding.root,
-                        R.string.passwordUpdateFail,
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    it.data?.let { it1 ->
+                        Snackbar.make(
+                            binding.root,
+                            it1.message,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
 
                 else -> {

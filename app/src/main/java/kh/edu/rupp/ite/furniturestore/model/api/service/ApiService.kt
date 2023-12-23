@@ -97,7 +97,7 @@ interface ApiService {
     ): ResProfile
 
     @POST("api/password/change")
-    suspend fun changePassword(@Body data: Password): ResponseMessage
+    suspend fun changePassword(@Body data: Password): Response<ResponseMessage>
 
     //history
     @POST("api/history")
