@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCategoryBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
@@ -70,7 +71,11 @@ class CategoriesFragment(private var id: Int) :
                 }
                 // Load product data into the ViewHolderProductItemBinding
                 with(binding) {
-                    Picasso.get().load(item.imageUrl).into(img)
+                    Picasso.get()
+                        .load(item.imageUrl)
+                        .placeholder(loadingImg(requireContext()))
+                        .error(R.drawable.ic_error)
+                        .into(img)
                     name.text = item.name
                     price.text = "$ ${item.price}"
                 }

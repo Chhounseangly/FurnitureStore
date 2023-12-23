@@ -127,7 +127,10 @@ class ProductDetailActivity :
                     intent.putExtra("imageUrl", item.imageUrl)
                     it.context.startActivity(intent)
                 }
-                Picasso.get().load(item.imageUrl).into(binding.carouselImageView)
+                Picasso.get().load(item.imageUrl)
+                    .placeholder(loadingImg(this))
+                    .error(R.drawable.ic_error)
+                    .into(binding.carouselImageView)
             }
 
         // Set up CarouselAdapter and display carousel images

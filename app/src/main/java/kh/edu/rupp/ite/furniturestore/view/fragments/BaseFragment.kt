@@ -1,10 +1,12 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
@@ -42,6 +44,11 @@ abstract class BaseFragment<T : ViewBinding>(
     abstract fun initActions()
     abstract fun setupListeners()
     abstract fun setupObservers()
+
+    fun loadingImg(context: Context): CircularProgressDrawable {
+        val baseActivity = activity as BaseActivity<*>
+        return baseActivity.loadingImg(context)
+    }
 
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         val baseActivity = activity as BaseActivity<*>

@@ -98,7 +98,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private fun displayUi(data: User) {
         Picasso.get()
             .load(data.avatar)
-            .placeholder(R.drawable.loading) // Add a placeholder image
+            .placeholder(loadingImg(this))
             .error(R.drawable.ic_error) // Add an error image
             .into(profile)
         username.text = data.name
