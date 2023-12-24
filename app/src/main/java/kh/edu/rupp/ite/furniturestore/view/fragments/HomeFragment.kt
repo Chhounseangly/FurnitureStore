@@ -174,7 +174,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
                 Status.Success -> it.data?.let { data ->
-                    displayCategory(data)
+                    displayCategory(data.data)
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(mShimmerViewContainer)
                 }

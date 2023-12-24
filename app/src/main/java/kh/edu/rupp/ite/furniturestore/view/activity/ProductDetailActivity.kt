@@ -51,7 +51,7 @@ class ProductDetailActivity :
 
                 Status.Success -> {
                     it.data?.let { data ->
-                        displayUi(data)
+                        displayUi(data.data)
                     }
                 }
 

@@ -2,13 +2,8 @@ package kh.edu.rupp.ite.furniturestore.model.api.model
 
 data class ApiData<T>(
     val status: Status,
-    val data: T?
-)
-
-data class ApiDataList<T>(
-    val status: Status,
-    val data: List<T>?,
-    val meta: Meta?
+    val data: T?,
+    val meta: Meta? = null
 )
 
 data class Meta(

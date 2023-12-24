@@ -57,7 +57,7 @@ class ProductsByCategoryActivity :
                 Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
                     it.data?.let {
-                        for (data in it) {
+                        for (data in it.data) {
                             val tab = lytTab.newTab().setText(data.name).setId(data.id)
                             lytTab.addTab(tab)
                         }

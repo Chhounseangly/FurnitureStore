@@ -48,7 +48,7 @@ class EditProfileActivity :
         authViewModel.userData.observe(this) {
             when (it.status) {
                 Status.Success -> {
-                    it.data?.let { userData -> displayUi(userData) }
+                    it.data?.let { userData -> displayUi(userData.data) }
                 }
 
                 Status.Failed -> {

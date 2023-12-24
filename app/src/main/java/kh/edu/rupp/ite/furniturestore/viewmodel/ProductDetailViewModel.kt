@@ -3,47 +3,25 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class ProductDetailViewModel : ViewModel() {
+class ProductDetailViewModel : BaseViewModel() {
 
     // LiveData to hold the product details
-    private val _productsData = MutableLiveData<ApiData<Product>>()
-    val productsData: LiveData<ApiData<Product>>
+    private val _productsData = MutableLiveData<ApiData<Res<Product>>>()
+    val productsData: LiveData<ApiData<Res<Product>>>
         get() = _productsData
 
     // Function to load product details by ID
     fun loadProductDetail(id: Int) {
-        // Initial status while processing
-        var apiData = ApiData<Product>(Status.Processing, null)
-        _productsData.value = apiData
-
-        // Processing in the background
-        viewModelScope.launch(Dispatchers.IO) {
-            apiData = try {
-                // Fetch product details from the API
-                val response = RetrofitInstance.get().api.loadProductDetail(id)
-                ApiData(Status.Success, response.data)
-            } catch (ex: Exception) {
-                // Handle exceptions and set status to failed
-                Log.e("error", "${ex.message}")
-                ApiData(Status.Failed, null)
-            }
-
-            // Process outside the background (update LiveData)
-            withContext(Dispatchers.Main.immediate) {
-                _productsData.value = apiData
-            }
-        }
+        performApiCall(_productsData, { RetrofitInstance.get().api.loadProductDetail(id) })
     }
 
     // Function to toggle favorite status of a product

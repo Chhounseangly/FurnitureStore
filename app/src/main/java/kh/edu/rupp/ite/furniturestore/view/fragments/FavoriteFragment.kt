@@ -51,7 +51,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
         favoriteViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
-                Status.Success -> it.data?.let { data -> handleSuccess(data) }
+                Status.Success -> it.data?.let { data -> handleSuccess(data.data) }
                 Status.Failed -> handleFailure()
                 else -> {}
             }

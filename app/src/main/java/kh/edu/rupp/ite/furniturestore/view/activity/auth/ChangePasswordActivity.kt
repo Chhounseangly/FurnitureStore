@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -44,7 +43,7 @@ class ChangePasswordActivity :
     }
 
     override fun setupObservers() {
-        authViewModel.resData.observe(this) {
+        authViewModel.resMsg.observe(this) {
             when (it.status) {
                 Status.Processing -> {
 

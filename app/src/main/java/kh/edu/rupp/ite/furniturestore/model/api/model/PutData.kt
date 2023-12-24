@@ -1,12 +1,8 @@
 package kh.edu.rupp.ite.furniturestore.model.api.model
 
-data class ResMessage(
+data class Res<T>(
     val message: String,
-    val data: String?
-)
-data class ResList<T>(
-    val message: String,
-    val data: List<T>,
+    val data: T,
     val meta: Meta?
 )
 
@@ -17,17 +13,7 @@ data class BodyPutData(
 
 data class PaymentModel(
     var product_id: Int,
-    var shopping_cart_id : Int,
-)
-
-class Data(
-    val id: Int,
-    val qty: Int
-)
-
-data class ResAuth(
-    val message: String,
-    val data: Token?
+    var shopping_cart_id: Int,
 )
 
 class Token(

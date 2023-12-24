@@ -5,11 +5,6 @@ class CategoryTypes (
     var name: String
 )
 
-
-data class CategoryTypeById(
-    val message: String,
-    val data: ProductByCate
-)
 data class ProductByCate(
     val id: Int,
     val name: String,

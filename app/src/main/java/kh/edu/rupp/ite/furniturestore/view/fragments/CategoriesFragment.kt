@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
@@ -41,7 +42,7 @@ class CategoriesFragment(private var id: Int) :
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
-                    it.data?.let { data -> displayProductByCate(data) }
+                    it.data?.let { data -> displayProductByCate(data.data) }
                     hideLoadingAnimation(loadingLoadProducts)
                 }
 

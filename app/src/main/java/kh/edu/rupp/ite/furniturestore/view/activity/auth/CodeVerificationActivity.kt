@@ -3,6 +3,8 @@ package kh.edu.rupp.ite.furniturestore.view.activity.auth
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -35,18 +37,34 @@ class CodeVerificationActivity :
         // Set up text input validation
         AuthValidation().handleOnChangeEditText(codeInput)
 
+        navigationBetweenEditTexts(codeInput, null) {
+            handleValidation()
+        }
         prevBack(binding.backBtn)
     }
 
     override fun setupListeners() {
         verifyBtn.setOnClickListener {
-            // Disable the verification button and submit the verification request
-            disableVerifyButton()
-            authViewModel.verifyEmail(
-                intent.getStringExtra(EMAIL_EXTRA).toString(),
-                codeInput.text.toString()
-            )
+            handleValidation()
         }
+
+        codeInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Check if the length of the text is 6 characters
+                if (s?.length == 6) {
+                    // Call handleValidation() when the length is 6
+                    handleValidation()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not used
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Not used
+            }
+        })
     }
 
     override fun setupObservers() {
@@ -89,6 +107,15 @@ class CodeVerificationActivity :
                 }
             }
         }
+    }
+
+    private fun handleValidation() {
+        // Disable the verification button and submit the verification request
+        disableVerifyButton()
+        authViewModel.verifyEmail(
+            intent.getStringExtra(EMAIL_EXTRA).toString(),
+            codeInput.text.toString()
+        )
     }
 
     /**

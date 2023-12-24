@@ -91,7 +91,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
             val (isValid, errorMessages) = validationResult
             if (isValid) {
                 //process with api
-                authViewModel.resAuth.observe(this) { it ->
+                authViewModel.resAuth.observe(this) {
                     when (it.status) {
                         Status.Processing -> {
                             errorMessage.visibility = View.GONE

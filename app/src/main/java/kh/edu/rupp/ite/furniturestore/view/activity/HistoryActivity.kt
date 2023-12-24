@@ -43,7 +43,7 @@ class HistoryActivity :
                 Status.Success -> {
                     hideLoading(lytLoading, loading)
                     if (it.data != null) {
-                        displayHistoryData(it.data)
+                        displayHistoryData(it.data.data)
                     }
                 }
 

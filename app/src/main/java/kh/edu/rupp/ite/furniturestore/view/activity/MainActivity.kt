@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
@@ -34,6 +35,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             // Handle the case when the user signs in with Google
             if (data != null && data.scheme == getString(R.string.app_scheme)) {
+
+                // Check Status
+                val status = data.getQueryParameter("status")
+                if (status == "500") {
+                    val error = data.getQueryParameter("error")
+                    Log.e("MainActivity", "Error: $error")
+                    Snackbar.make(binding.root, getString(R.string.sign_in_failed), Snackbar.LENGTH_LONG).show()
+                    return
+                }
                 Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
 
                 // Save the token to shared preferences

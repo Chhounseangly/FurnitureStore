@@ -13,16 +13,17 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentSearchBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderSearchFoundBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
+import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
-import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewHolder
+import kh.edu.rupp.ite.furniturestore.viewmodel.SearchViewModel
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
     private val searchView: SearchView by lazy { binding.searchProduct }
 
     private val handler = Handler()
-    private var searchViewHolder = SearchViewHolder()
+    private var searchViewHolder = SearchViewModel()
 
     override fun bindUi() {
 
@@ -39,7 +40,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     @SuppressLint("SetTextI18n")
     override fun setupListeners() {
         searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handling submit if needed
                 return true
@@ -82,7 +83,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     // Function to handle the search results
-    private fun handleSearchResult(searchData: ApiData<List<Product>>) {
+    private fun handleSearchResult(searchData: ApiData<Res<List<Product>>>) {
         with(binding) {
             when (searchData.status) {
                 Status.Processing -> {
@@ -98,7 +99,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                     loading.visibility = View.GONE
                     notFound.visibility = View.GONE
                     // Display the search results
-                    displayProductSearchFound(searchData.data)
+                    displayProductSearchFound(searchData.data?.data)
                 }
 
                 Status.Failed -> {

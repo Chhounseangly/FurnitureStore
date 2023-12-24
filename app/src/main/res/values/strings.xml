@@ -59,5 +59,6 @@
     <string name="profileUpdateFail">Can not update profile</string>
     <string name="passwordUpdateSuccess">Password changed successfully</string>
     <string name="passwordUpdateFail">Can not change password</string>
+    <string name="sign_in_failed">Sign in failed</string>
 
 </resources>
