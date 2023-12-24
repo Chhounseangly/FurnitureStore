@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.view.activity.auth
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -67,6 +68,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                 authViewModel.resAuth.observe(this) {
                     when (it.status) {
                         Status.Processing -> {
+                            Log.d("SignUpActivity", "Processing")
                             errorMessage.visibility = View.GONE
                             signUpBtn.isEnabled = false
                             signUpBtn.setTextColor(Color.BLACK)
@@ -74,10 +76,12 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         Status.Success -> {
+                            Log.d("SignUpActivity", "Success")
                             signUpBtn.isEnabled = true
                         }
 
                         Status.Failed -> {
+                            Log.d("SignUpActivity", "Failed")
                             it.data.let { m ->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -89,6 +93,7 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         Status.NeedVerify -> {
+                            Log.d("SignUpActivity", "NeedVerify")
                             signUpBtn.isEnabled = true
                             signUpBtn.setTextColor(Color.WHITE)
                             signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -99,7 +104,9 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                             startActivity(codeVerificationActivity)
                         }
 
-                        else -> {}
+                        else -> {
+                            Log.d("SignUpActivity", "Else")
+                        }
                     }
                 }
             } else {

@@ -57,7 +57,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             when (it.status) {
                 Status.Success -> {
                     it.data?.let { data ->
-                        displayUi(data)
+                        displayUi(data.data)
                     }
                 }
 

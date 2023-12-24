@@ -44,7 +44,7 @@ class ChangePasswordActivity :
     }
 
     override fun setupObservers() {
-        authViewModel.resData.observe(this) {
+        authViewModel.resMsg.observe(this) {
             when (it.status) {
                 Status.Processing -> {
 

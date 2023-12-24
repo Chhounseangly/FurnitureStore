@@ -84,17 +84,17 @@ interface ApiService {
     ): Response<ResAuth>
 
     @GET("api/loadProfile")
-    suspend fun loadProfile(): ResProfile
+    suspend fun loadProfile(): Response<ResProfile>
 
     @GET("api/logout")
-    suspend fun logout(): ResMessage
+    suspend fun logout(): Response<ResMessage>
 
     @Multipart
     @POST("api/updateProfile?_method=PUT")
     suspend fun updateProfile(
         @Part("name") name: RequestBody?,
         @Part file: MultipartBody.Part?,
-    ): ResProfile
+    ): Response<ResProfile>
 
     @POST("api/password/change")
     suspend fun changePassword(@Body data: Password): Response<ResMessage>
