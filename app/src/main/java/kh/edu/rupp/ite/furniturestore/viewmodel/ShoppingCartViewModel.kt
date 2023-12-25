@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
@@ -25,8 +24,6 @@ class ShoppingCartViewModel : BaseViewModel() {
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
     private val _totalPrice = MutableLiveData(0.00)
-    private var _toastMessage: String? = null
-    val toastMessage get() = _toastMessage!!
 
     // LiveData to hold Shopping Cart Items.
     val shoppingCartItems: LiveData<ApiData<List<ShoppingCart>>> get() = _shoppingCartItems
@@ -62,16 +59,21 @@ class ShoppingCartViewModel : BaseViewModel() {
 
     // Function to add a product to the shopping cart
     @SuppressLint("SuspiciousIndentation")
-    fun addProductToShoppingCart(productId: Int) {
-        if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
+    fun addProductToShoppingCart(productId: Int): String {
+        return if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
             val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
             if (existed != null) {
-                _toastMessage = "Product existed on shopping cart"
+                "Product existed on shopping cart"
+            } else {
+                addProductToCartApi(productId)
+                "Added to shopping cart"
             }
-            else addProductToCartApi(productId)
-
-        } else addProductToCartApi(productId)
+        } else {
+            addProductToCartApi(productId)
+            "Added to shopping cart"
+        }
     }
+
 
     // Add product to the shopping cart via API
     private fun addProductToCartApi(productId: Int) {
@@ -80,7 +82,6 @@ class ShoppingCartViewModel : BaseViewModel() {
             try {
                 // Call API to add a product to the shopping cart
                 RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
-                _toastMessage = ("Added to shopping cart")
             } catch (ex: Exception) {
                 Log.e("ShoppingCartViewModel", "${ex.message}")
             }

@@ -230,11 +230,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             ).show()
                             return@setOnClickListener
                         }
-                        shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
 
                         Snackbar.make(
                             requireView(),
-                            shoppingCartViewModel.toastMessage,
+                            toastMessage,
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
