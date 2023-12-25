@@ -2,12 +2,12 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.util.Log
-import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.displayFragment.DisplayFragmentActivity
 import kh.edu.rupp.ite.furniturestore.utility.AppPreference
+import kh.edu.rupp.ite.furniturestore.view.activity.auth.ResetPasswordActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.SignInActivity
 import kh.edu.rupp.ite.furniturestore.view.fragments.FavoriteFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.HomeFragment
@@ -36,6 +36,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             // Handle the case when the user signs in with Google
             if (data != null && data.scheme == getString(R.string.app_scheme)) {
 
+                val path = data.path
+                Log.d("MainActivity", "Path: $path")
+
+                when (path) {
+                    "/login" -> {
+                        Log.d("MainActivity", "Login")
+                        Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
+
+                    }
+                    "/register" -> {
+                        Log.d("MainActivity", "Register")
+                        Snackbar.make(binding.root, getString(R.string.sign_up_success), Snackbar.LENGTH_LONG).show()
+
+                    }
+                    "/password/reset" -> {
+                        Log.d("MainActivity", "Reset Password")
+                        val resetPasswordActivity = Intent(this, ResetPasswordActivity::class.java)
+                        resetPasswordActivity.putExtra("email", data.getQueryParameter("email"))
+                        resetPasswordActivity.putExtra("token", data.getQueryParameter("token"))
+                        startActivity(resetPasswordActivity)
+                        return
+                    }
+                }
+
+                Log.d("MainActivity", "Unknown")
+
                 // Check Status
                 val status = data.getQueryParameter("status")
                 if (status == "500") {
@@ -44,7 +70,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     Snackbar.make(binding.root, getString(R.string.sign_in_failed), Snackbar.LENGTH_LONG).show()
                     return
                 }
-                Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
 
                 // Save the token to shared preferences
                 val token = data.getQueryParameter("token")

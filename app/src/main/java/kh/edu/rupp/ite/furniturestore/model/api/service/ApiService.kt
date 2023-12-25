@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.model.api.service
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+import kh.edu.rupp.ite.furniturestore.model.api.model.Email
 import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Password
@@ -10,6 +11,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResetPassword
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Token
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
@@ -95,6 +97,12 @@ interface ApiService {
 
     @POST("api/password/change")
     suspend fun changePassword(@Body data: Password): Response<Res<String>>
+
+    @POST("api/password/forgot")
+    suspend fun forgotPassword(@Body data: Email): Response<Res<String>>
+
+    @POST("api/password/reset")
+    suspend fun resetPassword(@Body data: ResetPassword): Response<Res<String>>
 
     //history
     @POST("api/history")

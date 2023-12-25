@@ -54,13 +54,14 @@
     <string name="image_content">This an image</string>
     <string name="no_data">No Data</string>
     <string name="sign_in_success">You are singed in successfully</string>
+    <string name="sign_up_success">You are singed up successfully</string>
     <string name="profile_update_success">Profile updated successfully</string>
     <string name="password_update_success">Password changed successfully</string>
     <string name="sign_in_failed">Sign in failed</string>
     <string name="error_unauthorized">Invalid Email or Password</string>
     <string name="error_occurred">Can load data</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="change_language">Change Language</string>
+    <string name="change_language">Change Language to Khmer</string>
     <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="edit_profile">Edit Profile</string>

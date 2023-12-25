@@ -24,10 +24,10 @@
     <string name="already_have_an_account_txt">មានគណនីរួចហើយ?</string>
     <string name="forgot_password_txt">ភ្លេចពាក្យសម្ងាត់?</string>
     <string name="enter_your_email_address_txt">បញ្ចូលអ៊ីមែលរបស់អ្នក</string>
-    <string name="i_did_not_receive_a_code_txt">ខ្ញុំមិនទទួលបានកូដ</string>
+    <string name="i_did_not_receive_a_code_txt">ខ្ញុំមិនទទួលបានកូដទេ</string>
     <string name="resend_txt">ផ្ញើម្ដងទៀត</string>
     <string name="forgot_password_desc_txt">
-        កូនស្ម័គ្រចុះ។ សូមបញ្ចូល\nអ៊ីមែលដែលបានភ្ជាប់នឹងគណនីរបស់អ្នក។
+        សូមបញ្ចូលអ៊ីមែលដែលបានភ្ជាប់នឹងគណនីរបស់អ្នកដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។
     </string>
     <string name="enter_your_code_here_txt">បញ្ចូលកូដរបស់អ្នកនៅទីនេះ</string>
     <string name="verify_code_title">ផ្ទៀងផ្ទាត់កូដ</string>
@@ -51,16 +51,17 @@
     <string name="image_content">នេះគឺជារូបភាព</string>
     <string name="no_data">គ្មានទិន្នន័យ</string>
     <string name="sign_in_success">អ្នកបានចូលគណនីបានជោគជ័យ</string>
+    <string name="sign_up_success">អ្នកបានចុះឈ្មោះគណនីបានជោគជ័យ</string>
     <string name="profile_update_success">បន្ថែមពត៌មានគណនីជោគជ័យ</string>
     <string name="password_update_success">បានផ្លាស់ប្តូរពាក្យសម្ងាត់ជោគជ័យ</string>
     <string name="sign_in_failed">ការចូលគណនីបានបរាជ័យ</string>
     <string name="error_unauthorized">អ៊ីម៉ែលឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ</string>
     <string name="error_occurred">មានបញ្ហាកើតឡើង</string>
     <string name="sign_in_with_google">ចូលគណនីដោយក្រុម Google</string>
-    <string name="change_language">ប្ដូរភាសា</string>
-    <string name="profile">ប្រវត្តិ</string>
+    <string name="change_language">ប្ដូរភាសាទៅភាសាអង់គ្លេស</string>
+    <string name="profile">ប្រវត្តិរូប</string>
     <string name="name">ឈ្មោះ</string>
-    <string name="edit_profile">កែសម្រួលប្រវត្តិ</string>
+    <string name="edit_profile">កែសម្រួលប្រវត្តិរូប</string>
     <string name="change_password">ប្ដូរពាក្យសម្ងាត់</string>
     <string name="logout">ចាកចេញ</string>
 </resources>
