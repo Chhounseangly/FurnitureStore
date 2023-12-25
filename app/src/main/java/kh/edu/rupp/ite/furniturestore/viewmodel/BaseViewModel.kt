@@ -28,11 +28,15 @@ open class BaseViewModel : ViewModel() {
         crossinline successBlock: (T) -> ApiData<T> = { data -> ApiData(Status.Success, data) },
         crossinline failureBlock: (Response<T>) -> ApiData<T> = { ApiData(Status.Failed, null) }
     ) {
-        // Create an initial AuthApiData with Processing status
-        var responseData: ApiData<T> = ApiData(Status.Processing, null)
+        // Initial response data with Processing status
+        var responseData: ApiData<T>
 
-        // Set the initial value in the LiveData
-        response.value = responseData
+        // Check if the response LiveData already has a value
+        response.value?.let {
+            // If yes, set LoadingMore status and update the LiveData
+            responseData = ApiData(Status.LoadingMore, it.data)
+            response.postValue(responseData)
+        } ?: response.postValue(ApiData(Status.Processing, null)) // If no, set Processing status
 
         // Launch a coroutine in the IO dispatcher
         viewModelScope.launch(Dispatchers.IO) {
@@ -47,7 +51,7 @@ open class BaseViewModel : ViewModel() {
                         successBlock(res.body()!!)
                     }
 
-                    in 400..402 -> {
+                    in 400..402, in 404..499 -> {
                         val errorBody = res.errorBody()?.string() ?: "Unknown error"
                         val errorResAuth = Gson().fromJson(errorBody, T::class.java)
 
@@ -56,13 +60,6 @@ open class BaseViewModel : ViewModel() {
                     }
 
                     403 -> ApiData(Status.NeedVerify, null)
-                    in 404..499 -> {
-                        val errorBody = res.errorBody()?.string() ?: "Unknown error"
-                        val errorResAuth = Gson().fromJson(errorBody, T::class.java)
-
-                        Log.e("BaseViewModel", "Error: $errorBody")
-                        ApiData(Status.Failed, errorResAuth)
-                    }
 
                     else -> {
                         Log.e("BaseViewModel", "Error: ${res.errorBody()?.string()}")
@@ -70,8 +67,7 @@ open class BaseViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                // Handle exceptions, e.g., network issues
-                Log.e("BaseViewModel", "${e.message}")
+                Log.e("BaseViewModel", "Error: ${e.message}")
                 ApiData(Status.Failed, null)
             }
 

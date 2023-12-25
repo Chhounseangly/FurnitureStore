@@ -128,13 +128,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
                         processBar.visibility = View.GONE
-                        displayProductList(it.data)
+                        displayProductList(it.data.data)
                         swipeRefreshLayout.isRefreshing = false
                         hideLoadingAnimation(mShimmerViewContainer)
                         isLoading = false
 
                         // Calculate total page
-                        val total = it.meta?.total ?: 0
+                        val total = it.data.meta?.total ?: 0
                         totalPage = total / 4 + if (total % 4 == 0) 0 else 1
                     }
                 }

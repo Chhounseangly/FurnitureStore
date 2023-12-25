@@ -123,7 +123,7 @@ class AuthViewModel : BaseViewModel() {
             // Define the block to execute on success
             successBlock = { auth ->
                 // Update the token in AppPreference if available
-                auth.data?.let {
+                auth.data.let {
                     AppPreference.get(AppCore.get().applicationContext).setToken(it.token)
                 }
                 // Return success status with null data
@@ -164,7 +164,7 @@ class AuthViewModel : BaseViewModel() {
             response = _resAuth,
             request = { RetrofitInstance.get().api.verifyEmail(VerifyEmailRequest(email, code)) },
             successBlock = { auth ->
-                auth.data?.let {
+                auth.data.let {
                     AppPreference.get(AppCore.get().applicationContext).setToken(it.token)
                 }
                 ApiData(Status.Success, null)

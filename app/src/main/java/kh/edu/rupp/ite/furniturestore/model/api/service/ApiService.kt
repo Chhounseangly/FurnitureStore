@@ -32,7 +32,7 @@ interface ApiService {
     @GET("api/products?size=4")
     suspend fun loadProductList(
         @Query("page") page: Int = 1
-    ): Res<List<Product>>
+    ): Response<Res<List<Product>>>
 
     //End Point fetching product Detail By passing id
     @GET("api/products/{id}")
