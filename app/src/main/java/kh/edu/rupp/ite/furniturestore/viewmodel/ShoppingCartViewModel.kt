@@ -74,7 +74,6 @@ class ShoppingCartViewModel : BaseViewModel() {
         }
     }
 
-
     // Add product to the shopping cart via API
     private fun addProductToCartApi(productId: Int) {
         // Processing as background

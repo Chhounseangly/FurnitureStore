@@ -125,9 +125,12 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {
-                        favoriteViewModel.toggleFavorite(item) {
-                            // Callback function if needed
-                        }
+                        favoriteViewModel.toggleFavorite(
+                            product = item,
+                            reloadFavorites = {
+                                favoriteViewModel.loadFavoriteProducts()
+                            }
+                        )
                     }
                 }
             }

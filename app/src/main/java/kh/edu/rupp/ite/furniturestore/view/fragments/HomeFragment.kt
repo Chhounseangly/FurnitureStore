@@ -241,10 +241,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {
-                        favoriteViewModel.toggleFavorite(item) {
-                            // Set the favorite button image based on the result
-                            bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
-                        }
+                        favoriteViewModel.toggleFavorite(
+                            product = item,
+                            callback = { isFavorite ->
+                                bntFav.setImageResource(if (isFavorite) R.drawable.ic_favorited else R.drawable.ic_fav)
+                            },
+                            reloadFavorites = {
+                                favoriteViewModel.loadFavoriteProducts()
+                            }
+                        )
                     }
                 }
             }

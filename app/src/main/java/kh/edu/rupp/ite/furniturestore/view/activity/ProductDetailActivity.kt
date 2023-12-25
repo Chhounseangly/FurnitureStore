@@ -87,13 +87,16 @@ class ProductDetailActivity :
 
             // Favorite button click listener
             bntFav.setOnClickListener {
-                productDetailViewModel.toggleFavorite(data) { result ->
-                    // Set the favorite button image based on the result
-                    bntFav.setImageResource(
-                        if (result) R.drawable.ic_favorited
-                        else R.drawable.ic_fav
-                    )
-                }
+                productDetailViewModel.toggleFavorite(
+                    data,
+                    { result ->
+                        // Set the favorite button image based on the result
+                        bntFav.setImageResource(
+                            if (result) R.drawable.ic_favorited
+                            else R.drawable.ic_fav
+                        )
+                    }
+                )
             }
         }
     }
