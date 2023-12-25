@@ -1,22 +1,21 @@
 <resources>
 
-    <string name="app_scheme">furniturestore</string>
+    <string name="app_scheme" translatable="false">furniturestore</string>
 
     <string name="ic_pf_txt">Profile</string>
     <string name="ic_cart_txt">Cart</string>
     <string name="ic_home_txt">Home</string>
     <string name="ic_fav_txt">Favorite</string>
-    <string name="title_app">Furniture Store</string>
     <string name="discount_txt">Sale Up\n To 70% off</string>
     <string name="chair_txt">Accent chairs make great conversation pieces, as well as giving extra seating if necessary without taking up a lot of space," says interior designer Andi Morse.</string>
     <string name="description_search">Search here..</string>
     <string name="text_splashscreen">Modern Furniture\nFor Your Dream\nHourse</string>
-    <string name="welcomeTxt">welcome</string>
+    <string name="welcome_txt">welcome</string>
     <string name="email_txt">Email</string>
     <string name="signIn_txt">Sign In</string>
-    <string name="pwInput">Password</string>
-    <string name="emInput">Email</string>
-    <string name="clickHereBtn">Click Here</string>
+    <string name="pw_input">Password</string>
+    <string name="em_input">Email</string>
+    <string name="click_here_btn">Click Here</string>
     <string name="forgot_your_password_txt">Forgot your password?</string>
     <string name="sign_in_txt">Sign In</string>
     <string name="sign_up_txt">Sign Up</string>
@@ -55,11 +54,16 @@
     <string name="image_content">This an image</string>
     <string name="no_data">No Data</string>
     <string name="sign_in_success">You are singed in successfully</string>
-    <string name="profileUpdateSuccess">Profile updated successfully</string>
-    <string name="profileUpdateFail">Can not update profile</string>
-    <string name="passwordUpdateSuccess">Password changed successfully</string>
-    <string name="passwordUpdateFail">Can not change password</string>
+    <string name="profile_update_success">Profile updated successfully</string>
+    <string name="password_update_success">Password changed successfully</string>
     <string name="sign_in_failed">Sign in failed</string>
     <string name="error_unauthorized">Invalid Email or Password</string>
-
+    <string name="error_occurred">Can load data</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="change_language">Change Language</string>
+    <string name="profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
 </resources>

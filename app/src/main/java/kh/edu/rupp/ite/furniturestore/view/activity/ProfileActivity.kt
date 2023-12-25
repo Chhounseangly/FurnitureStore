@@ -14,6 +14,7 @@ import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProfileBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.auth.ChangePasswordActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
@@ -25,6 +26,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private val logoutBtn: Button by lazy { binding.logoutBtn }
     private val profile: ImageView by lazy { binding.profile }
     private val username: TextView by lazy { binding.username }
+    private val languageBtn: Button by lazy { binding.changeLanguageBtn }
 
     private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
     private lateinit var changePasswordLauncher: ActivityResultLauncher<Intent>
@@ -50,6 +52,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         logoutBtn.setOnClickListener {
             logOut()
         }
+
+        languageBtn.setOnClickListener {
+            val language = resources.configuration.locale.language
+            if (language == "en") {
+                changeLanguage("km")
+            } else {
+                changeLanguage("en")
+            }
+        }
     }
 
     override fun setupObservers() {
@@ -63,6 +74,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
                 Status.Unauthorized -> {
                     finish()
+                }
+
+                Status.Failed -> {
+                    Snackbar.make(
+                        binding.root,
+                        R.string.error_occurred,
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
 
                 else -> {
@@ -80,7 +99,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
                 RESULT_OK -> {
                     Snackbar.make(
                         binding.root,
-                        R.string.passwordUpdateSuccess,
+                        R.string.password_update_success,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
@@ -102,7 +121,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
 
                     Snackbar.make(
                         binding.root,
-                        R.string.profileUpdateSuccess,
+                        R.string.profile_update_success,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
@@ -136,5 +155,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
                 }
             }
         }
+    }
+
+    // Function to change the language
+    private fun changeLanguage(languageCode: String) {
+        AppPreference.get(this).setLanguage(languageCode)
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 }

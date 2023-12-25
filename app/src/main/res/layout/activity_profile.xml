@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <!--    app bar-->
     <com.google.android.material.appbar.AppBarLayout
-        app:elevation="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,13 +22,14 @@
                 android:id="@+id/backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/image_content"
                 android:src="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Profile"
+                android:text="@string/profile"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -36,112 +37,142 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.4">
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.4"
+        app:cardCornerRadius="10dp">
+
         <RelativeLayout
-            android:background="@color/title_price_color"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/title_price_color"
+            android:gravity="center">
+
             <androidx.cardview.widget.CardView
-                android:layout_centerHorizontal="true"
                 android:id="@+id/lyt_profile"
-                app:cardCornerRadius="50dp"
                 android:layout_width="120dp"
-                android:layout_height="120dp">
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                app:cardCornerRadius="50dp">
+
                 <ImageView
                     android:id="@+id/profile"
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/image_content"
+                    android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
+
             <TextView
                 android:id="@+id/username"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingVertical="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lyt_profile"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="name"
-                android:textAlignment="center" />
+                android:paddingVertical="5dp"
+                android:text="@string/name"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="5dp"
-        android:paddingTop="30dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="30dp">
+
         <androidx.cardview.widget.CardView
-            android:layout_marginVertical="5dp"
-            app:cardCornerRadius="10dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:layout_marginVertical="5dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="10dp">
+
             <Button
-                android:id="@+id/editAvatarBtn"
-                android:textAlignment="textStart"
-                android:drawablePadding="10dp"
-                android:paddingHorizontal="10dp"
+                android:id="@+id/changeLanguageBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/trans"
                 android:drawableStart="@drawable/ic_edit"
                 android:drawableEnd="@drawable/ic_next"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/change_language"
+                android:textAlignment="textStart"
                 android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_minus"
-                android:text="Edit Profile"/>
+                app:srcCompat="@drawable/ic_minus" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginVertical="5dp"
             android:orientation="vertical"
+            app:cardCornerRadius="10dp">
+
+            <Button
+                android:id="@+id/editAvatarBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/trans"
+                android:drawableStart="@drawable/ic_edit"
+                android:drawableEnd="@drawable/ic_next"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/edit_profile"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                app:srcCompat="@drawable/ic_minus" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:layout_marginVertical="5dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="10dp">
+
             <Button
                 android:id="@+id/changePwBtn"
-                android:drawablePadding="10dp"
-                android:textAlignment="textStart"
-                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@color/trans"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawableEnd="@drawable/ic_next"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/change_password"
+                android:textAlignment="textStart"
                 android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/ic_minus"
-                android:text="Change Password"/>
+                app:srcCompat="@drawable/ic_minus" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginVertical="5dp"
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
+            app:cardCornerRadius="10dp">
+
             <Button
                 android:id="@+id/logoutBtn"
-                android:drawablePadding="10dp"
-                android:textAlignment="textStart"
-                android:paddingHorizontal="10dp"
-                android:background="@color/trans"
-                android:drawableStart="@drawable/ic_logout"
-                android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Logout"/>
+                android:background="@color/trans"
+                android:drawableStart="@drawable/ic_logout"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/logout"
+                android:textAlignment="textStart"
+                android:textAllCaps="false" />
         </androidx.cardview.widget.CardView>
-
-
     </LinearLayout>
-
 </LinearLayout>

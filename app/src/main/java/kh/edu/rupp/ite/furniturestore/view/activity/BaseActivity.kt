@@ -15,6 +15,8 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
+import java.util.Locale
 
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
@@ -23,6 +25,21 @@ abstract class BaseActivity<T : ViewBinding>(
     private var _binding: T? = null
     protected val binding: T
         get() = _binding!!
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(updateBaseContextLocale(newBase))
+    }
+
+    private fun updateBaseContextLocale(context: Context): Context {
+        val language = AppPreference.get(context).getLanguage() ?: "en"
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+
+        val configuration = context.resources.configuration
+        configuration.setLocale(locale)
+
+        return context.createConfigurationContext(configuration)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +93,11 @@ abstract class BaseActivity<T : ViewBinding>(
         }
     }
 
-    fun navigationBetweenEditTexts(editText: EditText, nextEditText: EditText?, onAction: (() -> Unit)? = null) {
+    fun navigationBetweenEditTexts(
+        editText: EditText,
+        nextEditText: EditText?,
+        onAction: (() -> Unit)? = null
+    ) {
         editText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
                 nextEditText?.requestFocus()
