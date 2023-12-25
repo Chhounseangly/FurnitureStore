@@ -128,6 +128,9 @@ class AuthViewModel : BaseViewModel() {
                 }
                 // Return success status with null data
                 ApiData(Status.Success, null)
+            },
+            failureBlock = {
+                ApiData(Status.Unauthorized, null)
             }
         )
     }
@@ -178,9 +181,13 @@ class AuthViewModel : BaseViewModel() {
             response = _userData,
             request = { RetrofitInstance.get().api.loadProfile() },
             failureBlock = { err ->
-                Log.e("AuthViewModel", "Update Fail: $err")
-                AppPreference.get(AppCore.get().applicationContext).removeToken()
-                ApiData(Status.Failed, null)
+                when (err.code()) {
+                    401 -> {
+                        AppPreference.get(AppCore.get().applicationContext).removeToken()
+                        ApiData(Status.Unauthorized, null)
+                    }
+                    else -> ApiData(Status.Failed, null)
+                }
             }
         )
     }
@@ -195,8 +202,7 @@ class AuthViewModel : BaseViewModel() {
                 ApiData(Status.Success, null)
             },
             failureBlock = { err ->
-                Log.e("AuthViewModel", "Update Fail: $err")
-                AppPreference.get(AppCore.get().applicationContext).removeToken()
+                Log.e("AuthViewModel", "Logout Fail: $err")
                 ApiData(Status.Failed, null)
             }
         )
@@ -214,9 +220,7 @@ class AuthViewModel : BaseViewModel() {
     fun changePassword(current: String, new: String, confirm: String) {
         performApiCall(
             response = _resMsg,
-            request = {
-                RetrofitInstance.get().api.changePassword(Password(current, new, confirm))
-            }
+            request = { RetrofitInstance.get().api.changePassword(Password(current, new, confirm)) }
         )
     }
 

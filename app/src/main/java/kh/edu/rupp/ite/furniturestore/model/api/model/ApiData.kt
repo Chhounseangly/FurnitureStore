@@ -13,5 +13,5 @@ data class Meta(
 )
 
 enum class Status{
-    Processing, Success, Failed, LoadingMore, NeedVerify
+    Processing, Success, Failed, LoadingMore, NeedVerify, Unauthorized
 }

@@ -51,15 +51,16 @@ open class BaseViewModel : ViewModel() {
                         successBlock(res.body()!!)
                     }
 
-                    in 400..402, in 404..499 -> {
+                    401 -> failureBlock(res)
+                    403 -> ApiData(Status.NeedVerify, null)
+
+                    in 400..499 -> {
                         val errorBody = res.errorBody()?.string() ?: "Unknown error"
                         val errorResAuth = Gson().fromJson(errorBody, T::class.java)
 
                         Log.e("BaseViewModel", "Error: $errorBody")
                         ApiData(Status.Failed, errorResAuth)
                     }
-
-                    403 -> ApiData(Status.NeedVerify, null)
 
                     else -> {
                         Log.e("BaseViewModel", "Error: ${res.errorBody()?.string()}")

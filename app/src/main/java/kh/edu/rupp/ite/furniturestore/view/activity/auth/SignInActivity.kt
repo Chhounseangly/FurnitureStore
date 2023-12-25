@@ -122,6 +122,15 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                         }
 
+                        Status.Unauthorized -> {
+                            errorMessage.visibility = View.VISIBLE
+                            errorMessage.text = getString(R.string.error_unauthorized)
+                            // Enable the button after sign-in logic
+                            signInBtn.isEnabled = true
+                            signInBtn.setTextColor(Color.WHITE)
+                            signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                        }
+
                         Status.NeedVerify -> {
                             val codeVerificationActivity =
                                 Intent(this, CodeVerificationActivity::class.java).apply {
