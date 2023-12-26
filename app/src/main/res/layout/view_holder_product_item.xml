@@ -1,119 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="230dp"
     android:layout_centerHorizontal="true"
     android:layout_margin="5dp"
     android:background="@drawable/border_product"
-    android:orientation="vertical"
     android:elevation="2dp"
+    android:orientation="vertical"
     android:padding="5dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/bg_search">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/chair" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="2dp"
-                app:cardCornerRadius="5dp">
-
-                <ImageButton
-                    android:id="@+id/bntFav"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/trans"
-                    android:backgroundTint="@color/trans"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_fav"
-                    android:contentDescription="@string/image_content" />
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_height="match_parent"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/stroke_color"
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:orientation="vertical"
-            tools:ignore="NestedWeights">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="Title" />
-
-            <Space
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="price" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                app:cardCornerRadius="5dp">
-
-                <Button
-                    android:id="@+id/addToCartBtn"
+                android:layout_weight="0.6">
+                <!-- Media -->
+                <ImageView
+                    android:id="@+id/img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:background="@color/black"
-                    android:text="Add to Card"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    app:tint="@color/black"
-                    tools:ignore="HardcodedText,SmallSp" />
-            </androidx.cardview.widget.CardView>
+                    android:contentDescription="image Product"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/chair" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_margin="3dp"
+                    app:cardCornerRadius="5dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/bntFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:background="@color/trans"
+                        android:backgroundTint="@color/trans"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_fav"
+                        android:contentDescription="TODO" />
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="14sp"
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Product Name"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Title, secondary and supporting text -->
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="price"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?android:attr/textColorSecondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:gravity="bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp">
+                        <Button
+                            android:id="@+id/addToCartBtn"
+                            style="?attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/black"
+                            android:text="Add To Cart"
+                            android:textColor="@color/white"
+                            android:textSize="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
         </LinearLayout>
-    </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>

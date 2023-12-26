@@ -26,8 +26,10 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.utility.AppPreference
+import kh.edu.rupp.ite.furniturestore.view.activity.MainActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
+import kh.edu.rupp.ite.furniturestore.viewmodel.BadgesQuantityStoring
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
@@ -43,6 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val productSliderViewModel: ProductSliderViewModel by viewModels()
     private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
     private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
+    private val badgesQuantityStoring: BadgesQuantityStoring by viewModels({ requireActivity() })
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
@@ -190,6 +193,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     // Display product list on home screen
     private fun displayProductList(productsList: List<Product>) {
+        val activity = requireActivity() as MainActivity
+        val activityBinding = activity.binding
+
+
         // Create GridLayout Manager
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         binding.productListRecyclerView.layoutManager = gridLayoutManager
@@ -219,6 +226,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     // Set favorite button based on the isFavorite flag
                     bntFav.setImageResource(if (item.isFavorite == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
 
+
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         val token = AppPreference.get(requireContext()).getToken()
@@ -230,13 +238,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             ).show()
                             return@setOnClickListener
                         }
-                        shoppingCartViewModel.addProductToShoppingCart(item.id)
 
-                        Snackbar.make(
-                            requireView(),
-                            shoppingCartViewModel.toastMessage,
-                            Snackbar.LENGTH_LONG
-                        ).show()
+
+                        shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        shoppingCartViewModel._toastMessage.let { res ->
+                            if (res === "Product existed on shopping cart") {
+                                Snackbar.make(
+                                    requireView(),
+                                    res,
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }else {
+                                if (res != null) {
+                                    Snackbar.make(
+                                        requireView(),
+                                        res,
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+                                badgesQuantityStoring.setQtyShoppingCart(1)
+                                badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()){
+                                    setupBadge(R.id.mnuCart, it, activityBinding)
+                                }
+                            }
+                        }
                     }
 
                     // Favorite button click listener
@@ -253,6 +278,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         productListAdapter.setData(productsList)
         binding.productListRecyclerView.adapter = productListAdapter
     }
+
+
 
     // Display slider product on the top
     private fun displaySliderProduct(productSlider: List<ProductSlider?>) {

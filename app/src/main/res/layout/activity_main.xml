@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -49,21 +48,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!--    display fragment-->
-
-    <!--    bottom navigation bar-->
     <FrameLayout
         android:id="@+id/lytFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <!--    bottom navigation bar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_margin="5dp"
+        style="@style/Widget.Material3.BottomNavigationView.ActiveIndicator"
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@drawable/style_nav_bar"
-        app:labelVisibilityMode="labeled"
         app:menu="@menu/nav_bar_activity" />
 
 </LinearLayout>

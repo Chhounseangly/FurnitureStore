@@ -56,6 +56,18 @@
                     android:textStyle="bold"
                     android:visibility="visible" />
             </LinearLayout>
+            <LinearLayout
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                android:gravity="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_view_list"
+                    android:id="@+id/viewGroupSwitch"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favoriteRecyclerView"
                 android:layout_width="match_parent"

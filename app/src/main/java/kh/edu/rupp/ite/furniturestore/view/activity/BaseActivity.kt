@@ -14,14 +14,16 @@ import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.badge.BadgeDrawable
 import kh.edu.rupp.ite.furniturestore.R
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
 ) : AppCompatActivity() {
 
     private var _binding: T? = null
-    protected val binding: T
+    val binding: T
         get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,20 @@ abstract class BaseActivity<T : ViewBinding>(
     abstract fun initActions()
     abstract fun setupListeners()
     abstract fun setupObservers()
+
+    //show badge on bottom navigation
+    fun setupBadge(itemId: Int, value: Int, binding: ActivityMainBinding) {
+        val badge: BadgeDrawable = binding.bottomNavigationView.getOrCreateBadge(itemId)
+        badge.isVisible = true
+        badge.number = value
+    }
+
+    //Clear Badge that show on button Navigation
+    fun clearBadge(itemId: Int, binding: ActivityMainBinding) {
+        val badge: BadgeDrawable = binding.bottomNavigationView.getOrCreateBadge(itemId)
+        badge.isVisible = false
+        badge.clearNumber()
+    }
 
     fun loadingImg(context: Context): CircularProgressDrawable {
         val circularProgressDrawable = CircularProgressDrawable(context)
@@ -76,7 +92,11 @@ abstract class BaseActivity<T : ViewBinding>(
         }
     }
 
-    fun navigationBetweenEditTexts(editText: EditText, nextEditText: EditText?, onAction: (() -> Unit)? = null) {
+    fun navigationBetweenEditTexts(
+        editText: EditText,
+        nextEditText: EditText?,
+        onAction: (() -> Unit)? = null
+    ) {
         editText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
                 nextEditText?.requestFocus()

@@ -137,12 +137,13 @@
                 </LinearLayout>
                 <!--  products list-->
                 <androidx.recyclerview.widget.RecyclerView
+                    android:overScrollMode="never"
                     android:id="@+id/productListRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
-                    android:paddingBottom="50dp"/>
+                    android:paddingBottom="50dp" />
 
                 <ProgressBar
                     android:id="@+id/loading"
@@ -155,9 +156,9 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBtn"
+        app:fabSize="mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
