@@ -67,7 +67,7 @@ interface ApiService {
     suspend fun searchProductByName(@Query("name") name: String): Response<Res<List<Product>>>
 
     @POST("api/favorite")
-    suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Res<Boolean>
+    suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Response<Res<Boolean>>
 
     @POST("api/login")
     suspend fun login(@Body login: Login): Response<Res<Token>>

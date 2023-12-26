@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
-import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
-import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,29 +78,37 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    // Function to toggle the favorite status of a product
-    fun toggleFavorite(
-        product: Product,
-        callback: (Boolean) -> Unit = {},
-        reloadFavorites: () -> Unit = {}
+    // Function to perform API calls asynchronously and handle the response
+    fun <T> performApiCall(
+        request: suspend () -> Response<T>,
+        successBlock: (T) -> ApiData<T> = { data -> ApiData(Status.Success, data) },
+        failureBlock: (Response<T>) -> ApiData<T> = { ApiData(Status.Failed, null) },
+        reloadData: () -> Unit = {}
     ) {
+        // Launch a coroutine in the IO dispatcher
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // Toggle favorite status through API
-                val response =
-                    RetrofitInstance.get().api.toggleFavorite(AddProductToShoppingCart(product.id))
-                val apiData = response.data
-                callback(apiData)
+                val res = request.invoke()
+                when (res.code()) {
+                    in 200..204 -> {
+                        Log.d("BaseViewModel", "Success: ${res.body()}")
+                        successBlock(res.body()!!)
+                    }
+
+                    else -> {
+                        Log.e("BaseViewModel", "Error: ${res.errorBody()?.string()}")
+                        failureBlock(res)
+                    }
+                }
             } catch (ex: Exception) {
                 // Handle exceptions and log the error
                 ex.message?.let { Log.e("FavoriteViewModel", it) }
-                callback(false)
+                ApiData(Status.Failed, null)
             }
 
-            // Performing UI-related operations outside the background thread
             withContext(Dispatchers.Main.immediate) {
-                // Reloading the list of favorite products after toggling
-                reloadFavorites()
+                reloadData()
             }
         }
     }
