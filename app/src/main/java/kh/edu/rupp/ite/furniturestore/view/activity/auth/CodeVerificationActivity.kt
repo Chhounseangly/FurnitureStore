@@ -70,6 +70,10 @@ class CodeVerificationActivity :
                 // Not used
             }
         })
+
+        resendCodeBtn.setOnClickListener {
+            startCountdownTimer()
+        }
     }
 
     override fun setupObservers() {
@@ -105,7 +109,7 @@ class CodeVerificationActivity :
                 else -> {
                     // Handle any other unknown status
                     errMsg.visibility = View.VISIBLE
-                    errMsg.text = "Something went wrong"
+                    errMsg.text = getString(R.string.error_occurred)
                     verifyBtn.isEnabled = true
                     verifyBtn.setTextColor(Color.WHITE)
                     verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -113,6 +117,40 @@ class CodeVerificationActivity :
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.resAuth.removeObservers(this)
+        authViewModel.validationVerify.removeObservers(this)
+
+        // Cancel the countdown timer to prevent leaks
+        if (::countdownTimer.isInitialized) {
+            countdownTimer.cancel()
+        }
+    }
+
+    private fun startCountdownTimer() {
+        resendCodeBtn.isEnabled = false
+        countdownTimer = object : CountDownTimer(300000, 1000) { // 5 minutes countdown
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = millisUntilFinished / 60000
+                val seconds = (millisUntilFinished % 60000) / 1000
+
+                val countdownMessage = if (minutes > 0) {
+                    resources.getString(R.string.resend_code_countdown_minutes, minutes, seconds)
+                } else {
+                    resources.getString(R.string.resend_code_countdown_seconds, seconds)
+                }
+                resendCodeContent.text = countdownMessage
+            }
+
+            override fun onFinish() {
+                resendCodeContent.text = getString(R.string.i_did_not_receive_a_code_txt)
+                resendCodeBtn.isEnabled = true
+            }
+        }.start()
+    }
+
 
     private fun verifyEmail() {
         authViewModel.verifyEmail(
@@ -165,11 +203,5 @@ class CodeVerificationActivity :
         verifyBtn.isEnabled = true
         verifyBtn.setTextColor(Color.WHITE)
         verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authViewModel.resAuth.removeObservers(this)
-        authViewModel.validationVerify.removeObservers(this)
     }
 }

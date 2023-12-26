@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="ic_pf_txt">ប្រវត្តិរូប</string>
-    <string name="ic_cart_txt">កាត</string>
+    <string name="ic_cart_txt">កន្ត្រក</string>
     <string name="ic_home_txt">ទំព័រដើម</string>
     <string name="ic_fav_txt">ចូលចិត្ត</string>
     <string name="discount_txt">លក់ថ្លៃកំពុងតំរូវ\n តិចពី 70%</string>
@@ -56,7 +57,7 @@
     <string name="password_update_success">បានផ្លាស់ប្តូរពាក្យសម្ងាត់ជោគជ័យ</string>
     <string name="sign_in_failed">ការចូលគណនីបានបរាជ័យ</string>
     <string name="error_unauthorized">អ៊ីម៉ែលឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ</string>
-    <string name="error_occurred">មានបញ្ហាកើតឡើង</string>
+    <string name="error_occurred">មានអ្វីមួយមិនប្រក្រតី</string>
     <string name="sign_in_with_google">ចូលគណនីដោយក្រុម Google</string>
     <string name="change_language">ប្ដូរភាសាទៅភាសាអង់គ្លេស</string>
     <string name="profile">ប្រវត្តិរូប</string>
@@ -64,6 +65,10 @@
     <string name="edit_profile">កែសម្រួលប្រវត្តិរូប</string>
     <string name="change_password">ប្ដូរពាក្យសម្ងាត់</string>
     <string name="logout">ចាកចេញ</string>
-    <string name="send_reset_email_already">We have send email for reset already</string>
-    <string name="send_reset">Send reset password</string>
+    <string name="send_reset_email_already">យើងបានផ្ញើអ៊ីមែលសម្រាប់ការកំណត់ហេតុពាក្យសម្ងាត់រួចហើយ</string>
+    <string name="send_reset">ផ្ញើសារកំណត់ពាក្យសម្ងាត់ឡើងវិញ</string>
+    <string name="reset_password_success">បានកំណត់ហេតុពាក្យសម្ងាត់ឡើងវិញជោគជ័យ</string>
+    <string name="resend_code_countdown_minutes">ផ្ញើរលេខកូដ: %1$02d:%2$02d នៅសល់</string>
+    <string name="resend_code_countdown_seconds">ផ្ញើរលេខកូដ: %ds នៅសល់</string>
+
 </resources>
