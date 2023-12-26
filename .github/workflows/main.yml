@@ -43,7 +43,7 @@ jobs:
           sudo npm install -g firebase-tools
           
           # Distribute to Firebase App Distribution
-          firebase appdistribution:distribute furniture-store.apk --app "${APP_ID} --token "${FIREBASE_TOKEN}"
+          firebase appdistribution:distribute furniture-store.apk --app "${APP_ID}" --token "${FIREBASE_TOKEN}"
         env:
           APP_ID: ${{ secrets.APP_ID }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
