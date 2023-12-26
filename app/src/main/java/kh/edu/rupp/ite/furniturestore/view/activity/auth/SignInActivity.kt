@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.BuildConfig
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySignInBinding
@@ -41,6 +42,16 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
         navigationBetweenEditTexts(email, password)
         navigationBetweenEditTexts(password, null) {
             handleSignIn()
+        }
+
+        // Get isReset from intent
+        val isReset = intent.getBooleanExtra("isReset", false)
+        if (isReset) {
+            Snackbar.make(
+                binding.root,
+                R.string.reset_password_success,
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 

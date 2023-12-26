@@ -171,12 +171,10 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
     private fun initSignInScreenDisplay() {
         //get value from Sign In Button
         val signInBtn = binding.signInBtn
-        //defined activity SignIn we're want to route
-        val signInScreen = Intent(this, SignInActivity::class.java)
 
         //action when user click sign in button it will go to sign in screen
         signInBtn.setOnClickListener {
-            startActivity(signInScreen)
+            finish()
         }
     }
 

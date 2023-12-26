@@ -59,7 +59,7 @@
     <string name="password_update_success">Password changed successfully</string>
     <string name="sign_in_failed">Sign in failed</string>
     <string name="error_unauthorized">Invalid Email or Password</string>
-    <string name="error_occurred">Can load data</string>
+    <string name="error_occurred">Something went wrong</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="change_language">Change Language to Khmer</string>
     <string name="profile">Profile</string>
@@ -67,4 +67,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>
     <string name="logout">Logout</string>
+    <string name="send_reset_email_already">We have send email for reset already</string>
+    <string name="send_reset">Send reset password</string>
+    <string name="reset_password_success">Reset password successfully</string>
+    <string name="resend_code_countdown_minutes">Resend code: %1$02d:%2$02d remaining</string>
+    <string name="resend_code_countdown_seconds">Resend code: %ds remaining</string>
 </resources>
