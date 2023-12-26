@@ -49,6 +49,6 @@ jobs:
           echo "$FIREBASE_TOKEN" | firebase login --no-localhost
           
           # Deploy to Firebase (replace <YOUR_FIREBASE_PROJECT_ID> with your actual project ID)
-          firebase deploy --project <YOUR_FIREBASE_PROJECT_ID> --token "$FIREBASE_TOKEN"
+          firebase deploy --project furniturestore-ite --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
