@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.badge.BadgeDrawable
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 
 abstract class BaseFragment<T : ViewBinding>(
@@ -45,6 +47,18 @@ abstract class BaseFragment<T : ViewBinding>(
     abstract fun setupListeners()
     abstract fun setupObservers()
 
+    //show badge on bottom navigation
+    fun setupBadge(itemId: Int, value: Int, binding: ActivityMainBinding ){
+        val baseActivity = activity as BaseActivity<*>
+        baseActivity.setupBadge(itemId, value, binding)
+    }
+
+    //Clear Badge that show on button Navigation
+    fun clearBadge(itemId: Int, value: Int, binding: ActivityMainBinding){
+        val baseActivity = activity as BaseActivity<*>
+        baseActivity.clearBadge(itemId, binding)
+    }
+
     fun loadingImg(context: Context): CircularProgressDrawable {
         val baseActivity = activity as BaseActivity<*>
         return baseActivity.loadingImg(context)
@@ -59,4 +73,6 @@ abstract class BaseFragment<T : ViewBinding>(
         val baseActivity = activity as BaseActivity<*>
         baseActivity.hideLoadingAnimation(viewContainerLoadingId)
     }
+
+
 }

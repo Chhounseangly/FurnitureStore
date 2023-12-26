@@ -19,6 +19,8 @@ class ShoppingCartViewModel : BaseViewModel() {
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
     private val _totalPrice = MutableLiveData(0.00)
+     var _toastMessage: String? = null
+//    val toastMessage get() = _toastMessage!!
 
     // LiveData to hold Shopping Cart Items.
     val shoppingCartItems: LiveData<ApiData<Res<List<ShoppingCart>>>> get() = _shoppingCartItems

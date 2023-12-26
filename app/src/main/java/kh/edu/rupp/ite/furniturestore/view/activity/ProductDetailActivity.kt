@@ -1,27 +1,39 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
+import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductDetailBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCarouselBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.viewmodel.BadgesQuantityStoring
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
 class ProductDetailActivity :
     BaseActivity<ActivityProductDetailBinding>(ActivityProductDetailBinding::inflate) {
+    private val badgesQuantityStoring: BadgesQuantityStoring by viewModels()
+
+    private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     private var id = 0
     private val productDetailViewModel = ProductDetailViewModel()
 
     override fun initActions() {
+        shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
         // Get id from previous activity
         val intent = intent
         id = intent.getIntExtra("id", 0)
@@ -63,6 +75,8 @@ class ProductDetailActivity :
     }
 
     private fun displayUi(data: Product) {
+        val activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+
         // Display carousel of product images
         data.imageUrls.let { img ->
             if (img != null) {
@@ -75,7 +89,30 @@ class ProductDetailActivity :
             name.text = data.name
             price.text = "$ " + data.price.toString()
             description.text = data.description
-
+            addToCartBtn.setOnClickListener {
+                shoppingCartViewModel.addProductToShoppingCart(data.id)
+                shoppingCartViewModel._toastMessage.let { res ->
+                    if (res === "Product existed on shopping cart") {
+                        Snackbar.make(
+                            binding.root,
+                            res.toString(),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    } else {
+                        if (res != null) {
+                            Snackbar.make(
+                                binding.root,
+                                res.toString(),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                        badgesQuantityStoring.setQtyShoppingCart(1)
+                        badgesQuantityStoring.qtyShoppingCart.observe(this@ProductDetailActivity) {
+                            setupBadge(R.id.mnuCart, it, activityMainBinding)
+                        }
+                    }
+                }
+            }
             // Set favorite button based on the isFavorite flag
             bntFav.setImageResource(
                 when (data.is_favorite?.is_favourited) {
@@ -95,6 +132,7 @@ class ProductDetailActivity :
                     )
                 }
             }
+
         }
     }
 

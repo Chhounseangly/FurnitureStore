@@ -56,12 +56,12 @@
 
     <!--    bottom navigation bar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_margin="5dp"
+        style="@style/Widget.Material3.BottomNavigationView.ActiveIndicator"
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@drawable/style_nav_bar"
-        app:labelVisibilityMode="labeled"
         app:menu="@menu/nav_bar_activity" />
 
 </LinearLayout>

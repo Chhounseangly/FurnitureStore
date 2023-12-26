@@ -97,16 +97,17 @@
             app:cardCornerRadius="10dp">
 
             <Button
+                android:textColor="@color/black"
+                android:textAlignment="textStart"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="10dp"
                 android:id="@+id/changeLanguageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/trans"
                 android:drawableStart="@drawable/ic_edit"
                 android:drawableEnd="@drawable/ic_next"
-                android:drawablePadding="10dp"
-                android:paddingHorizontal="10dp"
                 android:text="@string/change_language"
-                android:textAlignment="textStart"
                 android:textAllCaps="false"
                 app:srcCompat="@drawable/ic_minus" />
         </androidx.cardview.widget.CardView>
@@ -119,6 +120,7 @@
             app:cardCornerRadius="10dp">
 
             <Button
+                android:textColor="@color/black"
                 android:id="@+id/editAvatarBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -141,6 +143,7 @@
             app:cardCornerRadius="10dp">
 
             <Button
+                android:textColor="@color/black"
                 android:id="@+id/changePwBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -163,6 +166,7 @@
             app:cardCornerRadius="10dp">
 
             <Button
+                android:textColor="@color/black"
                 android:id="@+id/logoutBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

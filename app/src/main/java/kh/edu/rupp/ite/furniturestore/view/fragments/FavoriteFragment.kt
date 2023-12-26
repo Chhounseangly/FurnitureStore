@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,6 +24,8 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
     private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
     private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
+
+    private lateinit var switchViewGroup: ImageView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var noDataMsg: TextView
@@ -30,6 +33,8 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
         noDataMsg = binding.noData
+        switchViewGroup = binding.viewGroupSwitch
+
         mShimmerViewContainer = binding.loading
     }
 
@@ -118,6 +123,10 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
+                        shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        shoppingCartViewModel._toastMessage?.let { it1 ->
+                            Snackbar.make(requireView(), it1, Snackbar.LENGTH_LONG).show()
+                        }
                         val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
 
                         Snackbar.make(requireView(), toastMessage, Snackbar.LENGTH_LONG).show()
@@ -131,9 +140,9 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                     }
                 }
             }
-
         // Set data to the adapter and attach it to the RecyclerView
         favoriteAdapter.setData(data)
         binding.favoriteRecyclerView.adapter = favoriteAdapter
     }
+
 }
