@@ -1,32 +1,37 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.adapter.ShoppingCartAdapter
+import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.FragmentCartBinding
+import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductCartBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.CheckoutActivity
-import kh.edu.rupp.ite.furniturestore.viewmodel.PaymentViewModel
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+import java.util.concurrent.TimeUnit
 
 class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate) {
 
     private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
-    private val paymentViewModel: PaymentViewModel by viewModels({ requireActivity() })
-    private lateinit var shoppingCartAdapter: ShoppingCartAdapter
+    private lateinit var shoppingCartAdapter: DynamicAdapter<ShoppingCart, ViewHolderProductCartBinding>
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var cartContainerLoading: ShimmerFrameLayout
 
@@ -90,8 +95,40 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
         binding.shoppingCartRecyclerView.layoutManager = linearLayoutManager
 
         // Set up shopping cart adapter
-        shoppingCartAdapter = ShoppingCartAdapter(shoppingCartViewModel)
-        shoppingCartAdapter.submitList(shoppingCart)
+        shoppingCartAdapter = DynamicAdapter(ViewHolderProductCartBinding::inflate)
+        { _, item, binding ->
+            val handler = Handler(Looper.getMainLooper())
+            val delayMillis = TimeUnit.SECONDS.toMillis(2)
+
+            with(binding) {
+                Picasso.get().load(item.product.imageUrl).into(productImg)
+                nameProduct.text = item.product.name
+                "$ ${item.product.price}".also { price.text = it }
+                displayQty.text = item.qty.toString()
+
+                productImg.setOnClickListener {
+                    val intent = Intent(it.context, ProductDetailActivity::class.java)
+                    intent.putExtra("id", item.product_id)
+                    it.context.startActivity(intent)
+                }
+
+                //handle action of button
+                //handle action of button
+                with(shoppingCartViewModel) {
+                    // Combine button click listeners
+                    val qtyButtonClick = { operation: String ->
+                        qtyOperation(item, operation)
+                        displayQty.text = item.qty.toString()
+                        handler.removeCallbacksAndMessages(null)
+                        handler.postDelayed({ executingQtyToApi() }, delayMillis)
+                    }
+
+                    addBtn.setOnClickListener { qtyButtonClick("increaseQty") }
+                    minusBtn.setOnClickListener { qtyButtonClick("decreaseQty") }
+                }
+            }
+        }
+        shoppingCartAdapter.setData(shoppingCart)
         binding.shoppingCartRecyclerView.adapter = shoppingCartAdapter
 
         // Attach ItemTouchHelper to RecyclerView for swipe-to-delete
@@ -164,7 +201,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
         alertDialog.setMessage("Are you sure you want to delete this item?")
         alertDialog.setPositiveButton("Yes") { _, _ ->
             // Remove Product from Shopping Cart if user clicks yes
-            val productId = shoppingCartAdapter.currentList[position].id
+            val productId = shoppingCartAdapter.getItem(position).id
             shoppingCartViewModel.deleteProductShoppingCart(productId)
         }
         alertDialog.setNegativeButton("No") { _, _ ->
