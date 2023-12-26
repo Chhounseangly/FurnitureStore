@@ -240,34 +240,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
 
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
-                        shoppingCartViewModel._toastMessage.let { res ->
-                            if (res === "Product existed on shopping cart") {
+                        
+                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        if (toastMessage === "Product existed on shopping cart") {
+                            Snackbar.make(
+                                requireView(),
+                                toastMessage,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }else {
+                            if (toastMessage != null) {
                                 Snackbar.make(
                                     requireView(),
-                                    res,
+                                    toastMessage,
                                     Snackbar.LENGTH_LONG
                                 ).show()
-                            }else {
-                                if (res != null) {
-                                    Snackbar.make(
-                                        requireView(),
-                                        res,
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
-                                badgesQuantityStoring.setQtyShoppingCart(1)
-                                badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()){
-                                    setupBadge(R.id.mnuCart, it, activityBinding)
-                                }
+                            }
+                            badgesQuantityStoring.setQtyShoppingCart(1)
+                            badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()){
+                                setupBadge(R.id.mnuCart, it, activityBinding)
                             }
                         }
-                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
-
-                        Snackbar.make(
-                            requireView(),
-                            toastMessage,
-                            Snackbar.LENGTH_LONG
-                        ).show()
                     }
 
                     // Favorite button click listener
