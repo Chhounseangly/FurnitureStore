@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.view.activity.auth
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -28,6 +29,10 @@ class CodeVerificationActivity :
     private val codeInput: EditText by lazy { binding.codeVerifyInput }
     private val verifyBtn: Button by lazy { binding.verifyBtn }
     private val errMsg: TextView by lazy { binding.errorMsg }
+    private val resendCodeContent: TextView by lazy { binding.resendCodeContent }
+    private val resendCodeBtn: TextView by lazy { binding.resendCodeBtn }
+
+    private lateinit var countdownTimer: CountDownTimer
 
     companion object {
         private const val EMAIL_EXTRA = "email"
@@ -38,14 +43,14 @@ class CodeVerificationActivity :
         AuthValidation().handleOnChangeEditText(codeInput)
 
         navigationBetweenEditTexts(codeInput, null) {
-            handleValidation()
+            verifyEmail()
         }
         prevBack(binding.backBtn)
     }
 
     override fun setupListeners() {
         verifyBtn.setOnClickListener {
-            handleValidation()
+            verifyEmail()
         }
 
         codeInput.addTextChangedListener(object : TextWatcher {
@@ -53,7 +58,7 @@ class CodeVerificationActivity :
                 // Check if the length of the text is 6 characters
                 if (s?.length == 6) {
                     // Call handleValidation() when the length is 6
-                    handleValidation()
+                    verifyEmail()
                 }
             }
 
@@ -109,9 +114,7 @@ class CodeVerificationActivity :
         }
     }
 
-    private fun handleValidation() {
-        // Disable the verification button and submit the verification request
-        disableVerifyButton()
+    private fun verifyEmail() {
         authViewModel.verifyEmail(
             intent.getStringExtra(EMAIL_EXTRA).toString(),
             codeInput.text.toString()
@@ -126,7 +129,7 @@ class CodeVerificationActivity :
 
         if (isValid) {
             // If validation is successful, proceed to handle the authentication response
-            handleValidValidation()
+            enableVerifyButton()
         } else {
             // If validation fails, show error messages and Enable the verification button
             handleInvalidValidation(errorMessages)
@@ -134,23 +137,11 @@ class CodeVerificationActivity :
     }
 
     /**
-     * Handle the case when validation is successful.
-     */
-    private fun handleValidValidation() {
-        // Enable the verification button and set its appearance
-        verifyBtn.isEnabled = true
-        verifyBtn.setTextColor(Color.WHITE)
-        verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
-    }
-
-    /**
      * Handle the case when validation is unsuccessful.
      */
     private fun handleInvalidValidation(errorMessages: String) {
         // Enable the verification button and set its appearance
-        verifyBtn.isEnabled = true
-        verifyBtn.setTextColor(Color.WHITE)
-        verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
+        enableVerifyButton()
 
         // Highlight the input field with an error
         codeInput.backgroundTintList = ColorStateList.valueOf(Color.RED)
@@ -165,6 +156,15 @@ class CodeVerificationActivity :
         verifyBtn.setTextColor(Color.BLACK)
         verifyBtn.setBackgroundResource(R.drawable.disable_btn)
         codeInput.backgroundTintList = null
+    }
+
+    /**
+     * Enable the verification button and set its appearance to indicate an enabled state.
+     */
+    private fun enableVerifyButton() {
+        verifyBtn.isEnabled = true
+        verifyBtn.setTextColor(Color.WHITE)
+        verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
     }
 
     override fun onDestroy() {

@@ -64,4 +64,6 @@
     <string name="edit_profile">កែសម្រួលប្រវត្តិរូប</string>
     <string name="change_password">ប្ដូរពាក្យសម្ងាត់</string>
     <string name="logout">ចាកចេញ</string>
+    <string name="send_reset_email_already">We have send email for reset already</string>
+    <string name="send_reset">Send reset password</string>
 </resources>
