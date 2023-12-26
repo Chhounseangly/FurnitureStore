@@ -3,39 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash_screen"
     android:alpha="0.8"
+    android:background="@drawable/bg_splash_screen"
     android:orientation="vertical">
 
- <RelativeLayout
-     android:id="@+id/parentTxt"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     tools:ignore="UselessParent">
-  <TextView
-      android:id="@+id/welcomeTxt"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"
-      android:fontFamily="serif-monospace"
-      android:text="@string/text_splashscreen"
-      android:textAlignment="center"
-      android:textColor="@color/txt_color"
-      android:textSize="24sp"
-      android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/parentTxt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:layout_centerHorizontal="true"
-      android:layout_marginBottom="15dp"
-      android:fontFamily="serif-monospace"
-      android:text="@string/welcomeTxt"
-      android:textColor="@color/txt_color"
-      android:textSize="18sp"
-      android:textStyle="bold" />
- </RelativeLayout>
+        <TextView
+            android:id="@+id/welcomeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="serif-monospace"
+            android:text="@string/text_splashscreen"
+            android:textAlignment="center"
+            android:textColor="@color/txt_color"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="serif-monospace"
+            android:text="@string/welcome_txt"
+            android:textColor="@color/txt_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 </LinearLayout>

@@ -23,9 +23,17 @@ class AppPreference private constructor(context: Context){
         pref.edit().remove(KEY_TOKEN).apply()
     }
 
+    fun setLanguage(language: String) {
+        pref.edit().putString(KEY_LANGUAGE, language).apply()
+    }
+    fun getLanguage(): String? {
+        return pref.getString(KEY_LANGUAGE, null)
+    }
+
     companion object {
 
         private const val KEY_TOKEN = "token"
+        private const val KEY_LANGUAGE = "language"
 
         private var instance: AppPreference? = null
 

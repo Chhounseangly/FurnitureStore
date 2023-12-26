@@ -127,6 +127,9 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
                         shoppingCartViewModel._toastMessage?.let { it1 ->
                             Snackbar.make(requireView(), it1, Snackbar.LENGTH_LONG).show()
                         }
+                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
+
+                        Snackbar.make(requireView(), toastMessage, Snackbar.LENGTH_LONG).show()
                     }
 
                     // Favorite button click listener

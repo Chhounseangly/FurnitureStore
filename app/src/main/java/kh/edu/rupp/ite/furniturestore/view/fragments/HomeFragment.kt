@@ -239,7 +239,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             return@setOnClickListener
                         }
 
-
                         shoppingCartViewModel.addProductToShoppingCart(item.id)
                         shoppingCartViewModel._toastMessage.let { res ->
                             if (res === "Product existed on shopping cart") {
@@ -262,6 +261,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                             }
                         }
+                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
+
+                        Snackbar.make(
+                            requireView(),
+                            toastMessage,
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
 
                     // Favorite button click listener

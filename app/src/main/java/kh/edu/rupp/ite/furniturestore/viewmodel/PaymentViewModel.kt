@@ -1,19 +1,12 @@
 package kh.edu.rupp.ite.furniturestore.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PaymentViewModel : BaseViewModel() {
 

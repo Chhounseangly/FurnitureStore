@@ -10,3 +10,14 @@ data class Password (
     val new_password: String,
     val new_password_confirmation: String
 )
+
+data class Email (
+    val email: String
+)
+
+data class ResetPassword (
+    val email: String,
+    val token: String,
+    val password: String,
+    val password_confirmation: String
+)
