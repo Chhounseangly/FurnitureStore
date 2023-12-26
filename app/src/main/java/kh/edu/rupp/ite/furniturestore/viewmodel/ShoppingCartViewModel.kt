@@ -3,30 +3,25 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
+import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
-import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ShoppingCartViewModel : BaseViewModel() {
 
     // Create list for Shopping Cart items
-    private val _shoppingCartItems = MutableLiveData<ApiData<List<ShoppingCart>>>()
+    private val _shoppingCartItems = MutableLiveData<ApiData<Res<List<ShoppingCart>>>>()
     private val _tempDataList = mutableListOf<ShoppingCart>()
     private val _itemCount = MutableLiveData<Int>()
     private val _totalPrice = MutableLiveData(0.00)
 
     // LiveData to hold Shopping Cart Items.
-    val shoppingCartItems: LiveData<ApiData<List<ShoppingCart>>> get() = _shoppingCartItems
+    val shoppingCartItems: LiveData<ApiData<Res<List<ShoppingCart>>>> get() = _shoppingCartItems
     val tempDataList: LiveData<List<ShoppingCart>> get() = MutableLiveData(_tempDataList)
 
     val itemCount: LiveData<Int> get() = _itemCount
@@ -60,8 +55,8 @@ class ShoppingCartViewModel : BaseViewModel() {
     // Function to add a product to the shopping cart
     @SuppressLint("SuspiciousIndentation")
     fun addProductToShoppingCart(productId: Int): String {
-        return if (_shoppingCartItems.value?.data?.isNotEmpty() == true) {
-            val existed = shoppingCartItems.value?.data?.find { it.product_id == productId }
+        return if (_shoppingCartItems.value?.data?.data?.isNotEmpty() == true) {
+            val existed = shoppingCartItems.value?.data?.data?.find { it.product_id == productId }
             if (existed != null) {
                 "Product existed on shopping cart"
             } else {
@@ -76,47 +71,29 @@ class ShoppingCartViewModel : BaseViewModel() {
 
     // Add product to the shopping cart via API
     private fun addProductToCartApi(productId: Int) {
-        // Processing as background
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                // Call API to add a product to the shopping cart
-                RetrofitInstance.get().api.addProductToShoppingCart(AddProductToShoppingCart(productId))
-            } catch (ex: Exception) {
-                Log.e("ShoppingCartViewModel", "${ex.message}")
-            }
-
-            // Process outside background
-            withContext(Dispatchers.Main.immediate) {
-                loadProductsCartData()
-            }
-        }
+        performApiCall(
+            request = {
+                RetrofitInstance.get().api.addProductToShoppingCart(
+                    AddProductToShoppingCart(
+                        productId
+                    )
+                )
+            },
+            reloadData = { loadProductsCartData() }
+        )
     }
 
     // Retrieve products in the shopping cart
     fun loadProductsCartData() {
-        var apiData = ApiData<List<ShoppingCart>>(Status.Processing, null)
-        _shoppingCartItems.postValue(apiData)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            apiData = try {
-                // Call API to load products in the shopping cart
-                val response = RetrofitInstance.get().api.loadShoppingCartUnPaid()
-                ApiData(Status.Success, response.data)
-            } catch (ex: Exception) {
-                Log.e("ShoppingCartViewModel", "${ex.message}")
-                ApiData(Status.Failed, null)
-            }
-
-            // Process outside background
-            withContext(Dispatchers.Main.immediate) {
-                _shoppingCartItems.postValue(apiData)
-            }
-        }
+        performApiCall(
+            response = _shoppingCartItems,
+            request = { RetrofitInstance.get().api.loadShoppingCartUnPaid() },
+        )
     }
 
     // Perform quantity operation (increase/decrease) on a shopping cart item
     fun qtyOperation(item: ShoppingCart, operation: String) {
-        val existingItem = shoppingCartItems.value?.data?.find { it.id == item.id }
+        val existingItem = shoppingCartItems.value?.data?.data?.find { it.id == item.id }
         if (existingItem != null) {
             when (operation) {
                 "increaseQty" -> {
@@ -152,7 +129,7 @@ class ShoppingCartViewModel : BaseViewModel() {
     private fun updateTotalPrice() {
         var total = 0.00
         var items = 0
-        for (item in shoppingCartItems.value?.data!!) {
+        for (item in shoppingCartItems.value?.data?.data!!) {
             if (item.product != null) {
                 total += item.product.price * item.qty
                 items += item.qty
@@ -164,43 +141,17 @@ class ShoppingCartViewModel : BaseViewModel() {
 
     // Perform quantity operation API call
     private fun qtyOperationApi(data: List<BodyPutData>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                // Call API to update quantities
-                val response = RetrofitInstance.get().api.qtyOperation(data)
-                Log.d("ShoppingCartViewModel", response.message)
-                loadProductsCartData()
-            } catch (ex: Exception) {
-                Log.e("ShoppingCartViewModel", "${ex.message}")
-            }
-            // Process outside background
-            withContext(Dispatchers.Main.immediate) {
-                loadProductsCartData()
-            }
-        }
+        performApiCall(
+            request = { RetrofitInstance.get().api.qtyOperation(data) },
+            reloadData = { loadProductsCartData() }
+        )
     }
 
     // Function to handle API call for deleting a product from the shopping cart
     fun deleteProductShoppingCart(productId: Int) {
-        // Launching a coroutine in the IO dispatcher to perform background network operations
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                // Call API to delete a product from the shopping cart
-                val response = RetrofitInstance.get().api.deleteProductShoppingCart(productId)
-                // Logging the message from the response (you may want to handle this more gracefully)
-                Log.d("ShoppingCartViewModel", response.message)
-                // Reloading the shopping cart data after the product is successfully deleted
-                loadProductsCartData()
-            } catch (ex: Exception) {
-                // Handling exceptions, logging the error message
-                Log.e("ShoppingCartViewModel", "${ex.message}")
-            }
-
-            // Performing UI-related operations on the main thread after the background work is done
-            withContext(Dispatchers.Main.immediate) {
-                // Reloading the shopping cart data (this seems redundant, as it's already loaded in the try block)
-                loadProductsCartData()
-            }
-        }
+        performApiCall(
+            request = { RetrofitInstance.get().api.deleteProductShoppingCart(productId) },
+            reloadData = { loadProductsCartData() }
+        )
     }
 }

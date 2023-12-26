@@ -50,18 +50,18 @@ interface ApiService {
 
     //End Point fetching Product in Shopping Cart not yet Paid
     @GET("api/shoppingCartUnPaid")
-    suspend fun loadShoppingCartUnPaid(): Res<List<ShoppingCart>>
+    suspend fun loadShoppingCartUnPaid(): Response<Res<List<ShoppingCart>>>
 
     @POST("api/addProductToShoppingCart")
-    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): Res<String>
+    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): Response<Res<String>>
 
     //End Point delete Product from shopping cart
     @DELETE("api/deleteProductCart/{id}")
-    suspend fun deleteProductShoppingCart(@Path("id") id: Int): Res<String>
+    suspend fun deleteProductShoppingCart(@Path("id") id: Int): Response<Res<String>>
 
     //End Point put Quantity Product Operation
     @PUT("api/qtyOperation")
-    suspend fun qtyOperation(@Body data: List<BodyPutData>): Res<String>
+    suspend fun qtyOperation(@Body data: List<BodyPutData>): Response<Res<String>>
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Response<Res<List<Product>>>

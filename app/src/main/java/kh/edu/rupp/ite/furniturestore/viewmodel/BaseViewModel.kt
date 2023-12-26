@@ -81,7 +81,7 @@ open class BaseViewModel : ViewModel() {
     // Function to perform API calls asynchronously and handle the response
     fun <T> performApiCall(
         request: suspend () -> Response<T>,
-        successBlock: (T) -> ApiData<T> = { data -> ApiData(Status.Success, data) },
+        successBlock: (T) -> ApiData<T> = { ApiData(Status.Success, null) },
         failureBlock: (Response<T>) -> ApiData<T> = { ApiData(Status.Failed, null) },
         reloadData: () -> Unit = {}
     ) {

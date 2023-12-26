@@ -55,7 +55,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
         shoppingCartViewModel.shoppingCartItems.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(cartContainerLoading)
-                Status.Success -> it.data?.let { data ->
+                Status.Success -> it.data?.data?.let { data ->
                     // Display the shopping cart items
                     displayProductCart(data)
                     // Calculate and display the total price
