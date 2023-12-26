@@ -77,4 +77,39 @@ open class BaseViewModel : ViewModel() {
             }
         }
     }
+
+    // Function to perform API calls asynchronously and handle the response
+    fun <T> performApiCall(
+        request: suspend () -> Response<T>,
+        successBlock: (T) -> ApiData<T> = { ApiData(Status.Success, null) },
+        failureBlock: (Response<T>) -> ApiData<T> = { ApiData(Status.Failed, null) },
+        reloadData: () -> Unit = {}
+    ) {
+        // Launch a coroutine in the IO dispatcher
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Toggle favorite status through API
+                val res = request.invoke()
+                when (res.code()) {
+                    in 200..204 -> {
+                        Log.d("BaseViewModel", "Success: ${res.body()}")
+                        successBlock(res.body()!!)
+                    }
+
+                    else -> {
+                        Log.e("BaseViewModel", "Error: ${res.errorBody()?.string()}")
+                        failureBlock(res)
+                    }
+                }
+            } catch (ex: Exception) {
+                // Handle exceptions and log the error
+                ex.message?.let { Log.e("FavoriteViewModel", it) }
+                ApiData(Status.Failed, null)
+            }
+
+            withContext(Dispatchers.Main.immediate) {
+                reloadData()
+            }
+        }
+    }
 }

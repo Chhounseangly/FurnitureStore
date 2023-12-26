@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.model.api.service
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.CategoryTypes
+import kh.edu.rupp.ite.furniturestore.model.api.model.Email
 import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Password
@@ -10,6 +11,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResetPassword
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
 import kh.edu.rupp.ite.furniturestore.model.api.model.Token
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
@@ -48,24 +50,24 @@ interface ApiService {
 
     //End Point fetching Product in Shopping Cart not yet Paid
     @GET("api/shoppingCartUnPaid")
-    suspend fun loadShoppingCartUnPaid(): Res<List<ShoppingCart>>
+    suspend fun loadShoppingCartUnPaid(): Response<Res<List<ShoppingCart>>>
 
     @POST("api/addProductToShoppingCart")
-    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): Res<String>
+    suspend fun addProductToShoppingCart(@Body product_id: AddProductToShoppingCart): Response<Res<String>>
 
     //End Point delete Product from shopping cart
     @DELETE("api/deleteProductCart/{id}")
-    suspend fun deleteProductShoppingCart(@Path("id") id: Int): Res<String>
+    suspend fun deleteProductShoppingCart(@Path("id") id: Int): Response<Res<String>>
 
     //End Point put Quantity Product Operation
     @PUT("api/qtyOperation")
-    suspend fun qtyOperation(@Body data: List<BodyPutData>): Res<String>
+    suspend fun qtyOperation(@Body data: List<BodyPutData>): Response<Res<String>>
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Response<Res<List<Product>>>
 
     @POST("api/favorite")
-    suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Res<Boolean>
+    suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Response<Res<Boolean>>
 
     @POST("api/login")
     suspend fun login(@Body login: Login): Response<Res<Token>>
@@ -95,6 +97,12 @@ interface ApiService {
 
     @POST("api/password/change")
     suspend fun changePassword(@Body data: Password): Response<Res<String>>
+
+    @POST("api/password/forgot")
+    suspend fun forgotPassword(@Body data: Email): Response<Res<String>>
+
+    @POST("api/password/reset")
+    suspend fun resetPassword(@Body data: ResetPassword): Response<Res<String>>
 
     //history
     @POST("api/history")

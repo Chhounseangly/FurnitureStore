@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kh.edu.rupp.ite.furniturestore.core.AppCore
 import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
+import kh.edu.rupp.ite.furniturestore.model.api.model.Email
 import kh.edu.rupp.ite.furniturestore.model.api.model.Login
 import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
+import kh.edu.rupp.ite.furniturestore.model.api.model.ResetPassword
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.model.Token
 import kh.edu.rupp.ite.furniturestore.model.api.model.User
@@ -222,6 +224,13 @@ class AuthViewModel : BaseViewModel() {
             response = _resMsg,
             request = { RetrofitInstance.get().api.changePassword(Password(current, new, confirm)) }
         )
+    }
+
+    fun forgotPassword(email: String) {
+        performApiCall(_resMsg, { RetrofitInstance.get().api.forgotPassword(Email(email)) })
+    }
+    fun resetPassword(email: String, token: String, password: String, confirm: String) {
+        performApiCall(_resMsg, { RetrofitInstance.get().api.resetPassword(ResetPassword(email, token, password, confirm)) })
     }
 
     /**

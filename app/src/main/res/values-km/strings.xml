@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ic_pf_txt">ប្រវត្តិរូប</string>
+    <string name="ic_cart_txt">កាត</string>
+    <string name="ic_home_txt">ទំព័រដើម</string>
+    <string name="ic_fav_txt">ចូលចិត្ត</string>
+    <string name="discount_txt">លក់ថ្លៃកំពុងតំរូវ\n តិចពី 70%</string>
+    <string name="chair_txt">អង្គភាពសំបូរប្រើនិងផ្តាច់ក្រោមតូចនេះជាអង្គភាពធ្វើឱ្យការពិភាក្សាប្រចាំពេលនិងផ្ដល់បន្ថែមទៀតប្រសើរប្រើប្រាស់បន្ថែមទៀតប្រសើរ។</string>
+    <string name="description_search">ស្វែងរកនៅទីនេះ..</string>
+    <string name="text_splashscreen">គ្រឿងសម្បត្តិមួយ\nសម្រាប់ផ្ទះរបស់អ្នក\nព្រមទាំងថ្នាំទាំងអស់</string>
+    <string name="welcome_txt">សូមស្វាគមន៍</string>
+    <string name="email_txt">អ៊ីមែល</string>
+    <string name="signIn_txt">ចូលគណនី</string>
+    <string name="pw_input">ពាក្យសម្ងាត់</string>
+    <string name="em_input">អ៊ីមែល</string>
+    <string name="click_here_btn">ចុចនៅទីនេះ</string>
+    <string name="forgot_your_password_txt">ភ្លេចពាក្យសម្ងាត់របស់អ្នក?</string>
+    <string name="sign_in_txt">ចូលគណនី</string>
+    <string name="sign_up_txt">ចុះឈ្មោះ</string>
+    <string name="don_t_have_an_account_txt">មិនមានគណនីទេ?</string>
+    <string name="sign_up_title">ចុះឈ្មោះ</string>
+    <string name="confirmation_password_txt">បញ្ជាក់ពាក្យសម្ងាត់</string>
+    <string name="username_txt">ឈ្មោះ</string>
+    <string name="already_have_an_account_txt">មានគណនីរួចហើយ?</string>
+    <string name="forgot_password_txt">ភ្លេចពាក្យសម្ងាត់?</string>
+    <string name="enter_your_email_address_txt">បញ្ចូលអ៊ីមែលរបស់អ្នក</string>
+    <string name="i_did_not_receive_a_code_txt">ខ្ញុំមិនទទួលបានកូដទេ</string>
+    <string name="resend_txt">ផ្ញើម្ដងទៀត</string>
+    <string name="forgot_password_desc_txt">
+        សូមបញ្ចូលអ៊ីមែលដែលបានភ្ជាប់នឹងគណនីរបស់អ្នកដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។
+    </string>
+    <string name="enter_your_code_here_txt">បញ្ចូលកូដរបស់អ្នកនៅទីនេះ</string>
+    <string name="verify_code_title">ផ្ទៀងផ្ទាត់កូដ</string>
+    <string name="verify_txt">ផ្ទៀងផ្ទាត់</string>
+    <string name="verify_code_txt">ផ្ទៀងផ្ទាត់កូដ</string>
+    <string name="category_txt">ប្រភេទ</string>
+    <string name="search_categories_here_txt">ស្វែងរកប្រភេទនៅទីនេះ....</string>
+    <string name="category_title">ប្រភេទ</string>
+    <string name="detail_product_txt">ផលិតផលលម្អិត</string>
+    <string name="long_txt">
+        អ្នកក៏អាចប្រើទិដ្ឋភាពផ្ទាល់ខ្លួនដើម្បីបង្កើតតម្លៃ "មើលបន្ត" ដែលប្រើប្រាស់ប្រវត្តិពីតម្លៃនេះឡើងវិញ។ ឧទាហរណ៍, អ្នកអាចប្រើទិដ្ឋភាពផ្ទាល់ខ្លួនដើម្បីឱ្យអ្នកប្រើប្រាស់ធ្វើបច្ចុប្បន្នតូចទៅកាន់កម្មវិធី "មើលតិច"។
+                អ្នកក៏អាចប្រើទិដ្ឋភាពផ្ទាល់ខ្លួនដើម្បីបង្កើតតម្លៃ "មើលបន្ត" ដែលប្រើប្រាស់ប្រវត្តិពីតម្លៃនេះឡើងវិញ។ ឧទាហរណ៍, អ្នកអាចប្រើទិដ្ឋភាពផ្ទាល់ខ្លួនដើម្បីឱ្យអ្នកប្រើប្រាស់ធ្វើបច្ចុប្បន្នតូចទៅកាន់កម្មវិធី "មើលតិច"។
+    </string>
+    <string name="description_title">ការពិពណ៌នា</string>
+    <string name="add_to_cart">បន្ថែមទៅកន្ត្រក</string>
+    <string name="search">ស្វែងរក</string>
+    <string name="categories">ប្រភេទ</string>
+    <string name="explore">រុករក</string>
+    <string name="_1">1</string>
+    <string name="checkout">ការទូទាត់</string>
+    <string name="image_content">នេះគឺជារូបភាព</string>
+    <string name="no_data">គ្មានទិន្នន័យ</string>
+    <string name="sign_in_success">អ្នកបានចូលគណនីបានជោគជ័យ</string>
+    <string name="sign_up_success">អ្នកបានចុះឈ្មោះគណនីបានជោគជ័យ</string>
+    <string name="profile_update_success">បន្ថែមពត៌មានគណនីជោគជ័យ</string>
+    <string name="password_update_success">បានផ្លាស់ប្តូរពាក្យសម្ងាត់ជោគជ័យ</string>
+    <string name="sign_in_failed">ការចូលគណនីបានបរាជ័យ</string>
+    <string name="error_unauthorized">អ៊ីម៉ែលឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ</string>
+    <string name="error_occurred">មានបញ្ហាកើតឡើង</string>
+    <string name="sign_in_with_google">ចូលគណនីដោយក្រុម Google</string>
+    <string name="change_language">ប្ដូរភាសាទៅភាសាអង់គ្លេស</string>
+    <string name="profile">ប្រវត្តិរូប</string>
+    <string name="name">ឈ្មោះ</string>
+    <string name="edit_profile">កែសម្រួលប្រវត្តិរូប</string>
+    <string name="change_password">ប្ដូរពាក្យសម្ងាត់</string>
+    <string name="logout">ចាកចេញ</string>
+</resources>

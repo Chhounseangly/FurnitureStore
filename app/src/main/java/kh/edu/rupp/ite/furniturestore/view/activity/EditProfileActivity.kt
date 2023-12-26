@@ -69,11 +69,13 @@ class EditProfileActivity :
                 }
 
                 Status.Failed -> {
-                    Snackbar.make(
-                        binding.root,
-                        R.string.profileUpdateFail,
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    it.data?.message?.let { message ->
+                        Snackbar.make(
+                            binding.root,
+                            message,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
 
                 else -> {

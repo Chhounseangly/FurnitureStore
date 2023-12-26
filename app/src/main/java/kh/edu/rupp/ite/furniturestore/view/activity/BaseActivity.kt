@@ -17,6 +17,8 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.badge.BadgeDrawable
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
+import java.util.Locale
 
 abstract class BaseActivity<T : ViewBinding>(
     private val bindingFunction: (LayoutInflater) -> T
@@ -25,6 +27,21 @@ abstract class BaseActivity<T : ViewBinding>(
     private var _binding: T? = null
     val binding: T
         get() = _binding!!
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(updateBaseContextLocale(newBase))
+    }
+
+    private fun updateBaseContextLocale(context: Context): Context {
+        val language = AppPreference.get(context).getLanguage() ?: "en"
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+
+        val configuration = context.resources.configuration
+        configuration.setLocale(locale)
+
+        return context.createConfigurationContext(configuration)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

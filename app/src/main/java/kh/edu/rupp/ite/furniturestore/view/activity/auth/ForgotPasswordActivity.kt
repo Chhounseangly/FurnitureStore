@@ -1,32 +1,57 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import kh.edu.rupp.ite.furniturestore.R
-import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
+import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityForgotPasswordBinding
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 import kh.edu.rupp.ite.furniturestore.view.activity.validation.AuthValidation
+import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
 
 class ForgotPasswordActivity :
     BaseActivity<ActivityForgotPasswordBinding>(ActivityForgotPasswordBinding::inflate) {
 
-    private lateinit var verifyEmail: EditText
+    private val authViewModel: AuthViewModel by viewModels()
+    private val verifyEmail: EditText by lazy { binding.codeVerifyInput }
+    private val verifyBtn: Button by lazy { binding.verifyBtn }
 
     override fun initActions() {
-        //return to prev activity
         prevBack(binding.backBtn)
 
-//        handleVerifyForgotEmail()
+        handleVerifyForgotEmail()
     }
 
     override fun setupListeners() {
-
+        verifyBtn.setOnClickListener {
+            val checkField = AuthValidation().forgotPasswordValidation(verifyEmail)
+            if (checkField) {
+                authViewModel.forgotPassword(verifyEmail.text.toString())
+            }
+        }
     }
 
     override fun setupObservers() {
+        authViewModel.resMsg.observe(this) {
+            when (it.status) {
+                Status.Processing -> {
+                    Log.d("ForgotPasswordActivity", "Processing")
+                }
 
+                Status.Success -> {
+                    Log.d("ForgotPasswordActivity", "Success")
+//                    initVerifyScreen()
+                }
+
+                Status.Failed -> {
+                    Log.d("ForgotPasswordActivity", "Failed")
+                }
+
+                else -> {}
+            }
+        }
     }
 
     private fun initVerifyScreen() {
@@ -35,16 +60,6 @@ class ForgotPasswordActivity :
     }
 
     private fun handleVerifyForgotEmail() {
-//        val verifyBtn = findViewById<Button>(R.id.verifyBtn)
-        verifyEmail = findViewById(R.id.codeVerifyInput)
         AuthValidation().handleOnChangeEditText(verifyEmail)
-
-//        verifyBtn.setOnClickListener {
-//            val checkField = AuthValidation().forgotPasswordValidation(verifyEmail)
-//            if (checkField){
-//                initVerifyScreen()
-////                Toast.makeText(this, "Validation Success", Toast.LENGTH_LONG).show()
-//            }
-//        }
     }
 }
