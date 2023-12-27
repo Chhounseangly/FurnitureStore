@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/skeletonHomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:shimmer_auto_start="true"
+        shimmer:duration="800">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:useDefaultMargins="true">
+
+            <include
+                layout="@layout/product_holder_loading_layout"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1" />
+
+            <include
+                layout="@layout/product_holder_loading_layout"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1" />
+
+            <include
+                layout="@layout/product_holder_loading_layout"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1" />
+
+            <include
+                layout="@layout/product_holder_loading_layout"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1" />
+        </GridLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</LinearLayout>

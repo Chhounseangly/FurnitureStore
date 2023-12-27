@@ -19,7 +19,7 @@ class HistoryActivity :
     BaseActivity<ActivityHistoryCartBinding>(ActivityHistoryCartBinding::inflate) {
 
     private val historyViewModel: HistoryViewModel by viewModels()
-    private val lytLoading: View by lazy { binding.ltyLoading }
+    private val lytLoading: View by lazy { binding.lytLoading }
     private val loading: ProgressBar by lazy { binding.loadingCircle }
 
     override fun initActions() {
@@ -37,33 +37,23 @@ class HistoryActivity :
         historyViewModel.historyData.observe(this) {
             when (it.status) {
                 Status.Processing -> {
-                    showLoading(lytLoading, loading)
+                    showCircleLoading(lytLoading, loading)
                 }
 
                 Status.Success -> {
-                    hideLoading(lytLoading, loading)
+                    hideCircleLoading(lytLoading, loading)
                     if (it.data != null) {
                         displayHistoryData(it.data.data)
                     }
                 }
 
                 Status.Failed -> {
-                    hideLoading(lytLoading, loading)
+                    hideCircleLoading(lytLoading, loading)
                 }
 
                 else -> {}
             }
         }
-    }
-
-    private fun showLoading(lytLoading: View, loading: ProgressBar) {
-        lytLoading.visibility = View.VISIBLE
-        loading.visibility = View.VISIBLE
-    }
-
-    private fun hideLoading(ltyLoading: View, loading: ProgressBar) {
-        lytLoading.visibility = View.GONE
-        loading.visibility = View.GONE
     }
 
     private fun displayHistoryData(data: List<HistoryModel>) {
