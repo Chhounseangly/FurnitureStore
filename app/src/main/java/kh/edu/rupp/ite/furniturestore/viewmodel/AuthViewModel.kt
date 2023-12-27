@@ -229,8 +229,16 @@ class AuthViewModel : BaseViewModel() {
     fun forgotPassword(email: String) {
         performApiCall(_resMsg, { RetrofitInstance.get().api.forgotPassword(Email(email)) })
     }
-    fun resetPassword(email: String, token: String, password: String, confirm: String) {
-        performApiCall(_resMsg, { RetrofitInstance.get().api.resetPassword(ResetPassword(email, token, password, confirm)) })
+    fun resetPassword(email: String, otp: String, password: String, confirm: String) {
+        performApiCall(_resMsg, { RetrofitInstance.get().api.resetPassword(ResetPassword(email, otp, password, confirm)) })
+    }
+
+    fun verifyOTP(email: String, otp: String) {
+        performApiCall(_resAuth, { RetrofitInstance.get().api.verifyOTP(VerifyEmailRequest(email, otp)) })
+    }
+
+    fun resendCode(email: String) {
+        performApiCall(_resMsg, { RetrofitInstance.get().api.resendEmail(Email(email)) })
     }
 
     /**

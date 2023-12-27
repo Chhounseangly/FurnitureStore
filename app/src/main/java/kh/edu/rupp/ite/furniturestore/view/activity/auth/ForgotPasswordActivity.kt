@@ -1,7 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
+import android.content.Intent
 import android.graphics.Color
-import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
@@ -20,14 +20,11 @@ class ForgotPasswordActivity :
     private val verifyEmail: EditText by lazy { binding.codeVerifyInput }
     private val sendResetBtn: Button by lazy { binding.sendResetBtn }
 
-    private lateinit var countdownTimer: CountDownTimer
-
     override fun initActions() {
         prevBack(binding.backBtn)
 
         navigationBetweenEditTexts(verifyEmail, null) {
-            startCountdownTimer()
-            authViewModel.forgotPassword(verifyEmail.text.toString())
+            handleSendEmail()
         }
 
         handleVerifyForgotEmail()
@@ -37,8 +34,7 @@ class ForgotPasswordActivity :
         sendResetBtn.setOnClickListener {
             val checkField = AuthValidation().forgotPasswordValidation(verifyEmail)
             if (checkField) {
-                startCountdownTimer()
-                authViewModel.forgotPassword(verifyEmail.text.toString())
+                handleSendEmail()
             }
         }
     }
@@ -51,11 +47,10 @@ class ForgotPasswordActivity :
                 }
 
                 Status.Success -> {
-                    Snackbar.make(
-                        binding.root,
-                        R.string.send_reset_email_already,
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    val codeVerifyActivity = Intent(this, CodeVerificationActivity::class.java)
+                    codeVerifyActivity.putExtra(CodeVerificationActivity.EMAIL_EXTRA, verifyEmail.text.toString())
+                    codeVerifyActivity.putExtra(CodeVerificationActivity.TYPE, CodeVerificationActivity.TYPE_FORGOT_PASSWORD)
+                    startActivity(codeVerifyActivity)
                 }
 
                 Status.Failed -> {
@@ -77,40 +72,14 @@ class ForgotPasswordActivity :
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        // Cancel the countdown timer to prevent leaks
-        if (::countdownTimer.isInitialized) {
-            countdownTimer.cancel()
-        }
-    }
-
     private fun handleVerifyForgotEmail() {
         AuthValidation().handleOnChangeEditText(verifyEmail)
     }
 
-    private fun startCountdownTimer() {
-        countdownTimer = object : CountDownTimer(3600000, 60000) { // 1 hour in milliseconds, tick every 1 minute
-            override fun onTick(millisUntilFinished: Long) {
-                // Update the button text with the remaining time in minutes
-                val minutesRemaining = millisUntilFinished / 60000
-                sendResetBtn.text = "Resend in: $minutesRemaining minutes"
-                sendResetBtn.isEnabled = false
-                sendResetBtn.setTextColor(Color.BLACK)
-                sendResetBtn.setBackgroundResource(R.drawable.disable_btn)
-            }
-
-            override fun onFinish() {
-                // Reset the button to its initial state after the countdown finishes
-                sendResetBtn.text = "Resend"
-                sendResetBtn.isEnabled = true
-                sendResetBtn.setTextColor(Color.WHITE)
-                sendResetBtn.setBackgroundResource(R.drawable.custom_style_btn)
-            }
-        }
-
-        // Start the countdown
-        countdownTimer.start()
+    private fun handleSendEmail() {
+        sendResetBtn.isEnabled = false
+        sendResetBtn.setTextColor(Color.BLACK)
+        sendResetBtn.setBackgroundResource(R.drawable.disable_btn)
+        authViewModel.forgotPassword(verifyEmail.text.toString())
     }
 }
