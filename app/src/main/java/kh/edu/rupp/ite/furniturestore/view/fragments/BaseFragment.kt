@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.badge.BadgeDrawable
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityMainBinding
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
 

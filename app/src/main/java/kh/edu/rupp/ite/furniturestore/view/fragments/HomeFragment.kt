@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,6 +37,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
 
+
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private lateinit var nestedScrollView: NestedScrollView
     private lateinit var floatingActionButton: FloatingActionButton
@@ -58,12 +60,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var totalPage = 0
     private var isLoading = false
 
+
+
+
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
         swipeRefreshLayout = binding.refreshLayout
-        processBar = binding.loading
+        binding.lytLoading?.let {
+            processBar = it.loading
+        }
         noDataMsg = binding.noData
-        mShimmerViewContainer = binding.shimmerViewContainer
         nestedScrollView = binding.homeFragment
         floatingActionButton = binding.fabBtn
     }
@@ -122,20 +128,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
     override fun setupObservers() {
         // Observe data of products to display on recycler view
         productListViewModel.productsData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> showLoadingAnimation(binding.productsSkeletonLoading.skeletonHomeFragment)
+
                 Status.Success -> {
                     if (it.data != null) {
                         noDataMsg.visibility = View.GONE
                         processBar.visibility = View.GONE
                         displayProductList(it.data.data)
                         swipeRefreshLayout.isRefreshing = false
-                        hideLoadingAnimation(mShimmerViewContainer)
+                        hideLoadingAnimation( binding.productsSkeletonLoading.skeletonHomeFragment)
                         isLoading = false
-
                         // Calculate total page
                         val total = it.data.meta?.total ?: 0
                         totalPage = total / 4 + if (total % 4 == 0) 0 else 1
@@ -146,7 +153,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     noDataMsg.visibility = View.VISIBLE
                     processBar.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation( binding.productsSkeletonLoading.skeletonHomeFragment)
                     isLoading = false
                 }
 
@@ -175,17 +182,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Observe data from CategoriesViewModel
         categoriesViewModel.categoryTypesData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> showLoadingAnimation(mShimmerViewContainer)
+                Status.Processing -> {
+                    showLoadingAnimation(binding.categorySkeletonLoading.cateSkeletonLoadingInside)
+                }
                 Status.Success -> it.data?.let { data ->
                     displayCategory(data.data)
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation(binding.categorySkeletonLoading.cateSkeletonLoadingInside)
                 }
 
                 else -> {
                     binding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation(mShimmerViewContainer)
+                    hideLoadingAnimation(binding.categorySkeletonLoading.cateSkeletonLoadingInside)
                 }
             }
         }
@@ -238,8 +247,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             ).show()
                             return@setOnClickListener
                         }
-
-                        shoppingCartViewModel.addProductToShoppingCart(item.id)
                         
                         val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
                         if (toastMessage === "Product existed on shopping cart") {
@@ -249,13 +256,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 Snackbar.LENGTH_LONG
                             ).show()
                         }else {
-                            if (toastMessage != null) {
-                                Snackbar.make(
-                                    requireView(),
-                                    toastMessage,
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
+                            Snackbar.make(
+                                requireView(),
+                                toastMessage,
+                                Snackbar.LENGTH_LONG
+                            ).show()
                             badgesQuantityStoring.setQtyShoppingCart(1)
                             badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()){
                                 setupBadge(R.id.mnuCart, it, activityBinding)

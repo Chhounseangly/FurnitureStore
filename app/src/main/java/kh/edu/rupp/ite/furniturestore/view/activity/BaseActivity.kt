@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -58,6 +59,18 @@ abstract class BaseActivity<T : ViewBinding>(
     abstract fun setupListeners()
     abstract fun setupObservers()
 
+
+    fun showCircleLoading(lytLoading: View, loading: ProgressBar) {
+        lytLoading.visibility = View.VISIBLE
+        loading.visibility = View.VISIBLE
+    }
+
+    fun hideCircleLoading(lytLoading: View, loading: ProgressBar) {
+        lytLoading.visibility = View.GONE
+        loading.visibility = View.GONE
+    }
+
+
     //show badge on bottom navigation
     fun setupBadge(itemId: Int, value: Int, binding: ActivityMainBinding) {
         val badge: BadgeDrawable = binding.bottomNavigationView.getOrCreateBadge(itemId)
@@ -89,12 +102,13 @@ abstract class BaseActivity<T : ViewBinding>(
     }
 
     fun showLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
+        viewContainerLoadingId.visibility = View.VISIBLE
         viewContainerLoadingId.startShimmer()
     }
 
     fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         viewContainerLoadingId.stopShimmer()
-        viewContainerLoadingId.visibility = View.GONE;
+        viewContainerLoadingId.visibility= View.GONE;
     }
 
     fun prevBack(backBtn: ImageView) {
