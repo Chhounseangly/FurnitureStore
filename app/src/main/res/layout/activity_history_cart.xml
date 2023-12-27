@@ -35,9 +35,11 @@
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
+<!--    LoadingLayout -->
    <LinearLayout
        android:visibility="gone"
-       android:id="@+id/ltyLoading"
+       android:id="@+id/lytLoading"
        android:gravity="center"
        android:layout_width="match_parent"
        android:layout_height="match_parent">

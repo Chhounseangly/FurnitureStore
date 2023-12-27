@@ -23,18 +23,18 @@
             android:rowCount="4"
             android:columnCount="2"
             android:useDefaultMargins="true">
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
+            <include layout="@layout/product_holder_loading_layout" />
 
         </GridLayout>
 

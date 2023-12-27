@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
@@ -19,6 +20,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderCarouselBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ImageUrls
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.viewmodel.BadgesQuantityStoring
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductDetailViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
@@ -31,6 +33,9 @@ class ProductDetailActivity :
 
     private var id = 0
     private val productDetailViewModel = ProductDetailViewModel()
+
+    private val lytLoading: View by lazy { binding.lytLoading }
+    private val loading: ProgressBar by lazy { binding.loadingCircle }
 
     override fun initActions() {
         shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
@@ -58,10 +63,10 @@ class ProductDetailActivity :
         productDetailViewModel.productsData.observe(this) {
             when (it.status) {
                 Status.Processing -> {
-                    // Handle processing state if needed
+                    showCircleLoading(lytLoading, loading)
                 }
-
                 Status.Success -> {
+                    hideCircleLoading(lytLoading, loading)
                     it.data?.let { data ->
                         displayUi(data.data)
                     }
@@ -90,26 +95,32 @@ class ProductDetailActivity :
             price.text = "$ " + data.price.toString()
             description.text = data.description
             addToCartBtn.setOnClickListener {
-                shoppingCartViewModel.addProductToShoppingCart(data.id)
-                shoppingCartViewModel._toastMessage.let { res ->
-                    if (res === "Product existed on shopping cart") {
-                        Snackbar.make(
-                            binding.root,
-                            res.toString(),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    } else {
-                        if (res != null) {
-                            Snackbar.make(
-                                binding.root,
-                                res.toString(),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-                        badgesQuantityStoring.setQtyShoppingCart(1)
-                        badgesQuantityStoring.qtyShoppingCart.observe(this@ProductDetailActivity) {
-                            setupBadge(R.id.mnuCart, it, activityMainBinding)
-                        }
+                val token = AppPreference.get(this@ProductDetailActivity).getToken()
+                if (token == null) {
+                    Snackbar.make(
+                        binding.root,
+                        "Please login to add product to shopping cart",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                val toastMessage = shoppingCartViewModel.addProductToShoppingCart(data.id)
+                if (toastMessage === "Product existed on shopping cart") {
+                    Snackbar.make(
+                        binding.root,
+                        toastMessage,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }else {
+                    Snackbar.make(
+                        binding.root,
+                        toastMessage,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    badgesQuantityStoring.setQtyShoppingCart(1)
+                    badgesQuantityStoring.qtyShoppingCart.observe(this@ProductDetailActivity){
+                        setupBadge(R.id.mnuCart, it, activityMainBinding)
                     }
                 }
             }
@@ -157,8 +168,7 @@ class ProductDetailActivity :
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carouselRecyclerView)
 
-        val carouselAdapter =
-            DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
+        val carouselAdapter = DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
                 // Add a listener to preview
                 view.setOnClickListener {
                     val intent = Intent(it.context, PreviewImageActivity::class.java)

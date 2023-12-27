@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/myCoordinatorLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/myCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--Swipe Refresh Layout -->
@@ -40,16 +38,8 @@
                         app:iss_auto_cycle="true"
                         app:iss_corner_radius="10"
                         app:iss_delay="2000"
-                        app:iss_period="2000">
-
-                        <TextView
-                            android:id="@+id/nameTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="22sp" />
-                    </com.denzcoskun.imageslider.ImageSlider>
+                        app:iss_period="2000" />
                 </androidx.cardview.widget.CardView>
-
 
                 <TextView
                     android:id="@+id/cateTitle"
@@ -62,64 +52,29 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!--categories-->
+                <!--categories recycler view-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categoryRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp" />
-
+                    android:layout_marginHorizontal="10dp" />
+                <include
+                    android:id="@+id/categorySkeletonLoading"
+                    layout="@layout/category_holder_loading_layout" />
+                <!--Add Skeleton Loading Products-->
                 <TextView
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:fontFamily="@font/bitter"
                     android:text="@string/explore"
-                    android:textSize="18sp" />
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    app:shimmer_auto_start="true"
-                    android:id="@+id/shimmer_view_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="15dp"
-                    android:orientation="vertical"
-                    shimmer:duration="800">
-
-                    <!-- Adding 7 rows of placeholders -->
-                    <GridLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:columnCount="2"
-                        android:orientation="vertical"
-                        android:rowCount="3"
-                        android:useDefaultMargins="true">
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-
-                        <include layout="@layout/data_placeholder_layout" />
-                    </GridLayout>
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
+                <include
+                    android:id="@+id/productsSkeletonLoading"
+                    layout="@layout/skeleton_home_fragment" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -127,30 +82,25 @@
                     android:gravity="center">
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/noData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
-                <!--  products list-->
+                <!--  products recycler view-->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:overScrollMode="never"
                     android:id="@+id/productListRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:overScrollMode="never"
                     android:paddingBottom="50dp" />
-
-                <ProgressBar
-                    android:id="@+id/loading"
-                    android:indeterminateTint="@color/grey_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:visibility="gone"/>
+                <!-- Circle Loading-->
+                <include android:id="@+id/lyt_loading" layout="@layout/circle_loading_layout" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -158,13 +108,13 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBtn"
-        app:fabSize="mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/image_content"
-        android:src="@drawable/ic_arrow_up" />
+        android:src="@drawable/ic_arrow_up"
+        app:fabSize="mini" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
