@@ -19,21 +19,21 @@ class ResetPasswordActivity :
     private val saveBtn: Button by lazy { binding.savePasswordBtn }
 
     private lateinit var email: String
-    private lateinit var token: String
+    private lateinit var otp: String
 
     override fun initActions() {
         // Get email and token from intent
         prevBack(binding.backBtn)
 
         email = intent.getStringExtra("email").toString()
-        token = intent.getStringExtra("token").toString()
+        otp = intent.getStringExtra("otp").toString()
     }
 
     override fun setupListeners() {
         saveBtn.setOnClickListener {
             authViewModel.resetPassword(
                 email,
-                token,
+                otp,
                 resetPwField.text.toString(),
                 cfResetPwField.text.toString()
             )

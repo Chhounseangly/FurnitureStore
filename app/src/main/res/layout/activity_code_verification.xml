@@ -87,7 +87,7 @@
                 android:id="@+id/descForgot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/forgot_password_desc_txt"
+                android:text="@string/verify_code_content"
                 android:textSize="14sp" />
 
             <EditText

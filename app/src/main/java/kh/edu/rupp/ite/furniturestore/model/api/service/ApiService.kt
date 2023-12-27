@@ -123,4 +123,14 @@ interface ApiService {
     suspend fun verifyEmail(
         @Body data: VerifyEmailRequest
     ): Response<Res<Token>>
+
+    @POST("api/email/verify/resendOTP")
+    suspend fun resendEmail(
+        @Body data: Email
+    ): Response<Res<String>>
+
+    @POST("api/password/verifyOTP")
+    suspend fun verifyOTP(
+        @Body data: VerifyEmailRequest
+    ): Response<Res<Token>>
 }

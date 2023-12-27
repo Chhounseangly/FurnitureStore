@@ -17,7 +17,7 @@ data class Email (
 
 data class ResetPassword (
     val email: String,
-    val token: String,
+    val otp: String,
     val password: String,
     val password_confirmation: String
 )

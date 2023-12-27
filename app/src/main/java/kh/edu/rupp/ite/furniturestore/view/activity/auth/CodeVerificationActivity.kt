@@ -35,7 +35,9 @@ class CodeVerificationActivity :
     private lateinit var countdownTimer: CountDownTimer
 
     companion object {
-        private const val EMAIL_EXTRA = "email"
+        const val TYPE_FORGOT_PASSWORD = "forgot_password"
+        const val TYPE = "type"
+        const val EMAIL_EXTRA = "email"
     }
 
     override fun initActions() {
@@ -46,6 +48,7 @@ class CodeVerificationActivity :
             verifyEmail()
         }
         prevBack(binding.backBtn)
+        startCountdownTimer()
     }
 
     override fun setupListeners() {
@@ -72,7 +75,7 @@ class CodeVerificationActivity :
         })
 
         resendCodeBtn.setOnClickListener {
-            startCountdownTimer()
+            authViewModel.resendCode(intent.getStringExtra(EMAIL_EXTRA).toString())
         }
     }
 
@@ -80,6 +83,38 @@ class CodeVerificationActivity :
         authViewModel.validationVerify.observe(this) {
             // Handle the validation response
             handleValidationResponse(it)
+        }
+
+        authViewModel.resMsg.observe(this) {
+            when (it.status) {
+                Status.Processing -> {
+                    // Handle the processing status, e.g., show loading indicator
+                    errMsg.visibility = View.GONE
+                    disableVerifyButton()
+                }
+
+                Status.Success -> {
+                    // Handle the success status, e.g., navigate to the main activity
+                    startCountdownTimer()
+                    enableVerifyButton()
+                }
+
+                Status.Failed -> {
+                    // Handle the failure status, e.g., show error message
+                    it.data?.let { m ->
+                        handleInvalidValidation(m.message)
+                    }
+                }
+
+                else -> {
+                    // Handle any other unknown status
+                    errMsg.visibility = View.VISIBLE
+                    errMsg.text = getString(R.string.error_occurred)
+                    verifyBtn.isEnabled = true
+                    verifyBtn.setTextColor(Color.WHITE)
+                    verifyBtn.setBackgroundResource(R.drawable.custom_style_btn)
+                }
+            }
         }
 
         // Observe the authentication response
@@ -92,11 +127,24 @@ class CodeVerificationActivity :
                 }
 
                 Status.Success -> {
-                    // Handle the success status, e.g., navigate to the main activity
-                    val mainActivityIntent = Intent(this, MainActivity::class.java)
-                    mainActivityIntent.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(mainActivityIntent)
+                    if (TYPE_FORGOT_PASSWORD == intent.getStringExtra(TYPE)) {
+                        val resetPasswordActivity = Intent(this, ResetPasswordActivity::class.java)
+                        resetPasswordActivity.putExtra(
+                            EMAIL_EXTRA,
+                            intent.getStringExtra(EMAIL_EXTRA).toString()
+                        )
+                        resetPasswordActivity.putExtra(
+                            "otp",
+                            codeInput.text.toString()
+                        )
+                        startActivity(resetPasswordActivity)
+                    } else {
+                        // Handle the success status, e.g., navigate to the main activity
+                        val mainActivityIntent = Intent(this, MainActivity::class.java)
+                        mainActivityIntent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(mainActivityIntent)
+                    }
                 }
 
                 Status.Failed -> {
@@ -153,10 +201,17 @@ class CodeVerificationActivity :
 
 
     private fun verifyEmail() {
-        authViewModel.verifyEmail(
-            intent.getStringExtra(EMAIL_EXTRA).toString(),
-            codeInput.text.toString()
-        )
+        if (TYPE_FORGOT_PASSWORD == intent.getStringExtra(TYPE)) {
+            authViewModel.verifyOTP(
+                intent.getStringExtra(EMAIL_EXTRA).toString(),
+                codeInput.text.toString()
+            )
+        } else {
+            authViewModel.verifyEmail(
+                intent.getStringExtra(EMAIL_EXTRA).toString(),
+                codeInput.text.toString()
+            )
+        }
     }
 
     /**

@@ -65,10 +65,10 @@
     <string name="edit_profile">កែសម្រួលប្រវត្តិរូប</string>
     <string name="change_password">ប្ដូរពាក្យសម្ងាត់</string>
     <string name="logout">ចាកចេញ</string>
-    <string name="send_reset_email_already">យើងបានផ្ញើអ៊ីមែលសម្រាប់ការកំណត់ហេតុពាក្យសម្ងាត់រួចហើយ</string>
     <string name="send_reset">ផ្ញើសារកំណត់ពាក្យសម្ងាត់ឡើងវិញ</string>
     <string name="reset_password_success">បានកំណត់ហេតុពាក្យសម្ងាត់ឡើងវិញជោគជ័យ</string>
-    <string name="resend_code_countdown_minutes">ផ្ញើរលេខកូដ: %1$02d:%2$02d នៅសល់</string>
-    <string name="resend_code_countdown_seconds">ផ្ញើរលេខកូដ: %ds នៅសល់</string>
+    <string name="resend_code_countdown_minutes">យើងបានផ្ញើOTPទៅកាន់អ៊ីម៉ែលរបស់អ្នកហើយ: %1$02d:%2$02d </string>
+    <string name="resend_code_countdown_seconds">យើងបានផ្ញើOTPទៅកាន់អ៊ីម៉ែលរបស់អ្នកហើយ: %ds </string>
+    <string name="verify_code_content">សូមពិនិត្យOTPដែលពួកយើងបានផ្ញើទៅកាន់អ៊ីមែលរបស់អ្នក</string>
 
 </resources>

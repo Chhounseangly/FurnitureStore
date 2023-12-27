@@ -42,25 +42,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (data != null && data.scheme == getString(R.string.app_scheme)) {
 
                 val path = data.path
-                Log.d("MainActivity", "Path: $path")
+                Log.d("MainActivity...", "Path: $path")
 
                 when (path) {
                     "/login" -> {
-                        Log.d("MainActivity", "Login")
+                        Log.d("MainActivity...", "Login")
                         Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
 
                     }
                     "/register" -> {
-                        Log.d("MainActivity", "Register")
+                        Log.d("MainActivity...", "Register")
                         Snackbar.make(binding.root, getString(R.string.sign_up_success), Snackbar.LENGTH_LONG).show()
 
                     }
                     "/password/reset" -> {
-                        Log.d("MainActivity", "Reset Password")
+                        Log.d("MainActivity...", "Reset Password")
                         val resetPasswordActivity = Intent(this, ResetPasswordActivity::class.java)
                         resetPasswordActivity.putExtra("email", data.getQueryParameter("email"))
-                        resetPasswordActivity.putExtra("token", data.getQueryParameter("token"))
+                        resetPasswordActivity.putExtra("otp", data.getQueryParameter("otp"))
                         startActivity(resetPasswordActivity)
+                        return
+                    }
+                    else -> {
+                        Log.d("MainActivity...", "Unknown")
                         return
                     }
                 }
