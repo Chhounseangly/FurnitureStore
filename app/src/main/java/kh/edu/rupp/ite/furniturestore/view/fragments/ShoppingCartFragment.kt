@@ -96,7 +96,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
 
         // Set up shopping cart adapter
         shoppingCartAdapter = DynamicAdapter(ViewHolderProductCartBinding::inflate)
-        { _, item, binding ->
+        { _, item, binding, _ ->
             val handler = Handler(Looper.getMainLooper())
             val delayMillis = TimeUnit.SECONDS.toMillis(2)
 

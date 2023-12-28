@@ -60,8 +60,8 @@ class ProductsByCategoryActivity :
                             lytTab.addTab(tab)
                         }
                         // set active tab
-                        val id = intent.getIntExtra("id", 0)
-                        val tab = lytTab.getTabAt(id-1)
+                        val position = intent.getIntExtra("position", 0)
+                        val tab = lytTab.getTabAt(position)
                         if (tab != null) {
                             lytTab.selectTab(tab)
                         }

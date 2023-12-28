@@ -123,7 +123,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
         // Initialize the searchFoundAdapter, passing <Model, ViewHolderBinding> and display UI
         val searchFoundAdapter =
-            DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate) { view, item, binding ->
+            DynamicAdapter<Product, ViewHolderSearchFoundBinding>(ViewHolderSearchFoundBinding::inflate) { view, item, binding, _ ->
                 // Handle click on view to navigate to ProductDetail
                 view.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)

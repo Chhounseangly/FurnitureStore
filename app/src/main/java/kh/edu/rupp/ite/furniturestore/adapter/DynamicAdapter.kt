@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 
 class DynamicAdapter<T, VB : ViewBinding>(
     private val inflater: (LayoutInflater, ViewGroup?, Boolean) -> VB,
-    private val onBind: (view: View, item: T, binding: VB) -> Unit
+    private val onBind: (view: View, item: T, binding: VB, position: Int) -> Unit
 ) : RecyclerView.Adapter<DynamicAdapter<T, VB>.ViewHolder>() {
 
     private var data: List<T> = listOf()
@@ -30,7 +30,7 @@ class DynamicAdapter<T, VB : ViewBinding>(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        onBind(holder.itemView, data[position], holder.binding)
+        onBind(holder.itemView, data[position], holder.binding, position)
     }
 
     override fun getItemCount(): Int {

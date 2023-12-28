@@ -100,7 +100,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
         // Create DynamicAdapter for products with ViewHolderProductItemBinding
         val favoriteAdapter =
-            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate) { view, item, binding ->
+            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate) { view, item, binding, _ ->
                 view.setOnClickListener {
                     // Click listener to navigate to ProductDetailActivity
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
