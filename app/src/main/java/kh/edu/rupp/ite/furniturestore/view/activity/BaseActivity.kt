@@ -108,7 +108,7 @@ abstract class BaseActivity<T : ViewBinding>(
 
     fun hideLoadingAnimation(viewContainerLoadingId: ShimmerFrameLayout) {
         viewContainerLoadingId.stopShimmer()
-        viewContainerLoadingId.visibility= View.GONE;
+        viewContainerLoadingId.visibility = View.GONE;
     }
 
     fun prevBack(backBtn: ImageView) {
