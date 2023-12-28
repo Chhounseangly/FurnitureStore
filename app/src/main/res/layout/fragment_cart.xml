@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--Swipe Refresh Layout -->
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/refreshLayout"
@@ -26,20 +27,16 @@
                 android:layout_gravity="center"
                 android:orientation="vertical"
                 android:useDefaultMargins="true">
-
                 <include layout="@layout/loading_shopping_cart" />
-
                 <include layout="@layout/loading_shopping_cart" />
-
                 <include layout="@layout/loading_shopping_cart" />
-
                 <include layout="@layout/loading_shopping_cart" />
-
                 <include layout="@layout/loading_shopping_cart" />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
         <!--    recyclerview-->
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/shoppingCartRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"

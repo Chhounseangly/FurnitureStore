@@ -66,7 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun bindUi() {
         coordinatorLayout = binding.myCoordinatorLayout
         swipeRefreshLayout = binding.refreshLayout
-        binding.lytLoading?.let {
+        binding.lytLoading.let {
             processBar = it.loading
         }
         noDataMsg = binding.noData
@@ -192,7 +192,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
 
                 else -> {
-                    binding.cateTitle.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(binding.categorySkeletonLoading.cateSkeletonLoadingInside)
                 }
