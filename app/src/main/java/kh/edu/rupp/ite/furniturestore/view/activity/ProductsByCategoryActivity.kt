@@ -1,7 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -59,6 +58,12 @@ class ProductsByCategoryActivity :
                         for (data in it.data) {
                             val tab = lytTab.newTab().setText(data.name).setId(data.id)
                             lytTab.addTab(tab)
+                        }
+                        // set active tab
+                        val id = intent.getIntExtra("id", 0)
+                        val tab = lytTab.getTabAt(id-1)
+                        if (tab != null) {
+                            lytTab.selectTab(tab)
                         }
                     }
                     hideLoadingAnimation(loadingLoadProducts)
