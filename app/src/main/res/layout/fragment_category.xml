@@ -2,42 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:shimmer="http://schemas.android.com/apk/res-auto">
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_marginHorizontal="10dp"
-        android:id="@+id/loadingLoadProducts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:id="@+id/productsSkeletonLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:orientation="vertical"
         shimmer:duration="800">
-
-        <!-- Adding 7 rows of placeholders -->
         <GridLayout
-            android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rowCount="4"
+            android:layout_height="wrap_content"
             android:columnCount="2"
             android:useDefaultMargins="true">
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
+            <include
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_columnWeight="1"
+                layout="@layout/product_loading_layout" />
         </GridLayout>
-
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView

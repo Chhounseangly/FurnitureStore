@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -16,16 +17,12 @@ class ProductsByCategoryActivity :
     BaseActivity<ActivityProductByCategoryBinding>(ActivityProductByCategoryBinding::inflate) {
 
     private val categoriesViewModel: CategoriesViewModel by viewModels()
-    private val titleTypeCate: TextView by lazy { binding.titleTypeCate }
     private val lytTab: TabLayout by lazy { binding.lytTab }
-    private val loadingLoadProducts: ShimmerFrameLayout by lazy { binding.loadingLoadProducts }
+    private val loadingLoadProducts: ShimmerFrameLayout by lazy { binding.productsSkeletonLoading }
 
     override fun initActions() {
         // call method prev back
         prevBack(binding.backBtn)
-
-        // assign category title to appBar
-        titleTypeCate.text = "Categories"
 
         categoriesViewModel.loadCategoryTypes()
     }
@@ -54,7 +51,9 @@ class ProductsByCategoryActivity :
     override fun setupObservers() {
         categoriesViewModel.categoryTypesData.observe(this) { it ->
             when (it.status) {
-                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
+                Status.Processing -> {
+                    showLoadingAnimation(loadingLoadProducts)
+                }
                 Status.Success -> {
                     it.data?.let {
                         for (data in it.data) {
@@ -63,10 +62,11 @@ class ProductsByCategoryActivity :
                         }
                     }
                     hideLoadingAnimation(loadingLoadProducts)
+                    binding.lytTab.visibility = View.VISIBLE
                 }
-
                 else -> {
                     hideLoadingAnimation(loadingLoadProducts)
+                    binding.lytTab.visibility = View.VISIBLE
                 }
             }
         }

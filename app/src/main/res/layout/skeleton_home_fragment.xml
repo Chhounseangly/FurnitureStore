@@ -24,25 +24,25 @@
             android:useDefaultMargins="true">
 
             <include
-                layout="@layout/product_holder_loading_layout"
+                layout="@layout/product_loading_layout"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_columnWeight="1" />
 
             <include
-                layout="@layout/product_holder_loading_layout"
+                layout="@layout/product_loading_layout"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_columnWeight="1" />
 
             <include
-                layout="@layout/product_holder_loading_layout"
+                layout="@layout/product_loading_layout"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_columnWeight="1" />
 
             <include
-                layout="@layout/product_holder_loading_layout"
+                layout="@layout/product_loading_layout"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_columnWeight="1" />

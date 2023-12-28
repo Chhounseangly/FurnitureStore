@@ -28,51 +28,103 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Product By Category"
+                android:text="Categories"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.tabs.TabLayout
+        android:visibility="gone"
         android:id="@+id/lytTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_marginHorizontal="10dp"
-        android:id="@+id/loadingLoadProducts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:id="@+id/productsSkeletonLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:orientation="vertical"
         shimmer:duration="800">
-
-        <!-- Adding 7 rows of placeholders -->
-        <GridLayout
-            android:layout_gravity="center"
+        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:rowCount="4"
-            android:columnCount="2"
-            android:useDefaultMargins="true">
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
-            <include layout="@layout/product_holder_loading_layout" />
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include
+                    layout="@layout/title_skeleton_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1" />
+                <Space
+                    android:layout_width="2dp"
+                    android:layout_height="1dp" />
 
-        </GridLayout>
+                <include
+                    layout="@layout/title_skeleton_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1" />
+                <Space
+                    android:layout_width="2dp"
+                    android:layout_height="1dp" />
+
+                <include
+                    layout="@layout/title_skeleton_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:useDefaultMargins="true">
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+                <include
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_columnWeight="1"
+                    layout="@layout/product_loading_layout" />
+            </GridLayout>
+        </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/view_pager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"/>-->
 
     <FrameLayout
         android:id="@+id/lytFragmentCate"
