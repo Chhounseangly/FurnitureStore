@@ -36,17 +36,17 @@ class CategoriesFragment(private var id: Int) :
 
     override fun setupObservers() {
         // Set up observer for load product by category LiveData
-        val loadingLoadProducts = binding.loadingLoadProducts
+        val productsSkeletonLoading = binding.productsSkeletonLoading
         categoriesViewModel.productByCategory.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Processing -> showLoadingAnimation(loadingLoadProducts)
+                Status.Processing -> showLoadingAnimation(productsSkeletonLoading)
                 Status.Success -> {
                     it.data?.let { data -> displayProductByCate(data.data) }
-                    hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(productsSkeletonLoading)
                 }
 
                 else -> {
-                    hideLoadingAnimation(loadingLoadProducts)
+                    hideLoadingAnimation(productsSkeletonLoading)
                 }
             }
         }
