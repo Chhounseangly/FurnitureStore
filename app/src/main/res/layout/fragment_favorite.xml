@@ -17,28 +17,49 @@
             android:orientation="vertical">
             <!--    container loading -->
             <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_marginHorizontal="10dp"
                 android:id="@+id/loading"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 shimmer:duration="800">
-                <!-- Add loading -->
-                <LinearLayout
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
+                    android:columnCount="2"
                     android:useDefaultMargins="true">
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                    <include layout="@layout/loading_shopping_cart" />
-                </LinearLayout>
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                    <include
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_columnWeight="1"
+                        layout="@layout/product_loading_layout" />
+                </GridLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,6 +90,7 @@
                     android:layout_height="32dp"/>
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/favoriteRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

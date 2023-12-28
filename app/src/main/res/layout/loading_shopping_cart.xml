@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="2dp"
-    android:paddingVertical="10dp"
-    android:layout_marginHorizontal="10dp">
+    android:layout_margin="10dp"
+    >
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,27 +17,52 @@
                 android:id="@+id/thumbnail"
                 android:layout_width="@dimen/placeholderImage"
                 android:layout_height="@dimen/placeholderImage"
-                android:layout_marginTop="@dimen/padding_10"
                 android:background="@color/background"
                 />
 
             <LinearLayout
                 android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_10"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical"
                 >
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/placeholderTextHeight"
+                    android:layout_height="12dp"
                     android:background="@color/background" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"/>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/placeholderTextHeight"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="12dp"
                     android:background="@color/background" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/background"/>
+                <Space
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/background"/>
+                <Space
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"/>
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/background"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
