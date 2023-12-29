@@ -312,15 +312,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         ) { view, item, binding ->
             // Handle item click to open ProductsByCategoryActivity
             view.setOnClickListener {
-<<<<<<< HEAD
                 val intent = ProductsByCategoryActivity.newIntent(requireActivity(), item.id)
                 startActivity(intent)
-=======
-                val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
-                intent.putExtra("id", item.id)
-                intent.putExtra("name", item.name)
-                it.context.startActivity(intent)
->>>>>>> parent of 4df3eba (- improving v29)
             }
             // Set category name
             binding.name.text = item.name
