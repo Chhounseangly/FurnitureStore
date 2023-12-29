@@ -1,6 +1,8 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
@@ -12,11 +14,24 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
+import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
-class CategoriesFragment(private var id: Int) :
+class CategoriesFragment() :
     BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private val categoriesViewModel: CategoriesViewModel by viewModels()
+
+    companion object {
+        private var TAB_ID: Int = 0
+        fun newInstance(tabId: Int): CategoriesFragment {
+            val fragment = CategoriesFragment()
+            val args = Bundle()
+            TAB_ID = tabId
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun bindUi() {
     }
 
@@ -26,7 +41,7 @@ class CategoriesFragment(private var id: Int) :
 
     override fun initActions() {
         // Load product data by category and category types
-        categoriesViewModel.loadProductByCategoryApi(id)
+        categoriesViewModel.loadProductByCategoryApi(TAB_ID)
         categoriesViewModel.loadCategoryTypes()
     }
 
