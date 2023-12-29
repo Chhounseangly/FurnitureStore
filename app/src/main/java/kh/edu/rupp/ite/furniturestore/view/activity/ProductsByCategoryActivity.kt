@@ -55,7 +55,6 @@ class ProductsByCategoryActivity :
                 Status.Processing -> showLoadingAnimation(loadingLoadProducts)
                 Status.Success -> {
                     it.data?.let {
-<<<<<<< HEAD
                         //setup adapter
                         val adapter = CategoryByTabAdapter(this, it.data)
                         binding.viewPager.adapter = adapter
@@ -70,18 +69,6 @@ class ProductsByCategoryActivity :
                             val data = it.data[position]
                             tab.text = data.name
                         }.attach()
-=======
-                        for (data in it.data) {
-                            val tab = lytTab.newTab().setText(data.name).setId(data.id)
-                            lytTab.addTab(tab)
-                        }
-                        // set active tab
-                        val id = intent.getIntExtra("id", 0)
-                        val tab = lytTab.getTabAt(id-1)
-                        if (tab != null) {
-                            lytTab.selectTab(tab)
-                        }
->>>>>>> parent of 4df3eba (- improving v29)
                     }
                     hideLoadingAnimation(loadingLoadProducts)
                     binding.lytTab.visibility = View.VISIBLE
