@@ -23,11 +23,12 @@ class ProductsByCategoryActivity :
     private val loadingLoadProducts: ShimmerFrameLayout by lazy { binding.productsSkeletonLoading }
 
     private var currentTabId: Int = 0
+
     companion object {
-        private const val EXTRA_TAB_ID  = "tab_id"
+        private const val EXTRA_TAB_ID = "tab_id"
         fun newIntent(context: Context, tabId: Int): Intent {
             val intent = Intent(context, ProductsByCategoryActivity::class.java)
-            intent.putExtra(EXTRA_TAB_ID , tabId)
+            intent.putExtra(EXTRA_TAB_ID, tabId)
             return intent
         }
     }
@@ -59,7 +60,7 @@ class ProductsByCategoryActivity :
                         binding.viewPager.adapter = adapter
 
                         // Find the position of the desired tab with the given id
-                        val initialPosition = it.data.indexOfFirst { tab-> tab.id == currentTabId }
+                        val initialPosition = it.data.indexOfFirst { tab -> tab.id == currentTabId }
 
                         // Set the initial page to the position of the desired tab
                         binding.viewPager.setCurrentItem(initialPosition, false)
@@ -68,11 +69,11 @@ class ProductsByCategoryActivity :
                             val data = it.data[position]
                             tab.text = data.name
                         }.attach()
-
                     }
                     hideLoadingAnimation(loadingLoadProducts)
                     binding.lytTab.visibility = View.VISIBLE
                 }
+
                 else -> {
                     hideLoadingAnimation(loadingLoadProducts)
                     binding.lytTab.visibility = View.VISIBLE
