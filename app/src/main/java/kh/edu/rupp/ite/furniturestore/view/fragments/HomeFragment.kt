@@ -212,7 +212,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Initialize the product list adapter
         val productListAdapter =
             DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
-            { view, item, binding, _ ->
+            { view, item, binding ->
                 // Handle item click to open the ProductDetailActivity
                 view.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)
@@ -309,11 +309,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Initialize the category types adapter
         val categoryTypesAdapter = DynamicAdapter<CategoryTypes, ViewHolderCategoryTypeBinding>(
             ViewHolderCategoryTypeBinding::inflate
-        ) { view, item, binding, position ->
+        ) { view, item, binding ->
             // Handle item click to open ProductsByCategoryActivity
             view.setOnClickListener {
+<<<<<<< HEAD
                 val intent = ProductsByCategoryActivity.newIntent(requireActivity(), item.id)
                 startActivity(intent)
+=======
+                val intent = Intent(it.context, ProductsByCategoryActivity::class.java)
+                intent.putExtra("id", item.id)
+                intent.putExtra("name", item.name)
+                it.context.startActivity(intent)
+>>>>>>> parent of 4df3eba (- improving v29)
             }
             // Set category name
             binding.name.text = item.name

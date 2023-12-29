@@ -168,7 +168,7 @@ class ProductDetailActivity :
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carouselRecyclerView)
 
-        val carouselAdapter = DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding, _ ->
+        val carouselAdapter = DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
                 // Add a listener to preview
                 view.setOnClickListener {
                     val intent = Intent(it.context, PreviewImageActivity::class.java)

@@ -77,7 +77,7 @@ class CategoriesFragment() :
         // Create DynamicAdapter for products with ViewHolderProductItemBinding
         val productByCategoryAdapter =
             DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate)
-            { view, item, binding, _ ->
+            { view, item, binding ->
                 // Set click listener to navigate to ProductDetailActivity
                 view.setOnClickListener {
                     val intent = Intent(it.context, ProductDetailActivity::class.java)

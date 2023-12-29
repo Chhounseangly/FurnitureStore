@@ -67,7 +67,7 @@ class HistoryActivity :
         recyclerViewHistory.addItemDecoration(dividerItemDecoration)
         val historyData = DynamicAdapter<HistoryModel, ViewHolderProductHistoryBinding>(
             ViewHolderProductHistoryBinding::inflate
-        ) { _, item, binding, _ ->
+        ) { _, item, binding ->
 
             with(binding) {
                 Picasso.get().load(item.product.imageUrl)
