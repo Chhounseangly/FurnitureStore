@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <!--    search product-->
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/search_product"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/bg_search"
-        app:iconifiedByDefault="false"
-        app:queryHint="Search Here..." />
+        android:iconifiedByDefault="false"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="Search Here..." />
 
     <ProgressBar
         android:id="@+id/loading"
-        android:indeterminateTint="@color/grey_font"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:visibility="gone"/>
+        android:indeterminateTint="@color/grey_font"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/notFound"
