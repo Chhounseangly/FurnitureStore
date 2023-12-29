@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:layout_centerHorizontal="true"
@@ -93,10 +94,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="price"
+                            android:textColor="@color/black"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="?android:attr/textColorSecondary" />
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -111,7 +111,8 @@
                             android:backgroundTint="@color/black"
                             android:text="Add To Cart"
                             android:textColor="@color/white"
-                            android:textSize="8dp" />
+                            android:textSize="8sp"
+                            tools:ignore="SmallSp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
