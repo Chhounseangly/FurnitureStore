@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Handler
 import android.view.View
-import androidx.appcompat.widget.SearchView
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R

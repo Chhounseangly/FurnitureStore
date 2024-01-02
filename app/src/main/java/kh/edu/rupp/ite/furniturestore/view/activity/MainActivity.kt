@@ -16,7 +16,6 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.BadgesQuantityStoring
 
-
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var displayFragmentActivity: DisplayFragmentActivity
@@ -47,14 +46,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 when (path) {
                     "/login" -> {
                         Log.d("MainActivity...", "Login")
-                        Snackbar.make(binding.root, getString(R.string.sign_in_success), Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.sign_in_success),
+                            Snackbar.LENGTH_LONG
+                        ).show()
 
                     }
+
                     "/register" -> {
                         Log.d("MainActivity...", "Register")
-                        Snackbar.make(binding.root, getString(R.string.sign_up_success), Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.sign_up_success),
+                            Snackbar.LENGTH_LONG
+                        ).show()
 
                     }
+
                     "/password/reset" -> {
                         Log.d("MainActivity...", "Reset Password")
                         val resetPasswordActivity = Intent(this, ResetPasswordActivity::class.java)
@@ -63,6 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         startActivity(resetPasswordActivity)
                         return
                     }
+
                     else -> {
                         Log.d("MainActivity...", "Unknown")
                         return
@@ -144,14 +154,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-
     private fun handleHistoryButton() {
         val historyBtn = binding.historyBtn
+        // If the user is not signed in, hide the history button
+        if (!isUserSignedIn()) {
+            historyBtn.visibility = android.view.View.GONE
+        }
         historyBtn.setOnClickListener {
             val historyIntent = Intent(this, HistoryActivity::class.java)
             startActivity(historyIntent)
         }
-
     }
 
 

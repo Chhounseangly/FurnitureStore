@@ -1,8 +1,9 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +37,7 @@ import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductListViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ProductSliderViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
-
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private lateinit var nestedScrollView: NestedScrollView
@@ -59,8 +60,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var currentPage = 1
     private var totalPage = 0
     private var isLoading = false
-
-
 
 
     override fun bindUi() {
@@ -141,7 +140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         processBar.visibility = View.GONE
                         displayProductList(it.data.data)
                         swipeRefreshLayout.isRefreshing = false
-                        hideLoadingAnimation( binding.productsSkeletonLoading.skeletonHomeFragment)
+                        hideLoadingAnimation(binding.productsSkeletonLoading.skeletonHomeFragment)
                         isLoading = false
                         // Calculate total page
                         val total = it.data.meta?.total ?: 0
@@ -153,7 +152,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     noDataMsg.visibility = View.VISIBLE
                     processBar.visibility = View.GONE
                     swipeRefreshLayout.isRefreshing = false
-                    hideLoadingAnimation( binding.productsSkeletonLoading.skeletonHomeFragment)
+                    hideLoadingAnimation(binding.productsSkeletonLoading.skeletonHomeFragment)
                     isLoading = false
                 }
 
@@ -185,6 +184,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Status.Processing -> {
                     showLoadingAnimation(binding.categorySkeletonLoading.cateSkeletonLoadingInside)
                 }
+
                 Status.Success -> it.data?.let { data ->
                     displayCategory(data.data)
                     swipeRefreshLayout.isRefreshing = false
@@ -219,6 +219,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     intent.putExtra("id", item.id)
                     it.context.startActivity(intent)
                 }
+                val handler = Handler(Looper.getMainLooper())
+                val delayMillis = TimeUnit.SECONDS.toMillis(2)
                 // Bind data to the view using Picasso for image loading
                 with(binding) {
                     Picasso.get().load(item.imageUrl)
@@ -234,7 +236,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     // Set favorite button based on the isFavorite flag
                     bntFav.setImageResource(if (item.isFavorite == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
 
-
                     // Add to cart button click listener
                     addToCartBtn.setOnClickListener {
                         val token = AppPreference.get(requireContext()).getToken()
@@ -246,7 +247,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             ).show()
                             return@setOnClickListener
                         }
-                        
+
                         val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
                         if (toastMessage === "Product existed on shopping cart") {
                             Snackbar.make(
@@ -254,14 +255,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 toastMessage,
                                 Snackbar.LENGTH_LONG
                             ).show()
-                        }else {
+                        } else {
                             Snackbar.make(
                                 requireView(),
                                 toastMessage,
                                 Snackbar.LENGTH_LONG
                             ).show()
                             badgesQuantityStoring.setQtyShoppingCart(1)
-                            badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()){
+                            badgesQuantityStoring.qtyShoppingCart.observe(requireActivity()) {
                                 setupBadge(R.id.mnuCart, it, activityBinding)
                             }
                         }
@@ -269,10 +270,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Favorite button click listener
                     bntFav.setOnClickListener {
-                        favoriteViewModel.toggleFavorite(item) {
-                            // Set the favorite button image based on the result
-                            bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
+                        // Set the favorite button image based on the isFavorite flag
+                        if (item.isFavorite == 1) {
+                            item.isFavorite = 0
+                            bntFav.setImageResource(R.drawable.ic_fav)
+                        } else {
+                            item.isFavorite = 1
+                            bntFav.setImageResource(R.drawable.ic_favorited)
                         }
+
+                        handler.removeCallbacksAndMessages(null)
+                        handler.postDelayed({
+                            favoriteViewModel.toggleFavorite(item) {
+                                // Set the favorite button image based on the result
+                                bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
+                            }
+                        }, delayMillis)
                     }
                 }
             }
@@ -281,7 +294,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         productListAdapter.setData(productsList)
         binding.productListRecyclerView.adapter = productListAdapter
     }
-
 
 
     // Display slider product on the top
