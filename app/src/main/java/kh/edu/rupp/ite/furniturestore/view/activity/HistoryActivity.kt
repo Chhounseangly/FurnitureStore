@@ -1,11 +1,13 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -19,8 +21,7 @@ class HistoryActivity :
     BaseActivity<ActivityHistoryCartBinding>(ActivityHistoryCartBinding::inflate) {
 
     private val historyViewModel: HistoryViewModel by viewModels()
-    private val lytLoading: View by lazy { binding.lytLoading }
-    private val loading: ProgressBar by lazy { binding.loadingCircle }
+    private val loadingHistory: ShimmerFrameLayout by lazy { binding.loadingHistory }
 
     override fun initActions() {
         historyViewModel.loadHistoryData()
@@ -36,26 +37,21 @@ class HistoryActivity :
     override fun setupObservers() {
         historyViewModel.historyData.observe(this) {
             when (it.status) {
-                Status.Processing -> {
-                    showCircleLoading(lytLoading, loading)
-                }
+                Status.Processing -> showLoadingAnimation(loadingHistory)
 
                 Status.Success -> {
-                    hideCircleLoading(lytLoading, loading)
+                    hideLoadingAnimation(loadingHistory)
                     if (it.data != null) {
                         displayHistoryData(it.data.data)
                     }
                 }
-
-                Status.Failed -> {
-                    hideCircleLoading(lytLoading, loading)
-                }
-
+                Status.Failed -> hideLoadingAnimation(loadingHistory)
                 else -> {}
             }
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun displayHistoryData(data: List<HistoryModel>) {
         val recyclerViewHistory = findViewById<RecyclerView>(R.id.recyclerHistory)
         val linearLayout =
@@ -76,8 +72,8 @@ class HistoryActivity :
                     .into(img)
 
                 txtName.text = item.product.name
-                priceTxt.text = item.product.price.toString()
-                qtyTxt.text = item.qty.toString()
+                priceTxt.text = getString(R.string.price_txt, item.product.price.toString())
+                qtyTxt.text = getString(R.string.quantity_txt, item.qty)
                 date.text = item.updated_at
 
             }

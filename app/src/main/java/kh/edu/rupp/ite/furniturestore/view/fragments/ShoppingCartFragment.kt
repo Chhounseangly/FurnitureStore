@@ -113,7 +113,6 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
                 }
 
                 //handle action of button
-                //handle action of button
                 with(shoppingCartViewModel) {
                     // Combine button click listeners
                     val qtyButtonClick = { operation: String ->
