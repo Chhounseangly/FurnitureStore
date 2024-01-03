@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -26,35 +26,43 @@
                 android:src="@drawable/ic_back" />
 
             <TextView
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="History Purchase"
+                android:text="@string/purchase_history"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    LoadingLayout -->
-   <LinearLayout
-       android:visibility="gone"
-       android:id="@+id/lytLoading"
-       android:gravity="center"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <ProgressBar
-           android:visibility="gone"
-           android:layout_gravity="center_vertical"
-           android:backgroundTintMode="multiply"
-           android:indeterminateTint="@color/grey_font"
-           android:id="@+id/loadingCircle"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:minHeight="50dp"
-           android:minWidth="50dp" />
-   </LinearLayout>
+<!--  LoadingLayout -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/loadingHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        shimmer:duration="800">
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+           <include layout="@layout/history_loading_layout"/>
+       </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/recyclerHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

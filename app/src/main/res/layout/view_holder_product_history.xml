@@ -2,77 +2,74 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingHorizontal="16dp"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="80dp"
+    android:paddingHorizontal="16dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_centerVertical="true"
-        tools:src="@drawable/chair"
-        app:shapeAppearanceOverlay="@style/cornerSize10Percent" />
+        app:shapeAppearanceOverlay="@style/cornerSize10Percent"
+        tools:src="@drawable/chair" />
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_toEndOf="@id/img"
+        android:orientation="vertical"
         tools:ignore="RelativeOverlap">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtName"
-                tools:text="Product Name"
-                android:textColor="@color/txt_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:gravity="end"
-                android:id="@+id/date"
-                tools:text="Date"
-                android:textColor="@color/txt_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/priceTxt"
-                tools:text="Product Price"
-                android:textSize="16sp"
-                android:textColor="@color/txt_color"
+                android:textSize="14sp"
+                android:id="@+id/txtName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/txt_color"
+                tools:text="Product Name" />
+
             <TextView
-                android:id="@+id/qtyTxt"
-                tools:text="Qty"
-                android:textSize="16sp"
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
                 android:textColor="@color/txt_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                tools:text="Date" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/priceTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp"
+            tools:text="Product Price" />
+
+        <TextView
+            android:id="@+id/qtyTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp"
+            tools:text="Qty" />
 
     </LinearLayout>
 
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_centerVertical="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_next"
-        android:contentDescription="@string/image_content" />
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/image_content"
+        android:src="@drawable/ic_next" />
 
 </RelativeLayout>
