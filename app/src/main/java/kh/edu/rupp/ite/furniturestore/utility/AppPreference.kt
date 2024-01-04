@@ -2,30 +2,49 @@ package kh.edu.rupp.ite.furniturestore.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
-class AppPreference private constructor(context: Context){
+class AppPreference private constructor(context: Context) {
 
     private var pref: SharedPreferences
+    private var encryptedPref: SharedPreferences
 
     init {
+        // Create an instance of SharedPreferences
         pref = context.getSharedPreferences("myapp", Context.MODE_PRIVATE)
+
+        // Create an instance of MasterKey
+        val masterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        // Create an instance of EncryptedSharedPreferences
+        encryptedPref = EncryptedSharedPreferences.create(
+            context,
+            "myapp",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
     }
 
     fun setToken(token: String) {
-        pref.edit().putString(KEY_TOKEN, token).apply()
+        encryptedPref.edit().putString(KEY_TOKEN, token).apply()
     }
 
     fun getToken(): String? {
-        return pref.getString(KEY_TOKEN, null)
+        return encryptedPref.getString(KEY_TOKEN, null)
     }
 
     fun removeToken() {
-        pref.edit().remove(KEY_TOKEN).apply()
+        encryptedPref.edit().remove(KEY_TOKEN).apply()
     }
 
     fun setLanguage(language: String) {
         pref.edit().putString(KEY_LANGUAGE, language).apply()
     }
+
     fun getLanguage(): String? {
         return pref.getString(KEY_LANGUAGE, null)
     }
