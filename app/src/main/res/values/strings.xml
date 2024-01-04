@@ -1,7 +1,9 @@
 <resources>
 
     <string name="app_scheme" translatable="false">furniturestore</string>
-
+    <string name="purchase_history">Purchase History</string>
+    <string name="price_txt">Price: $%s</string>
+    <string name="quantity_txt">Qty: %s</string>
     <string name="ic_pf_txt">Profile</string>
     <string name="ic_cart_txt">Cart</string>
     <string name="ic_home_txt">Home</string>

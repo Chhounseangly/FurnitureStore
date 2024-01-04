@@ -12,7 +12,7 @@ data class Product(
     val description: String?,
     val created_at: String?,
     val updated_at: String?,
-    val isFavorite: Int?,
+    var isFavorite: Int?,
     var qty: Int? = 1,
     @SerializedName("image_urls") //rename image_urls to ImageUrls
     val imageUrls: List<ImageUrls>?,

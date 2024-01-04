@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="purchase_history">ប្រវត្តិការទិញ</string>
+    <string name="price_txt">តម្លៃ: $%s</string>
+    <string name="quantity_txt">ចំនួន: %s</string>
     <string name="ic_pf_txt">ប្រវត្តិរូប</string>
     <string name="ic_cart_txt">កន្ត្រក</string>
     <string name="ic_home_txt">ទំព័រដើម</string>
