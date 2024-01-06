@@ -61,7 +61,7 @@
             android:orientation="vertical"
             app:cardCornerRadius="10dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/changeLanguageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -85,7 +85,7 @@
             android:orientation="vertical"
             app:cardCornerRadius="10dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/editAvatarBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -109,7 +109,7 @@
             android:orientation="vertical"
             app:cardCornerRadius="10dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/changePwBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -133,12 +133,12 @@
             android:orientation="vertical"
             app:cardCornerRadius="10dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/switch_themes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/trans"
-                android:drawableStart="@drawable/ic_edit"
+                android:drawableStart="@drawable/ic_light_mode"
                 android:drawableEnd="@drawable/ic_next"
                 android:drawablePadding="10dp"
                 android:paddingHorizontal="10dp"
@@ -157,7 +157,7 @@
             android:orientation="vertical"
             app:cardCornerRadius="10dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logoutBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

@@ -84,6 +84,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
             startActivity(signUpScreen)
         }
 
+
         signInBtn.setOnClickListener {
             handleSignIn()
         }

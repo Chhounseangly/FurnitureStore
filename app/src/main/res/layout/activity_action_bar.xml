@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    style="@style/SCREEN"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
     <ImageView
-        style="@style/imageColor"
+        style="@style/IMAGE_VIEW_COLOR"
         android:id="@+id/backPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

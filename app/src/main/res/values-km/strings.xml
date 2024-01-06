@@ -23,7 +23,7 @@
     <string name="click_here_btn">ចុចនៅទីនេះ</string>
     <string name="forgot_your_password_txt">ភ្លេចពាក្យសម្ងាត់របស់អ្នក?</string>
     <string name="sign_in_txt">ចូលគណនី</string>
-    <string name="sign_up_txt">ចុះឈ្មោះ</string>
+    <string name="sign_up_txt">បង្កើតគណនី</string>
     <string name="don_t_have_an_account_txt">មិនមានគណនីទេ?</string>
     <string name="sign_up_title">ចុះឈ្មោះ</string>
     <string name="confirmation_password_txt">បញ្ជាក់ពាក្យសម្ងាត់</string>

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -85,15 +86,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
         val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
 
         switchTheme.setOnClickListener {
-            val editMode: SharedPreferences.Editor?
+            val editMode: SharedPreferences.Editor = themes.edit()
+
             val nightMode = themes.getBoolean("night", false)
-            if (nightMode){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                editMode = themes.edit()
+            Log.d("ThemeToggle", "Night Mode saved value: $nightMode")
+            if (nightMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editMode.putBoolean("night", false)
-            }else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                editMode = themes.edit()
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 editMode.putBoolean("night", true)
             }
             editMode.apply()

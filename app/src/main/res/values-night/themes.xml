@@ -1,10 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FurnitureStore" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.FurnitureStore" parent="Theme.MaterialComponents">
 
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:windowBackground">@color/background_color</item>
-
         <item name="android:windowIsTranslucent">true</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
@@ -18,11 +17,9 @@
         <item name="android:textColor">@color/white</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeStyle">@style/Widget.AppCompat.ActionMode</item>
         <item name="actionModeCloseDrawable">@drawable/ic_home</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="android:statusBarColor" tools:target="l">@color/trans</item>
 
-        <item name="android:statusBarColor" tools:target="l">?attr/colorPrimaryVariant</item>
 
     </style>
 
@@ -31,11 +28,34 @@
         <item name="android:background">@color/black</item>
     </style>
 
+    <color name="bg_search_view">@color/white</color>
+
+    <style name="BACKGROUND_CARD">
+        <item name="android:background">@color/dark_bg_card</item>
+    </style>
+
     <string name="THEMES_MODE">@string/light</string>
 
     <style name="TEXT">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="EDIT_TEXT">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="drawableTint">@color/white</item>
+    </style>
+
+    <style name="IMAGE_VIEW_COLOR">
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@color/trans</item>
+        <item name="tabTextColor">@color/white</item>
+    </style>
+
+
 
     <style name="BUTTON">
         <item name="android:backgroundTint">@color/white</item>
@@ -68,15 +88,20 @@
     </style>
 
     <style name="BUTTON_NAV" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="itemBackground">@color/white</item>
-        <item name="itemIconTint">@color/black</item>
+        <item name="itemBackground">@color/dark_bg_card</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
     </style>
 
     <style name="imageColor">
-        <item name="tint">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
     </style>
 
     <style name="SEARCH">
         <item name="background">@color/bg_search</item>
+    </style>
+
+    <style name="LABEL_TEXT_INPUT">
+        <item name="android:textColorHint">@color/white</item>
     </style>
 </resources>
