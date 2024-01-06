@@ -1,8 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.app.Activity
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -25,11 +28,26 @@ class EditProfileActivity :
     private val name: TextInputEditText by lazy { binding.username }
     private val editAvatarBtn: ImageView by lazy { binding.editAvatarBtn }
     private val saveBtn: Button by lazy { binding.saveBtn }
-
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
     override fun initActions() {
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.edit_profile)
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
+
         authViewModel.loadProfile()
-        prevBack(binding.backBtn)
         setupImagePickerLauncher(avatar)
+
+
     }
 
     override fun setupListeners() {

@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.furniturestore.view.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.viewModels
@@ -14,7 +13,6 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
-import kh.edu.rupp.ite.furniturestore.view.activity.ProductsByCategoryActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
 
 class CategoriesFragment() :

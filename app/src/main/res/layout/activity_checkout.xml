@@ -1,105 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <!--    app bar-->
-    <com.google.android.material.appbar.AppBarLayout
-        app:elevation="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:minHeight="?attr/actionBarSize">
-
-            <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_back"
-                android:contentDescription="TODO" />
-
-            <TextView
-                android:textColor="@color/black"
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Checkout"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
 
     <LinearLayout
-        android:padding="10dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
         <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="5dp"
-            app:cardElevation="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            app:cardElevation="8dp">
+
             <LinearLayout
-                android:padding="10dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
                 <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp">
+
                     <LinearLayout
-                        android:layout_gravity="center"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
                         <LinearLayout
-                            android:gravity="center"
                             android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.1"
-                            android:layout_height="match_parent">
+                            android:gravity="center">
+
                             <RadioButton
-                                android:layout_gravity="center"
                                 android:id="@+id/radioButton1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:gravity="top"
                                 android:text="" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_gravity="center"
-                            android:gravity="center_vertical"
-                            android:layout_marginHorizontal="10dp"
-                            android:orientation="horizontal"
-                            android:layout_weight="0.7"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_weight="0.7"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
                             <LinearLayout
-                                android:layout_weight="0.4"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.4">
+
                                 <ImageView
                                     android:id="@+id/imageView1"
                                     android:layout_width="match_parent"
                                     android:layout_height="70dp"
                                     android:src="@drawable/aba_card" />
                             </LinearLayout>
+
                             <LinearLayout
-                                android:gravity="center"
                                 android:layout_width="0dp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="0.9"
-                                android:layout_height="match_parent">
+                                android:gravity="center">
+
                                 <TextView
                                     android:id="@+id/textView1"
+                                    style="@style/TEXT"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="**** **** **** 1234"
@@ -113,73 +94,86 @@
 
     </LinearLayout>
 
-    
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCheckout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCheckout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:padding="16dp"
-            android:orientation="vertical"
+            <TextView
+                style="@style/TEXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Shipping"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/TEXT"
+                android:id="@+id/shippingTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="tesa"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_alignParentStart="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="Shipping"/>
-                <TextView
-                    android:id="@+id/shippingTxt"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="tesa"/>
-            </RelativeLayout>
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_alignParentStart="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="Total"/>
-                <TextView
-                    android:id="@+id/totalPrice"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="100$"/>
-            </RelativeLayout>
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-            <Button
-                android:id="@+id/paymentBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/custom_style_btn"
-                android:text="Payment"
-                android:textColor="@color/white" />
+            android:layout_height="10dp" />
 
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TEXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Total"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/TEXT"
+                android:id="@+id/totalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="100$"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/paymentBtn"
+            style="@style/BUTTON"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_style_btn"
+            android:text="Payment"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 
 </LinearLayout>

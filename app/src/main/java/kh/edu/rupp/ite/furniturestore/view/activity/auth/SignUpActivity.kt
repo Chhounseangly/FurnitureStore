@@ -29,6 +29,8 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
     private val errorMessage: TextView by lazy { binding.errorMsg }
 
     override fun initActions() {
+        supportActionBar?.hide()
+
         // Initialize sign-in screen display
         initSignInScreenDisplay()
 

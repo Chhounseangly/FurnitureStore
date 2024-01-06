@@ -46,14 +46,24 @@ abstract class BaseFragment<T : ViewBinding>(
     abstract fun setupListeners()
     abstract fun setupObservers()
 
+    fun showCustomActionBar(context: Context,  layoutRes: Int): View{
+        val baseActivity = activity as BaseActivity<*>
+        return baseActivity.showCustomActionBar(context, layoutRes)
+    }
+
+    fun hideCustomActionBar(context: Context){
+        val baseActivity = activity as BaseActivity<*>
+        baseActivity.hideCustomActionBar(context)
+    }
+
     //show badge on bottom navigation
-    fun setupBadge(itemId: Int, value: Int, binding: ActivityMainBinding ){
+    fun setupBadge(itemId: Int, value: Int, binding: ActivityMainBinding) {
         val baseActivity = activity as BaseActivity<*>
         baseActivity.setupBadge(itemId, value, binding)
     }
 
     //Clear Badge that show on button Navigation
-    fun clearBadge(itemId: Int, value: Int, binding: ActivityMainBinding){
+    fun clearBadge(itemId: Int, value: Int, binding: ActivityMainBinding) {
         val baseActivity = activity as BaseActivity<*>
         baseActivity.clearBadge(itemId, binding)
     }

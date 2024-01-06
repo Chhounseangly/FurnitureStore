@@ -9,6 +9,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
@@ -34,6 +36,10 @@ class CodeVerificationActivity :
 
     private lateinit var countdownTimer: CountDownTimer
 
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
+
     companion object {
         const val TYPE_FORGOT_PASSWORD = "forgot_password"
         const val TYPE = "type"
@@ -41,13 +47,24 @@ class CodeVerificationActivity :
     }
 
     override fun initActions() {
+
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                visibility = View.GONE
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
         // Set up text input validation
         AuthValidation().handleOnChangeEditText(codeInput)
 
         navigationBetweenEditTexts(codeInput, null) {
             verifyEmail()
         }
-        prevBack(binding.backBtn)
         startCountdownTimer()
     }
 

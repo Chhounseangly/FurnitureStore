@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title_app"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Furniture Store"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+      android:layout_alignBottom="@+id/title_app"
+        android:layout_alignTop="@+id/title_app"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        app:cardCornerRadius="5dp">
+        <ImageButton
+            android:layout_marginHorizontal="12dp"
+            android:src="@drawable/ic_history"
+            android:id="@+id/history_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/trans"
+            android:contentDescription="@string/image_content" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:visibility="gone"
+        android:id="@+id/setting"
+        android:layout_alignBottom="@+id/title_app"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:menu="@menu/setting" />
+</RelativeLayout>

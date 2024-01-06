@@ -10,6 +10,7 @@ class PreviewImageActivity :
     private val previewImg: ImageView by lazy { binding.previewImg }
 
     override fun initActions() {
+        supportActionBar?.hide()
         val intent = intent
         val imageUrl = intent.getStringExtra("imageUrl")
         Picasso.get().load(imageUrl)

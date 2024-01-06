@@ -10,7 +10,7 @@ class PaymentSuccessActivity :
     private val continueBtn: Button by lazy { binding.continueBtn }
 
     override fun initActions() {
-
+        supportActionBar?.hide()
     }
 
     override fun setupListeners() {

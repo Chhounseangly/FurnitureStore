@@ -12,6 +12,8 @@ class SplashScreenActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashB
     private val splashTimeOut = 500
 
     override fun initActions() {
+        supportActionBar?.hide()
+
         Handler(Looper.getMainLooper()).postDelayed({
             val homeIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)
             startActivity(homeIntent)

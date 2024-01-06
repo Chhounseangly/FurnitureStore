@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout style="@style/SCREEN"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -11,15 +12,15 @@
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_done"/>
+            android:src="@drawable/ic_done" />
         <TextView
-            android:textColor="@color/black"
+            style="@style/TEXT"
             android:fontFamily="@font/bitter"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thank You for your purchase"/>
+            android:text="@string/thank_you_for_your_purchase"/>
     </LinearLayout>
     <LinearLayout
         android:layout_margin="20dp"
@@ -27,13 +28,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/BUTTON"
             android:id="@+id/continueBtn"
             android:background="@drawable/custom_style_btn"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Continue"/>
+            android:text="@string/continue_txt"/>
 
     </LinearLayout>
 </RelativeLayout>

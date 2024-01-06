@@ -1,6 +1,9 @@
 <resources>
-
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="lang">ខ្មែរ</string>
     <string name="app_scheme" translatable="false">furniturestore</string>
+    <string name="change_new_pw_txt">Change New Password</string>
     <string name="purchase_history">Purchase History</string>
     <string name="price_txt">Price: $%s</string>
     <string name="quantity_txt">Qty: %s</string>
@@ -74,4 +77,8 @@
     <string name="resend_code_countdown_minutes">We have send OTP to your email: %1$02d:%2$02d </string>
     <string name="resend_code_countdown_seconds">We have send OTP to your email: %ds </string>
     <string name="verify_code_content">Please check OTP we have sent in your email.</string>
+    <string name="thank_you_for_your_purchase">Thank You for your purchase</string>
+    <string name="continue_txt">Continue</string>
+    <string name="categories_txt">Categories</string>
+    <string name="reset_new_password">Reset New Password</string>
 </resources>

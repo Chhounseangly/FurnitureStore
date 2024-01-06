@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    style="@style/SCREEN"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
-    android:background="@drawable/bg_search_product"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="5dp"
     android:elevation="2dp"
@@ -21,6 +21,7 @@
         android:layout_weight="0.5">
         <ImageView
             android:id="@+id/img"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/table"/>
@@ -33,6 +34,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
         <TextView
+            style="@style/TEXT"
             android:textStyle="bold"
             android:textSize="18sp"
             android:id="@+id/name"
@@ -40,12 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            style="@style/TEXT"
             tools:text="1000"
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <ImageView
+        style="@style/imageColor"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@drawable/ic_next"

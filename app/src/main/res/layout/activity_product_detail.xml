@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    style="@style/SCREEN"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -96,10 +98,10 @@
 
     <!--    view-group cover on description-->
     <LinearLayout
+        style="@style/SCREEN"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/bg_detail"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -109,10 +111,10 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/TEXT"
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/txt_color"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Product Name" />
@@ -148,6 +150,7 @@
             android:layout_height="15dp" />
 
         <TextView
+            style="@style/TEXT"
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,6 +160,7 @@
             tools:text="@string/long_txt" />
 
         <TextView
+            style="@style/TEXT"
             android:id="@+id/seeMoreBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -173,13 +177,12 @@
         android:gravity="center"
         app:cardCornerRadius="10dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/BUTTON_CARD"
             android:id="@+id/addToCartBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/trans"
-            android:text="@string/add_to_cart"
-            android:textColor="@color/white" />
+            android:text="@string/add_to_cart" />
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

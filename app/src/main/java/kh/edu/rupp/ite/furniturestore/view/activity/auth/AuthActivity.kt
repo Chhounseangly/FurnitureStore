@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,6 +12,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -39,6 +41,7 @@ abstract class AuthActivity<T : ViewBinding>(bindingInflater: (LayoutInflater) -
         const val IMAGE_FORM_DATA_NAME = "avatar"
         const val IMAGE_FILE_NAME = "image.jpg"
     }
+
 
     fun togglePasswordVisibility(password: EditText) {
         isPasswordVisible = !isPasswordVisible

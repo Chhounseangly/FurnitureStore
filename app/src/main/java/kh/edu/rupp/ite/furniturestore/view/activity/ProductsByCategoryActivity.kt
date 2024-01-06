@@ -4,10 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.CategoryByTabAdapter
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityProductByCategoryBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
@@ -24,6 +27,10 @@ class ProductsByCategoryActivity :
 
     private var currentTabId: Int = 0
 
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
+
     companion object {
         private const val EXTRA_TAB_ID = "tab_id"
         fun newIntent(context: Context, tabId: Int): Intent {
@@ -34,8 +41,18 @@ class ProductsByCategoryActivity :
     }
 
     override fun initActions() {
-        // call method prev back
-        prevBack(binding.backBtn)
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.categories_txt)
+            }
+
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
+
+
 
         categoriesViewModel.loadCategoryTypes()
 
