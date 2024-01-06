@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:configChanges="orientation|screenSize|uiMode"
             android:windowSoftInputMode="adjustNothing"
             android:name=".view.activity.MainActivity"
             android:exported="true" >
