@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/SCREEN"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <!--    search product-->
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/search_product"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -25,8 +24,8 @@
         android:visibility="gone" />
 
     <TextView
-        style="@style/TEXT"
         android:id="@+id/notFound"
+        style="@style/TEXT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
