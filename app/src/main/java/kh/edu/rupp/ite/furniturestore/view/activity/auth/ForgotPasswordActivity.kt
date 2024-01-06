@@ -21,6 +21,7 @@ class ForgotPasswordActivity :
     private val sendResetBtn: Button by lazy { binding.sendResetBtn }
 
     override fun initActions() {
+        supportActionBar?.hide()
         prevBack(binding.backBtn)
 
         navigationBetweenEditTexts(verifyEmail, null) {

@@ -1,9 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatDelegate
 import kh.edu.rupp.ite.furniturestore.databinding.ActivitySplashBinding
 
 @SuppressLint("CustomSplashScreen")

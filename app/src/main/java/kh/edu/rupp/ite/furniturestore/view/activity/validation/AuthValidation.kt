@@ -1,10 +1,14 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.validation
 
 import android.content.res.ColorStateList
+import android.content.res.Resources.Theme
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import androidx.core.content.res.ResourcesCompat.ThemeCompat
+import androidx.core.content.res.ResourcesCompat.getColorStateList
 
 class AuthValidation {
 
@@ -59,15 +63,15 @@ class AuthValidation {
     fun handleOnChangeEditText(obj: EditText) {
         obj.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                obj.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                obj.backgroundTintList = ColorStateList.valueOf(Color.CYAN)
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                obj.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                obj.backgroundTintList = ColorStateList.valueOf(Color.CYAN)
             }
 
             override fun afterTextChanged(s: Editable) {
-                obj.backgroundTintList = null
+                obj.backgroundTintList = ColorStateList.valueOf(Color.CYAN)
             }
         })
     }

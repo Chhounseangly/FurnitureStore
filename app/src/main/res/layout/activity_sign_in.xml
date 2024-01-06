@@ -22,8 +22,8 @@
             android:minHeight="?attr/actionBarSize">
 
             <ImageView
+                style="@style/IMAGE_VIEW_COLOR"
                 android:id="@+id/backBtn"
-                style="@style/imageColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image_content"
@@ -87,7 +87,7 @@
 
             <EditText
                 android:id="@+id/emInput"
-                style="@style/TEXT"
+                style="@style/EDIT_TEXT"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_below="@id/errorMsg"
@@ -98,7 +98,7 @@
 
             <EditText
                 android:id="@+id/pwInput"
-                style="@style/TEXT"
+                style="@style/EDIT_TEXT"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_below="@id/emInput"

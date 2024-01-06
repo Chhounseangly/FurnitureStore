@@ -2,7 +2,9 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -52,8 +54,6 @@ class ProductsByCategoryActivity :
             }
         }
 
-
-
         categoriesViewModel.loadCategoryTypes()
 
         //assign prev tab id to currentTabId
@@ -82,10 +82,11 @@ class ProductsByCategoryActivity :
                         // Set the initial page to the position of the desired tab
                         binding.viewPager.setCurrentItem(initialPosition, false)
                         //set title of tab bar
-                        TabLayoutMediator(lytTab, binding.viewPager) { tab, position ->
+                        val tab = TabLayoutMediator(lytTab, binding.viewPager) { tab, position ->
                             val data = it.data[position]
                             tab.text = data.name
                         }.attach()
+
                     }
                     hideLoadingAnimation(loadingLoadProducts)
                     binding.lytTab.visibility = View.VISIBLE
