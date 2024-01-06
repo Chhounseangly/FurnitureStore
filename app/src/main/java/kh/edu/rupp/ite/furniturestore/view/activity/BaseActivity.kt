@@ -1,17 +1,27 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -46,9 +56,11 @@ abstract class BaseActivity<T : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _binding = bindingFunction(layoutInflater)
         setContentView(binding.root)
+
+        //display custom appbar for all fragment
+        showCustomActionBar(this, R.layout.fragment_action_bar)
 
         initActions()
         setupListeners()
@@ -58,7 +70,88 @@ abstract class BaseActivity<T : ViewBinding>(
     abstract fun initActions()
     abstract fun setupListeners()
     abstract fun setupObservers()
+    private fun isUserSignedIn(): Boolean {
+        return AppPreference.get(this).getToken() != null
+    }
 
+    // Function to change the language
+    private fun changeLanguage(languageCode: String) {
+        AppPreference.get(this).setLanguage(languageCode)
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+
+    @SuppressLint("CommitPrefEdits")
+    fun showCustomActionBar(context: Context, layoutRes: Int): View {
+        val customView = LayoutInflater.from(context).inflate(layoutRes, null)
+
+        customView?.let { it ->
+            supportActionBar?.apply {
+                // Ensure supportActionBar is not null
+                displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+                setDisplayShowCustomEnabled(true)
+                supportActionBar!!.customView = it
+            }
+            val historyBtn = it.findViewById<ImageButton>(R.id.history_btn)
+            val setting = it.findViewById<Toolbar>(R.id.setting)
+
+            if (historyBtn != null || setting != null) {
+                if (!isUserSignedIn()) {
+                    historyBtn.visibility = View.GONE
+                    setting.visibility = View.VISIBLE
+                    val language = resources.configuration.locale.language
+                    val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+                    setting.setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.language -> {
+                                if (language == "en") {
+                                    changeLanguage("km")
+                                } else {
+                                    changeLanguage("en")
+                                }
+                                recreate()
+                            }
+
+                            R.id.themes_mode -> {
+                               val editMode: SharedPreferences.Editor?
+                                val nightMode = themes.getBoolean("night", false)
+                                if (nightMode){
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                                     editMode = themes.edit()
+                                    editMode.putBoolean("night", false)
+                                }else {
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                     editMode = themes.edit()
+                                    editMode.putBoolean("night", true)
+                                }
+                                editMode.apply()
+                            }
+
+                        }
+                        true
+                    }
+
+
+                } else {
+                    val historyIntent = Intent(context, HistoryActivity::class.java)
+                    historyBtn.setOnClickListener {
+                        context.startActivity(historyIntent)
+                    }
+                }
+            }
+        }
+
+        return supportActionBar!!.customView
+
+    }
+
+    fun hideCustomActionBar(context: Context) {
+        supportActionBar?.setDisplayShowCustomEnabled(false)
+        supportActionBar?.customView = null
+    }
 
     fun showCircleLoading(lytLoading: View, loading: ProgressBar) {
         lytLoading.visibility = View.VISIBLE

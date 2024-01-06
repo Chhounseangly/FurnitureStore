@@ -1,13 +1,18 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -28,12 +33,27 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private val username: TextView by lazy { binding.username }
     private val languageBtn: Button by lazy { binding.changeLanguageBtn }
 
+    private val switchTheme: Button by lazy { binding.switchThemes }
+
     private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
     private lateinit var changePasswordLauncher: ActivityResultLauncher<Intent>
-
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
     override fun initActions() {
+
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.profile)
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
         authViewModel.loadProfile()
-        prevBack(binding.backBtn)
 
         // Initialize the ActivityResultLauncher for edit profile
         setupEditProfileLauncher()
@@ -60,6 +80,24 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             } else {
                 changeLanguage("en")
             }
+            recreate()
+        }
+        val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+
+        switchTheme.setOnClickListener {
+            val editMode: SharedPreferences.Editor?
+            val nightMode = themes.getBoolean("night", false)
+            if (nightMode){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                editMode = themes.edit()
+                editMode.putBoolean("night", false)
+            }else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                editMode = themes.edit()
+                editMode.putBoolean("night", true)
+            }
+            editMode.apply()
+
         }
     }
 

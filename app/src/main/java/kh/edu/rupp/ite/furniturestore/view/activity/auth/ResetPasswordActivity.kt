@@ -1,10 +1,15 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.content.Intent
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityResetPasswordBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.view.activity.BaseActivity
@@ -21,9 +26,25 @@ class ResetPasswordActivity :
     private lateinit var email: String
     private lateinit var otp: String
 
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
+
+
     override fun initActions() {
+
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.reset_new_password)
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
         // Get email and token from intent
-        prevBack(binding.backBtn)
+//        prevBack(binding.backBtn)
 
         email = intent.getStringExtra("email").toString()
         otp = intent.getStringExtra("otp").toString()

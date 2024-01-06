@@ -1,11 +1,15 @@
 package kh.edu.rupp.ite.furniturestore.view.activity.auth
 
 import android.app.Activity
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityChangePasswordBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.AuthViewModel
@@ -21,16 +25,30 @@ class ChangePasswordActivity :
     private val toggleNewPwVisibilityBtn: ImageView by lazy { binding.toggleNewPwVisibilityBtn }
     private val toggleCfPwVisibilityBtn: ImageView by lazy { binding.toggleCfPwVisibilityBtn }
     private val savePasswordBtn: Button by lazy { binding.savePasswordBtn }
+    private val actionBarView: View by lazy {
+         showCustomActionBar(this, R.layout.activity_action_bar)
+    }
 
     override fun initActions() {
+
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.change_new_pw_txt)
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+        }
         // Current password
         togglePasswordVisibility(currentPwField, toggleCurrentPwVisibilityBtn)
         // New password
         togglePasswordVisibility(changePwField, toggleNewPwVisibilityBtn)
         // Confirm New password
         togglePasswordVisibility(cfNewPwField, toggleCfPwVisibilityBtn)
-        // Back button
-        prevBack(binding.backBtn)
+
     }
 
     override fun setupListeners() {
@@ -40,6 +58,7 @@ class ChangePasswordActivity :
                 changePwField.text.toString(),
                 cfNewPwField.text.toString())
         }
+
     }
 
     override fun setupObservers() {

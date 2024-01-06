@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="lang">English</string>
+    <string name="change_new_pw_txt">Change New Password</string>
     <string name="purchase_history">ប្រវត្តិការទិញ</string>
     <string name="price_txt">តម្លៃ: $%s</string>
     <string name="quantity_txt">ចំនួន: %s</string>
@@ -72,5 +76,8 @@
     <string name="resend_code_countdown_minutes">យើងបានផ្ញើOTPទៅកាន់អ៊ីម៉ែលរបស់អ្នកហើយ: %1$02d:%2$02d </string>
     <string name="resend_code_countdown_seconds">យើងបានផ្ញើOTPទៅកាន់អ៊ីម៉ែលរបស់អ្នកហើយ: %ds </string>
     <string name="verify_code_content">សូមពិនិត្យOTPដែលពួកយើងបានផ្ញើទៅកាន់អ៊ីមែលរបស់អ្នក</string>
+    <string name="continue_txt">Continue</string>
+    <string name="categories_txt">Categories</string>
+    <string name="reset_new_password">Reset New Password</string>
 
 </resources>

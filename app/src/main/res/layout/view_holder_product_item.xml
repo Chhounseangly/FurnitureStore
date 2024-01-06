@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    style="@style/SCREEN"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -37,6 +39,7 @@
                     app:srcCompat="@drawable/chair" />
 
                 <androidx.cardview.widget.CardView
+                    android:backgroundTint="@color/trans"
                     android:layout_margin="3dp"
                     app:cardCornerRadius="5dp"
                     android:layout_alignParentTop="true"
@@ -48,13 +51,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:background="@color/trans"
                         android:backgroundTint="@color/trans"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_fav"
                         android:contentDescription="TODO" />
                 </androidx.cardview.widget.CardView>
-
             </RelativeLayout>
 
             <LinearLayout
@@ -67,12 +68,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
+                        style="@style/TEXT"
                         android:textSize="14sp"
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Product Name"
-                        android:textAppearance="?attr/textAppearanceHeadline6" />
+                        android:text="Product Name" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -87,14 +88,13 @@
                         android:orientation="vertical">
 
                         <!-- Title, secondary and supporting text -->
-
                         <TextView
+                            style="@style/TEXT"
                             android:id="@+id/price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="price"
-                            android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -103,14 +103,12 @@
                         android:gravity="bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="42dp">
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/addToCartBtn"
-                            style="?attr/borderlessButtonStyle"
+                            style="@style/BUTTON_CARD"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:backgroundTint="@color/black"
                             android:text="Add To Cart"
-                            android:textColor="@color/white"
                             android:textSize="8sp"
                             tools:ignore="SmallSp" />
                     </LinearLayout>

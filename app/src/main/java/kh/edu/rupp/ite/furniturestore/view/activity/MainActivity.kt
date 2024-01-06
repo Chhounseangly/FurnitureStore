@@ -2,6 +2,8 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import android.widget.ImageButton
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
@@ -16,6 +18,7 @@ import kh.edu.rupp.ite.furniturestore.view.fragments.SearchFragment
 import kh.edu.rupp.ite.furniturestore.view.fragments.ShoppingCartFragment
 import kh.edu.rupp.ite.furniturestore.viewmodel.BadgesQuantityStoring
 
+
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var displayFragmentActivity: DisplayFragmentActivity
@@ -29,6 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val badgesQuantityStoring: BadgesQuantityStoring by viewModels()
 
     override fun initActions() {
+
         // Initialize DisplayFragmentActivity to manage fragment transactions
         displayFragmentActivity = DisplayFragmentActivity(supportFragmentManager)
         // Display the home fragment initially
@@ -105,15 +109,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
 
-        handleHistoryButton()
     }
 
     override fun setupListeners() {
-        // Click on the app title goes back to the home fragment and sets the home menu as active
-        binding.titleTxt.setOnClickListener {
-            displayFragmentActivity.displayFragment(homeFragment)
-            binding.bottomNavigationView.selectedItemId = R.id.mnuHome
-        }
 
         // Initialize the Intent for signing in
         signInScreen = Intent(this, SignInActivity::class.java)
@@ -151,18 +149,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
             true
-        }
-    }
-
-    private fun handleHistoryButton() {
-        val historyBtn = binding.historyBtn
-        // If the user is not signed in, hide the history button
-        if (!isUserSignedIn()) {
-            historyBtn.visibility = android.view.View.GONE
-        }
-        historyBtn.setOnClickListener {
-            val historyIntent = Intent(this, HistoryActivity::class.java)
-            startActivity(historyIntent)
         }
     }
 

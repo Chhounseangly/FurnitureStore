@@ -2,7 +2,10 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import kh.edu.rupp.ite.furniturestore.R
@@ -16,6 +19,10 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
     private val paymentViewModel: PaymentViewModel by viewModels()
     private val paymentBtn: Button by lazy { binding.paymentBtn }
     private lateinit var totalPrice: TextView
+
+    private val actionBarView: View by lazy {
+        showCustomActionBar(this, R.layout.activity_action_bar)
+    }
 
     companion object {
         private const val EXTRA_LIST = "shoppingCartObject"
@@ -34,8 +41,20 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             handlePaymentListener(shoppingCartList)
         }
 
-        // Set up back button navigation
-        prevBack(binding.backBtn)
+
+        //show action bar
+        actionBarView.apply {
+            findViewById<TextView>(R.id.title_action_bar)?.apply {
+                text = getString(R.string.checkout)
+            }
+
+            // Set up back button navigation
+            findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
+                prevBack(it)
+            }
+
+        }
+
     }
 
     override fun setupListeners() {

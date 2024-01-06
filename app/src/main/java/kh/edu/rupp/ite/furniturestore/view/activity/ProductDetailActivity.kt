@@ -3,6 +3,8 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -38,6 +40,8 @@ class ProductDetailActivity :
     private val loading: ProgressBar by lazy { binding.loadingCircle }
 
     override fun initActions() {
+        supportActionBar?.hide()
+
         shoppingCartViewModel = ViewModelProvider(this)[ShoppingCartViewModel::class.java]
         // Get id from previous activity
         val intent = intent
@@ -51,6 +55,7 @@ class ProductDetailActivity :
             binding.seeMoreBtn.visibility = View.VISIBLE
         }
         toggleTextViewMaxLines(binding.seeMoreBtn)
+
         prevBack(binding.backBtn)
     }
 

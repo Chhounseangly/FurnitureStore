@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.BuildConfig
@@ -30,6 +31,8 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
     private var authViewModel = AuthViewModel()
 
     override fun initActions() {
+        supportActionBar?.hide()
+
         //call method handle Sign In Processing
         handleSignInProcession()
 
