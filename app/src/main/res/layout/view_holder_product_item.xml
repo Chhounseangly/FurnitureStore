@@ -38,6 +38,7 @@
                     app:srcCompat="@drawable/chair" />
 
                 <androidx.cardview.widget.CardView
+                    android:backgroundTint="@color/white"
                     android:layout_margin="3dp"
                     app:cardCornerRadius="5dp"
                     android:layout_alignParentTop="true"

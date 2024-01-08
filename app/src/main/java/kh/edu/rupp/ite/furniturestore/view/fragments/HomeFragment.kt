@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -204,7 +205,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val activity = requireActivity() as MainActivity
         val activityBinding = activity.binding
 
-
         // Create GridLayout Manager
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         binding.productListRecyclerView.layoutManager = gridLayoutManager
@@ -267,9 +267,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                         }
                     }
-
                     // Favorite button click listener
                     bntFav.setOnClickListener {
+                        val token = AppPreference.get(requireContext()).getToken()
+                        if (token == null) {
+                            Snackbar.make(
+                                requireView(),
+                                "Please login to add favorite",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            return@setOnClickListener
+                        }
                         // Set the favorite button image based on the isFavorite flag
                         if (item.isFavorite == 1) {
                             item.isFavorite = 0

@@ -158,8 +158,7 @@ class CodeVerificationActivity :
                     } else {
                         // Handle the success status, e.g., navigate to the main activity
                         val mainActivityIntent = Intent(this, MainActivity::class.java)
-                        mainActivityIntent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startActivity(mainActivityIntent)
                     }
                 }

@@ -29,5 +29,6 @@ data class ImageUrls(
 )
 
 data class IsFavorite(
-    val is_favourited: Int,
+    val product_id: Int?,
+    var is_favourited: Int,
 )
