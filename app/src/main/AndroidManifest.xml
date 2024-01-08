@@ -26,7 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation|screenSize|uiMode"
             android:windowSoftInputMode="adjustNothing"
             android:name=".view.activity.MainActivity"
             android:exported="true" >
@@ -110,7 +109,6 @@
             android:launchMode="singleTop"
             android:name=".view.activity.auth.ResetPasswordActivity"
             android:exported="false"/>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

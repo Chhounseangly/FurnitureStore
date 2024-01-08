@@ -41,7 +41,6 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             handlePaymentListener(shoppingCartList)
         }
 
-
         //show action bar
         actionBarView.apply {
             findViewById<TextView>(R.id.title_action_bar)?.apply {

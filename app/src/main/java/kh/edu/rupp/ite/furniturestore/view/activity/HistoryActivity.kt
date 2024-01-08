@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -107,10 +108,14 @@ class HistoryActivity :
         historyData.setData(data)
         recyclerViewHistory.adapter = historyData
     }
+
+
     private val callback: ActionMode.Callback = object : ActionMode.Callback {
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            menuInflater.inflate(R.menu.contextual_action_bar, menu)
+            mode?.menuInflater?.inflate(R.menu.contextual_action_bar, menu)
+            mode?.customView = View(this@HistoryActivity) // Optional: You can set a custom view for the ActionMode
+            
             return true
         }
 
