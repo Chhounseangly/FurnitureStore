@@ -84,12 +84,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             recreate()
         }
         val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        val nightMode = themes.getBoolean("night", false)
+        val editMode: SharedPreferences.Editor = themes.edit()
+
 
         switchTheme.setOnClickListener {
-            val editMode: SharedPreferences.Editor = themes.edit()
 
-            val nightMode = themes.getBoolean("night", false)
-            Log.d("ThemeToggle", "Night Mode saved value: $nightMode")
             if (nightMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editMode.putBoolean("night", false)
