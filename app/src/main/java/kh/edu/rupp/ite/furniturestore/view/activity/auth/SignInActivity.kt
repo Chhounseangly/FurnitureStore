@@ -121,8 +121,7 @@ class SignInActivity : AuthActivity<ActivitySignInBinding>(ActivitySignInBinding
                             signInBtn.setTextColor(Color.WHITE)
                             signInBtn.setBackgroundResource(R.drawable.custom_style_btn)
                             val mainActivityIntent = Intent(this, MainActivity::class.java)
-                            mainActivityIntent.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(mainActivityIntent)
                         }
 

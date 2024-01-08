@@ -2,8 +2,12 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -12,12 +16,20 @@ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.CategoriesViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
+import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
+import java.util.concurrent.TimeUnit
 
 class CategoriesFragment() :
     BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::inflate) {
     private val categoriesViewModel: CategoriesViewModel by viewModels()
+
+    private val shoppingCartViewModel: ShoppingCartViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
+
 
     companion object {
         private var TAB_ID: Int = 0
@@ -82,6 +94,9 @@ class CategoriesFragment() :
                     intent.putExtra("id", item.id)
                     it.context.startActivity(intent)
                 }
+
+                val handler = Handler(Looper.getMainLooper())
+                val delayMillis = TimeUnit.SECONDS.toMillis(2)
                 // Load product data into the ViewHolderProductItemBinding
                 with(binding) {
                     Picasso.get()
@@ -91,6 +106,64 @@ class CategoriesFragment() :
                         .into(img)
                     name.text = item.name
                     price.text = "$ ${item.price}"
+
+                    // Add to cart button click listener
+                    addToCartBtn.setOnClickListener {
+                        val token = AppPreference.get(requireContext()).getToken()
+                        if (token == null) {
+                            Snackbar.make(
+                                requireView(),
+                                "Please login to add product to shopping cart",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            return@setOnClickListener
+                        }
+
+                        val toastMessage = shoppingCartViewModel.addProductToShoppingCart(item.id)
+                        if (toastMessage === "Product existed on shopping cart") {
+                            Snackbar.make(
+                                requireView(),
+                                toastMessage,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Snackbar.make(
+                                requireView(),
+                                toastMessage,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    // Set favorite button based on the isFavorite flag
+                    bntFav.setImageResource(if (item.is_favorite?.is_favourited == 1) R.drawable.ic_favorited else R.drawable.ic_fav)
+                    // Favorite button click listener
+                    bntFav.setOnClickListener {
+                        val token = AppPreference.get(requireContext()).getToken()
+                        if (token == null) {
+                            Snackbar.make(
+                                requireView(),
+                                "Please login to add favorite",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            return@setOnClickListener
+                        }
+                        // Set the favorite button image based on the isFavorite flag
+                        if (item.is_favorite?.is_favourited == 1) {
+                            item.is_favorite.is_favourited = 0
+                            bntFav.setImageResource(R.drawable.ic_fav)
+                        } else {
+                            item.is_favorite?.is_favourited = 1
+                            bntFav.setImageResource(R.drawable.ic_favorited)
+                        }
+                        handler.removeCallbacksAndMessages(null)
+                        handler.postDelayed({
+                            favoriteViewModel.toggleFavorite(item) {
+                                // Set the favorite button image based on the result
+                                bntFav.setImageResource(if (it) R.drawable.ic_favorited else R.drawable.ic_fav)
+                            }
+                        }, delayMillis)
+                    }
                 }
             }
 
@@ -98,4 +171,5 @@ class CategoriesFragment() :
         productByCategoryAdapter.setData(items.products)
         recyclerProductsByCate.adapter = productByCategoryAdapter
     }
+
 }

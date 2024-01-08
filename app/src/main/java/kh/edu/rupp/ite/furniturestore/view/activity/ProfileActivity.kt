@@ -187,6 +187,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             when (it.status) {
                 Status.Success -> {
                     finish()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+
                 }
 
                 else -> {

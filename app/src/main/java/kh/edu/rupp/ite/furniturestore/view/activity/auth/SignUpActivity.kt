@@ -70,7 +70,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                 authViewModel.resAuth.observe(this) {
                     when (it.status) {
                         Status.Processing -> {
-                            Log.d("SignUpActivity", "Processing")
                             errorMessage.visibility = View.GONE
                             signUpBtn.isEnabled = false
                             signUpBtn.setTextColor(Color.BLACK)
@@ -78,7 +77,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         Status.Success -> {
-                            Log.d("SignUpActivity", "NeedVerify")
                             signUpBtn.isEnabled = true
                             signUpBtn.setTextColor(Color.WHITE)
                             signUpBtn.setBackgroundResource(R.drawable.custom_style_btn)
@@ -90,7 +88,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         Status.Failed -> {
-                            Log.d("SignUpActivity", "Failed")
                             it.data.let { m ->
                                 errorMessage.visibility = View.VISIBLE
                                 errorMessage.text = m?.message
@@ -102,7 +99,6 @@ class SignUpActivity : AuthActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                         }
 
                         else -> {
-                            Log.d("SignUpActivity", "Else")
                         }
                     }
                 }

@@ -36,6 +36,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:layout_gravity="center_vertical"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.1"
@@ -45,9 +46,8 @@
                                 android:id="@+id/radioButton1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="top"
-                                android:text="" />
+                                android:layout_gravity="center_vertical"
+                                android:gravity="top" />
                         </LinearLayout>
 
                         <LinearLayout
