@@ -1,4 +1,9 @@
 <resources>
+
+    <string name="cof_delete_txt">Confirm Delete</string>
+    <string name="msg_delete">Are you sure you want to remove this product?</string>
+    <string name="no_txt">No</string>
+    <string name="yes_txt">Yes</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
     <string name="lang">ខ្មែរ</string>

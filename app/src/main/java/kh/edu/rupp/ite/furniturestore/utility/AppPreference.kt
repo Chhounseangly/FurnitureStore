@@ -53,6 +53,7 @@ class AppPreference private constructor(context: Context) {
 
         private const val KEY_TOKEN = "token"
         private const val KEY_LANGUAGE = "language"
+        private const val THEME = "Mode"
 
         private var instance: AppPreference? = null
 

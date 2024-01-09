@@ -77,10 +77,7 @@ abstract class BaseActivity<T : ViewBinding>(
     // Function to change the language
     private fun changeLanguage(languageCode: String) {
         AppPreference.get(this).setLanguage(languageCode)
-
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
+        recreate()
     }
 
 
@@ -112,11 +109,10 @@ abstract class BaseActivity<T : ViewBinding>(
                                 } else {
                                     changeLanguage("en")
                                 }
-                                recreate()
                             }
 
                             R.id.themes_mode -> {
-                               val editMode: SharedPreferences.Editor?
+                                val editMode: SharedPreferences.Editor?
                                 val nightMode = themes.getBoolean("night", false)
                                 if (nightMode){
                                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

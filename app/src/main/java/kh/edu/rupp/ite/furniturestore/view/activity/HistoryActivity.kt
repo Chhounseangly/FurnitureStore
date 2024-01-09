@@ -1,9 +1,11 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -22,6 +24,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.HistoryViewModel
 import androidx.appcompat.view.ActionMode
+import com.google.firebase.annotations.concurrent.Background
 
 
 class HistoryActivity :
@@ -48,6 +51,7 @@ class HistoryActivity :
 
 
         historyViewModel.loadHistoryData()
+        historyViewModel.qtySumUp()
 
     }
 
@@ -59,7 +63,6 @@ class HistoryActivity :
 
 
     override fun setupObservers() {
-
         historyViewModel.historyData.observe(this) {
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(loadingHistory)
@@ -74,6 +77,16 @@ class HistoryActivity :
                 else -> {}
             }
         }
+
+
+//        //display qty that sum up all quantity of history product
+//        historyViewModel.qtySumUpProducts.observe(this){
+//            // Set the total sum to the TextView with ID qty_item_his outside the adapter loop
+//            actionBarView.findViewById<TextView>(R.id.qty_item_his).apply {
+//                text = getString(R.string.quantity_txt, it.toString())
+//                visibility = View.VISIBLE
+//            }
+//        }
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -86,56 +99,28 @@ class HistoryActivity :
         val dividerItemDecoration =
             DividerItemDecoration(recyclerViewHistory.context, DividerItemDecoration.VERTICAL)
         recyclerViewHistory.addItemDecoration(dividerItemDecoration)
+
+
+
         val historyData = DynamicAdapter<HistoryModel, ViewHolderProductHistoryBinding>(
             ViewHolderProductHistoryBinding::inflate
         ) { _, item, binding ->
-
+            // Variable to accumulate the sum of quantities
             with(binding) {
                 Picasso.get().load(item.product.imageUrl)
                     .placeholder(loadingImg(this@HistoryActivity))
                     .error(R.drawable.ic_error)
                     .into(img)
-                lytTxt.setOnClickListener {
-                    startSupportActionMode(callback)
-                }
                 txtName.text = item.product.name
                 priceTxt.text = getString(R.string.price_txt, item.product.price.toString())
                 qtyTxt.text = getString(R.string.quantity_txt, item.qty)
                 date.text = item.updated_at
-
             }
         }
         historyData.setData(data)
         recyclerViewHistory.adapter = historyData
     }
 
-
-    private val callback: ActionMode.Callback = object : ActionMode.Callback {
-
-        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode?.menuInflater?.inflate(R.menu.contextual_action_bar, menu)
-            mode?.customView = View(this@HistoryActivity) // Optional: You can set a custom view for the ActionMode
-            
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            return false
-        }
-
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            return when (item?.itemId) {
-                R.id.delete -> {
-                    true
-                }
-                else -> false
-            }
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode?) {
-            myActMode = null
-        }
-    }
 
 
 }

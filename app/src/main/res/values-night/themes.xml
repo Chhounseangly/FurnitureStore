@@ -16,7 +16,10 @@
 
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeCloseDrawable">@drawable/ic_home</item>
-        <item name="android:statusBarColor" tools:target="l">@color/trans</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">false</item> <!-- This line makes the status bar text light -->
 
     </style>
 
@@ -62,6 +65,10 @@
     <style name="BUTTON_CARD">
         <item name="android:background">@android:color/white</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DialogColor">
+        <item name="android:background">#514A4A</item>
     </style>
 
     <style name="BACKGROUND_LINE">

@@ -75,8 +75,7 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
 
                     Status.Success -> {
                         //navigate to payment Success Activity
-                        val paymentSuccessActivity =
-                            Intent(this, PaymentSuccessActivity::class.java)
+                        val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
                         startActivity(paymentSuccessActivity)
                     }
 

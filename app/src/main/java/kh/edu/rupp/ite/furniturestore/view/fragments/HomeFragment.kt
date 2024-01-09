@@ -282,9 +282,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         if (item.isFavorite == 1) {
                             item.isFavorite = 0
                             bntFav.setImageResource(R.drawable.ic_fav)
+
                         } else {
                             item.isFavorite = 1
                             bntFav.setImageResource(R.drawable.ic_favorited)
+                            Snackbar.make(
+                                requireView(),
+                                "Marked as favorite",
+                                Snackbar.LENGTH_LONG
+                            ).show()
                         }
 
                         handler.removeCallbacksAndMessages(null)
