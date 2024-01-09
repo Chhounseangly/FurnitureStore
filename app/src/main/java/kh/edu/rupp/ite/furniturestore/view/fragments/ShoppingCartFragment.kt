@@ -9,12 +9,18 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.annotations.concurrent.Background
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -195,19 +201,29 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
 
     // Function to show an AlertDialog for confirming deletion
     private fun showDeleteConfirmationDialog(position: Int) {
-        val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle("Confirm Delete")
-        alertDialog.setMessage("Are you sure you want to delete this item?")
-        alertDialog.setPositiveButton("Yes") { _, _ ->
-            // Remove Product from Shopping Cart if user clicks yes
-            val productId = shoppingCartAdapter.getItem(position).id
-            shoppingCartViewModel.deleteProductShoppingCart(productId)
-        }
-        alertDialog.setNegativeButton("No") { _, _ ->
-            // Undo the swipe
-            shoppingCartAdapter.notifyItemChanged(position)
-        }
-        alertDialog.show()
+        MaterialAlertDialogBuilder(requireContext(),
+            R.style.DialogColor)
+            .setTitle(resources.getString(R.string.cof_delete_txt))
+            .setMessage(resources.getString(R.string.msg_delete))
+            .setNegativeButton(resources.getString(R.string.no_txt)) { dialog, which ->
+                shoppingCartAdapter.notifyItemChanged(position)
+                Snackbar.make(requireView(), "Product was safe!", Snackbar.LENGTH_SHORT).show()
+            }
+            .setPositiveButton(resources.getString(R.string.yes_txt)) { dialog, which ->
+                // Remove Product from Shopping Cart if user clicks yes
+                val productId = shoppingCartAdapter.getItem(position).id
+                shoppingCartViewModel.deleteProductShoppingCart(productId){msg->
+                    Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            .show()
+            .apply {
+                // Set color for positive button
+                getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+
+                // Set color for negative button
+                getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
     }
 
     // Function to draw the UI for swipe-to-delete action in the RecyclerView

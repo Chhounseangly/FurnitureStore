@@ -12,14 +12,11 @@ class BadgesQuantityStoring: ViewModel() {
     private val _qtyFav = MutableLiveData<Int>()
 
     val qtyShoppingCart: LiveData<Int> get() = _qtyShoppingCart
-    val qtyFav: LiveData<Int> get() = _qtyFav
 
     fun setQtyShoppingCart(qty: Int) {
         _qtyShoppingCart.value = _qtyShoppingCart.value?.plus(qty) ?: qty // Handle null cases
     }
-    fun setQtyFav(qty: Int) {
-        _qtyFav.value = _qtyFav.value?.plus(qty) ?: qty // Handle null cases
-    }
+
     fun clearQtyShoppingCart(){
         _qtyShoppingCart.value = 0
     }

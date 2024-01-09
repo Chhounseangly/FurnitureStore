@@ -28,4 +28,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
+    <TextView
+        android:visibility="gone"
+        style="@style/TEXT"
+        android:id="@+id/qty_item_his"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:gravity="end"
+        android:layout_alignBottom="@id/title_action_bar"
+        android:padding="10dp"
+        android:text="Qty"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
 </RelativeLayout>

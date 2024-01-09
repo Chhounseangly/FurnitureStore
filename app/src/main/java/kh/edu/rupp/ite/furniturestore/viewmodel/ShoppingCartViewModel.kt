@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart
@@ -10,6 +11,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.ApiData
 import kh.edu.rupp.ite.furniturestore.model.api.model.BodyPutData
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
+import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.model.api.service.RetrofitInstance
 
 class ShoppingCartViewModel : BaseViewModel() {
@@ -150,9 +152,13 @@ class ShoppingCartViewModel : BaseViewModel() {
     }
 
     // Function to handle API call for deleting a product from the shopping cart
-    fun deleteProductShoppingCart(productId: Int) {
+    fun deleteProductShoppingCart(productId: Int, completion: (String) -> Unit) {
         performApiCall(
             request = { RetrofitInstance.get().api.deleteProductShoppingCart(productId) },
+            successBlock = { result ->
+                completion("Product was deleted!")
+                ApiData(Status.Success, null)
+            },
             reloadData = { loadProductsCartData() }
         )
     }
