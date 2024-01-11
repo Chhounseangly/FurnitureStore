@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.graphics.PorterDuff
 import android.util.Log
 import android.view.View
@@ -20,6 +21,8 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.HistoryViewModel
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductIdModel
 
 
@@ -34,6 +37,10 @@ class HistoryActivity :
     private val selectedAll by lazy { binding.selectedAll }
     private val selectedItemsTxt by lazy { binding.selectedItemsTxt }
     private val lytNoData by lazy { binding.lytNoData }
+    private val loadingCircle by lazy { binding.loadingCircle }
+    private val lytLoading by lazy { binding.lytLoading }
+
+
 
     private var isLongPressActivated = false
     private var checkAll = false
@@ -92,9 +99,13 @@ class HistoryActivity :
         }
 
         historyViewModel.resMessage.observe(this){
-           when(it.status){
-               Status.Processing ->{}
+            when(it.status){
+               Status.Processing ->{
+
+               }
                Status.Success -> {
+                   hideCircleLoading(lytLoading, loadingCircle)
+                   historyViewModel.loadHistoryData()
                    deleteButton.visibility = View.GONE
                    cancelBtn.visibility = View.GONE
                    selectedAll.visibility = View.GONE
@@ -106,7 +117,6 @@ class HistoryActivity :
                }
            }
         }
-
 
 //        //display qty that sum up all quantity of history product
 //        historyViewModel.qtySumUpProducts.observe(this){
@@ -205,12 +215,33 @@ class HistoryActivity :
 
         //handle click button deleted products
         deleteButton.setOnClickListener {
-            historyViewModel.deleteProductFromHis(listProductId)
+            showDeleteConfirmationDialog(listProductId)
         }
 
         //passing data to adapter
         historyData.setData(data)
         recyclerViewHistory.adapter = historyData
+    }
+
+    private fun showDeleteConfirmationDialog(listProductId: List<ProductIdModel>) {
+        MaterialAlertDialogBuilder(this,
+            R.style.DialogColor)
+            .setTitle(resources.getString(R.string.cof_delete_txt))
+            .setMessage(resources.getString(R.string.msg_delete))
+            .setNegativeButton(resources.getString(R.string.no_txt)) { dialog, which ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.yes_txt)) { dialog, which ->
+                historyViewModel.deleteProductFromHis(listProductId)
+                showCircleLoading(lytLoading, loadingCircle)
+            }
+            .show()
+            .apply {
+                // Set color for positive button
+                getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this@HistoryActivity, R.color.red))
+                // Set color for negative button
+                getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this@HistoryActivity, R.color.black))
+            }
     }
 
 
