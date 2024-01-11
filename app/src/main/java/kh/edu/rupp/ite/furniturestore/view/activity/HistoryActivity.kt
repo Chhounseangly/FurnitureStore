@@ -1,12 +1,8 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Build
+import android.graphics.PorterDuff
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,8 +19,8 @@ import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductHistoryBindin
 import kh.edu.rupp.ite.furniturestore.model.api.model.HistoryModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
 import kh.edu.rupp.ite.furniturestore.viewmodel.HistoryViewModel
-import androidx.appcompat.view.ActionMode
-import com.google.firebase.annotations.concurrent.Background
+import androidx.core.content.ContextCompat
+import kh.edu.rupp.ite.furniturestore.model.api.model.ProductIdModel
 
 
 class HistoryActivity :
@@ -32,12 +28,27 @@ class HistoryActivity :
 
     private val historyViewModel: HistoryViewModel by viewModels()
     private val loadingHistory: ShimmerFrameLayout by lazy { binding.loadingHistory }
-    private var myActMode: ActionMode? = null
+
+    private lateinit var historyData: DynamicAdapter<HistoryModel, ViewHolderProductHistoryBinding>
+
+    private val selectedAll by lazy { binding.selectedAll }
+    private val selectedItemsTxt by lazy { binding.selectedItemsTxt }
+    private val lytNoData by lazy { binding.lytNoData }
+
+    private var isLongPressActivated = false
+    private var checkAll = false
+    private var selectedCheckboxes = 0 // Track the number of selected checkboxes
+
+    private lateinit var deleteButton: ImageView
+    private lateinit var cancelBtn: ImageView
 
     private val actionBarView: View by lazy {
         showCustomActionBar(this, R.layout.activity_action_bar)
     }
+
     override fun initActions() {
+        deleteButton = actionBarView.findViewById(R.id.deleteButton)
+        cancelBtn = actionBarView.findViewById(R.id.cancelBtn)
         //show action bar
         actionBarView.apply {
             findViewById<TextView>(R.id.title_action_bar)?.apply {
@@ -47,9 +58,8 @@ class HistoryActivity :
             findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
                 prevBack(it)
             }
+
         }
-
-
         historyViewModel.loadHistoryData()
         historyViewModel.qtySumUp()
 
@@ -57,9 +67,8 @@ class HistoryActivity :
 
     override fun setupListeners() {
 
+
     }
-
-
 
 
     override fun setupObservers() {
@@ -71,11 +80,31 @@ class HistoryActivity :
                     hideLoadingAnimation(loadingHistory)
                     if (it.data != null) {
                         displayHistoryData(it.data.data)
+                        if (it.data.data.isEmpty()){
+                            lytNoData.visibility = View.VISIBLE
+                        }
                     }
                 }
+
                 Status.Failed -> hideLoadingAnimation(loadingHistory)
                 else -> {}
             }
+        }
+
+        historyViewModel.resMessage.observe(this){
+           when(it.status){
+               Status.Processing ->{}
+               Status.Success -> {
+                   deleteButton.visibility = View.GONE
+                   cancelBtn.visibility = View.GONE
+                   selectedAll.visibility = View.GONE
+                   selectedItemsTxt.visibility = View.GONE
+               }
+               Status.Failed->{}
+               else -> {
+
+               }
+           }
         }
 
 
@@ -101,26 +130,96 @@ class HistoryActivity :
         recyclerViewHistory.addItemDecoration(dividerItemDecoration)
 
 
+        val listProductId: MutableList<ProductIdModel> = mutableListOf()
 
-        val historyData = DynamicAdapter<HistoryModel, ViewHolderProductHistoryBinding>(
-            ViewHolderProductHistoryBinding::inflate
-        ) { _, item, binding ->
-            // Variable to accumulate the sum of quantities
-            with(binding) {
-                Picasso.get().load(item.product.imageUrl)
-                    .placeholder(loadingImg(this@HistoryActivity))
-                    .error(R.drawable.ic_error)
-                    .into(img)
-                txtName.text = item.product.name
-                priceTxt.text = getString(R.string.price_txt, item.product.price.toString())
-                qtyTxt.text = getString(R.string.quantity_txt, item.qty)
-                date.text = item.updated_at
+        historyData =
+            DynamicAdapter(ViewHolderProductHistoryBinding::inflate) { view, item, binding ->
+//            binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
+//                if (isChecked) {
+//                    selectedCheckboxes++
+//                    selectedItemsTxt.text = getString(R.string.selectedItems, selectedCheckboxes)
+//                } else{
+//                    if (selectedCheckboxes > 0){
+//                        selectedCheckboxes--
+//                        selectedItemsTxt.text = getString(R.string.selectedItems, selectedCheckboxes)
+//                    }
+//                }
+//            }
+                with(binding) {
+                    Picasso.get().load(item.product.imageUrl)
+                        .placeholder(loadingImg(this@HistoryActivity))
+                        .error(R.drawable.ic_error)
+                        .into(img)
+
+                    txtName.text = item.product.name
+                    priceTxt.text = getString(R.string.price_txt, item.product.price.toString())
+                    qtyTxt.text = getString(R.string.quantity_txt, item.qty.toString())
+                    date.text = item.updated_at
+
+                    checkbox.apply {
+                        visibility = if (isLongPressActivated) View.VISIBLE else View.GONE
+                        isChecked = checkAll
+                        if (isChecked){
+                            //passing item all from recyclerview to this mutable list
+                            listProductId.addAll(listOf(ProductIdModel(item.product_id)))
+                        }else  {
+                            // If the checkbox is not checked, remove the item from the list
+                            val productIdModel = ProductIdModel(item.product_id)
+                            listProductId.remove(productIdModel)
+                        }
+                    }
+
+                    root.setOnLongClickListener {
+                        isLongPressActivated = true
+                        setVisibilityForLongPress(true)
+                        true
+                    }
+
+                    //handle cancel checkbox
+                    cancelBtn.setOnClickListener {
+                        isLongPressActivated = false
+                        selectedItemsTxt.visibility = View.GONE
+                        checkAll = false
+                        setVisibilityForLongPress(false)
+                    }
+
+                    selectedAll.setOnCheckedChangeListener { _, isChecked ->
+                        checkAll = isChecked
+                        selectedCheckboxes = if (isChecked) historyData.itemCount else 0
+                        selectedItemsTxt.text = getString(R.string.selectedItems, selectedCheckboxes)
+                        historyData.notifyDataSetChanged()
+                    }
+
+                    val selectedVisibility = if (selectedCheckboxes > 0) View.VISIBLE else View.GONE
+                    deleteButton.visibility = selectedVisibility
+                    selectedItemsTxt.visibility = selectedVisibility
+
+                    deleteButton.setColorFilter(
+                        ContextCompat.getColor(
+                            this@HistoryActivity,
+                            R.color.red
+                        ), PorterDuff.Mode.SRC_IN
+                    )
+                }
             }
+
+        //handle click button deleted products
+        deleteButton.setOnClickListener {
+            historyViewModel.deleteProductFromHis(listProductId)
         }
+
+        //passing data to adapter
         historyData.setData(data)
         recyclerViewHistory.adapter = historyData
     }
 
+
+    //function show and hide of when pressing recycler view
+    private fun setVisibilityForLongPress(isLongPress: Boolean) {
+        cancelBtn.visibility = if (isLongPress) View.VISIBLE else View.GONE
+        selectedAll.visibility = if (isLongPress) View.VISIBLE else View.GONE
+        historyData.notifyDataSetChanged()
+    }
 
 
 }

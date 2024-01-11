@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.furniturestore.view.fragments
 
 import android.content.Intent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import kh.edu.rupp.ite.furniturestore.databinding.FragmentFavoriteBinding
 import kh.edu.rupp.ite.furniturestore.databinding.ViewHolderProductItemBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.Status
+import kh.edu.rupp.ite.furniturestore.utility.AppPreference
 import kh.edu.rupp.ite.furniturestore.view.activity.ProductDetailActivity
 import kh.edu.rupp.ite.furniturestore.viewmodel.FavoriteViewModel
 import kh.edu.rupp.ite.furniturestore.viewmodel.ShoppingCartViewModel
@@ -24,15 +26,17 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
 
     private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
     private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
+    private lateinit var favoriteAdapter:  DynamicAdapter<Product, ViewHolderProductItemBinding>
 
     private lateinit var switchViewGroup: ImageView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
-    private lateinit var noDataMsg: TextView
+    private lateinit var noDataMsg: ViewGroup
+
 
     override fun bindUi() {
         swipeRefreshLayout = binding.refreshLayout
-        noDataMsg = binding.noData
+        noDataMsg = binding.lytNoData
         switchViewGroup = binding.viewGroupSwitch
 
         mShimmerViewContainer = binding.loading
@@ -99,8 +103,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(FragmentFavoriteB
         binding.favoriteRecyclerView.layoutManager = gridLayoutManager
 
         // Create DynamicAdapter for products with ViewHolderProductItemBinding
-        val favoriteAdapter =
-            DynamicAdapter<Product, ViewHolderProductItemBinding>(ViewHolderProductItemBinding::inflate) { view, item, binding ->
+        favoriteAdapter = DynamicAdapter(ViewHolderProductItemBinding::inflate) { view, item, binding ->
                 view.setOnClickListener {
                     // Click listener to navigate to ProductDetailActivity
                     val intent = Intent(it.context, ProductDetailActivity::class.java)

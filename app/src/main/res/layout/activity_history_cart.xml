@@ -30,6 +30,63 @@
        </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+    <LinearLayout
+        android:padding="10dp"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:visibility="gone"
+            style="@style/TEXT"
+            android:textStyle="bold"
+            android:id="@+id/selected_all"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Selectd All"
+            android:enabled="true" />
+        <Space
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/selected_items_txt"
+            style="@style/TEXT"
+            android:textStyle="bold"
+            android:text="selected items: 1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/lytNoData"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/no_data_yet"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_no_data_yet"/>
+        <TextView
+            android:paddingVertical="18dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center"
+            android:layout_below="@+id/no_data_yet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="@string/no_data_yet"/>
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:overScrollMode="never"
         android:id="@+id/recyclerHistory"

@@ -52,7 +52,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val badgesQuantityStoring: BadgesQuantityStoring by viewModels({ requireActivity() })
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var processBar: ProgressBar
     private lateinit var noDataMsg: TextView
 
