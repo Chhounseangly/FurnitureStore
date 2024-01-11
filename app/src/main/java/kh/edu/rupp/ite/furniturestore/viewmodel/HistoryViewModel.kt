@@ -39,20 +39,23 @@ class HistoryViewModel: BaseViewModel() {
     }
 
     fun deleteProductFromHis(data : List<ProductIdModel>){
-        performApiCall(
-            request = {
-                RetrofitInstance.get().api.deleteProductFromHistory(data)
-            },
-            successBlock = { result ->
-                ApiData(Status.Success, null)
-            },
-            failureBlock = {
-                ApiData(Status.Failed, null)
-            },
-            reloadData = {
-                loadHistoryData()
-            }
-        )
+        performApiCall(_resMessage,  {
+            RetrofitInstance.get().api.deleteProductFromHistory(data)
+        })
+//        performApiCall(
+//            request = {
+//
+//            },
+//            successBlock = { result ->
+//                ApiData(Status.Success, null)
+//            },
+//            failureBlock = {
+//                ApiData(Status.Failed, null)
+//            },
+//            reloadData = {
+//                loadHistoryData()
+//            }
+//        )
     }
 
     fun qtySumUp(){
