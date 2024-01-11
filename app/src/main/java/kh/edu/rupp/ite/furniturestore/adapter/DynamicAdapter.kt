@@ -10,7 +10,6 @@ class DynamicAdapter<T, VB : ViewBinding>(
     private val inflater: (LayoutInflater, ViewGroup?, Boolean) -> VB,
     private val onBind: (view: View, item: T, binding: VB) -> Unit
 ) : RecyclerView.Adapter<DynamicAdapter<T, VB>.ViewHolder>() {
-
     private var data: List<T> = listOf()
 
     fun setData(data: List<T>) {
@@ -21,6 +20,7 @@ class DynamicAdapter<T, VB : ViewBinding>(
     fun getItem(position: Int): T {
         return data[position]
     }
+
 
     inner class ViewHolder(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 

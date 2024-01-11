@@ -43,6 +43,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handling submit if needed
+                binding.notFound.visibility = View.GONE
+
                 return true
             }
 

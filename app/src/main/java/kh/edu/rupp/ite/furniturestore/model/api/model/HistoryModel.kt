@@ -13,3 +13,7 @@ data class HistoryModel(
     val updated_at: String?,
     val product: ProductModel
 )
+
+data class ProductIdModel(
+    var product_id: Int
+)

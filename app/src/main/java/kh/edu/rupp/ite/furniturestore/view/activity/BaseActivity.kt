@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -45,6 +46,7 @@ abstract class BaseActivity<T : ViewBinding>(
 
     private fun updateBaseContextLocale(context: Context): Context {
         val language = AppPreference.get(context).getLanguage() ?: "en"
+
         val locale = Locale(language)
         Locale.setDefault(locale)
 
@@ -53,6 +55,8 @@ abstract class BaseActivity<T : ViewBinding>(
 
         return context.createConfigurationContext(configuration)
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +69,10 @@ abstract class BaseActivity<T : ViewBinding>(
         initActions()
         setupListeners()
         setupObservers()
+
     }
+
+
 
     abstract fun initActions()
     abstract fun setupListeners()

@@ -2,8 +2,11 @@ package kh.edu.rupp.ite.furniturestore.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+
 
 class AppPreference private constructor(context: Context) {
 
@@ -49,11 +52,12 @@ class AppPreference private constructor(context: Context) {
         return pref.getString(KEY_LANGUAGE, null)
     }
 
+
+
     companion object {
 
         private const val KEY_TOKEN = "token"
         private const val KEY_LANGUAGE = "language"
-        private const val THEME = "Mode"
 
         private var instance: AppPreference? = null
 

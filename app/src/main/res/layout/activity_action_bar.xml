@@ -41,5 +41,29 @@
         android:text="Qty"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
+    <ImageView
+        android:visibility="gone"
+        android:layout_toStartOf="@id/space"
+        android:id="@+id/deleteButton"
+        android:layout_alignTop="@id/title_action_bar"
+        android:layout_alignBottom="@id/title_action_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        />
+    <Space
+        android:layout_toStartOf="@id/cancelBtn"
+        android:id="@+id/space"
+        android:layout_width="18dp"
+        android:layout_height="1dp"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/cancelBtn"
+        android:layout_alignTop="@id/title_action_bar"
+        android:layout_alignBottom="@id/title_action_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

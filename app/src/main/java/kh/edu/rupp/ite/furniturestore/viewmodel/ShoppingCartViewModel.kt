@@ -3,7 +3,6 @@ package kh.edu.rupp.ite.furniturestore.viewmodel
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kh.edu.rupp.ite.furniturestore.model.api.model.AddProductToShoppingCart

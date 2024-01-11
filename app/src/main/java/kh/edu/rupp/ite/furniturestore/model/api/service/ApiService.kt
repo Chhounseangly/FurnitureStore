@@ -10,6 +10,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.Password
 import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
+import kh.edu.rupp.ite.furniturestore.model.api.model.ProductIdModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResetPassword
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
@@ -22,6 +23,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -113,6 +115,13 @@ interface ApiService {
     //load history data
     @GET("api/history")
     suspend fun loadHistoryPurchase(): Response<Res<List<HistoryModel>>>
+
+
+    //deleted product from history
+    @HTTP(method = "DELETE", path = "api/history", hasBody = true)
+    suspend fun deleteProductFromHistory(
+        @Body product_id: List<ProductIdModel>
+    ):  Response<Res<String>>
 
     //End Point fetching products
     @GET("api/favorite")

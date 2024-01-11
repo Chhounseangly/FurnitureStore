@@ -130,11 +130,10 @@ class AuthViewModel : BaseViewModel() {
                 }
                 // Return success status with null data
                 ApiData(Status.Success, null)
-            },
-            failureBlock = {
-                ApiData(Status.Unauthorized, null)
             }
-        )
+        ) {
+            ApiData(Status.Unauthorized, null)
+        }
     }
 
     /**
@@ -181,17 +180,17 @@ class AuthViewModel : BaseViewModel() {
     fun loadProfile() {
         performApiCall(
             response = _userData,
-            request = { RetrofitInstance.get().api.loadProfile() },
-            failureBlock = { err ->
-                when (err.code()) {
-                    401 -> {
-                        AppPreference.get(AppCore.get().applicationContext).removeToken()
-                        ApiData(Status.Unauthorized, null)
-                    }
-                    else -> ApiData(Status.Failed, null)
+            request = { RetrofitInstance.get().api.loadProfile() }
+        ) { err ->
+            when (err.code()) {
+                401 -> {
+                    AppPreference.get(AppCore.get().applicationContext).removeToken()
+                    ApiData(Status.Unauthorized, null)
                 }
+
+                else -> ApiData(Status.Failed, null)
             }
-        )
+        }
     }
 
     // Function to handle logging out user and clearing token
@@ -202,12 +201,11 @@ class AuthViewModel : BaseViewModel() {
             successBlock = {
                 AppPreference.get(AppCore.get().applicationContext).removeToken()
                 ApiData(Status.Success, null)
-            },
-            failureBlock = { err ->
-                Log.e("AuthViewModel", "Logout Fail: $err")
-                ApiData(Status.Failed, null)
             }
-        )
+        ) { err ->
+            Log.e("AuthViewModel", "Logout Fail: $err")
+            ApiData(Status.Failed, null)
+        }
     }
 
     // Function to handle updating profile data

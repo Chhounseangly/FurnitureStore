@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="selectedItems">Selected Items: %d</string>
     <string name="cof_delete_txt">Confirm Delete</string>
     <string name="msg_delete">Are you sure you want to remove this product?</string>
     <string name="no_txt">No</string>
@@ -86,4 +87,5 @@
     <string name="continue_txt">Continue</string>
     <string name="categories_txt">Categories</string>
     <string name="reset_new_password">Reset New Password</string>
+    <string name="no_data_yet">No Data Yet!</string>
 </resources>

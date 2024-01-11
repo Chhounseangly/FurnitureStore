@@ -30,6 +30,7 @@
                         android:scaleType="centerCrop" />
                 </androidx.cardview.widget.CardView>
                 <ImageView
+                    style="@style/IMAGE_VIEW_COLOR"
                     android:id="@+id/editAvatarBtn"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
