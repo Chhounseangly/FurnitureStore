@@ -104,7 +104,7 @@ dependencies {
 
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

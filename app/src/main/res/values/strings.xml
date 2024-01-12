@@ -84,7 +84,7 @@
     <string name="resend_code_countdown_seconds">We have send OTP to your email: %ds </string>
     <string name="verify_code_content">Please check OTP we have sent in your email.</string>
     <string name="thank_you_for_your_purchase">Thank You for your purchase</string>
-    <string name="continue_txt">Continue</string>
+    <string name="continue_txt">Done</string>
     <string name="categories_txt">Categories</string>
     <string name="reset_new_password">Reset New Password</string>
     <string name="no_data_yet">No Data Yet!</string>
