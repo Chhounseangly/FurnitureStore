@@ -101,7 +101,7 @@ class HistoryActivity :
         historyViewModel.resMessage.observe(this){
             when(it.status){
                Status.Processing ->{
-
+                    showCircleLoading(lytLoading, loadingCircle)
                }
                Status.Success -> {
                    hideCircleLoading(lytLoading, loadingCircle)
@@ -138,7 +138,6 @@ class HistoryActivity :
         val dividerItemDecoration =
             DividerItemDecoration(recyclerViewHistory.context, DividerItemDecoration.VERTICAL)
         recyclerViewHistory.addItemDecoration(dividerItemDecoration)
-
 
         val listProductId: MutableList<ProductIdModel> = mutableListOf()
 
@@ -185,20 +184,21 @@ class HistoryActivity :
                         true
                     }
 
-                    //handle cancel checkbox
-                    cancelBtn.setOnClickListener {
-                        isLongPressActivated = false
-                        selectedItemsTxt.visibility = View.GONE
-                        checkAll = false
-                        setVisibilityForLongPress(false)
-                    }
-
                     selectedAll.setOnCheckedChangeListener { _, isChecked ->
                         checkAll = isChecked
                         selectedCheckboxes = if (isChecked) historyData.itemCount else 0
                         selectedItemsTxt.text = getString(R.string.selectedItems, selectedCheckboxes)
                         historyData.notifyDataSetChanged()
                     }
+
+                    //handle cancel checkbox
+                    cancelBtn.setOnClickListener {
+                        checkAll = false
+                        isLongPressActivated = false
+                        selectedCheckboxes = 0
+                        setVisibilityForLongPress(false)
+                    }
+
 
                     val selectedVisibility = if (selectedCheckboxes > 0) View.VISIBLE else View.GONE
                     deleteButton.visibility = selectedVisibility
@@ -223,15 +223,17 @@ class HistoryActivity :
         recyclerViewHistory.adapter = historyData
     }
 
+
+    //handle show confirmation deleted
     private fun showDeleteConfirmationDialog(listProductId: List<ProductIdModel>) {
         MaterialAlertDialogBuilder(this,
             R.style.DialogColor)
             .setTitle(resources.getString(R.string.cof_delete_txt))
             .setMessage(resources.getString(R.string.msg_delete))
-            .setNegativeButton(resources.getString(R.string.no_txt)) { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.no_txt)) { _, which ->
 
             }
-            .setPositiveButton(resources.getString(R.string.yes_txt)) { dialog, which ->
+            .setPositiveButton(resources.getString(R.string.yes_txt)) { _, which ->
                 historyViewModel.deleteProductFromHis(listProductId)
                 showCircleLoading(lytLoading, loadingCircle)
             }

@@ -37,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <CheckBox
+            android:buttonTint="@color/checkbox_color"
             android:visibility="gone"
             style="@style/TEXT"
             android:textStyle="bold"

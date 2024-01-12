@@ -34,4 +34,7 @@
     <color name="disable_color">#dddddd</color>
 
 
+    <color name="checkbox_color">#FF4081</color>
+
+
 </resources>

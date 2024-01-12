@@ -58,6 +58,7 @@
         android:layout_height="1dp"/>
     <ImageView
         android:visibility="gone"
+        style="@style/IMAGE_VIEW_COLOR"
         android:id="@+id/cancelBtn"
         android:layout_alignTop="@id/title_action_bar"
         android:layout_alignBottom="@id/title_action_bar"
