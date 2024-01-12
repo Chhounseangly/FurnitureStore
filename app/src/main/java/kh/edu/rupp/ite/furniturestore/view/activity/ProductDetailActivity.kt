@@ -173,13 +173,15 @@ class ProductDetailActivity :
         val snapHelper = CarouselSnapHelper()
         snapHelper.attachToRecyclerView(carouselRecyclerView)
 
-        val carouselAdapter = DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
+        val carouselAdapter =
+            DynamicAdapter<ImageUrls, ViewHolderCarouselBinding>(ViewHolderCarouselBinding::inflate) { view, item, binding ->
                 // Add a listener to preview
                 view.setOnClickListener {
                     val intent = Intent(it.context, PreviewImageActivity::class.java)
                     intent.putExtra("imageUrl", item.imageUrl)
                     it.context.startActivity(intent)
                 }
+
                 Picasso.get().load(item.imageUrl)
                     .placeholder(loadingImg(this))
                     .error(R.drawable.ic_error)

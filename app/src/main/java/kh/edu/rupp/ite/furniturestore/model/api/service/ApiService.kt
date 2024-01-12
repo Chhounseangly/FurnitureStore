@@ -11,6 +11,7 @@ import kh.edu.rupp.ite.furniturestore.model.api.model.PaymentModel
 import kh.edu.rupp.ite.furniturestore.model.api.model.Product
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductByCate
 import kh.edu.rupp.ite.furniturestore.model.api.model.ProductIdModel
+import kh.edu.rupp.ite.furniturestore.model.api.model.ProductSlider
 import kh.edu.rupp.ite.furniturestore.model.api.model.Res
 import kh.edu.rupp.ite.furniturestore.model.api.model.ResetPassword
 import kh.edu.rupp.ite.furniturestore.model.api.model.ShoppingCart
@@ -67,6 +68,9 @@ interface ApiService {
 
     @GET("api/search_product_by_name")
     suspend fun searchProductByName(@Query("name") name: String): Response<Res<List<Product>>>
+
+    @GET("api/imageSlider")
+    suspend fun imageSlider(): Response<Res<List<ProductSlider>>>
 
     @POST("api/favorite")
     suspend fun toggleFavorite(@Body product_id: AddProductToShoppingCart): Response<Res<Boolean>>

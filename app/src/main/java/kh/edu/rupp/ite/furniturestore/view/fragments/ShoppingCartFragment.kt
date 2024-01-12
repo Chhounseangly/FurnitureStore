@@ -9,8 +9,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.appcompat.view.ContextThemeWrapper
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -20,7 +19,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.annotations.concurrent.Background
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.adapter.DynamicAdapter
@@ -73,6 +71,16 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
                     shoppingCartViewModel.calculateTotalPrice(data)
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(cartContainerLoading)
+                    if (data.isEmpty()){
+                        binding.checkoutBtn.isEnabled = false
+                        binding.checkoutBtn.setBackgroundResource(R.drawable.disable_btn)
+                        binding.lytNoData.visibility = View.VISIBLE
+                    }else {
+                        binding.checkoutBtn.isEnabled = true
+                        binding.lytNoData.visibility = View.GONE
+                        binding.checkoutBtn.setBackgroundResource(R.drawable.custom_style_btn)
+//                        binding.checkoutBtn.setBackgroundColor(resources.getColor(R.color.black))
+                    }
                 }
 
                 else -> {
@@ -95,6 +103,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
 
     // Function to display the shopping cart items in the RecyclerView
     private fun displayProductCart(shoppingCart: List<ShoppingCart>) {
+
         // Set up RecyclerView layout manager
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -127,7 +136,6 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
                         handler.removeCallbacksAndMessages(null)
                         handler.postDelayed({ executingQtyToApi() }, delayMillis)
                     }
-
                     addBtn.setOnClickListener { qtyButtonClick("increaseQty") }
                     minusBtn.setOnClickListener { qtyButtonClick("decreaseQty") }
                 }

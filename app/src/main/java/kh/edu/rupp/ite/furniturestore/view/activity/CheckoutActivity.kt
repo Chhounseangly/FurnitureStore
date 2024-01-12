@@ -2,12 +2,15 @@ package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import kh.edu.rupp.ite.furniturestore.R
 import kh.edu.rupp.ite.furniturestore.databinding.ActivityCheckoutBinding
 import kh.edu.rupp.ite.furniturestore.model.api.model.ObjectPayment
@@ -18,6 +21,10 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
 
     private val paymentViewModel: PaymentViewModel by viewModels()
     private val paymentBtn: Button by lazy { binding.paymentBtn }
+    private val abaCheckBox: CheckBox by lazy { binding.abaCheckbox }
+    private val acledaCheckBox: CheckBox by lazy { binding.acledaCheckBox }
+
+
     private lateinit var totalPrice: TextView
 
     private val actionBarView: View by lazy {
@@ -51,8 +58,20 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
             findViewById<ImageView>(R.id.backPrev)?.setOnClickListener {
                 prevBack(it)
             }
-
         }
+
+        abaCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                acledaCheckBox.isChecked = false
+            }
+        }
+
+        acledaCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+           if (isChecked){
+               abaCheckBox.isChecked = false
+           }
+        }
+
 
     }
 
@@ -66,27 +85,33 @@ class CheckoutActivity : BaseActivity<ActivityCheckoutBinding>(ActivityCheckoutB
 
     private fun handlePaymentListener(value: List<ObjectPayment>) {
         paymentBtn.setOnClickListener {
-            paymentViewModel.payment(value)
-            paymentViewModel.resMessage.observe(this) { res ->
-                when (res.status) {
-                    Status.Processing -> {
+            if (!abaCheckBox.isChecked && !acledaCheckBox.isChecked) {
+                Snackbar.make(binding.root, "Please select a credit card.", Snackbar.LENGTH_SHORT).show()
+            }else {
+                paymentViewModel.payment(value)
+                paymentViewModel.resMessage.observe(this) { res ->
+                    when (res.status) {
+                        Status.Processing -> {
 
+                        }
+
+                        Status.Success -> {
+                            //navigate to payment Success Activity
+                            val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
+                            startActivity(paymentSuccessActivity)
+                        }
+
+                        Status.Failed -> {
+
+                        }
+
+                        else -> {}
                     }
-
-                    Status.Success -> {
-                        //navigate to payment Success Activity
-                        val paymentSuccessActivity = Intent(this, PaymentSuccessActivity::class.java)
-                        startActivity(paymentSuccessActivity)
-                    }
-
-                    Status.Failed -> {
-
-                    }
-
-                    else -> {}
                 }
             }
         }
+
+
     }
 
     private fun displayUi(data: List<ObjectPayment>) {

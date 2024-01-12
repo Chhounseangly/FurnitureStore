@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -46,7 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val productListViewModel: ProductListViewModel by viewModels()
     private val categoriesViewModel: CategoriesViewModel by viewModels()
-    private val productSliderViewModel: ProductSliderViewModel by viewModels()
+    private val productSliderViewModel: ProductSliderViewModel by viewModels({ requireActivity() })
     private val shoppingCartViewModel: ShoppingCartViewModel by viewModels({ requireActivity() })
     private val favoriteViewModel: FavoriteViewModel by viewModels({ requireActivity() })
     private val badgesQuantityStoring: BadgesQuantityStoring by viewModels({ requireActivity() })
@@ -167,8 +166,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Observe data of product slider images to display on slider
         productSliderViewModel.productSliderData.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.Success -> it.data?.let { data ->
-                    displaySliderProduct(data)
+                Status.Processing -> {}
+                Status.Success -> it.data.let { data ->
+                    if (data != null) {
+                        displaySliderProduct(data.data)
+                    }
                     swipeRefreshLayout.isRefreshing = false
                 }
 

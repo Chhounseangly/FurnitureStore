@@ -43,7 +43,7 @@
             android:id="@+id/selected_all"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="Selectd All"
+            android:text="Selected All"
             android:enabled="true" />
         <Space
             android:layout_width="2dp"
@@ -67,6 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
+            style="@style/IMAGE_VIEW_COLOR"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:id="@+id/no_data_yet"
