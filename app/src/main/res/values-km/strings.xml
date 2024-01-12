@@ -85,5 +85,8 @@
     <string name="categories_txt">ប្រភេទផលិតផល</string>
     <string name="reset_new_password">Reset New Password</string>
     <string name="no_data_yet">ទិន្នន័យមិនទាន់មាន!</string>
+    <string name="total">តម្លៃសរុប</string>
+    <string name="items">ចំនួន</string>
+    <string name="shipping">សេវាដឹក</string>
 
 </resources>

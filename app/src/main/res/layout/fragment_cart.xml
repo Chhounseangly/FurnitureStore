@@ -89,7 +89,7 @@
                     style="@style/TEXT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Items"
+                    android:text="@string/items"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                     style="@style/TEXT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total amount"
+                    android:text="@string/total"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -145,11 +145,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="20dp">
-
                 <View
                     style="@style/BACKGROUND_LINE"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp" />
+                    android:layout_height="1dp" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton

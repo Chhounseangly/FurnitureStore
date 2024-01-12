@@ -65,6 +65,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
             when (it.status) {
                 Status.Processing -> showLoadingAnimation(cartContainerLoading)
                 Status.Success -> it.data?.data?.let { data ->
+                    binding.shoppingCartRecyclerView.visibility = View.VISIBLE
                     // Display the shopping cart items
                     displayProductCart(data)
                     // Calculate and display the total price
@@ -72,6 +73,7 @@ class ShoppingCartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBindi
                     swipeRefreshLayout.isRefreshing = false
                     hideLoadingAnimation(cartContainerLoading)
                     if (data.isEmpty()){
+                        binding.shoppingCartRecyclerView.visibility = View.GONE
                         binding.checkoutBtn.isEnabled = false
                         binding.checkoutBtn.setBackgroundResource(R.drawable.disable_btn)
                         binding.lytNoData.visibility = View.VISIBLE
