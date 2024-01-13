@@ -52,12 +52,18 @@ class AppPreference private constructor(context: Context) {
         return pref.getString(KEY_LANGUAGE, null)
     }
 
-
+    fun setTheme(theme: Boolean){
+        pref.edit().putBoolean(KEY_THEMES, theme).apply()
+    }
+    fun getTheme(): Boolean {
+        return pref.getBoolean(KEY_THEMES, false)
+    }
 
     companion object {
 
         private const val KEY_TOKEN = "token"
         private const val KEY_LANGUAGE = "language"
+        private const val KEY_THEMES = "themes"
 
         private var instance: AppPreference? = null
 
