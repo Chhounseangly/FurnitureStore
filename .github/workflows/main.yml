@@ -1,4 +1,4 @@
-name: Furniture Store CI/CD
+name: Build and Deploy App to Firebase App Distribution
 on:
   push:
 #    branches: ["main"]
