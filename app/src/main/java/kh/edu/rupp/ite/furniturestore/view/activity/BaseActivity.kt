@@ -42,6 +42,14 @@ abstract class BaseActivity<T : ViewBinding>(
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(updateBaseContextLocale(newBase))
+
+        val nightMode = AppPreference.get(this).getTheme()
+
+        if (nightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     private fun updateBaseContextLocale(context: Context): Context {
@@ -69,7 +77,6 @@ abstract class BaseActivity<T : ViewBinding>(
         initActions()
         setupListeners()
         setupObservers()
-
     }
 
 
@@ -84,6 +91,12 @@ abstract class BaseActivity<T : ViewBinding>(
     // Function to change the language
     private fun changeLanguage(languageCode: String) {
         AppPreference.get(this).setLanguage(languageCode)
+        recreate()
+    }
+
+    // Function to change the themes
+    private fun changeThemes(theme: Boolean) {
+        AppPreference.get(this).setTheme(theme)
         recreate()
     }
 
@@ -107,7 +120,7 @@ abstract class BaseActivity<T : ViewBinding>(
                     historyBtn.visibility = View.GONE
                     setting.visibility = View.VISIBLE
                     val language = resources.configuration.locale.language
-                    val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+                    val nightMode = AppPreference.get(this).getTheme()
                     setting.setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.language -> {
@@ -119,18 +132,11 @@ abstract class BaseActivity<T : ViewBinding>(
                             }
 
                             R.id.themes_mode -> {
-                                val editMode: SharedPreferences.Editor?
-                                val nightMode = themes.getBoolean("night", false)
-                                if (nightMode){
-                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                                     editMode = themes.edit()
-                                    editMode.putBoolean("night", false)
-                                }else {
-                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                                     editMode = themes.edit()
-                                    editMode.putBoolean("night", true)
+                                if (nightMode) {
+                                    changeThemes(false)
+                                } else {
+                                    changeThemes(true)
                                 }
-                                editMode.apply()
                             }
 
                         }

@@ -1,19 +1,14 @@
 package kh.edu.rupp.ite.furniturestore.view.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.furniturestore.R
@@ -41,6 +36,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     private val actionBarView: View by lazy {
         showCustomActionBar(this, R.layout.activity_action_bar)
     }
+
+    private val nightMode: Boolean by lazy { AppPreference.get(this).getTheme() }
+
     override fun initActions() {
 
         //show action bar
@@ -81,24 +79,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
             } else {
                 changeLanguage("en")
             }
-            recreate()
         }
-        val themes = getSharedPreferences("Mode", Context.MODE_PRIVATE)
-        val nightMode = themes.getBoolean("night", false)
-        val editMode: SharedPreferences.Editor = themes.edit()
-
 
         switchTheme.setOnClickListener {
 
             if (nightMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editMode.putBoolean("night", false)
+                changeThemes(false)
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editMode.putBoolean("night", true)
+                changeThemes(true)
             }
-            editMode.apply()
-
         }
     }
 
@@ -203,6 +192,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(ActivityProfileBind
     // Function to change the language
     private fun changeLanguage(languageCode: String) {
         AppPreference.get(this).setLanguage(languageCode)
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+    // Function to change the themes
+    private fun changeThemes(theme: Boolean) {
+        AppPreference.get(this).setTheme(theme)
 
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

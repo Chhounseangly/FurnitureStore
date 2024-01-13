@@ -106,6 +106,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 // Save the token to shared preferences
                 val token = data.getQueryParameter("token")
                 AppPreference.get(this).setToken(token ?: "")
+                showCustomActionBar(this, R.layout.fragment_action_bar)
             }
         }
 
