@@ -83,10 +83,13 @@
     <string name="verify_code_content">សូមពិនិត្យOTPដែលពួកយើងបានផ្ញើទៅកាន់អ៊ីមែលរបស់អ្នក</string>
     <string name="continue_txt">ជោគជ៏យ</string>
     <string name="categories_txt">ប្រភេទផលិតផល</string>
-    <string name="reset_new_password">Reset New Password</string>
+    <string name="reset_new_password">ប្តូរពាក្យសម្ងាត់ថ្មី</string>
     <string name="no_data_yet">ទិន្នន័យមិនទាន់មាន!</string>
     <string name="total">តម្លៃសរុប</string>
     <string name="items">ចំនួន</string>
     <string name="shipping">សេវាដឹក</string>
-
+    <string name="save">រក្សារទុក</string>
+    <string name="loading">កំពុងដំណើរការ…</string>
+    <string name="thank_you_for_your_purchase">សូមអរគុណសម្រាប់ការទិញរបស់អ្នក។</string>
+    <string name="update_failed">ការកែរបានបរាជ័យ</string>
 </resources>

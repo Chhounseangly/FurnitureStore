@@ -32,6 +32,7 @@ class EditProfileActivity :
     private val actionBarView: View by lazy {
         showCustomActionBar(this, R.layout.activity_action_bar)
     }
+
     override fun initActions() {
         //show action bar
         actionBarView.apply {
@@ -82,19 +83,24 @@ class EditProfileActivity :
 
         authViewModel.updateMsg.observe(this) {
             when (it.status) {
+                Status.Processing -> {
+                    saveBtn.isEnabled = false
+                    saveBtn.text = getString(R.string.loading)
+                }
+
                 Status.Success -> {
                     setResult(Activity.RESULT_OK)
                     finish()
                 }
 
                 Status.Failed -> {
-                    it.data?.message?.let { message ->
-                        Snackbar.make(
-                            binding.root,
-                            message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.update_failed),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    saveBtn.isEnabled = true
+                    saveBtn.text = getString(R.string.save)
                 }
 
                 else -> {

@@ -82,7 +82,7 @@
             android:layout_height="50dp"
             android:layout_marginVertical="20dp"
             android:background="@drawable/custom_style_btn"
-            android:text="Save" />
+            android:text="@string/save" />
 
     </LinearLayout>
 

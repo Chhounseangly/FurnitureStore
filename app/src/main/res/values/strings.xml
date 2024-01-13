@@ -91,4 +91,7 @@
     <string name="total">Total</string>
     <string name="items">Items</string>
     <string name="shipping">Shipping</string>
+    <string name="save">Save</string>
+    <string name="loading">Loading…</string>
+    <string name="update_failed">Update failed!</string>
 </resources>
